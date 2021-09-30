@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mapbox_access_token">sk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJja2IyZmxkaTQwNjJ0MnJ0YnBrZnp2ZWQ1In0.no_i02SUF15shVAFppGmdA</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
     <string name="app_name">Position</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="version">v0.1.5</string>
 
     <string name="format_arrival" translatable="false">HH:mm</string>
     <string name="format_duration">%d min</string>
@@ -20,7 +21,7 @@
     <string name="create_route">Calculer un itinéraire</string>
     <string name="my_position">Ma position</string>
     <string name="find_position">Trouver ma position</string>
-    <string name="friend_position">Position de l\'ami</string>
+    <string name="friend_position">Position recherchée</string>
     <string name="position_to_save">Position à enregistrer</string>
     <string name="position_name">Nom de la position</string>
     <string name="position_save">Sauvegarder</string>
@@ -55,4 +56,21 @@
     <string name="menu_about">A propos de Position</string>
 
     <string name="my_favorites">Mes favoris</string>
+
+    <string name="tuto_close">Fermer</string>
+
+    <string name="recommend">Je te recommande l\'application Position pour te guider au Cameroun. Tu peux obtenir plus d\'informations sur le site :\n position.geosm.org.</string>
+
+    <string name="choose_language">Langue Active</string>
+    <string name="french">Français</string>
+    <string name="english">Anglais</string>
+    <string name="about_ok">OK</string>
+
+    <string name="adresse">Adresse</string>
+
+    <string name="near">Autour de Moi</string>
+
+    <string name="showOnMap">Voir sur la Carte</string>
+
+
 </resources>

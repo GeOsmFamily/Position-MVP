@@ -10,29 +10,32 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         tools:visibility="visible"
-        app:constraint_referenced_ids="labelMyPosition,myPosition"/>
+        app:constraint_referenced_ids="labelDisplay,lieu" />
+
 
     <TextView
-        android:id="@+id/labelMyPosition"
+        android:id="@+id/labelDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/my_position"
-        android:textSize="12sp"
+        android:text="@string/adresse"
         android:textColor="?attr/colorOnBottomSheetSurfaceVariant"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/myPosition"
+        android:id="@+id/lieu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:textAlignment="center"
         android:textAppearance="?attr/positionTextAppearance"
-        app:layout_constraintTop_toBottomOf="@+id/labelMyPosition"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="123456"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelDisplay"
+        tools:text="DOUALA" />
 </merge>

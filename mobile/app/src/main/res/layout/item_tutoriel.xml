@@ -21,7 +21,6 @@
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="731dp"
         android:layout_marginBottom="16dp"
         android:text="@string/tuto_start"
         android:visibility="gone"

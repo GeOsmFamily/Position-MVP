@@ -1,52 +1,67 @@
 package com.sogefi.position.ui.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-
 import com.rbrooks.indefinitepagerindicator.IndefinitePagerIndicator;
 import com.sogefi.position.R;
 import com.sogefi.position.ui.activities.adapters.TutorielAdapter;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.sogefi.position.utils.PreferenceManager;
 
 public class TutorielActivity extends AppCompatActivity {
-    @SuppressLint("NonConstantResourceId")
-    @BindView(R.id.tutoriel) RecyclerView tutoriel;
-
-    IndefinitePagerIndicator indefinitePagerIndicator;
+    private static final String DEEPLINK_QUERY_FRIEND_POSITION = "friend_position";
+    PreferenceManager pref;
+    String first;
+    RecyclerView tutorielRecycler;
     PagerSnapHelper pagerSnapHelper;
-    View.OnClickListener onClickListener;
+    TutorielAdapter tutorielAdapter;
+    IndefinitePagerIndicator indicator;
+    String friendPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        friendPosition = getIntent().getStringExtra(DEEPLINK_QUERY_FRIEND_POSITION);
+
+
+        pref = new PreferenceManager(this);
+        first = pref.getConnect();
         setContentView(R.layout.activity_tutoriel);
+        indicator = findViewById(R.id.indicator);
+        tutorielRecycler = findViewById(R.id.tutoriel);
+        pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(tutorielRecycler);
+        indicator.attachToRecyclerView(tutorielRecycler);
+        tutorielRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        tutorielAdapter = new TutorielAdapter(R.layout.item_tutoriel, this);
+        tutorielRecycler.setAdapter(tutorielAdapter);
 
-        ButterKnife.bind(this);
+    }
 
+    public void clickItem() {
+        Intent intent = new Intent(TutorielActivity.this, MapActivity.class);
+        intent.putExtra(DEEPLINK_QUERY_FRIEND_POSITION, friendPosition);
+        startActivity(intent);
+        finish();
+    }
 
-
-        onClickListener = v -> {
-            Intent intent = new Intent(TutorielActivity.this, MainActivity.class);
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (first.matches("no")) {
+            pref.firstConnect("yes");
+        } else {
+            Intent intent = new Intent(TutorielActivity.this, MapActivity.class);
+            intent.putExtra(DEEPLINK_QUERY_FRIEND_POSITION, friendPosition);
             startActivity(intent);
             finish();
-        };
-
-        pagerSnapHelper = new PagerSnapHelper();
-        indefinitePagerIndicator = new IndefinitePagerIndicator(this);
-        pagerSnapHelper.attachToRecyclerView(tutoriel);
-        indefinitePagerIndicator.attachToRecyclerView(tutoriel);
-        tutoriel.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
-        tutoriel.setAdapter(new TutorielAdapter(onClickListener));
-
+        }
 
     }
 }

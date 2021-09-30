@@ -21,6 +21,7 @@
         android:id="@+id/origin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textSize="12dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
@@ -28,9 +29,9 @@
         android:backgroundTint="@color/bottom_sheet_text_input_layout_stroke_color"
         android:textAlignment="center"
         android:textAppearance="?attr/positionTextAppearance"
-        android:clickable="false"
         android:cursorVisible="false"
         android:focusable="false"
+        android:inputType="none"
         android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,20 +56,21 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:textSize="12dp"
         android:backgroundTint="@color/bottom_sheet_text_input_layout_stroke_color"
         android:textColor="@color/green"
         android:textAppearance="?attr/positionTextAppearance"
         android:textAlignment="center"
-        android:clickable="false"
         android:cursorVisible="false"
         android:focusable="false"
+        android:inputType="none"
         android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview2" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/search"
+        android:id="@+id/searchB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -85,5 +87,5 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         tools:visibility="visible"
-        app:constraint_referenced_ids="origin,textview1,textview2,search,destination" />
+        app:constraint_referenced_ids="origin,textview1,textview2,searchB,destination" />
 </androidx.constraintlayout.widget.ConstraintLayout>

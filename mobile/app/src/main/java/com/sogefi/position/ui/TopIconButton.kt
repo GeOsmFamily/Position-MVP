@@ -5,24 +5,17 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.sogefi.position.R
+import com.sogefi.position.R2.id.imageView
+import com.sogefi.position.R2.id.textView
+import kotlinx.android.synthetic.main.top_icon_button.view.*
 
 class TopIconButton @JvmOverloads constructor(
     ctx: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-): FrameLayout(ctx, attrs, defStyle) {
-
-    @BindView(R.id.textView)
-    var textView: TextView? = null
-
-    @BindView(R.id.imageView)
-    var imageView: ImageView? = null
+) : FrameLayout(ctx, attrs, defStyle) {
 
     init {
         isClickable = true
@@ -43,11 +36,11 @@ class TopIconButton @JvmOverloads constructor(
             try {
                 val text = getString(R.styleable.TopIconButton_android_text)
                 if (text?.isNotEmpty() == true) {
-                    textView?.text  = text
+                    textView.text = text
                 }
                 val icon = getResourceId(R.styleable.TopIconButton_icon, -1)
                 if (icon != -1) {
-                    imageView?.setImageResource(icon)
+                    imageView.setImageResource(icon)
                 }
             } finally {
                 recycle()
