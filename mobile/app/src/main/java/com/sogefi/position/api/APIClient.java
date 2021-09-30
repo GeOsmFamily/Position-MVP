@@ -16,7 +16,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
-    public static final String BASE_URL = "http://position.sogefi.cm:2020/";
     public static final String BASE_URL1 = "https://nominatim.openstreetmap.org/";
     private static Retrofit retrofit = null;
     private static Retrofit retrofit1 = null;
@@ -65,16 +64,6 @@ public class APIClient {
         }
     }
 
-    public static Retrofit getClient() {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(getUnsafeOkHttpClient().build())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofit;
-    }
 
 
     public static Retrofit getNewClient() {
@@ -88,17 +77,6 @@ public class APIClient {
         return retrofit1;
     }
 
-    public static Retrofit getNewClient1() {
-        if (retrofit2 == null) {
-            retrofit2 = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(getUnsafeOkHttpClient().build())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofit2;
-    }
 
     public static Retrofit getNewClient2() {
         if (retrofit3 == null) {

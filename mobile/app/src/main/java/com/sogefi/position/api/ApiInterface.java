@@ -19,12 +19,6 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
 
-    @GET("prend_mot/{search}")
-    Call<List<Position>> position(@Path("search") String search);
-
-    @GET("prend_coord/{search}")
-    Call<PositionCoord> positionCoord(@Path("search") String search);
-
     @GET("search")
     Call<List<Nominatim>> nominatim(@Query("q") String q, @Query("format") String format, @Query("addressdetails") int addressdetails, @Query("countrycodes") String countrycodes);
 
@@ -35,6 +29,5 @@ public interface ApiInterface {
     @GET("search")
     Single<Response<List<Nominatim>>> nominatimRx(@Query("q") String q, @Query("format") String format, @Query("addressdetails") int addressdetails, @Query("countrycodes") String countrycodes);
 
-    @GET("prend_mot/{search}")
-    Single<Response<List<Position>>> positionRx(@Path("search") String search);
+
 }

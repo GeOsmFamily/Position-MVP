@@ -121,7 +121,6 @@ public class SearchActivity extends AppCompatActivity {
                         loadingSearch.setVisibility(View.GONE);
                         adapter.notifyDataSetChanged();
                     } else {
-                        apiInterface = APIClient.getNewClient1().create(ApiInterface.class);
 
                     }
 
