@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/bg_round_surface.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/bg_search_bar.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/bg_top_round_primary_variant.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_add_black_24dp.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_arrow_back_black_24dp.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_check_black_24dp.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_destination.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_favoris.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_logo_position.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_remove_black_24dp.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_main.xml" value="0.16757246376811594" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_map.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_splash.xml" value="0.25" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_tutoriel.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/content_my_position.xml" value="0.16757246376811594" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/content_position.xml" value="0.16757246376811594" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/content_route.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/content_route_search.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/content_save_position.xml" value="0.22" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/fragment_map.xml" value="0.1671195652173913" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/fragment_splash.xml" value="0.1671195652173913" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_favorite.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_language.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_suggestion.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/top_icon_button.xml" value="0.16757246376811594" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher_new.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher_new_round.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2203125" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

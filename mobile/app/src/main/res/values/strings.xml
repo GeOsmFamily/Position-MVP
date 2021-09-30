@@ -1,4 +1,73 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
     <string name="app_name">Position</string>
-    <string name="mapbox_access_token" translatable="false" tools:ignore="Typos">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="version">v0.1.5</string>
+
+
+    <string name="tuto_start">Commencer</string>
+    <string name="label_tuto1">Recherchez une adresse \nTrouvez une position</string>
+    <string name="label_tuto2">Partagez votre position</string>
+    <string name="label_tuto3">Enregistrez une position</string>
+    <string name="label_tuto4">Calculez votre itinéraire</string>
+    <string name="friend_position">Position recherhée</string>
+    <string name="compute_route_friend">Itinéraire</string>
+    <string name="share_position_friend">Share</string>
+    <string name="add_favorite_friend">Save</string>
+
+    <string name="format_arrival" translatable="false">HH:mm</string>
+    <string name="format_duration">%d min</string>
+    <string name="format_length">%.0f kms</string>
+    <string name="format_position" translatable="false">%s,%s</string>
+
+    <string name="tuto_close">Close</string>
+    <string name="gps_disabled">Please enable localisation</string>
+    <string name="gps_activate">Enable</string>
+    <string name="share">Share</string>
+    <string name="save">Add to favorites</string>
+    <string name="create_route">Compute an itinerary</string>
+    <string name="my_position">My position</string>
+    <string name="find_position">Find my position</string>
+    <string name="position_to_save">Position to save</string>
+    <string name="position_name">Position\'s name</string>
+    <string name="position_save">Save</string>
+    <string name="share_content">I use Position application to drive me through Cameroon. Follow my position on the map\n%s</string>
+    <string name="recommend">I recommend you Position application to drive through Cameroon. You can get more informations on:\n position.geosm.org.</string>
+    <string name="cameroon">Cameroon</string>
+    <string name="arrival_hour">Arrival</string>
+    <string name="total_time">Time</string>
+    <string name="length">Length</string>
+    <string name="search">Search</string>
+    <string name="origin_placeholder">My position</string>
+    <string name="destination_placeholder">To</string>
+    <string name="search_placeholder">Search for a position</string>
+    <string name="searched_position">Searched position</string>
+    <string name="share_favorite">Share</string>
+    <string name="delete_favorite">Delete</string>
+    <string name="favorite_added">%s position, %s has been added to the favorites</string>
+    <string name="run_route">Start</string>
+    <string name="favorite_modify">Modify</string>
+    <string name="favorite_message">Please fill the position name</string>
+    <string name="favorite_validate">OK</string>
+    <string name="favorite_cancel">Cancel</string>
+    <string name="clicked_position">Position</string>
+    <string name="choose_language">Active Language</string>
+    <string name="french">French</string>
+    <string name="english">English</string>
+    <string name="about_ok">OK</string>
+
+    <string name="menu_favorites">My favorites</string>
+    <string name="menu_language">Languages</string>
+    <string name="menu_recommand">Recommend the application</string>
+    <string name="menu_tuto">Tutorial</string>
+    <string name="menu_about">About Position</string>
+
+    <string name="my_favorites">My favorites</string>
+
+    <string name="adresse">Adresse</string>
+
+    <string name="near">Near Me</string>
+
+    <string name="showOnMap">View On Map</string>
+
 </resources>
