@@ -119,6 +119,8 @@ public class MapActivity extends AppCompatActivity implements
     FloatingActionButton routePosition;
     FloatingActionButton addToFavoritePosition;
     FloatingActionButton sharePosition;
+    FloatingActionButton clearButton;
+    FloatingActionButton clearRouteButton;
     ExtendedFloatingActionButton findPosition;
     ProgressBar bottomSheetProgress;
     TextView lieu;
@@ -211,6 +213,9 @@ public class MapActivity extends AppCompatActivity implements
         routePosition = findViewById(R.id.routePosition);
         addToFavoritePosition = findViewById(R.id.addToFavoritePosition);
         sharePosition = findViewById(R.id.sharePosition);
+        clearButton = findViewById(R.id.clearButton);
+        clearRouteButton = findViewById(R.id.clearRouteButton);
+
 
 
         findPosition = findViewById(R.id.findPosition);
@@ -342,8 +347,26 @@ public class MapActivity extends AppCompatActivity implements
 
         });
 
+        clearButton.setOnClickListener(v -> clearAll());
+
+        clearRouteButton.setOnClickListener(v -> clearAll());
 
 
+
+    }
+
+    private void clearAll() {
+        if (symbolManager != null) symbolManager.deleteAll();
+        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
+        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
+        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
+        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+        BottomSheetBehavior.from(bottom_sheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     //Methode pour gerer les elements du DrawerNavigation
@@ -424,6 +447,8 @@ public class MapActivity extends AppCompatActivity implements
             mapboxMap.addOnMapClickListener(MapActivity.this);
         });
         mapBoxUtils.setMapSetting();
+
+        pref.setStyle(style);
     }
 
     public void alertDialog() {
@@ -597,6 +622,8 @@ public class MapActivity extends AppCompatActivity implements
         saveSubmit.setOnClickListener(view -> {
            // hideSoftKeyboard();
             saveFavorite(saveName.getText().toString(), favorite);
+
+            clearAll();
 
             BottomSheetBehavior.from(bottom_sheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
 
@@ -828,7 +855,13 @@ public class MapActivity extends AppCompatActivity implements
         MapActivity.this.mapboxMap = mapboxMap;
         mapBoxUtils= new MapBoxUtils(mapboxMap);
 
-        mapboxMap.setStyle(new Style.Builder().fromUri(Style.MAPBOX_STREETS)
+        String styleLaunch = Style.MAPBOX_STREETS;
+
+        if(!pref.getStyle().equals("style")) {
+            styleLaunch = pref.getStyle();
+        }
+
+        mapboxMap.setStyle(new Style.Builder().fromUri(styleLaunch)
                 .withImage(ORIGIN_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
                         getResources().getDrawable(R.drawable.ic_origin))))
                 .withImage(DESTINATION_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
@@ -889,7 +922,6 @@ public class MapActivity extends AppCompatActivity implements
         if (Function.isNetworkAvailable(getApplicationContext())) {
             onBottomSheetLoading(0);
             nominatimCoord(lat, lon, adresseV);
-            Log.d("Lattitude" , lat);
             LatLng point = new LatLng(Double.parseDouble(lat),Double.parseDouble(lon));
 
             symbol = symbolManager.create(new SymbolOptions()
@@ -1066,7 +1098,8 @@ public class MapActivity extends AppCompatActivity implements
             call.enqueue(new Callback<Nominatim>() {
                 @Override
                 public void onResponse(@NotNull Call<Nominatim> call, @NotNull Response<Nominatim> response) {
-                    displayNameTv.setText(response.body() != null ? response.body().getDisplayName() : null);
+                    String[] name = response.body() != null ? response.body().getDisplayName().split(",") : null;
+                    displayNameTv.setText(name[0]+","+name[1]+","+name[2]+",\n"+name[3]);
                     latTv = (response.body() != null ? response.body().getLat():null);
                     lonTv = (response.body() != null ? response.body().getLon():null);
                     Timber.tag("displayName").d(response.body() != null ? response.body().getDisplayName() : null);

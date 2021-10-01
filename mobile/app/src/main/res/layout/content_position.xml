@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="adresseLabel,adresseV,sharePosition,addToFavoritePosition,routePosition"
+        app:constraint_referenced_ids="adresseLabel,adresseV,sharePosition,addToFavoritePosition,routePosition,clearButton"
         tools:visibility="visible" />
 
 
@@ -30,8 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="1dp"
@@ -53,6 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/share_position_friend"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/addToFavoritePosition"
@@ -60,6 +61,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/adresseV"
+        app:layout_constraintVertical_bias="0.422"
         app:srcCompat="@drawable/ic_partager" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -67,11 +69,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/add_favorite_friend"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/routePosition"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.422"
         app:layout_constraintStart_toEndOf="@+id/sharePosition"
         app:layout_constraintTop_toBottomOf="@+id/adresseV"
         app:srcCompat="@drawable/ic_favorite" />
@@ -81,12 +86,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:text="@string/compute_route_friend"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.422"
         app:layout_constraintStart_toEndOf="@+id/addToFavoritePosition"
         app:layout_constraintTop_toBottomOf="@+id/adresseV"
         app:srcCompat="@drawable/ic_itineraire" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:text="clear"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.422"
+        app:layout_constraintStart_toEndOf="@+id/routePosition"
+        app:layout_constraintTop_toBottomOf="@+id/adresseV"
+        app:srcCompat="@drawable/ic_baseline_clear_24" />
 </merge>

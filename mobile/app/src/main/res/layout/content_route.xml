@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="textView4,barrier,textView2,length,duration,textView6,textView7,length,imageView4,arrival,run"
+        app:constraint_referenced_ids="textView4,barrier,textView2,length,duration,textView6,textView7,length,imageView4,arrival,run,clearRouteButton"
         tools:visibility="visible" />
 
     <ImageView
@@ -141,5 +141,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/length"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/clearRouteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="clear"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.7"
+        app:layout_constraintStart_toEndOf="@+id/run"
+        app:layout_constraintTop_toBottomOf="@+id/length"
+        app:srcCompat="@drawable/ic_baseline_clear_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

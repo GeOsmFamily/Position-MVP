@@ -19,11 +19,8 @@ public class PreferenceManager {
     private static final String LONDEST = "londest";
     private static final String LATDEST = "latdest";
 
-    private static final String ORIGIN = "non";
-    private static final String DESTINATION = "non";
+    private static final String STYLE = "style";
 
-    private static final String LATTV = "lontv";
-    private static final String LONTV = "lattv";
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -138,6 +135,15 @@ public class PreferenceManager {
         editor.apply();
     }
 
+
+    public String getStyle() {
+        return pref.getString(STYLE, "style");
+    }
+
+    public void setStyle(String style) {
+        editor.putString(STYLE, style);
+        editor.apply();
+    }
 
 }
 

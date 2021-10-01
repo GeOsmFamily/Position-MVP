@@ -38,7 +38,7 @@
         android:autoSizeStepGranularity="1dp"
         android:autoSizeTextType="uniform"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="3"
         android:textAlignment="center"
         android:textAppearance="?attr/positionTextAppearance"
         android:textColor="@color/green"
