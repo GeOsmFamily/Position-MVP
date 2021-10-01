@@ -1,18 +1,18 @@
 version: "3"
 
 services:
-    auth-service-app:
-        container_name: auth-service-app
+    app-service-app:
+        container_name: app-service-app
         build: .docker/docker
-        image: auth-service-app
+        image: app-service-app
         depends_on:
-            - auth-service-mysql
-            - auth-service-redis
+            - app-service-mysql
+            - app-service-redis
         volumes:
             - ./:/application:cached
 
-    auth-service-nginx:
-        container_name: auth-service-nginx
+    app-service-nginx:
+        container_name: app-service-nginx
         image: nginx:alpine
         ports:
             - "8000:8000"
@@ -21,12 +21,12 @@ services:
             - ./:/application:cached
             - .docker/nginx/:/var/log/nginx/
         depends_on:
-            - auth-service-app
-            - auth-service-mysql
-            - auth-service-redis
+            - app-service-app
+            - app-service-mysql
+            - app-service-redis
 
-    auth-service-mysql:
-        container_name: auth-service-mysql
+    app-service-mysql:
+        container_name: app-service-mysql
         image: mysql:5.7
         ports:
             - "8001:3306"
@@ -34,13 +34,13 @@ services:
             - MYSQL_ROOT_PASSWORD=root
             - MYSQL_DATABASE=auth
         volumes:
-            - auth-service-mysql-data:/var/lib/mysql:cached
+            - app-service-mysql-data:/var/lib/mysql:cached
 
-    auth-service-redis:
-        container_name: auth-service-redis
+    app-service-redis:
+        container_name: app-service-redis
         image: redis:alpine
         ports:
             - "6379:6379"
 
 volumes:
-    auth-service-mysql-data:
+    app-service-mysql-data:

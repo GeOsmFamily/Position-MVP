@@ -1,4 +1,4 @@
-# Auth-Service GeOsm
+# app-service GeOsm
 
 ## Table of contents
 
@@ -35,13 +35,13 @@
 
 ### References
 
-Auth-Service use [codebot/entrust](https://github.com/c0d3b0t/entrust) package to Users ACL
+App-Service use [codebot/entrust](https://github.com/c0d3b0t/entrust) package to Users ACL
 
 ### Clone Repository
 
 ```
-git clone https://github.com/GeOsmFamily/GeOsm-2.0.git
-cd auth-service
+git clone https://github.com/GeOsmFamily/Position-MVP.git
+cd app-service
 ```
 
 -   Add mailgun secret & mailgun domain in .env
@@ -57,31 +57,31 @@ docker-compose up -d
 Update project dependences
 
 ```
-docker exec -it auth-service-app composer update
+docker exec -it app-service-app composer update
 ```
 
 copy .env.example to .env
 
 ```
-docker exec -it auth-service-app cp .env.example .env
+docker exec -it app-service-app cp .env.example .env
 ```
 
 Generate hash Jwt
 
 ```
-docker exec -it auth-service-app php artisan jwt:secret
+docker exec -it app-service-app php artisan jwt:secret
 ```
 
 Clear cache
 
 ```
-docker exec -it auth-service-app php artisan cache:clear && composer dumpautoload
+docker exec -it app-service-app php artisan cache:clear && composer dumpautoload
 ```
 
 Run Migrations with seeders
 
 ```
-docker exec -it auth-service-app php artisan migrate:refresh --seed
+docker exec -it app-service-app php artisan migrate:refresh --seed
 ```
 
 ## Documentation
@@ -115,7 +115,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 {
-    "email": "smedeiros.flavio@gmail.com",
+    "email": "user@position.cm",
     "password": "secret"
 }
 ```
@@ -148,8 +148,8 @@ Response
 ```
 {
     "id": 1,
-    "name": "Flávio Medeiros",
-    "email": "smedeiros.flavio@gmail.com",
+    "name": "User",
+    "email": "user@position.cm",
     "email_verified_at": "2019-07-01 19:44:02",
     "created_at": "2019-06-18 18:35:07",
     "updated_at": "2019-07-01 19:44:03"
@@ -170,8 +170,8 @@ Request
 Content-Type: application/json
 Accept: application/json
 {
-    "name": "Flávio Medeiros",
-    "email": "mail@example.com",
+    "name": "User",
+    "email": "user@example.com",
     "password": "secret"
 }
 ```
@@ -305,8 +305,8 @@ Response
     "data": [
         {
             "id": 1,
-            "name": "Flávio Medeiros",
-            "email": "smedeiros.flavio@gmail.com",
+            "name": "User",
+            "email": "user@position.cm",
             "email_verified_at": "2019-07-01 19:44:02",
             "created_at": "2019-06-18 18:35:07",
             "updated_at": "2019-07-01 19:44:03"
@@ -334,8 +334,8 @@ Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourGeneratedHash
 {
-    "name": "Flavio Medeiros",
-    "email": "example@mail.com",
+    "name": "User",
+    "email": "user@position.cm",
     "password": "secret"
 }
 ```
@@ -364,8 +364,8 @@ Response
 ```json
 {
     "id": 1,
-    "name": "Flávio Medeiros",
-    "email": "smedeiros.flavio@gmail.com",
+    "name": "User",
+    "email": "user@position.cm",
     "email_verified_at": "2019-07-01 19:44:02",
     "created_at": "2019-06-18 18:35:07",
     "updated_at": "2019-07-01 19:44:03"
@@ -381,8 +381,8 @@ Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourGeneratedHash
 {
-    "name": "Flavio Medeiros",
-    "email": "example@mail.com",
+    "name": "User",
+    "email": "user@position.cm",
     "password": "secret"
 }
 ```
@@ -392,8 +392,8 @@ Response
 ```json
 {
     "id": 1,
-    "name": "Flávio Medeiros",
-    "email": "example@mail.com",
+    "name": "User",
+    "email": "example@position.cm",
     "email_verified_at": "2019-07-01 19:44:02",
     "created_at": "2019-06-18 18:35:07",
     "updated_at": "2019-07-05 21:30:56"
@@ -409,7 +409,7 @@ Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourGeneratedHash
 {
-    "name": "Flavio da Silva Medeiros",
+    "name": "User",
     ...
 }
 ```
@@ -419,8 +419,8 @@ Response
 ```json
 {
     "id": 1,
-    "name": "Flávio da Silva Medeiros",
-    "email": "smedeiros.flavio@gmail.com",
+    "name": "User",
+    "email": "user@position.cm",
     "email_verified_at": "2019-07-05 21:37:30",
     "created_at": "2019-07-05 21:37:30",
     "updated_at": "2019-07-05 21:37:49"
@@ -443,8 +443,8 @@ Response
 ```json
 {
     "id": 1,
-    "name": "Flávio da Silva Medeiros",
-    "email": "smedeiros.flavio@gmail.com",
+    "name": "User",
+    "email": "user@position.cm",
     "email_verified_at": "2019-07-05 21:37:30",
     "created_at": "2019-07-05 21:37:30",
     "updated_at": "2019-07-05 21:37:49"

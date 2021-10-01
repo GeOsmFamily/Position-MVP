@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
+
 use Illuminate\Validation\Rule;
 
 class UserRequest extends BaseRequest
@@ -16,7 +17,7 @@ class UserRequest extends BaseRequest
         $rules = [
             'name' => 'string|max:254',
             'email' => 'email|unique:users,email',
-           // 'phone' => 'regex:/^[\+0-9]+$/|unique:users,phone',
+            'telephone' => 'regex:/^[\+0-9]+$/|unique:users,telephone',
             'password' => 'string|between:6,20',
         ];
 
@@ -27,7 +28,7 @@ class UserRequest extends BaseRequest
 
         if ($this->methodIsPutOrPatch() && !empty($this->user->id)) {
             $rules['email'] .= ',' . $this->user->id;
-           // $rules['phone'] .= ',' . $this->user->id;
+            $rules['telephone'] .= ',' . $this->user->id;
         }
 
         return $rules;
@@ -37,8 +38,7 @@ class UserRequest extends BaseRequest
     public function messages()
     {
         return [
-            'phone.regex' => 'The phone must be a number.',
+            'telephone.regex' => 'The phone must be a number.',
         ];
     }
-
 }
