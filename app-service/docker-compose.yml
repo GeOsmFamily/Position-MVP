@@ -32,7 +32,7 @@ services:
             - "8001:3306"
         environment:
             - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=auth
+            - MYSQL_DATABASE=position
         volumes:
             - app-service-mysql-data:/var/lib/mysql:cached
 
