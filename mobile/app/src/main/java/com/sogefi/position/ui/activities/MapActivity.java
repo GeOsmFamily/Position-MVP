@@ -119,6 +119,8 @@ public class MapActivity extends AppCompatActivity implements
     FloatingActionButton routePosition;
     FloatingActionButton addToFavoritePosition;
     FloatingActionButton sharePosition;
+    FloatingActionButton clearButton;
+    FloatingActionButton clearRouteButton;
     ExtendedFloatingActionButton findPosition;
     ProgressBar bottomSheetProgress;
     TextView lieu;
@@ -137,7 +139,7 @@ public class MapActivity extends AppCompatActivity implements
     Group groupSavePosition;
     MaterialButton run;
     MaterialButton saveSubmit;
-    int checkItem = 0;
+    int checkItem, checkProfile = 0;
     TopIconButton route;
     TopIconButton save;
     TopIconButton share;
@@ -211,6 +213,9 @@ public class MapActivity extends AppCompatActivity implements
         routePosition = findViewById(R.id.routePosition);
         addToFavoritePosition = findViewById(R.id.addToFavoritePosition);
         sharePosition = findViewById(R.id.sharePosition);
+        clearButton = findViewById(R.id.clearButton);
+        clearRouteButton = findViewById(R.id.clearRouteButton);
+
 
 
         findPosition = findViewById(R.id.findPosition);
@@ -315,7 +320,7 @@ public class MapActivity extends AppCompatActivity implements
 
         near.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Bientôt disponible", Toast.LENGTH_LONG).show());
 
-        routePosition.setOnClickListener(v -> routePosition());
+        routePosition.setOnClickListener(v -> alertDialogProfile());
 
         addToFavoritePosition.setOnClickListener(view -> showSave(adresseV.getText().toString(), latTv, lonTv));
 
@@ -329,29 +334,39 @@ public class MapActivity extends AppCompatActivity implements
         });
 
         origin.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Selectionnez le point de depart", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.origin), Toast.LENGTH_LONG).show();
             pref.setNameORI("oui");
             searchManager.startSearch(" ", true, getComponentName(), null, false);
 
-          /*  Log.d("Origin","origin");
-            extra = "origin";
-            Intent intent = new Intent(AccueilActivity.this, SearchActivity.class);
-            intent.putExtra("EXTRA", extra);
-            startActivity(intent);*/
         });
 
         destination.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Selectionnez le point de d'arrivé", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.destination), Toast.LENGTH_LONG).show();
             pref.setNameDest("oui");
             searchManager.startSearch(" ", true, getComponentName(), null, false);
-         /*   extra = "destination";
-           Intent intent = new Intent(AccueilActivity.this, SearchActivity.class);
-            intent.putExtra("EXTRA", extra);
-            startActivity(intent);*/
+
         });
 
+        clearButton.setOnClickListener(v -> clearAll());
+
+        clearRouteButton.setOnClickListener(v -> clearAll());
 
 
+
+    }
+
+    private void clearAll() {
+        if (symbolManager != null) symbolManager.deleteAll();
+        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
+        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
+        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
+        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+        BottomSheetBehavior.from(bottom_sheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     //Methode pour gerer les elements du DrawerNavigation
@@ -432,12 +447,14 @@ public class MapActivity extends AppCompatActivity implements
             mapboxMap.addOnMapClickListener(MapActivity.this);
         });
         mapBoxUtils.setMapSetting();
+
+        pref.setStyle(style);
     }
 
     public void alertDialog() {
         final String[] items = {"STREET", "SATELLITE", "LIGHT", "TRAFFIC-NIGHT", "STAMEN"};
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
-        builder.setTitle("Selectionnez votre style : ");
+        builder.setTitle( getString(R.string.selectStyle));
         builder.setSingleChoiceItems(items, checkItem, (dialog, which) -> {
             switch (which) {
                 case 0:
@@ -463,6 +480,34 @@ public class MapActivity extends AppCompatActivity implements
                 case 4:
                     newStyle("mapbox://styles/mapbox/cj3kbeqzo00022smj7akz3o1e");
                     checkItem = which;
+                    dialog.dismiss();
+                    break;
+            }
+
+        });
+        AlertDialog ad = builder.create();
+        ad.show();
+    }
+
+    public void alertDialogProfile() {
+        final String[] items = {getString(R.string.walking), getString(R.string.traffic_driving), getString(R.string.driving)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
+        builder.setTitle(getString(R.string.selectProfile));
+        builder.setSingleChoiceItems(items, checkProfile, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    routePosition(DirectionsCriteria.PROFILE_WALKING);
+                    checkProfile = which;
+                    dialog.dismiss();
+                    break;
+                case 1:
+                    routePosition(DirectionsCriteria.PROFILE_DRIVING_TRAFFIC);
+                    checkProfile = which;
+                    dialog.dismiss();
+                    break;
+                case 2:
+                    routePosition(DirectionsCriteria.PROFILE_DRIVING);
+                    checkProfile = which;
                     dialog.dismiss();
                     break;
             }
@@ -503,7 +548,7 @@ public class MapActivity extends AppCompatActivity implements
             onBottomSheetLoading(0);
         } else {
             onBottomSheetLoading(0);
-            Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
         }
     }
@@ -558,9 +603,9 @@ public class MapActivity extends AppCompatActivity implements
                         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Position");
                         String shareMessage = getString(R.string.share_content, shortDynamicLink.getShortLink());
                         shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-                        startActivity(Intent.createChooser(shareIntent, "Choississez une application"));
+                        startActivity(Intent.createChooser(shareIntent, getString(R.string.chooseApp)));
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Erreur survenue lors du partage", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.shareError), Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -577,6 +622,8 @@ public class MapActivity extends AppCompatActivity implements
         saveSubmit.setOnClickListener(view -> {
            // hideSoftKeyboard();
             saveFavorite(saveName.getText().toString(), favorite);
+
+            clearAll();
 
             BottomSheetBehavior.from(bottom_sheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
 
@@ -608,12 +655,12 @@ public class MapActivity extends AppCompatActivity implements
     public void saveFavorite(String name, Favorite favorite) {
 
         favoriteRepository.onSave(name, favorite);
-        Toast.makeText(this, "Le Lieu " + favorite.getDisplayName() + " a bien été enregistré", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
         saveName.setText("");
     }
 
     //afficher la route
-    public void routePosition() {
+    public void routePosition(String profile) {
         groupMyPosition.setVisibility(View.GONE);
         groupSharePosition.setVisibility(View.GONE);
         groupRouteSearch.setVisibility(View.GONE);
@@ -625,13 +672,13 @@ public class MapActivity extends AppCompatActivity implements
         Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation() != null ? locationComponent.getLastKnownLocation().getLongitude() : 0,
                 locationComponent.getLastKnownLocation() != null ? locationComponent.getLastKnownLocation().getLatitude() : 0);
 
-        getRoute(originPoint, destinationPoint);
+        getRoute(originPoint, destinationPoint,profile);
 
 
     }
 
     //Recherche de route et application du style de route
-    public void getRoute(Point origin, Point destination) {
+    public void getRoute(Point origin, Point destination,String profile) {
         if (symbolManager != null) symbolManager.deleteAll();
         if (Function.isNetworkAvailable(getApplicationContext())) {
             assert Mapbox.getAccessToken() != null;
@@ -639,7 +686,7 @@ public class MapActivity extends AppCompatActivity implements
                     .accessToken(Mapbox.getAccessToken())
                     .origin(origin)
                     .destination(destination)
-                    .profile(DirectionsCriteria.PROFILE_WALKING)
+                    .profile(profile)
                     .alternatives(true)
                     .build()
                     .getRoute(new Callback<DirectionsResponse>() {
@@ -648,10 +695,10 @@ public class MapActivity extends AppCompatActivity implements
                         public void onResponse(@NotNull Call<DirectionsResponse> call, @NotNull Response<DirectionsResponse> response) {
                             Timber.d("Response code: %s", response.code());
                             if (response.body() == null) {
-                                Toast.makeText(getApplicationContext(), "Une erreur est survenue", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.noRouteFound), Toast.LENGTH_LONG).show();
                                 return;
                             } else if (response.body().routes().size() < 1) {
-                                Toast.makeText(getApplicationContext(), "Aucune route trouvée pour cette destination", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), getString(R.string.noRouteFound), Toast.LENGTH_LONG).show();
                                 return;
                             }
                             mapboxMap.getStyle(style -> {
@@ -695,12 +742,12 @@ public class MapActivity extends AppCompatActivity implements
 
                         @Override
                         public void onFailure(@NotNull Call<DirectionsResponse> call, @NotNull Throwable t) {
-                            Toast.makeText(getApplicationContext(), "Une erreur est survenue", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                         }
                     });
 
         } else {
-            Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -712,9 +759,9 @@ public class MapActivity extends AppCompatActivity implements
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Position");
             String shareMessage = getString(R.string.recommend);
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-            startActivity(Intent.createChooser(shareIntent, "Choississez une application"));
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.chooseApp)));
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Erreur survenue lors du partage", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.shareError), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -797,7 +844,7 @@ public class MapActivity extends AppCompatActivity implements
 
         } else {
             onBottomSheetLoading(0);
-            Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
         }
         return false;
@@ -808,7 +855,13 @@ public class MapActivity extends AppCompatActivity implements
         MapActivity.this.mapboxMap = mapboxMap;
         mapBoxUtils= new MapBoxUtils(mapboxMap);
 
-        mapboxMap.setStyle(new Style.Builder().fromUri(Style.MAPBOX_STREETS)
+        String styleLaunch = Style.MAPBOX_STREETS;
+
+        if(!pref.getStyle().equals("style")) {
+            styleLaunch = pref.getStyle();
+        }
+
+        mapboxMap.setStyle(new Style.Builder().fromUri(styleLaunch)
                 .withImage(ORIGIN_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
                         getResources().getDrawable(R.drawable.ic_origin))))
                 .withImage(DESTINATION_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
@@ -869,7 +922,6 @@ public class MapActivity extends AppCompatActivity implements
         if (Function.isNetworkAvailable(getApplicationContext())) {
             onBottomSheetLoading(0);
             nominatimCoord(lat, lon, adresseV);
-            Log.d("Lattitude" , lat);
             LatLng point = new LatLng(Double.parseDouble(lat),Double.parseDouble(lon));
 
             symbol = symbolManager.create(new SymbolOptions()
@@ -888,7 +940,7 @@ public class MapActivity extends AppCompatActivity implements
 
         } else {
             onBottomSheetLoading(0);
-            Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
         }
 
@@ -935,7 +987,7 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.VISIBLE);
         groupSavePosition.setVisibility(View.GONE);
 
-        getRoute(ori, dest);
+        getRoute(ori, dest,DirectionsCriteria.PROFILE_DRIVING_TRAFFIC);
     }
 
     //Selectionner une suggestion de recherche
@@ -958,7 +1010,7 @@ public class MapActivity extends AppCompatActivity implements
 
             } else {
                 onBottomSheetLoading(0);
-                Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
             }
         } else if (pref.getNameDest() == "oui") {
@@ -978,7 +1030,7 @@ public class MapActivity extends AppCompatActivity implements
 
             } else {
                 onBottomSheetLoading(0);
-                Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
             }
         } else {
@@ -1030,7 +1082,7 @@ public class MapActivity extends AppCompatActivity implements
 
             } else {
                 onBottomSheetLoading(0);
-                Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
             }
         }
@@ -1046,7 +1098,8 @@ public class MapActivity extends AppCompatActivity implements
             call.enqueue(new Callback<Nominatim>() {
                 @Override
                 public void onResponse(@NotNull Call<Nominatim> call, @NotNull Response<Nominatim> response) {
-                    displayNameTv.setText(response.body() != null ? response.body().getDisplayName() : null);
+                    String[] name = response.body() != null ? response.body().getDisplayName().split(",") : null;
+                    displayNameTv.setText(name[0]+","+name[1]+","+name[2]+",\n"+name[3]);
                     latTv = (response.body() != null ? response.body().getLat():null);
                     lonTv = (response.body() != null ? response.body().getLon():null);
                     Timber.tag("displayName").d(response.body() != null ? response.body().getDisplayName() : null);
@@ -1056,11 +1109,11 @@ public class MapActivity extends AppCompatActivity implements
                 public void onFailure(@NotNull Call<Nominatim> call, @NotNull Throwable t) {
                     // Log error here since request failed
                     Timber.tag("main2").e(t.toString());
-                    Toast.makeText(getApplicationContext(), "Une erreur est survenue", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
-            Toast.makeText(getApplicationContext(), "Pas de connexion internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1081,23 +1134,7 @@ public class MapActivity extends AppCompatActivity implements
         if (!lon.equals("lon")) {
             onSuggestionClick(lon, lat);
         }
-       /* String nameOri = pref.getNameORI();
-        String nameDest = pref.getNameDest();
-        if(!lon.equals("lon") && pref.getType().equals("type")) {
-            onSuggestionClick(lon,lat);
-        }
-        if(pref.getType().equals("origin")) {
-            origin.setText(nameOri);
-            pref.setLonori(lon);
-            pref.setLatori(lat);
-            showRouteSearch();
-        }
-        if(pref.getType().equals("destination")) {
-            destination.setText(nameDest);
-            pref.setLondest(lon);
-            pref.setLatdest(lat);
-            showRouteSearch();
-        }*/
+
 
 
         mapView.onResume();

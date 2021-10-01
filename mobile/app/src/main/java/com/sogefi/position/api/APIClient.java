@@ -17,9 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class APIClient {
 
     public static final String BASE_URL1 = "https://nominatim.openstreetmap.org/";
-    private static Retrofit retrofit = null;
     private static Retrofit retrofit1 = null;
-    private static Retrofit retrofit2 = null;
     private static Retrofit retrofit3 = null;
 
 

@@ -6,11 +6,11 @@
     <string name="version">v0.1.5</string>
 
 
-    <string name="tuto_start">Commencer</string>
-    <string name="label_tuto1">Recherchez une adresse \nTrouvez une position</string>
-    <string name="label_tuto2">Partagez votre position</string>
-    <string name="label_tuto3">Enregistrez une position</string>
-    <string name="label_tuto4">Calculez votre itinéraire</string>
+    <string name="tuto_start">Start</string>
+    <string name="label_tuto1">Search for an address Find a location</string>
+    <string name="label_tuto2">Share your position</string>
+    <string name="label_tuto3">Save a position</string>
+    <string name="label_tuto4">Calculate your route</string>
     <string name="friend_position">Position</string>
     <string name="compute_route_friend">Itinéraire</string>
     <string name="share_position_friend">Share</string>
@@ -33,7 +33,7 @@
     <string name="position_name">Position\'s name</string>
     <string name="position_save">Save</string>
     <string name="share_content">I use Position application to drive me through Cameroon. Follow my position on the map\n%s</string>
-    <string name="recommend">I recommend you Position application to drive through Cameroon. You can get more informations on:\n position.geosm.org.</string>
+    <string name="recommend">I recommend you the Position application to find companies and guide you in Cameroon. You can get more information on the site :\n position.cm.</string>
     <string name="cameroon">Cameroon</string>
     <string name="arrival_hour">Arrival</string>
     <string name="total_time">Time</string>
@@ -70,5 +70,19 @@
     <string name="near">Near Me</string>
 
     <string name="showOnMap">View On Map</string>
+
+    <string name="walking">Walking</string>
+    <string name="traffic_driving">Traffric Driving</string>
+    <string name="driving">Driving</string>
+
+
+    <string name="origin">Select the starting point</string>
+    <string name="destination">Select the point of arrival</string>
+    <string name="selectStyle">Select your style:</string>
+    <string name="selectProfile">Select the means of travel:</string>
+    <string name="noInternet">No internet connection</string>
+    <string name="chooseApp">Choose an application</string>
+    <string name="shareError">Error occurred while sharing</string>
+    <string name="noRouteFound">No route found for this destination</string>
 
 </resources>

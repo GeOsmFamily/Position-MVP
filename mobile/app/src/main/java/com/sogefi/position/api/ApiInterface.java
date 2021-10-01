@@ -4,8 +4,6 @@ package com.sogefi.position.api;
 
 
 import com.sogefi.position.models.Nominatim;
-import com.sogefi.position.models.Position;
-import com.sogefi.position.models.PositionCoord;
 
 import java.util.List;
 
@@ -13,7 +11,6 @@ import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {

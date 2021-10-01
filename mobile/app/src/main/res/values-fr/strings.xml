@@ -59,7 +59,7 @@
 
     <string name="tuto_close">Fermer</string>
 
-    <string name="recommend">Je te recommande l\'application Position pour te guider au Cameroun. Tu peux obtenir plus d\'informations sur le site :\n position.geosm.org.</string>
+    <string name="recommend">Je te recommande l\'application Position pour retrouver des entreprises et te guider au Cameroun. Tu peux obtenir plus d\'informations sur le site :\n position.geosm.org.</string>
 
     <string name="choose_language">Langue Active</string>
     <string name="french">Français</string>
@@ -71,6 +71,20 @@
     <string name="near">Autour de Moi</string>
 
     <string name="showOnMap">Voir sur la Carte</string>
+
+    <string name="walking">A pied</string>
+    <string name="traffic_driving">Voiture avec Trafic</string>
+    <string name="driving">Voiture</string>
+
+
+    <string name="origin">Sélectionnez le point de départ</string>
+    <string name="destination">Sélectionnez le point d\'arrivée</string>
+    <string name="selectStyle">Sélectionnez votre style :</string>
+    <string name="selectProfile">Sélectionnez le moyen de transport :</string>
+    <string name="noInternet">Pas de connexion internet</string>
+    <string name="chooseApp">Choisissez une application</string>
+    <string name="shareError">Une erreur s\'est produite lors du partage</string>
+    <string name="noRouteFound">Aucun itinéraire trouvé pour cette destination</string>
 
 
 </resources>
