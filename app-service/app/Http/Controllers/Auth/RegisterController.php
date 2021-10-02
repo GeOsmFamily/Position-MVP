@@ -51,7 +51,7 @@ class RegisterController extends Controller
     }
 
 
-    /*  public function sendEmailVerification(string $email): JsonResponse
+    public function sendEmailVerification(string $email): JsonResponse
     {
         try {
             $user = User::byEmail($email)->first();
@@ -73,7 +73,7 @@ class RegisterController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Failed to send confirmation email. Details: ' . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }*/
+    }
 
 
     public function verification(Request $request)
