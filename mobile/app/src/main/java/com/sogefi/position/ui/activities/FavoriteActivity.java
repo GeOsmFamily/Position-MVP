@@ -102,7 +102,7 @@ public class FavoriteActivity extends AppCompatActivity {
     }
 
     public void onShare(Favorite favorite) {
-        sharePosition(favorite.getDisplayName());
+        sharePosition(favorite.getLat()+","+favorite.getLon());
     }
 
     public void onDelete(Favorite favorite, int index) {
@@ -124,13 +124,13 @@ public class FavoriteActivity extends AppCompatActivity {
     public void sharePosition(String position) {
         Uri uri = new Uri.Builder()
                 .scheme("https")
-                .authority("myposition.geosm.org")
+                .authority("app.position.cm")
                 .appendQueryParameter(DEEPLINK_QUERY_FRIEND_POSITION, position)
                 .build();
         Timber.tag("URI_URL").d(uri.toString());
         FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(uri)
-                .setDomainUriPrefix("https://myposition.geosm.org/")
+                .setDomainUriPrefix("https://app.position.cm/")
                 .setAndroidParameters(
                         new DynamicLink.AndroidParameters.Builder()
                                 .build()
