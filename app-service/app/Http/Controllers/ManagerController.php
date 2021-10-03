@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Models\Commercial;
+use App\Models\Manager;
 use App\Notifications\SendEmailParams;
-use App\Notifications\SendEmailVerification;
 use DB;
-use Hash;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class CommercialController extends Controller
+class ManagerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,18 +20,15 @@ class CommercialController extends Controller
      */
     public function index(): JsonResponse
     {
-
         try {
-            $commercials = Commercial::all();
-            foreach ($commercials as $commercial) {
-                $user = User::find($commercial->id_user);
-                $result['revenu_total'] = $commercial->revenu_total;
-                $result['nombre_etablissement'] = $commercial->nombre_etablissement;
+            $managers = Manager::all();
+            foreach ($managers as $manager) {
+                $user = User::find($manager->id_user);
                 $result['name'] = $user->name;
                 $result['email'] = $user->email;
                 $result['phone'] = $user->phone;
-                $result['idUser'] = $commercial->id_user;
-                $result['id'] = $commercial->id;
+                $result['idUser'] = $manager->id_user;
+                $result['id'] = $manager->id;
 
                 $data[] = $result;
             }
@@ -44,16 +39,16 @@ class CommercialController extends Controller
         }
     }
 
-    public function getCommercialById($id): JsonResponse
+    public function getManagerById($id): JsonResponse
     {
         try {
-            $commercial = Commercial::find($id);
-            $user = User::find($commercial->id_user);
-            $commercial['name'] = $user->name;
-            $commercial['email'] = $user->email;
-            $commercial['phone'] = $user->phone;
+            $manager = Manager::find($id);
+            $user = User::find($manager->id_user);
+            $manager['name'] = $user->name;
+            $manager['email'] = $user->email;
+            $manager['phone'] = $user->phone;
 
-            return response()->json($commercial, Response::HTTP_OK);
+            return response()->json($manager, Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -77,7 +72,6 @@ class CommercialController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-
         try {
             $input['name'] = $request->name;
             $input['email'] = $request->email;
@@ -89,16 +83,16 @@ class CommercialController extends Controller
 
             $user->notify(new SendEmailParams($user->phone, $string));
 
-            $inputCommercial['id_user'] = $user->id;
+            $inputManager['id_user'] = $user->id;
 
-            Commercial::create($inputCommercial);
+            Manager::create($inputManager);
 
 
-            $role_commercial = Role::byName('commercial');
+            $role_manager = Role::byName('manager');
 
             $insert = DB::table('role_user')->insert([
                 [
-                    'role_id' => $role_commercial->id,
+                    'role_id' => $role_manager->id,
                     'user_id' => $user->id,
                 ],
             ]);
@@ -119,10 +113,10 @@ class CommercialController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Commercial  $commercial
+     * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
-    public function show(Commercial $commercial)
+    public function show(Manager $manager)
     {
         //
     }
@@ -130,10 +124,10 @@ class CommercialController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Commercial  $commercial
+     * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
-    public function edit(Commercial $commercial)
+    public function edit(Manager $manager)
     {
         //
     }
@@ -142,23 +136,24 @@ class CommercialController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Commercial  $commercial
+     * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Manager $manager)
     {
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Commercial  $commercial
+     * @param  \App\Models\Manager  $manager
      * @return \Illuminate\Http\Response
      */
     public function destroy($id): JsonResponse
     {
         try {
-            $delete = Commercial::destroy($id);
+            $delete = Manager::destroy($id);
             if ($delete == 1) {
                 return response()->json(["message" => "delete success"], Response::HTTP_OK);
             } else {
@@ -167,16 +162,5 @@ class CommercialController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-    }
-
-    public function randomString($length = 8)
-    {
-        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
     }
 }
