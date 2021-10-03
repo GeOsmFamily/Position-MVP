@@ -90,9 +90,9 @@ public class MapBoxUtils {
                 lineGradient(
                         Expression.interpolate(
                                 Expression.linear(), Expression.lineProgress(),
-                                stop(0f, Expression.rgb(56, 239, 63)),
-                                stop(0.6f, Expression.rgb(255, 0, 0)),
-                                stop(0.8f, Expression.rgb(255, 245, 0))
+                                stop(0f, Expression.rgb(4, 188, 148)),
+                             //   stop(0.6f, Expression.rgb(255, 0, 0)),
+                                stop(0.8f, Expression.rgb(252, 204, 68))
                         )
                 )
         ));

@@ -14,9 +14,9 @@
     <color name="secondary_with_alpha">#C33C474C</color>
     <color name="pastel_red">#ff4343</color>
     <color name="red">#ff0000</color>
-    <color name="green">#38ef7d</color>
+    <color name="green">#04bc94</color>
     <color name="radioactive_green">#38ef3f</color>
-    <color name="bright_yellow">#fff500</color>
+    <color name="bright_yellow">#fccc44</color>
     <color name="grey">#3e484e</color>
     <color name="bottom_sheet_surface_darker">#BF161616</color>
 </resources>

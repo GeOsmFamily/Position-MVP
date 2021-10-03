@@ -115,8 +115,8 @@
 
     <style name="Widget.Position.NavigationView.Light" parent="NavigationViewLight">
         <item name="navigationViewBannerBackground">@color/colorBottomSheetSurface</item>
-        <item name="navigationViewBannerPrimaryText">@color/radioactive_green</item>
-        <item name="navigationViewBannerManeuverPrimary">@color/radioactive_green</item>
+        <item name="navigationViewBannerPrimaryText">@color/green</item>
+        <item name="navigationViewBannerManeuverPrimary">@color/green</item>
         <item name="navigationViewBannerManeuverSecondary">@color/colorOnBottomSheetSurfaceVariant</item>
         <item name="navigationViewBannerSecondaryText">@android:color/white</item>
         <item name="navigationViewListBackground">@color/bottom_sheet_surface_darker</item>
