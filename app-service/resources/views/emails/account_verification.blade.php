@@ -216,7 +216,7 @@
                               <div>
                                 <p>If you did not create an account, no further action is required.</p>
                                 <br>
-                                <strong>Regards,</strong><br>
+                                <strong>Regards,</strong><br><br>
                                 <strong>Position
                                 </strong>
                                 <br>

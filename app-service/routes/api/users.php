@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\CommercialController;
 use Illuminate\Http\Request;
 
 
-Route::middleware(['jwt.auth', 'verified'])->group(function() {
+Route::middleware(['jwt.auth', 'verified'])->group(function () {
 
     /** Users **/
-    Route::middleware('permission:users.read')->group(function() {
+    Route::middleware('permission:users.read')->group(function () {
         Route::get('users', 'UsersController@index')
             ->name('users.index');
 
@@ -28,8 +29,8 @@ Route::middleware(['jwt.auth', 'verified'])->group(function() {
 
 
     /** Users -> Roles **/
-    Route::middleware('permission:users.roles.read')->group(function() {
-        
+    Route::middleware('permission:users.roles.read')->group(function () {
+
         Route::get('users/{user}/roles', 'UsersRolesController@index')
             ->name('users.roles.index');
 
@@ -38,5 +39,6 @@ Route::middleware(['jwt.auth', 'verified'])->group(function() {
             ->middleware('permission:users.roles.update');
     });
 
+    Route::resource('commercial', 'CommercialController');
+    Route::get('commercialbyid/{id}', 'CommercialController@getCommercialById');
 });
-

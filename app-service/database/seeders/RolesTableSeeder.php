@@ -21,6 +21,20 @@ class RolesTableSeeder extends Seeder
                 'description' => 'Administrator of system.',
                 'created_at' => now(),
             ],
+
+            [
+                'name' => 'commercial',
+                'display_name' => 'Commercial',
+                'description' => 'Role de Commercial.',
+                'created_at' => now(),
+            ],
+
+            [
+                'name' => 'manager',
+                'display_name' => 'Manager',
+                'description' => 'Manager d\'une entreprise.',
+                'created_at' => now(),
+            ],
         ]);
     }
 }

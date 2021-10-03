@@ -21,8 +21,8 @@ class RoleUserTableSeeder extends Seeder
 
         DB::table('role_user')->insert([
             [
-                'role_id' => $me->id,
-                'user_id' => $role_admin->id,
+                'role_id' => $role_admin->id,
+                'user_id' => $me->id,
             ],
         ]);
     }

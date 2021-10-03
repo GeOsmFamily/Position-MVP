@@ -172,13 +172,19 @@
                                 <strong>Hello!</strong>
                                 <br>
                                 <br>
-                                <p> Please click the button below to verify your email address.</p>
+                                <p> Your connection settings for the Position application are as follows:</p>
                               </div>
+                              <br>
+                              <br>
+
+                              <strong>Phone :</strong> {{$phone }} <br><br>
+                              <strong>Password :</strong> {{ $password }} <br><br>
 
                             </td>
                           </tr>
                         </tbody>
                       </table>
+
 
                       <table style="font-family:verdana,geneva;" role="presentation" cellpadding="0" cellspacing="0"
                         width="100%" border="0">
@@ -194,7 +200,7 @@
                                   style="box-sizing: border-box;display: inline-block;font-family:verdana,geneva;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #fccc44; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
                                   <span style="display:block;padding:10px 20px;line-height:120%;"><span
                                       style="font-size: 16px; line-height: 19.2px;"><strong><span
-                                          style="line-height: 19.2px; font-size: 16px;">Recovery
+                                          style="line-height: 19.2px; font-size: 16px;">Confirm my account
                                           </span></strong></span></span>
                                 </a>
                                 <!--[if mso]></center></v:roundrect></td></tr></table><![endif]-->
@@ -205,6 +211,7 @@
                         </tbody>
                       </table>
 
+
                       <table style="font-family:verdana,geneva;" role="presentation" cellpadding="0" cellspacing="0"
                         width="100%" border="0">
                         <tbody>
@@ -214,7 +221,7 @@
                               align="left">
 
                               <div>
-                                <p>If you did not create an account, no further action is required.</p>
+                                <p>Keep them in a safe place.</p>
                                 <br>
                                 <strong>Regards,</strong><br><br>
                                 <strong>Position
@@ -222,9 +229,8 @@
                                 <br>
                                 <br>
 
-                                If you're having trouble clicking the "Verify Email Address" button, copy and paste the
+                                 If you're having trouble clicking the "Verify Email Address" button, copy and paste the
                                 URL below into your web browser: {{ $url }}
-
 
                               </div>
 
