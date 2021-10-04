@@ -1,19 +1,16 @@
 version: "3"
-
 services:
   position-service-app:
-    container_name: position-service-app
     build:
       context: .
       dockerfile: .docker/Dockerfile
     image: position-service-app
     ports:
-      - "6000:8080"
+      - 6000:80
     volumes:
       - ./:/var/www/html
 
   position-service-mysql:
-    container_name: position-service-mysql
     restart: always
     image: mysql:5.7
     ports:
@@ -25,7 +22,6 @@ services:
       - ./db:/var/lib/mysql
 
   position-service-redis:
-    container_name: position-service-redis
     image: redis:alpine
     ports:
       - "6002:6379"

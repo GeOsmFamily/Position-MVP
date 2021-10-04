@@ -1,37 +1,35 @@
-FROM php:7.3-fpm
-LABEL maintainer="bt@geo.sm"
+FROM php:7.4.1-apache
 
 USER root
 
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    mariadb-client \
     libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
+    zlib1g-dev \
+    libxml2-dev \
     libzip-dev \
-    locales \
+    libonig-dev \
     zip \
-    libhiredis-dev \
-    jpegoptim optipng pngquant gifsicle
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath opcache
-RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-RUN docker-php-ext-install gd
-
-RUN apt-get update
+    curl \
+    unzip \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install pdo_mysql \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install exif \
+    && docker-php-ext-install zip \
+    && docker-php-source delete
 
 RUN apt-get install -y apache2
 
 COPY .docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN echo pt_BR.UTF-8 UTF-8 > /etc/locale.gen && locale-gen
 
 RUN chown -R www-data:www-data /var/www/html \
     && a2enmod rewrite
