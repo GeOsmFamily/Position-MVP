@@ -1,5 +1,5 @@
 {
-    "name": "position/app-service",
+    "name": "position/position-service",
     "type": "project",
     "description": "Auth Microservice For Position",
     "keywords": ["framework", "laravel", "position", "microservice", "GeOsm"],
