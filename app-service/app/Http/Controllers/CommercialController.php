@@ -90,6 +90,10 @@ class CommercialController extends Controller
             $user->notify(new SendEmailParams($user->phone, $string));
 
             $inputCommercial['id_user'] = $user->id;
+            $inputCommercial['numero_cni'] = $request->numero_cni;
+            $inputCommercial['ville'] = $request->ville;
+            $inputCommercial['quartier'] = $request->quartier;
+
 
             Commercial::create($inputCommercial);
 
