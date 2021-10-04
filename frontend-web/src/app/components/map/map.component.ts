@@ -44,7 +44,35 @@ coordinates=[0,0]
   ngOnInit(): void {
 this.initialiazeMap()
 
- // Begin geolocation
+this.userLocation()
+
+  }
+
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    map.on('pointermove', function(event) {
+
+      console.log( event.coordinate)
+
+    });
+  }
+
+  //return map
+  getMap(): Map {
+    return map;
+  }
+
+  //map initialization
+ initialiazeMap(){
+  map.setTarget('map');
+}
+
+
+
+//get user location
+userLocation(){
+  // Begin geolocation
  var geolocation = new Geolocation({
   projection: map.getView().getProjection(),
   tracking: true,
@@ -83,27 +111,7 @@ geolocation.once('change:position', function () {
     }),
   });
 });
-
-  }
-
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    map.on('pointermove', function(event) {
-
-      console.log( event.coordinate)
-
-    });
-  }
-
-  getMap(): Map {
-    return map;
-  }
-  //map initialization
- initialiazeMap(){
-  map.setTarget('map');
 }
-
 
 }
 
