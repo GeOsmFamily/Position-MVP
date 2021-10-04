@@ -1,4 +1,86 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
     <string name="app_name">Position</string>
-    <string name="mapbox_access_token" translatable="false" tools:ignore="Typos">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="version">v0.1.5</string>
+
+
+    <string name="tuto_start">Start</string>
+    <string name="label_tuto1">Search for an address Find a location</string>
+    <string name="label_tuto2">Share your position</string>
+    <string name="label_tuto3">Save a position</string>
+    <string name="label_tuto4">Calculate your route</string>
+    <string name="friend_position">Position recherhée</string>
+    <string name="compute_route_friend">Itinéraire</string>
+    <string name="share_position_friend">Share</string>
+    <string name="add_favorite_friend">Save</string>
+
+    <string name="format_arrival" translatable="false">HH:mm</string>
+    <string name="format_duration">%d min</string>
+    <string name="format_length">%.0f kms</string>
+    <string name="format_position" translatable="false">%s,%s</string>
+
+    <string name="tuto_close">Close</string>
+    <string name="gps_disabled">Please enable localisation</string>
+    <string name="gps_activate">Enable</string>
+    <string name="share">Share</string>
+    <string name="save">Add to favorites</string>
+    <string name="create_route">Compute an itinerary</string>
+    <string name="my_position">My position</string>
+    <string name="find_position">Find my position</string>
+    <string name="position_to_save">Position to save</string>
+    <string name="position_name">Position\'s name</string>
+    <string name="position_save">Save</string>
+    <string name="share_content">I use Position application to drive me through Cameroon. Follow my position on the map\n%s</string>
+    <string name="recommend">I recommend you Position application to drive through Cameroon. You can get more informations on:\n position.geosm.org.</string>
+    <string name="cameroon">Cameroon</string>
+    <string name="arrival_hour">Arrival</string>
+    <string name="total_time">Time</string>
+    <string name="length">Length</string>
+    <string name="search">Search</string>
+    <string name="origin_placeholder">My position</string>
+    <string name="destination_placeholder">To</string>
+    <string name="search_placeholder">Search for a position</string>
+    <string name="searched_position">Searched position</string>
+    <string name="share_favorite">Share</string>
+    <string name="delete_favorite">Delete</string>
+    <string name="favorite_added">%s position, %s has been added to the favorites</string>
+    <string name="run_route">Start</string>
+    <string name="favorite_modify">Modify</string>
+    <string name="favorite_message">Please fill the position name</string>
+    <string name="favorite_validate">OK</string>
+    <string name="favorite_cancel">Cancel</string>
+    <string name="clicked_position">Position</string>
+    <string name="choose_language">Active Language</string>
+    <string name="french">French</string>
+    <string name="english">English</string>
+    <string name="about_ok">OK</string>
+
+    <string name="menu_favorites">My favorites</string>
+    <string name="menu_language">Languages</string>
+    <string name="menu_recommand">Recommend the application</string>
+    <string name="menu_tuto">Tutorial</string>
+    <string name="menu_about">About Position</string>
+
+    <string name="my_favorites">My favorites</string>
+
+    <string name="adresse">Adresse</string>
+
+    <string name="near">Near Me</string>
+
+    <string name="showOnMap">View On Map</string>
+
+    <string name="walking">Walking</string>
+    <string name="traffic_driving">Traffric Driving</string>
+    <string name="driving">Driving</string>
+
+    <string name="origin">Select the starting point</string>
+    <string name="destination">Select the point of arrival</string>
+    <string name="selectStyle">Select your style:</string>
+    <string name="selectProfile">Select the means of travel:</string>
+    <string name="noInternet">No internet connection</string>
+    <string name="chooseApp">Choose an application</string>
+    <string name="shareError">Error occurred while sharing</string>
+    <string name="noRouteFound">No route found for this destination</string>
+
 </resources>
