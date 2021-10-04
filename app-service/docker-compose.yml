@@ -15,7 +15,7 @@ services:
     container_name: app-service-nginx
     image: nginx:alpine
     ports:
-      - "9000:8000"
+      - "7000:8000"
     volumes:
       - .docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:cached
       - ./:/application:cached
@@ -29,7 +29,7 @@ services:
     container_name: app-service-mysql
     image: mysql:5.7
     ports:
-      - "9001:3306"
+      - "7001:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=position
