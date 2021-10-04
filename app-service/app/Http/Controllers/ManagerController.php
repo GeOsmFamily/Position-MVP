@@ -163,4 +163,15 @@ class ManagerController extends Controller
             return response()->json(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
+
+    public function randomString($length = 8)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
 }
