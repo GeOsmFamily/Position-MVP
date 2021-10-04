@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
+    <string name="app_name">Position</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="version">v0.1.5</string>
+
+    <string name="format_arrival" translatable="false">HH:mm</string>
+    <string name="format_duration">%d min</string>
+    <string name="format_length">%.0f kms</string>
+
+    <string name="tuto_start">Commencer</string>
+    <string name="label_tuto1">Recherchez une adresse \nTrouvez une position</string>
+    <string name="label_tuto2">Partagez votre position</string>
+    <string name="label_tuto3">Enregistrez une position</string>
+    <string name="label_tuto4">Calculez votre itinéraire</string>
+    <string name="gps_disabled">Veuillez activez la localisation.</string>
+    <string name="gps_activate">Activer</string>
+    <string name="share">Partager</string>
+    <string name="save">Ajouter aux favoris</string>
+    <string name="create_route">Calculer un itinéraire</string>
+    <string name="my_position">Ma position</string>
+    <string name="find_position">Trouver ma position</string>
+    <string name="friend_position">Position recherchée</string>
+    <string name="position_to_save">Position à enregistrer</string>
+    <string name="position_name">Nom de la position</string>
+    <string name="position_save">Sauvegarder</string>
+    <string name="compute_route_friend">Itinéraire</string>
+    <string name="share_position_friend">Partager</string>
+    <string name="add_favorite_friend">Sauvegarder</string>
+    <string name="share_content">J\'utilise l\'application Position pour me guider au Cameroun. Suivez ma position sur la carte\n%s</string>
+    <string name="format_position" translatable="false">%s,%s</string>
+    <string name="cameroon">Cameroun</string>
+    <string name="arrival_hour">Arrivée</string>
+    <string name="total_time">Temps</string>
+    <string name="length">Distance</string>
+    <string name="search">Rechercher</string>
+    <string name="origin_placeholder">Ma position</string>
+    <string name="destination_placeholder">Vers</string>
+    <string name="search_placeholder">Rechercher une position</string>
+    <string name="searched_position">Position recherchée</string>
+    <string name="share_favorite">Partager</string>
+    <string name="delete_favorite">Supprimer</string>
+    <string name="favorite_added">La position %s, %s a bien été ajoutée à vos favoris</string>
+    <string name="run_route">Démarrer</string>
+    <string name="favorite_modify">Modifier</string>
+    <string name="favorite_message">Veuillez rentrez le nom de la position</string>
+    <string name="favorite_validate">Valider</string>
+    <string name="favorite_cancel">Annuler</string>
+    <string name="clicked_position">Position</string>
+
+    <string name="menu_favorites">Mes favoris</string>
+    <string name="menu_language">Langue</string>
+    <string name="menu_recommand">Recommander l\'application</string>
+    <string name="menu_tuto">Tutoriel</string>
+    <string name="menu_about">A propos de Position</string>
+
+    <string name="my_favorites">Mes favoris</string>
+
+    <string name="tuto_close">Fermer</string>
+
+    <string name="recommend">Je te recommande l\'application Position pour retrouver des entreprises et te guider au Cameroun. Tu peux obtenir plus d\'informations sur le site :\n position.geosm.org.</string>
+
+    <string name="choose_language">Langue Active</string>
+    <string name="french">Français</string>
+    <string name="english">Anglais</string>
+    <string name="about_ok">OK</string>
+
+    <string name="adresse">Adresse</string>
+
+    <string name="near">Autour de Moi</string>
+
+    <string name="showOnMap">Voir sur la Carte</string>
+
+    <string name="walking">A pied</string>
+    <string name="traffic_driving">Voiture avec Trafic</string>
+    <string name="driving">Voiture</string>
+
+
+    <string name="origin">Sélectionnez le point de départ</string>
+    <string name="destination">Sélectionnez le point d\'arrivée</string>
+    <string name="selectStyle">Sélectionnez votre style :</string>
+    <string name="selectProfile">Sélectionnez le moyen de transport :</string>
+    <string name="noInternet">Pas de connexion internet</string>
+    <string name="chooseApp">Choisissez une application</string>
+    <string name="shareError">Une erreur s\'est produite lors du partage</string>
+    <string name="noRouteFound">Aucun itinéraire trouvé pour cette destination</string>
+
+
+</resources>
