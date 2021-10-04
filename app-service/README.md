@@ -44,31 +44,31 @@ docker-compose up -d
 Update project dependences
 
 ```
-docker exec -it app-service-app composer update
+docker exec -it position-service-app composer update
 ```
 
 copy .env.example to .env
 
 ```
-docker exec -it app-service-app cp .env.example .env
+docker exec -it position-service-app cp .env.example .env
 ```
 
 Generate hash Jwt
 
 ```
-docker exec -it app-service-app php artisan jwt:secret
+docker exec -it position-service-app php artisan jwt:secret
 ```
 
 Clear cache
 
 ```
-docker exec -it app-service-app php artisan cache:clear && composer dumpautoload
+docker exec -it position-service-app php artisan cache:clear && composer dumpautoload
 ```
 
 Run Migrations with seeders
 
 ```
-docker exec -it app-service-app php artisan migrate:refresh --seed
+docker exec -it position-service-app php artisan migrate:refresh --seed
 ```
 
 ## Documentation
