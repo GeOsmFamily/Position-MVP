@@ -3,8 +3,9 @@ version: "3"
 services:
   app-service-app:
     container_name: app-service-app
-    context: .
-    dockerfile: .docker/Dockerfile
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
     image: app-service-app
     ports:
       - 7000:80
