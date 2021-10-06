@@ -47,8 +47,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         $roles_user = DB::table('role_user')->where('user_id', $this->id)->get();
         return [
-            'user_id' => $this->id,
-            'role_id' => $roles_user,
+            'user' => $roles_user,
         ];
     }
 
