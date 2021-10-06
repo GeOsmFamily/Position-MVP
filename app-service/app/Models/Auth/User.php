@@ -45,9 +45,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function getJWTCustomClaims(): array
     {
-        $roles_user = DB::table('role_user')->where('user_id', $this->id)->get();
+        $roles_user = DB::table('role_user')->where('user_id', $this->id)->get('role_id');
         return [
-            'user' => $roles_user,
+            'user_id' => $this->id,
+            'roles_id' => $roles_user
         ];
     }
 
