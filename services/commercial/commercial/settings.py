@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True
-ALLOWED_HOSTS =  'localhost', '127.0.0.1'] #TODO: include frontend link
+ALLOWED_HOSTS =  ['5.39.75.179', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'commercial.wsgi.application'
 
 # CORS WHITELIST
 CORS_ORIGIN_WHITELIST = [
-    #TODO: include frontend link
+    "5.39.75.179",
     "http://localhost:8000",
-    "http://127.0.0.1:8000"
+    "http://127.0.0.1:8000",
 ]
 
 CORS_ORIGIN_REGEX_WHITELIST = [
@@ -96,23 +96,22 @@ CORS_ORIGIN_REGEX_WHITELIST = [
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+default_params = {}
 driver = os.getenv('DB_CONNECTION', 'postgresql')
-
 
 if driver == 'sqlite':
     default_params = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 else:
     default_params = {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql' if driver == 'mysql' else 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv('DB_DATABASE'),
         'USER': os.getenv('DB_USERNAME'),
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': os.getenv('DB_HOST', '127.0.0.1'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'PORT': os.getenv('DB_PORT', '3306' if driver == 'mysql' else '5432'),
     }
 DATABASES = {
     'default': default_params
