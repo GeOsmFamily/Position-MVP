@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel, Field
 import databases
 import sqlalchemy
