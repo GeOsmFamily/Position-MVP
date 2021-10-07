@@ -28,6 +28,7 @@ class Etablissements extends Migration
             $table->integer('id_sous_categorie');
             $table->integer('id_commercial');
             $table->integer('id_manager');
+            $table->boolean('paid')->default(false);
             $table->timestamps();
         });
     }
