@@ -39,9 +39,12 @@ map:Map|undefined
 
 coordinates=[0,0]
 
-  constructor() { }
+  constructor() {
+
+  }
 
   ngOnInit(): void {
+
 this.initialiazeMap()
 
 this.userLocation()
@@ -49,6 +52,9 @@ this.userLocation()
   }
 
   ngAfterViewInit(): void {
+
+    setTimeout(() => {
+      map.updateSize(); });
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
     map.on('pointermove', function(event) {
