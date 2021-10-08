@@ -3,22 +3,35 @@
 <div  class="primaryColorBG buttons" >
   <div class="vertical-toolbar-groupe-btn-1">
     <div id="zooms"> </div>
-    <div id="zoom-plus" style="margin-bottom: 10px;">
-      <button mat-mini-fab class="" (click)="zoom('plus')"
+    <div id="zoom-plus" >
+      <button  class="" (click)="zoom('plus')" style=" border: 2px solid white;
+      background-color: #FFFFFF;
+      height: 50px;
+      border-radius:50%;
+      width: 50px;
+      cursor: pointer;"
         matTooltip="">
         <img src="assets/icon-zoom-plus.svg">
       </button>
     </div>
 
-    <div id="zoom-minus" style="margin-bottom: 10px;">
-      <button mat-mini-fab class="primaryColorBG" id="zoom-minus" (click)="zoom('minus')"
+    <div id="zoom-minus" >
+      <button class="primaryColorBG" id="zoom-minus" (click)="zoom('minus')" style="  border: 2px solid white;
+      background-color: #FFFFFF;
+      height: 50px;
+      border-radius:50%;
+      width: 50px;
+      cursor: pointer;"
         matTooltip="">
         <img src="assets/icon-zoom-less.svg">
       </button>
     </div>
     <div id="myLocation">
-      <button mat-mini-fab class="primaryColorBG" id="zoom-minus" (click)="zoom('minus')"
-        matTooltip="">
+      <button matTooltip="" style="  border: 2px solid white;
+      background-color: #FFFFFF;
+      height: 50px;
+      border-radius:50%;
+      width: 50px;cursor: pointer;" (click)="userLocation()">
         <img src="assets/icon-my_location.svg">
       </button>
     </div>

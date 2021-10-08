@@ -53,15 +53,14 @@ this.userLocation()
 
   ngAfterViewInit(): void {
 
-    setTimeout(() => {
-      map.updateSize(); });
+
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    map.on('pointermove', function(event) {
+   /* map.on('pointermove', function(event) {
 
       console.log( event.coordinate)
 
-    });
+    });*/
   }
 
   //return map
@@ -102,7 +101,7 @@ positionFeature.setStyle(
     }),
   })
 );
-geolocation.once('change:position', function () {
+geolocation.on('change:position', function () {
   const coordinates = geolocation.getPosition();
   console.log(coordinates)
   positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
