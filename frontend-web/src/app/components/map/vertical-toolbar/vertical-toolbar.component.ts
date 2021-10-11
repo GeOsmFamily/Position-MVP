@@ -1,4 +1,5 @@
 import { Component, OnInit , Input} from '@angular/core';
+import { MapHelper } from 'src/app/helpers/mapHelper';
 import {
   Feature,Map
 
@@ -11,7 +12,7 @@ import { MapComponent } from '../map.component';
 })
 export class VerticalToolbarComponent implements OnInit {
   @Input() map: Map | undefined;
-
+ maphelper= new MapHelper()
   constructor(public mapcomponent:MapComponent) { }
 
   ngOnInit(): void {
@@ -19,7 +20,7 @@ export class VerticalToolbarComponent implements OnInit {
 
   userLocation(){
     // Begin geolocation
-    this.mapcomponent.userLocation()
+    this.mapcomponent.getPosition()
   }
 
 

@@ -9,6 +9,7 @@ import { Circle as CircleStyle, Fill, Stroke, Text, Icon } from 'ol/style.js';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import { MapHelper } from 'src/app/helpers/mapHelper';
 
 
 
@@ -46,8 +47,8 @@ coordinates=[0,0]
   ngOnInit(): void {
 
 this.initialiazeMap()
-
-this.userLocation()
+this.getPosition()
+//this.userLocation()
 
   }
 
@@ -76,6 +77,18 @@ this.userLocation()
 
 
 //get user location
+getPosition(){
+  let cartoHelpeClass = new MapHelper()
+
+  if (cartoHelpeClass.getLayerByName('user_position').length == 0) {
+    cartoHelpeClass.geolocateUser()
+  } else {
+    let featurePosition = cartoHelpeClass.getLayerByName('user_position')[0].getSource().getFeatures()[0]
+    cartoHelpeClass.fit_view(featurePosition.getGeometry(), 19)
+  }
+}
+
+/*
 userLocation(){
   // Begin geolocation
  var geolocation = new Geolocation({
@@ -117,6 +130,6 @@ geolocation.on('change:position', function () {
   });
 });
 }
-
+*/
 }
 
