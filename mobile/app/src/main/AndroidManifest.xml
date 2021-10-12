@@ -16,30 +16,29 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".ui.activities.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activities.SearchActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MapActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".ui.activities.FavoriteActivity" />
         <activity android:name=".ui.activities.NavigationActivity" />
-        <activity
-            android:name=".ui.activities.TutorielActivity" />
-        <activity
-            android:name=".ui.activities.MapActivity">
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value=".ui.activities.SearchActivity" />
-    </activity>
-        <activity
-            android:name=".ui.activities.SplashActivity"
-            >
+        <activity android:name=".ui.activities.TutorielActivity" />
+        <activity android:name=".ui.activities.MapActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".ui.activities.SearchActivity" />
+        </activity>
+        <activity android:name=".ui.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,6 +59,7 @@
                 android:name="default-url"
                 android:value="https://app.position.cm" />
         </activity>
+
         <provider
             android:name=".provider.MySuggestionProvider"
             android:authorities="com.sogefi.position.provider.MySuggestionProvider" />

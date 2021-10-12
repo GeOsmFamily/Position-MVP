@@ -21,6 +21,7 @@ class CreateCommercialsTable extends Migration
             $table->string('numero_cni');
             $table->string('ville');
             $table->string('quartier');
+            $table->string('image_profil')->nullable();
             $table->timestamps();
         });
     }

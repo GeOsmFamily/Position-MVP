@@ -77,6 +77,9 @@ class CommercialController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $request->validate([
+            'image' => 'mimes:png|max:10000'
+        ]);
 
         try {
             $input['name'] = $request->name;
@@ -95,7 +98,15 @@ class CommercialController extends Controller
             $inputCommercial['quartier'] = $request->quartier;
 
 
-            Commercial::create($inputCommercial);
+            $commercial = Commercial::create($inputCommercial);
+
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->image_profil->getClientOriginalName();
+                $filePath = $request->file('image_profil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                $commercial->image_profil = '/storage/' . $filePath;
+            }
+
+            $commercial->save();
 
 
             $role_commercial = Role::byName('commercial');
@@ -109,7 +120,7 @@ class CommercialController extends Controller
 
             if ($insert == 1) {
                 return  response()->json(
-                    ['message' => 'Access your email to vrify account & check your params'],
+                    ['message' => 'Access your email to verify account & check your params'],
                     Response::HTTP_CREATED
                 );
             } else {
@@ -149,8 +160,34 @@ class CommercialController extends Controller
      * @param  \App\Models\Commercial  $commercial
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
+        $request->validate([
+            'image' => 'mimes:png|max:10000'
+        ]);
+
+        $commercial = Commercial::find($id);
+
+        $commercial->numero_cni = $request->numero_cni ?? $commercial->numero_cni;
+        $commercial->ville = $request->ville ?? $commercial->ville;
+        $commercial->quartier = $request->quartier ?? $commercial->quartier;
+
+        if ($request->file()) {
+            $fileName = time() . '_' . $request->image_profil->getClientOriginalName();
+            $filePath = $request->file('image_profil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+            $commercial->image_profil = '/storage/' . $filePath;
+        }
+
+        $save = $commercial->save();
+
+        if ($save) {
+            return  response()->json(
+                ['message' => 'Update success'],
+                Response::HTTP_CREATED
+            );
+        } else {
+            return response()->json(['message' => "Update error"], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**

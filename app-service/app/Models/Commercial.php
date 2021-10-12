@@ -13,6 +13,7 @@ class Commercial extends Model
         'nombre_etablissement',
         'numero_cni',
         'ville',
-        'quartier'
+        'quartier',
+        'image_profil'
     ];
 }
