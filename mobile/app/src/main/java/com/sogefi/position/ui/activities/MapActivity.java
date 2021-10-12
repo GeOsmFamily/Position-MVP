@@ -78,6 +78,7 @@ import com.sogefi.position.database.PositionDataBase;
 import com.sogefi.position.models.Favorite;
 import com.sogefi.position.models.Language;
 import com.sogefi.position.models.Nominatim;
+import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.repositories.FavoriteRepository;
 import com.sogefi.position.ui.TopIconButton;
 import com.sogefi.position.ui.activities.adapters.LanguagesAdapter;
@@ -373,7 +374,19 @@ public class MapActivity extends AppCompatActivity implements
     private void setNavigationDrawer() {
         nav.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.favoritesFragment) {
+            if(itemId == R.id.loginActivity) {
+                if(pref.getToken().equals("token")) {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    drawer.closeDrawers();
+                    startActivity(intent);
+                    finish();
+                } else {
+                    drawer.closeDrawers();
+                    logout();
+                }
+
+            }
+            else if (itemId == R.id.favoritesFragment) {
                 Intent intent = new Intent(this, FavoriteActivity.class);
                 drawer.closeDrawers();
                 startActivity(intent);
@@ -1117,10 +1130,37 @@ public class MapActivity extends AppCompatActivity implements
         }
     }
 
+    //Methode pour deconnecter l'utilisateur
+    public void logout() {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<ResponseApi> call = apiService.logout();
+            call.enqueue(new Callback<ResponseApi>() {
+                @Override
+                public void onResponse(@NotNull Call<ResponseApi> call, @NotNull Response<ResponseApi> response) {
+                    pref.setToken("token");
+                    Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<ResponseApi> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("logout").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     protected void onStart() {
         super.onStart();
+        setNavigationDrawer();
         mapView.onStart();
     }
 
@@ -1128,6 +1168,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        setNavigationDrawer();
         String lon = pref.getLon();
         String lat = pref.getLat();
         //  Toast.makeText(getApplicationContext(), lon, Toast.LENGTH_LONG).show();
@@ -1143,6 +1184,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     protected void onPause() {
         super.onPause();
+        setNavigationDrawer();
         mapView.onPause();
     }
 
@@ -1155,6 +1197,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     protected void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        setNavigationDrawer();
         mapView.onSaveInstanceState(outState);
     }
 
@@ -1167,6 +1210,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        setNavigationDrawer();
         if (symbolManager != null) symbolManager.onDestroy();
         mapView.onDestroy();
     }

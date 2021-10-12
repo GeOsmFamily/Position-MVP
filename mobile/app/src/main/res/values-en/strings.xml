@@ -91,5 +91,8 @@
     <string name="welcome_back">Welcome Back</string>
     <string name="email">Email or phone number</string>
     <string name="please_login">Please login to your account.</string>
+    <string name="fill">Fill in all the fields</string>
+    <string name="connect">Login to your account</string>
+    <string name="logout">Logout</string>
 
 </resources>
