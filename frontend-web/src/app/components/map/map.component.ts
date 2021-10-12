@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ComponentHelper } from './../../helpers/componentHelper';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TileLayer, View, XYZ, Map, Zoom, Feature } from 'src/app/modules/ol';
 import {defaults} from 'ol/control';
 import Geolocation from 'ol/Geolocation';
@@ -10,6 +11,8 @@ import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { MapHelper } from 'src/app/helpers/mapHelper';
+import { FicheEntrepriseComponent } from './fiche-entreprise/fiche-entreprise.component';
+
 
 
 
@@ -40,7 +43,11 @@ map:Map|undefined
 
 coordinates=[0,0]
 
-  constructor() {
+
+@ViewChild(FicheEntrepriseComponent, { static: true })
+ficheEntrepriseComponent: FicheEntrepriseComponent | undefined;
+
+  constructor(public componentHelper: ComponentHelper) {
 
   }
 
@@ -62,6 +69,7 @@ this.getPosition()
       console.log( event.coordinate)
 
     });*/
+    this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
   }
 
   //return map
@@ -131,5 +139,20 @@ geolocation.on('change:position', function () {
 });
 }
 */
+
+
+/**
+   * Event if mapClicked
+   */
+ mapClicked() {
+  map.on('singleclick', (event) => {
+    this.componentHelper.openFicheEntreprise()
+    console.log( this.componentHelper.openFicheEntreprise())
+  console.log("map has been clicked")
+});
+}
+
+
+
 }
 

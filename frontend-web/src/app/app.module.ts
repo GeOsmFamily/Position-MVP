@@ -9,13 +9,16 @@ import { MaterialModule } from './modules/material';
 import { HeaderComponent } from './components/map/header/header.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { FicheEntrepriseComponent } from './components/map/fiche-entreprise/fiche-entreprise.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     VerticalToolbarComponent,
-    HeaderComponent
+    HeaderComponent,
+    FicheEntrepriseComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

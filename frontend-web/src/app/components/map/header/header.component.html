@@ -1,21 +1,23 @@
-<ng-container >
+
+
   <form [formGroup]="form" class="header-search-form">
     <mat-form-field appearance="fill" style="width: 100%;">
       <input type="text" matInput formControlName="searchWord"  class=" white "
         placeholder="Rechercher un établissement, un lieu..." onfocus="this.placeholder = ''"
-        onblur="this.placeholder = 'Search'">
+        onblur="this.placeholder = 'Search'"  [matAutocomplete]="auto">
         <img matPrefix src="assets/icon-search.svg" width="24px" height="24px">
       <img class="img-fluid" matSuffix *ngIf="form.get('searchWord')?.value" src="assets/icon-clear.svg"
         (click)="clearSearch()"/>
-      <!--<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAutocompleFn"
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAutocompleFn"
         (optionSelected)="optionAutocomplteSelected($event)">
-        <mat-option *ngIf="isLoading">
+        <mat-option *ngIf="!isLoading">
           <mat-spinner style="display: block;
     margin-left: auto;
     margin-right: auto" diameter="35"></mat-spinner>
         </mat-option>
         <div *ngIf="!isLoading">
-          <mat-optgroup *ngFor="let option of objectsIn(filterOptions) " [label]="'search.'+[option] | translate"
+
+          <mat-optgroup *ngFor="let option of objectsIn(filterOptions) " [label]="'search.'+[option]"
             [hidden]="filterOptions[option].length === 0">
             <mat-option *ngFor="let item of filterOptions[option]" [value]="item">
               <ng-container *ngIf="option === 'limites'">
@@ -50,7 +52,7 @@
             </mat-option>
           </mat-optgroup>
         </div>
-      </mat-autocomplete>-->
+      </mat-autocomplete>
     </mat-form-field>
   </form>
-</ng-container>
+

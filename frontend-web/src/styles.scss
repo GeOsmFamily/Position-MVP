@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import './app/styles/ol.scss';
-
+@import 'assets/font/open_sans/style.scss';
 html,
 body {
   height: 100%;
@@ -10,6 +10,8 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'OpenSans semibold';
+  font-size:10px;
+
 }
 

@@ -1,5 +1,5 @@
 <app-header style="width:200px"></app-header>
-  <div id="map" class="container-fluid map">
+  <div id="map" class="container-fluid map" (click)="mapClicked()">
 
   </div>
 
@@ -7,3 +7,5 @@
 
   <app-vertical-toolbar [map]="getMap()"></app-vertical-toolbar>
 
+
+<app-fiche-entreprise></app-fiche-entreprise>
