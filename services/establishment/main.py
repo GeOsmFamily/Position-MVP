@@ -6,17 +6,17 @@ from starlette.testclient import TestClient
 from fastapi import Depends, FastAPI, APIRouter, HTTPException, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List
 
 from sqlalchemy.orm import Session
 from starlette.responses import RedirectResponse
 
 import models, schemas
 from database import SessionLocal, engine
-from models import Etablissements
 
 from auth import has_authority, token_required, verify_token
 
-from typing import List
+from datetime import datetime
 
 
 
@@ -53,7 +53,6 @@ def get_deb():
 
 
 # get all subscribed establismments
-
 @app.get("/establishments/", response_model=List[schemas.Etablissements])
 def show_establishments(pay:int, db: Session = Depends(get_deb), authorization:str = Header(None)):
     auth_response = verify_token(authorization.split(' ')[1])
@@ -68,31 +67,48 @@ def show_establishments(pay:int, db: Session = Depends(get_deb), authorization:s
         raise HTTPException(status_code=404, detail="Item not found")
 
 # Create a new etasblishment
-@app.post("/establishment/create")
-def create_establishments(etablissements: schemas.Etablissements, db: Session = Depends(get_deb), authorization:str = Header(None)):
+@app.post("/establishment/create/")
+def create_establishments(etasblishments: schemas.Etablissements, db: Session = Depends(get_deb), authorization:str = Header(None)):
+    ets = etasblishments.__dict__ # convert to dict
     auth_response = verify_token(authorization.split(' ')[1])
+
     if 'user_id' not in auth_response:
         raise HTTPException(status_code=401, detail=auth_response['message'])
 
     if has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS'):
-        records = db.query(models.Etablissements).add_column(etablissements)
-        ets = schemas.Etablissements(nom="", rue="", indication_adresse="", ville="",
-                                     adresse="", lon="", lat="", description="", code_postal="", 
-                                     site_internet="", id_sous_categorie=1, id_commercial=1, 
-                                     id_manager=1, paid=1, created_at="", updated_at="")
-        db_etablissements = models.Etablissements(nom=ets.nom, rue=ets.rue, indication_adresse=ets.indication_adresse, ville=ets.ville,
-                                     adresse=ets.adresse, lon=ets.lon, lat=ets.lat, description=ets.description, code_postal=ets.code_postal,
-                                     site_internet=ets.site_internet, id_sous_categorie=ets.id_sous_categorie, id_commercial=ets.id_commercial,
-                                     id_manager=ets.id_manager, paid=ets.paid, created_at=ets.created_at, updated_at=ets.updated_at)
-        db.add(db_etablissements)
+
+        reg_ets = db.query(models.Etablissements).filter(
+            models.Etablissements.nom==ets['nom'],
+            models.Etablissements.rue==ets['rue'],
+            models.Etablissements.indication_adresse==ets['indication_adresse'],
+            models.Etablissements.ville==ets['ville'],
+            models.Etablissements.adresse==ets['adresse'],
+            models.Etablissements.lon==ets['lon'],
+            models.Etablissements.lat==ets['lat'],
+            models.Etablissements.description==ets['description'],
+            models.Etablissements.code_postal==ets['code_postal'],
+            models.Etablissements.site_internet==ets['site_internet'],
+            models.Etablissements.id_sous_categorie==ets['id_sous_categorie'],
+            models.Etablissements.id_commercial==ets['id_commercial'],
+            models.Etablissements.id_manager==ets['id_manager'],
+            models.Etablissements.paid==ets['paid'],
+            models.Etablissements.created_at==ets['created_at'],
+            models.Etablissements.updated_at==ets['updated_at']
+        ).first()
+
+        print(">>>>>>>>>>>>>>>>>>>>>>>>> ", reg_ets)
+        if reg_ets is not None:
+            raise HTTPException(status_code=500, detail="Not Implemented - Error when running the request")
+
         try:
+            new_etasblishments = models.Etablissements(**etasblishments.__dict__)
+            db.add(new_etasblishments)
             db.commit()
-        except:
+            db.refresh(new_etasblishments)
+            return new_etasblishments
+        except :
             db.rollback()
-            raise HTTPException(status_code=500, detail="Not Implemented - Error when creating the request")
-
-        db.close()
-
+            raise HTTPException(status_code=500, detail="Not Implemented - Error when running the request")
 
 
 
