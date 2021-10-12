@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 
 class Etablissements(BaseModel):
-    
     id: int
     nom : str
     rue : str
@@ -21,6 +20,6 @@ class Etablissements(BaseModel):
     paid : int
     created_at : date
     updated_at : date
-    
+
     class Config:
         orm_mode = True

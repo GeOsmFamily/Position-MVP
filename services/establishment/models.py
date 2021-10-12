@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.types import Date
 from database import Base
 
-
 class Etablissements(Base):
     __tablename__ = "etablissements"
 

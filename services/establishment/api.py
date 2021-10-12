@@ -2,7 +2,7 @@ from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel, Field
-import databases
+import database
 import sqlalchemy
 from datetime import datetime
 
@@ -10,7 +10,7 @@ DATABASE_URL = "sqlite:///./db_test.db"
 
 metadata = sqlalchemy.MetaData()
 
-database = databases.Database(DATABASE_URL)
+database = database.Database(DATABASE_URL)
 
 register = sqlalchemy.Table(
     "register",
