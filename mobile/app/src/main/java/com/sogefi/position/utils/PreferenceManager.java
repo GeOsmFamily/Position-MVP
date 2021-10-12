@@ -21,6 +21,8 @@ public class PreferenceManager {
 
     private static final String STYLE = "style";
 
+    private static final String TOKEN = "token";
+
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -142,6 +144,15 @@ public class PreferenceManager {
 
     public void setStyle(String style) {
         editor.putString(STYLE, style);
+        editor.apply();
+    }
+
+    public String getToken() {
+        return pref.getString(TOKEN, "token");
+    }
+
+    public void setToken(String token) {
+        editor.putString(TOKEN, token);
         editor.apply();
     }
 

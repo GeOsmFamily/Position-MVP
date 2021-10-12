@@ -92,6 +92,9 @@
     <string name="welcome_back">Bon Retour Parmis nous</string>
     <string name="email">Email ou Numéro de Téléphone</string>
     <string name="please_login">Veuillez vous connecter à votre compte.</string>
+    <string name="fill">Remplissez tous les champs</string>
+    <string name="connect">Connectez vous a votre compte</string>
+    <string name="logout">Deconnexion</string>
 
 
 </resources>

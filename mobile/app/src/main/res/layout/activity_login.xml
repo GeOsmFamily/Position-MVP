@@ -92,6 +92,7 @@
             tools:layout_editor_absoluteY="456dp">
 
             <EditText
+                android:id="@+id/password"
                 android:layout_width="@dimen/iphone_xxs04_activity_password_edit_text_width"
                 android:layout_height="@dimen/iphone_xxs04_activity_password_edit_text_height"
                 android:layout_marginStart="@dimen/iphone_xxs04_activity_password_edit_text_margin_start"
@@ -124,6 +125,7 @@
             tools:layout_editor_absoluteY="386dp">
 
             <EditText
+                android:id="@+id/email"
                 android:layout_width="@dimen/iphone_xxs04_activity_username_edit_text_width"
                 android:layout_height="@dimen/iphone_xxs04_activity_username_edit_text_height"
                 android:layout_marginStart="@dimen/iphone_xxs04_activity_username_edit_text_margin_start"
@@ -194,6 +196,18 @@
             app:layout_constraintTop_toBottomOf="@+id/group89_button"
             tools:layout_editor_absoluteX="238dp"
             tools:layout_editor_absoluteY="600dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBarLogin"
+            style="?android:attr/progressBarStyle"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="150dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
 
