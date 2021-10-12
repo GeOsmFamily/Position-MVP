@@ -1,0 +1,10 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<stroke
+		android:color="@color/iphone_xxs04_activity_group16_constraint_layout_border_color"
+		android:width="@dimen/iphone_xxs04_activity_group16_constraint_layout_border_size"/>
+
+	<corners android:radius="@dimen/iphone_xxs04_activity_group16_constraint_layout_radius"/>
+
+	<solid android:color="#2EFFFFFF"/>
+</shape>
