@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use App\Traits\Treat;
+use DB;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
@@ -44,7 +45,15 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function getJWTCustomClaims(): array
     {
-        return [];
+        $roles_user = DB::table('role_user')->where('user_id', $this->id)->get();
+        $data = array();
+        foreach ($roles_user as $role_id) {
+            $data[] = $role_id->role_id;
+        }
+        return [
+            'user_id' => $this->id,
+            'roles_id' => $data
+        ];
     }
 
     public function scopeByEmail($builder, string $email)

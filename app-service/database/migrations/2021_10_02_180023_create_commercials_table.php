@@ -18,6 +18,10 @@ class CreateCommercialsTable extends Migration
             $table->integer('revenu_total')->default(0);
             $table->integer('id_user');
             $table->integer('nombre_etablissement')->default(0);
+            $table->string('numero_cni');
+            $table->string('ville');
+            $table->string('quartier');
+            $table->string('image_profil')->nullable();
             $table->timestamps();
         });
     }

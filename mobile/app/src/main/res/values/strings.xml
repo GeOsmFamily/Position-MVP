@@ -83,4 +83,16 @@
     <string name="shareError">Error occurred while sharing</string>
     <string name="noRouteFound">No route found for this destination</string>
 
+    <string name="forgot">Forgot Password</string>
+    <string name="login">Login</string>
+    <string name="password">password</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="email">Email or phone number</string>
+    <string name="please_login">Please login to your account.</string>
+
+    <string name="fill">Fill in all the fields</string>
+
+    <string name="connect">Login to your account</string>
+
+    <string name="logout">Logout</string>
 </resources>

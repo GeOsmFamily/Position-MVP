@@ -19,4 +19,110 @@
     <color name="bright_yellow">#fccc44</color>
     <color name="grey">#3e484e</color>
     <color name="bottom_sheet_surface_darker">#BF161616</color>
+
+    <color name="color_hint_text">#D0D1D5</color>
+    <color name="color_click_overlay">#555555</color>
+
+    <!-- Resources for IPhoneXXS01Activity -->
+
+    <!-- Resources for IPhoneXXS07Activity -->
+    <color name="iphone_xxs07_activity_group94_button_background_color">#00EFD6</color>
+    <color name="iphone_xxs07_activity_password_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs07_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs07_activity_username_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs07_activity_group31_button_border_color">#99FFFFFF</color>
+    <color name="iphone_xxs07_activity_group91_constraint_layout_border_color">#98FFFFFF</color>
+    <color name="iphone_xxs07_activity_ranish_chirayil_text_view_text_color">#00EFD6</color>
+    <color name="iphone_xxs07_activity_group16_two_constraint_layout_border_color">#99FFFFFF</color>
+    <color name="iphone_xxs07_activity_or_connect_with_face_button_text_color">#FFFFFF</color>
+
+    <!-- Resources for IPhoneXXS02Activity -->
+    <color name="iphone_xxs02_activity_enter_your_name_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs02_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs02_activity_enter_your_password_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs02_activity_group89_button_background_color">#FF6761</color>
+    <color name="iphone_xxs02_activity_ranish_chirayil_text_view_text_color">#FCFCFC</color>
+
+    <!-- Resources for IPhoneXXS16Activity -->
+    <color name="iphone_xxs16_activity_email_address_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs16_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs16_activity_rectangle5_constraint_layout_background_color">#000000</color>
+    <color name="iphone_xxs16_activity_password_edit_text_background_color">#00000000</color>
+
+    <!-- Resources for IPhoneXXS13Activity -->
+    <color name="iphone_xxs13_activity_group16_constraint_layout_border_color">#331D2226</color>
+    <color name="iphone_xxs13_activity_group21_two_constraint_layout_border_color">#331D2226</color>
+    <color name="iphone_xxs13_activity_password_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs13_activity_group16_three_constraint_layout_border_color">#331D2226</color>
+    <color name="iphone_xxs13_activity_group21_constraint_layout_border_color">#331D2226</color>
+    <color name="iphone_xxs13_activity_email_address_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs13_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs13_activity_re_enter_password_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs13_activity_group33_constraint_layout_background_color">#C7FFFFFF</color>
+    <color name="iphone_xxs13_activity_group31_button_background_color">#6D67D2</color>
+    <color name="iphone_xxs13_activity_forgot_password_text_view_text_color">#6D67D2</color>
+    <color name="iphone_xxs13_activity_group32_constraint_layout_border_color">#331D2226</color>
+    <color name="iphone_xxs13_activity_group32_two_constraint_layout_border_color">#331D2226</color>
+    <color name="iphone_xxs13_activity_group31_constraint_layout_background_color">#4AD285</color>
+
+    <!-- Resources for IPhoneXXS10Activity -->
+    <color name="iphone_xxs10_activity_group23_button_background_color">#FC5A5A</color>
+    <color name="iphone_xxs10_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs10_activity_by_signing_up_you_abutton_text_color">#FFFFFF</color>
+    <color name="iphone_xxs10_activity_group16_button_background_color">#3B5998</color>
+
+    <!-- Resources for IPhoneXXS14Activity -->
+    <color name="iphone_xxs14_activity_rectangle14_constraint_layout_border_color">#FFFFFF</color>
+    <color name="iphone_xxs14_activity_group21_button_background_color">#FDB198</color>
+
+    <!-- Resources for IPhoneXXS03Activity -->
+
+    <!-- Resources for IPhoneXXS12Activity -->
+
+    <!-- Resources for IPhoneXXS15Activity -->
+    <color name="iphone_xxs15_activity_group21_button_background_color">#0052FF</color>
+    <color name="iphone_xxs15_activity_by_signing_up_you_abutton_text_color">#FFFFFF</color>
+    <color name="iphone_xxs15_activity_email_address_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs15_activity_forgot_password_button_text_color">#0052FF</color>
+    <color name="iphone_xxs15_activity_password_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs15_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs15_activity_rectangle8_constraint_layout_background_color">#1B1B1B</color>
+
+    <!-- Resources for IPhoneXXS06Activity -->
+
+    <!-- Resources for IPhoneXXS09Activity -->
+    <color name="iphone_xxs09_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs09_activity_by_signing_up_you_abutton_text_color">#FFFFFF</color>
+    <color name="iphone_xxs09_activity_group16_button_background_color">#3B5998</color>
+    <color name="iphone_xxs09_activity_group21_button_background_color">#6833BE</color>
+
+    <!-- Resources for IPhoneXXS04Activity -->
+    <color name="iphone_xxs04_activity_indicator_constraint_layout_background_color">#E2E8ED</color>
+    <color name="iphone_xxs04_activity_group16_constraint_layout_border_color">#98FFFFFF</color>
+    <color name="iphone_xxs04_activity_group89_button_text_color">#F04A44</color>
+    <color name="iphone_xxs04_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs04_activity_group89_constraint_layout_background_color">#F04A44</color>
+    <color name="iphone_xxs04_activity_username_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs04_activity_ranish_chirayil_text_view_text_color">#FCFCFC</color>
+    <color name="iphone_xxs04_activity_password_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs04_activity_don_thave_an_accoun_button_text_color">#FFFFFF</color>
+    <color name="iphone_xxs04_activity_group21_constraint_layout_border_color">#98FFFFFF</color>
+
+    <!-- Resources for IPhoneXXS05Activity -->
+    <color name="iphone_xxs05_activity_group94_button_background_color">#FF9D55</color>
+    <color name="iphone_xxs05_activity_group91_constraint_layout_border_color">#98576F93</color>
+    <color name="iphone_xxs05_activity_group91_constraint_layout_background_color">#1E576F93</color>
+    <color name="iphone_xxs05_activity_username_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs05_activity_password_edit_text_background_color">#00000000</color>
+    <color name="iphone_xxs05_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs05_activity_username_edit_text_text_color">#576F93</color>
+    <color name="iphone_xxs05_activity_password_edit_text_text_color">#576F93</color>
+    <color name="iphone_xxs05_activity_ranish_chirayil_text_view_text_color">#FF9D55</color>
+    <color name="iphone_xxs05_activity_lorem_ipsum_dolor_si_text_view_text_color">#576F93</color>
+
+    <!-- Resources for IPhoneXXS11Activity -->
+    <color name="iphone_xxs11_activity_rectangle11_constraint_layout_background_color">#D93025</color>
+    <color name="iphone_xxs11_activity_group21_constraint_layout_border_color">#FFFFFF</color>
+    <color name="iphone_xxs11_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
+    <color name="iphone_xxs11_activity_group16_constraint_layout_border_color">#FFFFFF</color>
 </resources>

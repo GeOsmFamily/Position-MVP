@@ -86,5 +86,15 @@
     <string name="shareError">Une erreur s\'est produite lors du partage</string>
     <string name="noRouteFound">Aucun itinéraire trouvé pour cette destination</string>
 
+    <string name="forgot">Mot de Passe Oublié?</string>
+    <string name="login">Connexion</string>
+    <string name="password">Mot de Passe</string>
+    <string name="welcome_back">Bon Retour Parmis nous</string>
+    <string name="email">Email ou Numéro de Téléphone</string>
+    <string name="please_login">Veuillez vous connecter à votre compte.</string>
+    <string name="fill">Remplissez tous les champs</string>
+    <string name="connect">Connectez vous a votre compte</string>
+    <string name="logout">Deconnexion</string>
+
 
 </resources>

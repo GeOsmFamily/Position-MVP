@@ -1,46 +1,27 @@
 version: "3"
-
 services:
-  app-service-app:
-    container_name: app-service-app
-    build: .docker/docker
-    image: app-service-app
-    depends_on:
-      - app-service-mysql
-      - app-service-redis
-    volumes:
-      - ./:/application:cached
-
-  app-service-nginx:
-    container_name: app-service-nginx
-    image: nginx:alpine
+  position-service-app:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    image: position-service-app
     ports:
-      - "8000:8000"
+      - 6000:80
     volumes:
-      - .docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:cached
-      - ./:/application:cached
-      - .docker/nginx/:/var/log/nginx/
-    depends_on:
-      - app-service-app
-      - app-service-mysql
-      - app-service-redis
+      - ./:/var/www/html
 
-  app-service-mysql:
-    container_name: app-service-mysql
+  position-service-mysql:
+    restart: always
     image: mysql:5.7
     ports:
-      - "8001:3306"
+      - "6001:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=position
     volumes:
-      - app-service-mysql-data:/var/lib/mysql:cached
+      - ./db:/var/lib/mysql
 
-  app-service-redis:
-    container_name: app-service-redis
+  position-service-redis:
     image: redis:alpine
     ports:
-      - "6379:6379"
-
-volumes:
-  app-service-mysql-data:
+      - "6002:6379"

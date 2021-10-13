@@ -17,7 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class APIClient {
 
     public static final String BASE_URL1 = "https://nominatim.openstreetmap.org/";
+    public static final String BASE_URL2 = "https://services.position.cm/";
     private static Retrofit retrofit1 = null;
+    private static Retrofit retrofit2 = null;
     private static Retrofit retrofit3 = null;
 
 
@@ -86,5 +88,16 @@ public class APIClient {
                     .build();
         }
         return retrofit3;
+    }
+
+    public static Retrofit getNewClient3() {
+        if (retrofit2 == null) {
+            retrofit2 = new Retrofit.Builder()
+                    .baseUrl(BASE_URL2)
+                    .client(getUnsafeOkHttpClient().build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit2;
     }
 }

@@ -1,0 +1,241 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/iphone_xxs04_activity_constraint_layout_constraint_layout_background_color">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/iphone_xxs04_activity_bg_constraint_layout_height"
+        android:layout_marginEnd="@dimen/iphone_xxs04_activity_bg_constraint_layout_margin_end"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-1dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/display_shape_3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"/>
+
+        <View
+            android:layout_width="@dimen/iphone_xxs04_activity_indicator_constraint_layout_width"
+            android:layout_height="@dimen/iphone_xxs04_activity_indicator_constraint_layout_height"
+            android:layout_marginBottom="@dimen/iphone_xxs04_activity_indicator_constraint_layout_margin_bottom"
+            android:background="@color/iphone_xxs04_activity_indicator_constraint_layout_background_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteX="122dp"
+            tools:layout_editor_absoluteY="796dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="@dimen/iphone_xxs04_activity_group89_constraint_layout_height"
+        android:background="@color/green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo_carre"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/iphone_xxs04_activity_rectangle47_constraint_layout_height"
+            android:background="#1A1A1A"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group16_constraint_layout"
+            android:layout_width="@dimen/iphone_xxs04_activity_group16_constraint_layout_width"
+            android:layout_height="@dimen/iphone_xxs04_activity_group16_constraint_layout_height"
+            android:layout_marginTop="@dimen/iphone_xxs04_activity_group16_constraint_layout_margin_top"
+            android:background="@drawable/iphone_xxs04_activity_group16_constraint_layout_background"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group21_constraint_layout"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="456dp">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="@dimen/iphone_xxs04_activity_password_edit_text_width"
+                android:layout_height="@dimen/iphone_xxs04_activity_password_edit_text_height"
+                android:layout_marginStart="@dimen/iphone_xxs04_activity_password_edit_text_margin_start"
+                android:background="@color/iphone_xxs04_activity_password_edit_text_background_color"
+                android:fontFamily="@font/font_roboto_regular"
+                android:gravity="start|center_vertical"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/color_hint_text"
+                android:textSize="@dimen/iphone_xxs04_activity_password_edit_text_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="23dp"
+                tools:layout_editor_absoluteY="17dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/group21_constraint_layout"
+            android:layout_width="@dimen/iphone_xxs04_activity_group21_constraint_layout_width"
+            android:layout_height="@dimen/iphone_xxs04_activity_group21_constraint_layout_height"
+            android:layout_marginTop="@dimen/iphone_xxs04_activity_group21_constraint_layout_margin_top"
+            android:background="@drawable/iphone_xxs04_activity_group21_constraint_layout_background"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_text_view"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="386dp">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="@dimen/iphone_xxs04_activity_username_edit_text_width"
+                android:layout_height="@dimen/iphone_xxs04_activity_username_edit_text_height"
+                android:layout_marginStart="@dimen/iphone_xxs04_activity_username_edit_text_margin_start"
+                android:background="@color/iphone_xxs04_activity_username_edit_text_background_color"
+                android:fontFamily="@font/font_roboto_regular"
+                android:gravity="start|center_vertical"
+                android:hint="@string/email"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/color_hint_text"
+                android:textSize="@dimen/iphone_xxs04_activity_username_edit_text_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="19dp"
+                tools:layout_editor_absoluteY="17dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/group89_button"
+            android:layout_width="@dimen/iphone_xxs04_activity_group89_button_width"
+            android:layout_height="@dimen/iphone_xxs04_activity_group89_button_height"
+            android:layout_marginTop="@dimen/iphone_xxs04_activity_group89_button_margin_top"
+            android:background="@drawable/iphone_xxs04_activity_group89_button_ripple"
+            android:fontFamily="@font/font_roboto_bold"
+            android:gravity="center"
+            android:text="@string/login"
+            android:textColor="@color/green"
+            android:textSize="@dimen/iphone_xxs04_activity_group89_button_text_size"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group16_constraint_layout"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="536dp"/>
+
+
+
+        <TextView
+            android:id="@+id/login_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/iphone_xxs04_activity_login_text_view_margin_start"
+            android:layout_marginTop="@dimen/iphone_xxs04_activity_login_text_view_margin_top"
+            android:fontFamily="@font/font_roboto_bold"
+            android:gravity="start"
+            android:text="@string/welcome_back"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/iphone_xxs04_activity_login_text_view_text_size"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="38dp"
+            tools:layout_editor_absoluteY="338dp"/>
+
+        <Button
+            android:id="@+id/forgot_password_button"
+            android:layout_width="@dimen/iphone_xxs04_activity_forgot_password_button_width"
+            android:layout_height="@dimen/iphone_xxs04_activity_forgot_password_button_height"
+            android:layout_marginEnd="@dimen/iphone_xxs04_activity_forgot_password_button_margin_end"
+            android:layout_marginTop="@dimen/iphone_xxs04_activity_forgot_password_button_margin_top"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/font_roboto_regular"
+            android:gravity="end"
+            android:text="@string/forgot"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/iphone_xxs04_activity_forgot_password_button_text_size"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group89_button"
+            tools:layout_editor_absoluteX="238dp"
+            tools:layout_editor_absoluteY="600dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBarLogin"
+            style="?android:attr/progressBarStyle"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="150dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rc_logo_constraint_layout"
+        android:layout_width="330dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="@dimen/iphone_xxs04_activity_rc_logo_constraint_layout_margin_top"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/path2035_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/logo_nom"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>

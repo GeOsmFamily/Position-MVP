@@ -3,14 +3,18 @@ package com.sogefi.position.api;
 
 
 
+import com.sogefi.position.models.Auth;
 import com.sogefi.position.models.Nominatim;
+import com.sogefi.position.models.ResponseApi;
 
 import java.util.List;
 
 import io.reactivex.Single;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -26,5 +30,10 @@ public interface ApiInterface {
     @GET("search")
     Single<Response<List<Nominatim>>> nominatimRx(@Query("q") String q, @Query("format") String format, @Query("addressdetails") int addressdetails, @Query("countrycodes") String countrycodes);
 
+    @POST("auth/login")
+    Call<Auth> login(@Body Auth auth);
+
+    @POST("auth/logout")
+    Call<ResponseApi> logout();
 
 }

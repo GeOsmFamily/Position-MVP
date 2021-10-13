@@ -11,5 +11,9 @@ class Commercial extends Model
         'id_user',
         'revenu_total',
         'nombre_etablissement',
+        'numero_cni',
+        'ville',
+        'quartier',
+        'image_profil'
     ];
 }
