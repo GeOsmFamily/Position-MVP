@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { ComponentHelper } from './../../helpers/componentHelper';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TileLayer, View, XYZ, Map, Zoom, Feature } from 'src/app/modules/ol';
 import {defaults} from 'ol/control';
 import Geolocation from 'ol/Geolocation';
@@ -9,6 +10,9 @@ import { Circle as CircleStyle, Fill, Stroke, Text, Icon } from 'ol/style.js';
 import Point from 'ol/geom/Point';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import { MapHelper } from 'src/app/helpers/mapHelper';
+import { FicheEntrepriseComponent } from './fiche-entreprise/fiche-entreprise.component';
+
 
 
 
@@ -39,12 +43,62 @@ map:Map|undefined
 
 coordinates=[0,0]
 
-  constructor() { }
+
+@ViewChild(FicheEntrepriseComponent, { static: true })
+ficheEntrepriseComponent: FicheEntrepriseComponent | undefined;
+
+  constructor(public componentHelper: ComponentHelper) {
+
+  }
 
   ngOnInit(): void {
-this.initialiazeMap()
 
- // Begin geolocation
+this.initialiazeMap()
+this.getPosition()
+//this.userLocation()
+
+  }
+
+  ngAfterViewInit(): void {
+
+
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+   /* map.on('pointermove', function(event) {
+
+      console.log( event.coordinate)
+
+    });*/
+    this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
+  }
+
+  //return map
+  getMap(): Map {
+    return map;
+  }
+
+  //map initialization
+ initialiazeMap(){
+  map.setTarget('map');
+}
+
+
+
+//get user location
+getPosition(){
+  let cartoHelpeClass = new MapHelper()
+
+  if (cartoHelpeClass.getLayerByName('user_position').length == 0) {
+    cartoHelpeClass.geolocateUser()
+  } else {
+    let featurePosition = cartoHelpeClass.getLayerByName('user_position')[0].getSource().getFeatures()[0]
+    cartoHelpeClass.fit_view(featurePosition.getGeometry(), 19)
+  }
+}
+
+/*
+userLocation(){
+  // Begin geolocation
  var geolocation = new Geolocation({
   projection: map.getView().getProjection(),
   tracking: true,
@@ -68,7 +122,7 @@ positionFeature.setStyle(
     }),
   })
 );
-geolocation.once('change:position', function () {
+geolocation.on('change:position', function () {
   const coordinates = geolocation.getPosition();
   console.log(coordinates)
   positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
@@ -83,26 +137,21 @@ geolocation.once('change:position', function () {
     }),
   });
 });
-
-  }
-
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    map.on('pointermove', function(event) {
-
-      console.log( event.coordinate)
-
-    });
-  }
-
-  getMap(): Map {
-    return map;
-  }
-  //map initialization
- initialiazeMap(){
-  map.setTarget('map');
 }
+*/
+
+
+/**
+   * Event if mapClicked
+   */
+ mapClicked() {
+  map.on('singleclick', (event) => {
+    this.componentHelper.openFicheEntreprise()
+    console.log( this.componentHelper.openFicheEntreprise())
+  console.log("map has been clicked")
+});
+}
+
 
 
 }
