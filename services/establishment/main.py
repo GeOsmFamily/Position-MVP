@@ -56,7 +56,6 @@ def get_deb():
 @app.get("/establishments/", response_model=List[schemas.Etablissements])
 def show_establishments(pay:int, db: Session = Depends(get_deb), authorization:str = Header(None)):
     auth_response = verify_token(authorization.split(' ')[1])
-    print(">>>>>>>>>>>>>>>>>>>>>>", pay)
     if 'user_id' not in auth_response:
         raise HTTPException(status_code=401, detail=auth_response['message'])
 
@@ -96,10 +95,8 @@ def create_establishments(etasblishments: schemas.Etablissements, db: Session = 
             models.Etablissements.updated_at==ets['updated_at']
         ).first()
 
-        print(">>>>>>>>>>>>>>>>>>>>>>>>> ", reg_ets)
         if reg_ets is not None:
             raise HTTPException(status_code=500, detail="Not Implemented - Error when running the request")
-
         try:
             new_etasblishments = models.Etablissements(**etasblishments.__dict__)
             db.add(new_etasblishments)
@@ -111,7 +108,20 @@ def create_establishments(etasblishments: schemas.Etablissements, db: Session = 
             raise HTTPException(status_code=500, detail="Not Implemented - Error when running the request")
 
 
+# update an establishement
+@router.put("/establishment/update/", response_model=schemas.Etablissements)
+def update_establishments(ets_id:int, db: Session = Depends(get_deb), authorization:str = Header(None)):
+    print(">>>>>>>>>>>>>>>> ", ets_id)
+    auth_response = verify_token(authorization.split(' ')[1])
+    if 'user_id' not in auth_response:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
 
+    if has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS'):
+        records = db.query(models.Etablissements).get(ets_id)
+        print(">>>>>>>>>>>>>>>> ", records)
+        return records
+    else:
+        raise HTTPException(status_code=404, detail="Item not found")
 
 
 app.include_router(router, prefix=f"/api")
