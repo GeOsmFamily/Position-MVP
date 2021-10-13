@@ -21,6 +21,10 @@ from schemas import (
 def get_all_ets(session: Session, limit: int, offset: int) -> List[Etablissements]:
     return session.query(Etablissements).offset(offset).limit(limit).all()
 
+# Function to get list of etablissements info that paid or not
+def get_all_ets_by_payment(session: Session, limit: int, offset: int, pay: int) -> List[Etablissements]:
+    return session.query(Etablissements).filter_by(paid=int(pay)).offset(offset).limit(limit).all()
+
 
 # Function to  get info of a particular etablissement
 def get_etablissement_info_by_id(session: Session, _id: int) -> Etablissements:
