@@ -22,8 +22,8 @@ class CreateAndUpdateEtablissements(BaseModel):
     id_commercial : int
     id_manager : int
     paid : int
-    created_at : datetime
-    updated_at : datetime
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
 # TO support list and get APIs
 class Etablissement(CreateAndUpdateEtablissements):
     id: int
@@ -35,5 +35,28 @@ class PaginatedEtablissementInfo(BaseModel):
     limit: int
     offset: int
     data: List[Etablissement]
+
+
+
+
+#### Sous categories schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateSousCategories(BaseModel):
+    id: Optional[int]
+    nom : str
+    id_categorie : str
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+# TO support list and get APIs
+class SousCategories(CreateAndUpdateSousCategories):
+    id: int
+    class Config():
+        orm_mode = True
+# To support list Etablissement APISousCategories
+class PaginatedSousCategoriesInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[SousCategories]
+
 
 

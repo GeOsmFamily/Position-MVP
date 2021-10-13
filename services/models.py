@@ -26,3 +26,14 @@ class Etablissements(Base):
     paid = Column(Integer)
     created_at = Column(Date)
     updated_at = Column(Date)
+
+
+#### sous-catégories models ####
+class SousCategories(Base):
+    __tablename__ = "sous_categories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nom = Column(String(191), index=True)
+    id_categorie = Column(String(191), index=True)
+    created_at = Column(Date)
+    updated_at = Column(Date)

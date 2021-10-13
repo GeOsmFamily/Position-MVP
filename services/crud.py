@@ -4,15 +4,19 @@ from sqlalchemy.orm import Session
 from exceptions import (
     EtablissementInfoException,
     EtablissementInfoInfoAlreadyExistError,
-    EtablissementInfoNotFoundError
+    EtablissementInfoNotFoundError,
+    SousCategoriesInfoInfoAlreadyExistError,
+    SousCategoriesInfoNotFoundError
 )
 
 from models import (
-    Etablissements
+    Etablissements,
+    SousCategories
 )
 
 from schemas import (
-    CreateAndUpdateEtablissements
+    CreateAndUpdateEtablissements,
+    CreateAndUpdateSousCategories
 )
 
 
@@ -104,6 +108,75 @@ def delete_ets_info(session: Session, _id: int):
         raise EtablissementInfoNotFoundError
 
     session.delete(ets_info)
+    session.commit()
+
+    return
+
+
+
+
+
+
+
+#### souscategories ####
+# Function to get list of souscategories info
+def get_all_souscategories(session: Session, limit: int, offset: int) -> List[SousCategories]:
+    return session.query(SousCategories).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular souscategories
+def get_souscategories_info_by_id(session: Session, _id: int) -> SousCategories:
+    souscategories_info = session.query(SousCategories).get(_id)
+
+    if souscategories_info is None:
+        raise SousCategoriesInfoNotFoundError
+
+    return souscategories_info
+
+
+# Function to add a new souscategories info to the database
+def create_souscategories(session: Session, ets_info: CreateAndUpdateSousCategories) -> SousCategories:
+    souscategories_details = session.query(SousCategories).filter(
+            SousCategories.nom==ets_info.nom,
+            SousCategories.id_categorie==ets_info.id_categorie,
+            SousCategories.created_at==ets_info.created_at,
+            SousCategories.updated_at==ets_info.updated_at
+        ).first()
+    if souscategories_details is not None:
+        raise SousCategoriesInfoInfoAlreadyExistError
+
+    new_souscategories_info = SousCategories(**ets_info.dict())
+    session.add(new_souscategories_info)
+    session.commit()
+    session.refresh(new_souscategories_info)
+    return new_souscategories_info
+
+
+# Function to update details of the souscategories
+def update_souscategories_info(session: Session, _id: int, info_update: CreateAndUpdateSousCategories) -> SousCategories:
+    souscategories_info = get_souscategories_info_by_id(session, _id)
+
+    if souscategories_info is None:
+        raise SousCategoriesInfoNotFoundError
+
+    souscategories_info.nom = info_update.nom
+    souscategories_info.id_categorie = info_update.id_categorie
+    souscategories_info.created_at=info_update.created_at
+    souscategories_info.updated_at=info_update.updated_at
+
+    session.commit()
+    session.refresh(souscategories_info)
+
+    return souscategories_info
+
+
+# Function to delete an souscategories info from the db
+def delete_souscategories_info(session: Session, _id: int):
+    souscategories_info = get_souscategories_info_by_id(session, _id)
+
+    if souscategories_info is None:
+        raise SousCategoriesInfoNotFoundError
+
+    session.delete(souscategories_info)
     session.commit()
 
     return
