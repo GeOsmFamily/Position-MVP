@@ -3,6 +3,15 @@
 <div  class="primaryColorBG buttons" >
   <div class="vertical-toolbar-groupe-btn-1">
     <div id="zooms"> </div>
+    <div id="myLocation">
+      <button matTooltip="" style="  border: 2px solid white;
+      background-color: #FFFFFF;
+      height: 50px;
+      border-radius:50%;
+      width: 50px;cursor: pointer;" (click)="userLocation()">
+        <img src="assets/enterprise-svgrepo-com.svg">
+      </button>
+    </div>
     <div id="zoom-plus" >
       <button  class="" (click)="zoom('plus')" style=" border: 2px solid white;
       background-color: #FFFFFF;

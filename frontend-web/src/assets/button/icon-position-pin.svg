@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/icon-position-pin</title>
+    <defs>
+        <path d="M12,2.265 C8.13,2.265 5,5.395 5,9.265 C5,13.435 9.42,19.185 11.24,21.375 C11.64,21.855 12.37,21.855 12.77,21.375 C14.58,19.185 19,13.435 19,9.265 C19,5.395 15.87,2.265 12,2.265 Z M12,11.765 C10.62,11.765 9.5,10.645 9.5,9.265 C9.5,7.885 10.62,6.765 12,6.765 C13.38,6.765 14.5,7.885 14.5,9.265 C14.5,10.645 13.38,11.765 12,11.765 Z" id="path-1"></path>
+    </defs>
+    <g id="icon/icon-position-pin" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="icon/maps/place_24px" fill="#9E9E9E" fill-rule="nonzero" xlink:href="#path-1"></use>
+    </g>
+</svg>

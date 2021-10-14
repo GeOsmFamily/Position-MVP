@@ -25,4 +25,7 @@ export class FicheEntrepriseComponent implements OnInit {
 
     $('app-fiche-entreprise').css('left','-430px')
   }
+  alert1(){
+    alert("hello")
+  }
 }
