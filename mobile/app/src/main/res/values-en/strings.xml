@@ -92,7 +92,15 @@
     <string name="email">Email or phone number</string>
     <string name="please_login">Please login to your account.</string>
     <string name="fill">Fill in all the fields</string>
-    <string name="connect">Login to your account</string>
+    <string name="connect">Login-Logout</string>
     <string name="logout">Logout</string>
+    <string name="addNewBussiness">New Bussiness</string>
+    <string name="myBussiness">My Business</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+
+    <string name="connectToSaveBusiness">Login to register an establishment</string>
+    <string name="noCommercial">You are not a salesman</string>
+    <string name="connectToViewBusiness">Log in with your manager account to see your establishment</string>
 
 </resources>
