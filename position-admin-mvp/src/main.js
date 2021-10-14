@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import BootstrapVue from "bootstrap-vue";
+import VeeValidate from "vee-validate";
 import Default from "./Layout/Wrappers/baseLayout.vue";
 import Pages from "./Layout/Wrappers/pagesLayout.vue";
 
