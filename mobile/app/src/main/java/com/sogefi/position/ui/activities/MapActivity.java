@@ -122,6 +122,7 @@ public class MapActivity extends AppCompatActivity implements
     FloatingActionButton sharePosition;
     FloatingActionButton clearButton;
     FloatingActionButton clearRouteButton;
+    FloatingActionButton newBusiness;
     ExtendedFloatingActionButton findPosition;
     ProgressBar bottomSheetProgress;
     TextView lieu;
@@ -216,6 +217,10 @@ public class MapActivity extends AppCompatActivity implements
         sharePosition = findViewById(R.id.sharePosition);
         clearButton = findViewById(R.id.clearButton);
         clearRouteButton = findViewById(R.id.clearRouteButton);
+        newBusiness = findViewById(R.id.newBussiness);
+
+
+
 
 
 
@@ -352,6 +357,23 @@ public class MapActivity extends AppCompatActivity implements
 
         clearRouteButton.setOnClickListener(v -> clearAll());
 
+        newBusiness.setOnClickListener(v -> {
+            if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
+                Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+                drawer.closeDrawers();
+                startActivity(intent);
+            } else if(pref.getRoleid().equals("roleid")) {
+                Toast.makeText(getApplicationContext(), getString(R.string.connectToSaveBusiness), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MapActivity.this, LoginActivity.class);
+                drawer.closeDrawers();
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.noCommercial), Toast.LENGTH_LONG).show();
+            }
+
+        });
+
 
 
     }
@@ -379,12 +401,41 @@ public class MapActivity extends AppCompatActivity implements
                     Intent intent = new Intent(this, LoginActivity.class);
                     drawer.closeDrawers();
                     startActivity(intent);
-                    finish();
                 } else {
                     drawer.closeDrawers();
                     logout();
                 }
 
+            }
+            else if(itemId == R.id.userProfile) {
+                if(!pref.getToken().equals("token")) {
+                    item.setVisible(true);
+                    Intent intent = new Intent(this, ProfileActivity.class);
+                    drawer.closeDrawers();
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    drawer.closeDrawers();
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+            else if(itemId == R.id.myBussiness) {
+                if(pref.getRoleid().equals("3")) {
+                    item.setVisible(true);
+                    Intent intent = new Intent(this, BusinessActivity.class);
+                    drawer.closeDrawers();
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.connectToViewBusiness), Toast.LENGTH_LONG).show();
+
+                }
+
+            } else if(itemId == R.id.settings) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                drawer.closeDrawers();
+                startActivity(intent);
             }
             else if (itemId == R.id.favoritesFragment) {
                 Intent intent = new Intent(this, FavoriteActivity.class);
@@ -1140,6 +1191,11 @@ public class MapActivity extends AppCompatActivity implements
                 @Override
                 public void onResponse(@NotNull Call<ResponseApi> call, @NotNull Response<ResponseApi> response) {
                     pref.setToken("token");
+                    pref.setEmail("email");
+                    pref.setName("name");
+                    pref.setPhone("phone");
+                    pref.setId("id");
+                    pref.setRoleid("roleid");
                     Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
 
                 }
