@@ -1,7 +1,10 @@
-import { createRouter, createWebHistory } from "vue-router";
+import Vue from "vue";
+import VueRouter from "vue-router";
+
+Vue.use(VueRouter);
 
 const routes = [
- /* {
+  /* {
     path: "/",
     name: "Home",
     component: Home,
@@ -167,11 +170,12 @@ const routes = [
   },
 ];
 
-const router = createRouter({
+const router = new VueRouter({
   scrollBehavior() {
     return window.scrollTo({ top: 0, behavior: "smooth" });
   },
-  history: createWebHistory(process.env.BASE_URL),
+  mode: "history",
+  base: process.env.BASE_URL,
   routes,
 });
 
