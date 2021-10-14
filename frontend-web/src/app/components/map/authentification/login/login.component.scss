@@ -1,0 +1,107 @@
+mat-card {
+  max-width: 400px;
+  padding-bottom: 9%;
+  margin: 5em auto;
+  text-align: center;
+  background-color: white;
+  color: black;
+}
+
+mat-form-field {
+  display: block;
+}
+mat-label{
+  margin-bottom: 50px;
+}
+mat-label
+{
+  margin-bottom: 25px;
+}
+.champ{
+  text-align: left;padding-left: 24%;
+}
+input{
+  margin-top: 5px;
+  margin-bottom: 30px;
+   border-radius: 5px;
+   height: 2em;
+   width: 15em;
+   border-width: thin;
+   border:2px solid  rgb(176, 177, 175);
+}
+.container-forget-password{
+  text-align: left;padding-left: 24%;
+  margin-bottom: 20px;
+}
+#forgotten-password{
+  color: darkcyan;font-weight: bold;
+  background-color: white;
+}
+#btn-creer-compte{
+  float:left;
+  line-height:2;
+  padding-inline-start:5px;
+  padding-inline-end:5px;
+  font-size:small;
+  color:darkcyan;
+  background-color: white;
+  font-weight: bold;
+}
+#btn-connexion{
+  margin-left:10px;
+  float:right;
+  line-height:2;
+
+  padding-inline-start:5px;
+  padding-inline-end:5px;
+  font-size:small;
+  color:white;
+  background-color:  darkcyan;
+  font-weight: bold;
+}
+.container-btn{
+  text-align: left;padding-left: 24%;
+}
+@media (max-width: 767px) {
+  .mat-card{
+    max-width: auto;
+    margin-top:10%;
+    text-align: center;
+    box-shadow: none;
+  }
+  .champ{
+    text-align: left;
+    padding-left: 10%;
+    padding-right: 15%;
+
+  }
+  input{
+    width: 100%;
+
+  }
+  .container-forget-password{
+    padding-left: 10%;
+  }
+  .container-btn{
+    padding-left: 10%;
+    padding-right: 15%;
+  }
+ }
+
+
+ @media (min-width: 767px) {
+  .container-btn{
+    width: 15em;
+  }
+ }
+
+#logo-position{
+  width: 130px;
+  margin-top: 20px;
+}
+
+#logo-welcome{
+  margin-bottom:40px;
+  width: 80%;
+  margin-top: -25px;
+}

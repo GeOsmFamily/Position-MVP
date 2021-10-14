@@ -1,0 +1,41 @@
+.footer
+{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(255, 187, 0);
+  color: white;
+  height: 30px;
+  padding-top: 5px;
+  display: flex;
+align-items: center;
+justify-content: center;
+}
+select{
+  border-color: white;
+  background-color: rgb(255, 187, 0);
+  color: white;
+  padding-left: 10px;
+  padding-right: 0;
+  text-align: center;
+
+}
+option:hover{
+  border-color: white;
+  background-color: rgb(255, 187, 0);
+  color: white;
+}
+
+select.decorated option:hover {
+  box-shadow: 0 0 10px 100px #1882A8 inset;
+}
+
+@media (max-width: 768px) {
+  .mat-form-field{
+    max-width: auto;
+    margin:0em;
+    text-align: center;
+    box-shadow: none;
+  }
+ }
