@@ -8,7 +8,6 @@ public class PreferenceManager {
     private static final String FIRST = "no";
     private static final String LON = "lon";
     private static final String LAT = "lat";
-    private static final String NAME = "name";
     private static final String NAMEORI = "nameori";
     private static final String NAMEDEST = "namedest";
     private static final String TYPE = "type";
@@ -22,6 +21,13 @@ public class PreferenceManager {
     private static final String STYLE = "style";
 
     private static final String TOKEN = "token";
+
+    private static final String EMAIL = "email";
+    private static final String NAME = "name";
+    private static final String PHONE = "phone";
+    private static final String ID = "id";
+
+    private static final String ROLEID = "roleid";
 
 
     SharedPreferences pref;
@@ -153,6 +159,42 @@ public class PreferenceManager {
 
     public void setToken(String token) {
         editor.putString(TOKEN, token);
+        editor.apply();
+    }
+
+    public String getEmail() {
+        return pref.getString(EMAIL, "email");
+    }
+
+    public void setEmail(String email) {
+        editor.putString(EMAIL, email);
+        editor.apply();
+    }
+
+    public String getPhone() {
+        return pref.getString(PHONE, "phone");
+    }
+
+    public void setPhone(String phone) {
+        editor.putString(PHONE, phone);
+        editor.apply();
+    }
+
+    public String getId() {
+        return pref.getString(ID, "id");
+    }
+
+    public void setId(String id) {
+        editor.putString(ID, id);
+        editor.apply();
+    }
+
+    public String getRoleid() {
+        return pref.getString(ROLEID, "roleid");
+    }
+
+    public void setRoleid(String roleid) {
+        editor.putString(ROLEID, roleid);
         editor.apply();
     }
 

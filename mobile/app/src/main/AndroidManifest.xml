@@ -16,6 +16,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.BusinessActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.ProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.NewBusinessActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.activities.LoginActivity"
             android:exported="true" />
         <activity

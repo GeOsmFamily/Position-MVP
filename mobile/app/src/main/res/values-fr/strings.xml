@@ -93,8 +93,16 @@
     <string name="email">Email ou Numéro de Téléphone</string>
     <string name="please_login">Veuillez vous connecter à votre compte.</string>
     <string name="fill">Remplissez tous les champs</string>
-    <string name="connect">Connectez vous a votre compte</string>
+    <string name="connect">Connexion-Deconnexion</string>
     <string name="logout">Deconnexion</string>
+    <string name="addNewBussiness">Nouvelle Entreprise</string>
+    <string name="myBussiness">Mon Entreprise</string>
+    <string name="profile">Mon Profil</string>
+    <string name="settings">Paramètres</string>
+
+    <string name="connectToSaveBusiness">Connectez vous pour enregistrer un etablissement</string>
+    <string name="noCommercial">Vous n\'etes pas un commercial</string>
+    <string name="connectToViewBusiness">Connectez vous avec votre compte manager pour voir votre etablissement</string>
 
 
 </resources>

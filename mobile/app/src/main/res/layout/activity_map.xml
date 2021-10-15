@@ -112,9 +112,21 @@
             app:layout_anchorGravity="end|top">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/newBussiness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:fabSize="mini"
+                app:layout_constraintBottom_toTopOf="@+id/location"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_baseline_add_business_24" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 app:fabSize="mini"
                 app:layout_constraintBottom_toTopOf="@+id/layers"
                 app:layout_constraintEnd_toEndOf="parent"
