@@ -320,7 +320,7 @@ public class MapActivity extends AppCompatActivity implements
 
         route.setOnClickListener(v -> showRouteSearch());
 
-        share.setOnClickListener(v -> sharePosition(lieu.getText().toString()));
+        share.setOnClickListener(v -> sharePosition(latTv+ ","+lonTv));
 
         save.setOnClickListener(v -> showSave(lieu.getText().toString(), latTv, lonTv));
 
@@ -476,15 +476,17 @@ public class MapActivity extends AppCompatActivity implements
                 startActivity(intent);
                 finish();
             } else if (itemId == R.id.aboutDialog) {
+                Intent intent = new Intent(MapActivity.this, AboutActivity.class);
                 drawer.closeDrawers();
-                View dialogAbout = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_about, null, false);
+                startActivity(intent);
+               /* View dialogAbout = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_about, null, false);
                 AlertDialog alertDialog = new MaterialAlertDialogBuilder(MapActivity.this)
                         .setView(dialogAbout)
                         .show();
                 TextView version = dialogAbout.findViewById(R.id.version);
                 MaterialButton ok = dialogAbout.findViewById(R.id.ok);
                 version.setText(BuildConfig.VERSION_NAME);
-                ok.setOnClickListener(view -> alertDialog.dismiss());
+                ok.setOnClickListener(view -> alertDialog.dismiss());*/
             }
             return false;
         });
@@ -1216,7 +1218,6 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        setNavigationDrawer();
         mapView.onStart();
     }
 
@@ -1224,7 +1225,6 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        setNavigationDrawer();
         String lon = pref.getLon();
         String lat = pref.getLat();
         //  Toast.makeText(getApplicationContext(), lon, Toast.LENGTH_LONG).show();
