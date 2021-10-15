@@ -2,6 +2,8 @@
 from typing import List
 from sqlalchemy.orm import Session
 from exceptions import (
+    CategoriesInfoInfoAlreadyExistError,
+    CategoriesInfoNotFoundError,
     EtablissementInfoException,
     EtablissementInfoInfoAlreadyExistError,
     EtablissementInfoNotFoundError,
@@ -10,11 +12,13 @@ from exceptions import (
 )
 
 from models import (
+    Categories,
     Etablissements,
     SousCategories
 )
 
 from schemas import (
+    CreateAndUpdateCategories,
     CreateAndUpdateEtablissements,
     CreateAndUpdateSousCategories
 )
@@ -177,6 +181,72 @@ def delete_souscategories_info(session: Session, _id: int):
         raise SousCategoriesInfoNotFoundError
 
     session.delete(souscategories_info)
+    session.commit()
+
+    return
+
+
+
+
+#### categories ####
+# Function to get list of categories info
+def get_all_categories(session: Session, limit: int, offset: int) -> List[Categories]:
+    return session.query(Categories).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular categories
+def get_categories_info_by_id(session: Session, _id: int) -> Categories:
+    categories_info = session.query(Categories).get(_id)
+
+    if categories_info is None:
+        raise CategoriesInfoNotFoundError
+
+    return categories_info
+
+
+# Function to add a new categories info to the database
+def create_categories(session: Session, ets_info: CreateAndUpdateCategories) -> Categories:
+    categories_details = session.query(Categories).filter(
+            Categories.nom==ets_info.nom,
+            Categories.logo_url==ets_info.logo_url,
+            Categories.created_at==ets_info.created_at,
+            Categories.updated_at==ets_info.updated_at
+        ).first()
+    if categories_details is not None:
+        raise CategoriesInfoInfoAlreadyExistError
+
+    new_categories_info = Categories(**ets_info.dict())
+    session.add(new_categories_info)
+    session.commit()
+    session.refresh(new_categories_info)
+    return new_categories_info
+
+
+# Function to update details of the categories
+def update_categories_info(session: Session, _id: int, info_update: CreateAndUpdateCategories) -> Categories:
+    categories_info = get_categories_info_by_id(session, _id)
+
+    if categories_info is None:
+        raise CategoriesInfoNotFoundError
+
+    categories_info.nom = info_update.nom
+    categories_info.logo_url = info_update.logo_url
+    categories_info.created_at=info_update.created_at
+    categories_info.updated_at=info_update.updated_at
+
+    session.commit()
+    session.refresh(categories_info)
+
+    return categories_info
+
+
+# Function to delete an categories info from the db
+def delete_categories_info(session: Session, _id: int):
+    categories_info = get_categories_info_by_id(session, _id)
+
+    if categories_info is None:
+        raise CategoriesInfoNotFoundError
+
+    session.delete(categories_info)
     session.commit()
 
     return
