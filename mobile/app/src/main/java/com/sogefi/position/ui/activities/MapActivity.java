@@ -36,6 +36,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -131,6 +132,8 @@ public class MapActivity extends AppCompatActivity implements
     TextView duration;
     TextView lenght;
     TextView positionToSave;
+    TextView user_label;
+    TextView user_sub_label;
     EditText saveName;
     EditText origin;
     EditText destination;
@@ -155,12 +158,14 @@ public class MapActivity extends AppCompatActivity implements
     PreferenceManager pref;
     SearchView search;
     MaterialButton searchB;
+    CircularImageView user_image;
     private MapboxMap mapboxMap;
     private MapView mapView;
     private BottomSheetBehavior sheetBehavior;
     private ConstraintLayout bottom_sheet;
     private SymbolManager symbolManager;
     private Symbol symbol;
+
 
     MapBoxUtils mapBoxUtils;
 
@@ -184,6 +189,8 @@ public class MapActivity extends AppCompatActivity implements
         toolbar = findViewById(R.id.toolbar);
         drawer = findViewById(R.id.drawer);
         nav = findViewById(R.id.navigation);
+
+
 
 
         nav.setItemIconTintList(null);
@@ -235,6 +242,11 @@ public class MapActivity extends AppCompatActivity implements
         duration = findViewById(R.id.duration);
         lenght = findViewById(R.id.length);
         positionToSave = findViewById(R.id.positionToSave);
+        View headerView = nav.getHeaderView(0);
+        user_label = headerView.findViewById(R.id.user_label);
+        user_sub_label = headerView.findViewById(R.id.user_sub_label);
+
+        user_image = headerView.findViewById(R.id.user_image);
 
         saveName = findViewById(R.id.saveName);
 
@@ -374,6 +386,18 @@ public class MapActivity extends AppCompatActivity implements
 
         });
 
+        if(!pref.getName().equals("name")) {
+           user_label.setText(pref.getName());
+           user_sub_label.setVisibility(View.VISIBLE);
+           user_sub_label.setText(pref.getEmail());
+           user_image.setOnClickListener(v -> {
+               Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+               startActivity(intent);
+           });
+        } else {
+            user_label.setText("Position");
+        }
+
 
 
     }
@@ -407,7 +431,7 @@ public class MapActivity extends AppCompatActivity implements
                 }
 
             }
-            else if(itemId == R.id.userProfile) {
+          /*  else if(itemId == R.id.userProfile) {
                 if(!pref.getToken().equals("token")) {
                     item.setVisible(true);
                     Intent intent = new Intent(this, ProfileActivity.class);
@@ -420,7 +444,7 @@ public class MapActivity extends AppCompatActivity implements
                     finish();
                 }
 
-            }
+            }*/
             else if(itemId == R.id.myBussiness) {
                 if(pref.getRoleid().equals("3")) {
                     item.setVisible(true);
@@ -466,7 +490,7 @@ public class MapActivity extends AppCompatActivity implements
                 new MaterialAlertDialogBuilder(MapActivity.this)
                         .setView(dialogLanguage)
                         .show();
-            } else if (itemId == R.id.menuRecommend) {
+            } /*else if (itemId == R.id.menuRecommend) {
                 shareRecommend();
                 drawer.closeDrawers();
             } else if (itemId == R.id.tutorielFragment) {
@@ -475,7 +499,7 @@ public class MapActivity extends AppCompatActivity implements
                 drawer.closeDrawers();
                 startActivity(intent);
                 finish();
-            } else if (itemId == R.id.aboutDialog) {
+            }*/ else if (itemId == R.id.aboutDialog) {
                 Intent intent = new Intent(MapActivity.this, AboutActivity.class);
                 drawer.closeDrawers();
                 startActivity(intent);
@@ -1198,6 +1222,9 @@ public class MapActivity extends AppCompatActivity implements
                     pref.setPhone("phone");
                     pref.setId("id");
                     pref.setRoleid("roleid");
+                    Intent intent = new Intent(MapActivity.this, SplashActivity.class);
+                    startActivity(intent);
+                    finish();
                     Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
 
                 }
