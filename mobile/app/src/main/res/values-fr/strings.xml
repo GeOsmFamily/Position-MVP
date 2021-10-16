@@ -3,7 +3,7 @@
     <string name="mapbox_access_token">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
     <string name="app_name">Position</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="version">v0.1.5</string>
+    <string name="version">Version</string>
 
     <string name="format_arrival" translatable="false">HH:mm</string>
     <string name="format_duration">%d min</string>
@@ -103,6 +103,12 @@
     <string name="connectToSaveBusiness">Connectez vous pour enregistrer un etablissement</string>
     <string name="noCommercial">Vous n\'etes pas un commercial</string>
     <string name="connectToViewBusiness">Connectez vous avec votre compte manager pour voir votre etablissement</string>
+    <string name="description">Description</string>
+    <string name="About_us">A propos de nous</string>
+    <string name="mail">Email</string>
+    <string name="ADDRESS_CONTACT">infos@geo.sm</string>
+    <string name="phone">Téléphone</string>
+    <string name="PHONE">+237 6 90 34 25 46</string>
 
 
 </resources>

@@ -33,3 +33,21 @@ class SousCategoriesInfoInfoAlreadyExistError(SousCategoriesInfoException):
     def __init__(self):
         self.status_code = 409
         self.detail = "Sub Category Info Already Exists"
+
+
+
+#### Categories ####
+class CategoriesInfoException(Exception):
+    ...
+
+
+class CategoriesInfoNotFoundError(CategoriesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Category Info Not Found"
+
+
+class CategoriesInfoInfoAlreadyExistError(CategoriesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Category Info Already Exists"

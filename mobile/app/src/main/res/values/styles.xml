@@ -122,4 +122,20 @@
         <item name="navigationViewListBackground">@color/bottom_sheet_surface_darker</item>
     </style>
     <!-- endregion -->
+
+    <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+    </style>
+
+    <style name="MyToolbarTheme" parent="ActionBarThemeOverlay" />
+
+
+    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColorPrimary">@color/green</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlHighlight">@color/md_grey_200</item>
+    </style>
+
+
 </resources>
