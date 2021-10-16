@@ -59,4 +59,24 @@ class PaginatedSousCategoriesInfo(BaseModel):
     data: List[SousCategories]
 
 
+#### categories schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateCategories(BaseModel):
+    id: Optional[int]
+    nom : str
+    logo_url : Optional[str]
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+# TO support list and get APIs
+class Categories(CreateAndUpdateCategories):
+    id: int
+    class Config():
+        orm_mode = True
+# To support list Etablissement APISousCategories
+class PaginatedCategoriesInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Categories]
+
+
 

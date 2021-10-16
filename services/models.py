@@ -37,3 +37,14 @@ class SousCategories(Base):
     id_categorie = Column(String(191), index=True)
     created_at = Column(Date)
     updated_at = Column(Date)
+
+
+#### catégories models ####
+class Categories(Base):
+    __tablename__ = "categories"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nom = Column(String(191), index=True)
+    logo_url = Column(String(191), index=True)
+    created_at = Column(Date)
+    updated_at = Column(Date)

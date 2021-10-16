@@ -5,27 +5,35 @@ from auth import verify_token
 from sqlalchemy.orm import Session
 from crud import (
     create_souscategories,
+    delete_categories_info,
     delete_ets_info,
     delete_souscategories_info,
+    get_all_categories,
     get_all_ets_by_payment,
     get_all_souscategories,
+    get_categories_info_by_id,
     get_etablissement_info_by_id,
     get_all_ets,
     create_ets,
+    create_categories,
     get_souscategories_info_by_id,
+    update_categories_info,
     update_ets_info,
     update_souscategories_info,
 )
 from database import get_db
 from exceptions import (
+    CategoriesInfoException,
     EtablissementInfoException,
     SousCategoriesInfoException
 )
 from schemas import (
+    Categories,
+    CreateAndUpdateCategories,
     Etablissement,
     CreateAndUpdateEtablissements,
+    PaginatedCategoriesInfo,
     PaginatedEtablissementInfo,
-
     SousCategories,
     CreateAndUpdateSousCategories,
     PaginatedSousCategoriesInfo,
@@ -227,4 +235,95 @@ def delete_souscategories(souscategories_id: int, session: Session = Depends(get
     try:
         return delete_souscategories_info(session, souscategories_id)
     except SousCategoriesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+
+
+
+
+#### Categories ####
+# Example of Class based view
+@cbv(router)
+class Categorie:
+    session: Session = Depends(get_db)
+
+    # API to get the list of categories info
+    @router.get("/categories", response_model=PaginatedCategoriesInfo)
+    def list_ets(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        categories_list = get_all_categories(self.session, limit, offset)
+        response = {"limit": limit, "offset": offset, "data": categories_list}
+
+        return response
+
+    # API endpoint to add a categories info to the database
+    @router.post("/categories")
+    def add_categories(self, categories_info: CreateAndUpdateCategories, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        try:
+            categories_info = create_categories(self.session, categories_info)
+            return categories_info
+        except CategoriesInfoException as cie:
+            raise HTTPException(**cie.__dict__)
+
+
+# API endpoint to get info of a particular categories
+@router.get("/categories/", response_model=Categories)
+def get_categories_info(categories_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        categories_info = get_categories_info_by_id(session, categories_id)
+        return categories_info
+    except CategoriesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+
+# API to update a existing categories info
+@router.put("/categories/", response_model=Categories)
+def update_categories(categories_id: int, new_info: CreateAndUpdateCategories, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        categories_info = update_categories_info(session, categories_id, new_info)
+        return categories_info
+    except CategoriesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+
+# API to delete a categories info from the data base
+@router.delete("/categories/")
+def delete_categories(categories_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        return delete_categories_info(session, categories_id)
+    except CategoriesInfoException as cie:
         raise HTTPException(**cie.__dict__)
