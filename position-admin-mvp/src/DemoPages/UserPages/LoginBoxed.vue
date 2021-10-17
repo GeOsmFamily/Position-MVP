@@ -138,11 +138,11 @@ export default {
       this.submitted = true;
       this.$v.$touch()
       if (this.$v.$invalid) {
-        console.log("invalid");
         this.loading = false;
       } else {
-        if (this.user.username && this.user.password) {
-          this.$store.dispatch('auth/login', this.user).then(
+        const user = new User(this.email,this.password);
+        if (user.email && user.password) {
+          this.$store.dispatch('auth/login', user).then(
             () => {
               this.$router.push('/profile');
             },

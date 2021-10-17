@@ -1,13 +1,19 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/auth/';
+const API_URL = 'https://services.position.cm/';
 
 class AuthService {
   login(user) {
     return axios
-      .post(API_URL + 'signin', {
-        username: user.username,
+      .post(API_URL + 'auth/login', {
+        email: user.email,
         password: user.password
+      },{
+        headers:{
+          "Access-Control-Allow-Origin": "*",
+          "Accept":"application/json",
+          "Content-Type": "application/json"
+        }
       })
       .then(response => {
         if (response.data.accessToken) {
