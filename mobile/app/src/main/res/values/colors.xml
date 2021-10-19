@@ -23,6 +23,8 @@
     <color name="color_hint_text">#D0D1D5</color>
     <color name="color_click_overlay">#555555</color>
 
+    <color name="backgroundgray">#f4f3f3</color>
+
 
     <!-- Resources for IPhoneXXS01Activity -->
 

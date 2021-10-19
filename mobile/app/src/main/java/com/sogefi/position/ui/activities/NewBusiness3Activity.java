@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.sogefi.position.R;
+
 public class NewBusiness3Activity extends AppCompatActivity {
 
     @Override
