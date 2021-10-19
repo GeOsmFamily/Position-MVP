@@ -4,6 +4,7 @@ from typing import Optional, List
 from datetime import datetime
 
 
+
 #### Etablissements schemas ####
 # TO support creation and update APIs
 class CreateAndUpdateEtablissements(BaseModel):
@@ -77,6 +78,52 @@ class PaginatedCategoriesInfo(BaseModel):
     limit: int
     offset: int
     data: List[Categories]
+
+
+
+#### managers schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateManagers(BaseModel):
+    id: Optional[int]
+    id_user : int
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+# TO support list and get APIs
+class Managers(CreateAndUpdateManagers):
+    id: int
+    class Config():
+        orm_mode = True
+# To support list Managers APISousManagers
+class PaginatedManagersInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Managers]
+
+
+
+#### commercials schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateCommercials(BaseModel):
+    id: Optional[int]
+    revenu_total : int
+    id_user : int
+    nombre_etablissement : int
+    numero_cni : str
+    ville: str
+    quartier: str
+    image_profil: str
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+# TO support list and get APIs
+class Commercials(CreateAndUpdateCommercials):
+    id: int
+    class Config():
+        orm_mode = True
+# To support list Commercials APISousCommercials
+class PaginatedCommercialsInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Commercials]
 
 
 

@@ -51,3 +51,34 @@ class CategoriesInfoInfoAlreadyExistError(CategoriesInfoException):
     def __init__(self):
         self.status_code = 409
         self.detail = "Category Info Already Exists"
+
+
+
+#### Managers ####
+class ManagersInfoException(Exception):
+    ...
+
+class ManagersInfoNotFoundError(ManagersInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Managers Info Not Found"
+
+class ManagersInfoInfoAlreadyExistError(ManagersInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Managers Info Already Exists"
+
+
+#### Commercials ####
+class CommercialsInfoException(Exception):
+    ...
+
+class CommercialsInfoNotFoundError(CommercialsInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Commercials Info Not Found"
+
+class CommercialsInfoInfoAlreadyExistError(CommercialsInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Commercials Info Already Exists"

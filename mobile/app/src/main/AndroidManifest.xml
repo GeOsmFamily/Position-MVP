@@ -16,6 +16,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity
+            android:name=".ui.activities.NewBusiness4Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.NewBusiness3Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.NewBusiness2Activity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.AboutActivity"
             android:exported="false" />
         <activity

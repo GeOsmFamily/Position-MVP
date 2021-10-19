@@ -48,3 +48,31 @@ class Categories(Base):
     logo_url = Column(String(191), index=True)
     created_at = Column(Date)
     updated_at = Column(Date)
+
+
+#### Managers models ####
+class Managers(Base):
+    __tablename__ = "managers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_user = Column(Integer)
+    created_at = Column(Date)
+    updated_at = Column(Date)
+
+
+#### Commercials models ####
+class Commercials(Base):
+    __tablename__ = "commercials"
+
+    id = Column(Integer, primary_key=True, index=True)
+    revenu_total = Column(Integer)
+    id_user = Column(Integer)
+    nombre_etablissement = Column(Integer)
+    numero_cni = Column(String(191), index=True)
+    ville = Column(String(191), index=True)
+    quartier = Column(String(191), index=True)
+    image_profil = Column(String(191), index=True)
+    created_at = Column(Date)
+    updated_at = Column(Date)
+
+
