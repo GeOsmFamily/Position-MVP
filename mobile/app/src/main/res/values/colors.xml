@@ -23,6 +23,7 @@
     <color name="color_hint_text">#D0D1D5</color>
     <color name="color_click_overlay">#555555</color>
 
+
     <!-- Resources for IPhoneXXS01Activity -->
 
     <!-- Resources for IPhoneXXS07Activity -->
@@ -125,4 +126,6 @@
     <color name="iphone_xxs11_activity_group21_constraint_layout_border_color">#FFFFFF</color>
     <color name="iphone_xxs11_activity_constraint_layout_constraint_layout_background_color">#FFFFFF</color>
     <color name="iphone_xxs11_activity_group16_constraint_layout_border_color">#FFFFFF</color>
+
+
 </resources>
