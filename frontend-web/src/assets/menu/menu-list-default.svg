@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="154px" height="24px" viewBox="0 0 154 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>menu/menu-list-default</title>
+    <g id="menu/menu-list-default" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <text id="Mes-lieux-enregistré" font-family="Roboto-Regular, Roboto" font-size="12" font-weight="normal" fill="#616161">
+            <tspan x="30" y="16">Mes lieux enregistrés</tspan>
+        </text>
+        <g id="Group" stroke="#05BF95" stroke-width="1.5">
+            <g id="Fill-1">
+                <path d="M17.249488,4.75327019 L17.249488,18.9681291 L12.0008785,14.6743719 L6.75051201,18.971556 L6.75051201,4.8879489 L17.249488,4.75327019 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

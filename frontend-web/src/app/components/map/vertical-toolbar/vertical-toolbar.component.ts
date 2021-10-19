@@ -1,9 +1,11 @@
 import { Component, OnInit , Input} from '@angular/core';
+import { Router } from '@angular/router';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import {
   Feature,Map
 
 } from 'src/app/modules/ol';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { MapComponent } from '../map.component';
 @Component({
   selector: 'app-vertical-toolbar',
@@ -13,7 +15,7 @@ import { MapComponent } from '../map.component';
 export class VerticalToolbarComponent implements OnInit {
   @Input() map: Map | undefined;
  maphelper= new MapHelper()
-  constructor(public mapcomponent:MapComponent) { }
+  constructor(public mapcomponent:MapComponent,private router:Router,public authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -31,5 +33,27 @@ export class VerticalToolbarComponent implements OnInit {
     } else {
       this.map?.getView().setZoom(this.map?.getView().getZoom()! - 1);
     }
+  }
+
+  ajout_etablissement(){
+    this.router.navigate(['ajouterEtablissement'])
+
+
+
+
+  }
+  logout(){
+
+    if(localStorage.getItem('access_token')!=null)
+        {
+          console.log(localStorage.getItem('access_token'))
+          //console.log( this.authService.headers)
+          this.authService.logout()
+          console.log(localStorage.getItem('access_token'+0))
+          localStorage.removeItem('access_token')
+
+        }
+      //  console.log(localStorage.getItem('access_token'))
+    this.router.navigate(['home'])
   }
 }

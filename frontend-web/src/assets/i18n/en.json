@@ -1,0 +1,20 @@
+{
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password",
+    "createAccount": "Create an Account",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "register": {
+    "name": "Full Name",
+    "email": "Email",
+    "passwordConfirm": "Confirm Password",
+    "createAccount": "Create Account",
+    "haveAccount": "I already have an account"
+  },
+  "reset": {
+    "resetPassword": "Reset password"
+  }
+}

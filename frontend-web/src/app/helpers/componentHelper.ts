@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { LoginComponent } from "../components/auth/login/login.component";
 import { FicheEntrepriseComponent } from './../components/map/fiche-entreprise/fiche-entreprise.component';
 
 @Injectable({
@@ -8,6 +9,7 @@ export class ComponentHelper{
 
  ficheEntrepriseComponent: FicheEntrepriseComponent | undefined
 
+ loginComponent: LoginComponent | undefined
 
  //display and close profilComponent
   openFicheEntreprise(){
@@ -18,6 +20,14 @@ export class ComponentHelper{
     this.ficheEntrepriseComponent?.close()
   }
 
+//display and close loginComponent
+openloginPage(){
+  console.log("openFicheEntreprise")
+  this.loginComponent?.open()
+}
+closeloginPage(){
+  this.loginComponent?.close()
+}
 
 
 
@@ -25,9 +35,9 @@ export class ComponentHelper{
     if(component=='FicheEntrepriseComponent'){
       this.ficheEntrepriseComponent=comp
     }
-    /*if(component=='MenuComponent'){
-      this.menuComponent=comp
-    }*/
+    if(component=='LoginComponent'){
+      this.loginComponent=comp
+    }
   }
 }
 

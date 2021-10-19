@@ -12,6 +12,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import { FicheEntrepriseComponent } from './fiche-entreprise/fiche-entreprise.component';
+import { LoginComponent } from '../auth/login/login.component';
 
 
 
@@ -46,6 +47,12 @@ coordinates=[0,0]
 
 @ViewChild(FicheEntrepriseComponent, { static: true })
 ficheEntrepriseComponent: FicheEntrepriseComponent | undefined;
+
+@ViewChild(LoginComponent, { static: true })
+loginComponent: LoginComponent | undefined;
+
+
+
 
   constructor(public componentHelper: ComponentHelper) {
 

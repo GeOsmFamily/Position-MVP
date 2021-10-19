@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/icon-arrow_drop_down</title>
+    <defs>
+        <path d="M8.70623277,11.41375 L11.2962328,14.00375 C11.6862328,14.39375 12.3162328,14.39375 12.7062328,14.00375 L15.2962328,11.41375 C15.9262328,10.78375 15.4762328,9.70375 14.5862328,9.70375 L9.40623277,9.70375 C8.51623277,9.70375 8.07623277,10.78375 8.70623277,11.41375 Z" id="path-1"></path>
+    </defs>
+    <g id="icon/icon-arrow_drop_down" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="icon/navigation/arrow_drop_down_24px" fill="#013F5F" fill-rule="nonzero" xlink:href="#path-1"></use>
+    </g>
+</svg>

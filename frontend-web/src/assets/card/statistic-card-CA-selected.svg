@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150px" height="90px" viewBox="0 0 150 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>card/statistic-card-CA-selected</title>
+    <g id="card/statistic-card-CA-selected" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#05BF95" x="0" y="0" width="150" height="90" rx="8"></rect>
+        <text id="10-000-XAF" font-family="Roboto-Bold, Roboto" font-size="24" font-weight="bold" fill="#FFFFFF">
+            <tspan x="12.328125" y="36">10 000 XAF</tspan>
+        </text>
+        <text id="chiffre-d’affaire" font-family="Roboto-Bold, Roboto" font-size="12" font-weight="bold" line-spacing="20" fill="#FFFFFF">
+            <tspan x="33.4394531" y="71">chiffre d’affaire</tspan>
+        </text>
+        <line x1="0.5" y1="50.5" x2="150.5" y2="50.5" id="Line-3" stroke="#EEEEEE" stroke-linecap="square"></line>
+    </g>
+</svg>
