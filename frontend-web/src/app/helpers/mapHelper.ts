@@ -115,22 +115,11 @@ export class MapHelper {
     let positionFeature = new Feature();
     positionFeature.setStyle(
       [
-        new Style({
-        image: new CircleStyle({
-          radius: 8,
-          fill: new Fill({
-            color: '#023f5f',
-          }),
-          // stroke: new Stroke({
-          //   color: '#fff',
-          //   width: 0,
-          // }),
-        }),
-      }),
+        
       new Style({
         image: new Icon({
-          scale: 0.7,
-          src: '/assets/geolocation_pin.png',
+        scale: 0.1,
+          src: '/assets/location-marker.svg',
           anchor:[0.5,0.95]
         }),
         // text: new Text({

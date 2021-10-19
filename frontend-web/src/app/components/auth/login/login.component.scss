@@ -62,7 +62,7 @@ input{
 
 }
 #btn-connexion{
-  margin-left:10px;
+ // margin-left:10px;
   //float: right;
   line-height:2;
 display: table-column;
@@ -87,9 +87,7 @@ display: table-column;
     text-align: center;
     box-shadow: none;
     border: none;
-    #btn-connexion{
-      //float: right;
-    }
+
   }
   .champ{
     text-align: left;
@@ -109,9 +107,7 @@ display: table-column;
 
 
  @media (min-width: 768px) {
-  .container-btn{
-    //width: 15em;
-  }
+  
   mat-card{
     margin-left: auto;
   margin-right: auto;

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder , FormGroup} from '@angular/forms';
+import { AbstractControl, FormBuilder , FormGroup} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
-
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -12,22 +12,29 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup = this.fb.group({
-    email: [''],
-    password: [''],
-  });
+    email: ['', [Validators.required,Validators.minLength(9),Validators.maxLength(20), Validators.email]],
+    password: ['',[Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
+  },
+  );
+  submitted = false;
 
   constructor(private router:Router,private fb: FormBuilder, public authService: AuthService) {
 
    }
 
-  registerPage(){
-    this.router.navigate(['register'])
-  }
-  resetPwdPage(){
-    this.router.navigate(['resetPassword'])
-  }
-  submit(){
 
+   get f(): { [key: string]: AbstractControl } {
+    return this.loginForm.controls;
+  }
+
+  submit(): void {
+    this.submitted = true;
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    //console.log(JSON.stringify(this.loginForm.value, null, 2));
 
     this.authService
     .login(this.loginForm.value.email, this.loginForm.value.password)
@@ -48,8 +55,21 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['ajouterEtablissement']);
       }
     });
-
   }
+
+  onReset(): void {
+    this.submitted = false;
+    this.loginForm.reset();
+  }
+
+
+  registerPage(){
+    this.router.navigate(['register'])
+  }
+  resetPwdPage(){
+    this.router.navigate(['resetPassword'])
+  }
+
   ngOnInit(): void {
   }
 
