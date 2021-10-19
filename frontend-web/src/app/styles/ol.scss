@@ -347,7 +347,7 @@
 
 .ol-attribution ul,
 .ol-attribution button {
-  display: inline-block;
+  display: none;
 }
 
 .ol-attribution.ol-collapsed ul {
@@ -433,3 +433,7 @@
 .ol-overviewmap .ol-overviewmap-box:hover {
   cursor: move;
 }
+.openlayers-map {
+  height: 100% !important;
+}
+

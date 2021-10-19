@@ -1,0 +1,70 @@
+<mat-card style="">
+  <div class="conatiner">
+    <img id="logo-position" mat-card-image src="assets/logo-nom.svg" alt="logo position" >
+
+  </div>
+  <img id="logo-welcome" mat-card-image src="assets/welcome-large.svg" alt="logo position">
+
+  <mat-card-content>
+    <form class="form" [formGroup]="registerForm" (submit)="submit()">
+
+
+        <div class="champ" fxLayout="column" >
+          <div>
+            <mat-label >Nom complet</mat-label>
+          </div>
+          <div>
+            <input type="text"   formControlName="name" required>
+
+          </div>
+        </div>
+
+
+        <div class="champ" fxLayout="column" >
+          <div>
+            <mat-label >Email</mat-label>
+          </div>
+          <div>
+            <input type="email"   formControlName="email" required>
+
+          </div>
+        </div>
+
+        <div class="champ" fxLayout="column" >
+          <div>
+            <mat-label >Mot de passe</mat-label>
+          </div>
+          <div>
+            <input type="password"   formControlName="password" name="password" id="password" class="form-control"  required>
+
+          </div>
+        </div>
+        <div class="champ" fxLayout="column" >
+          <div>
+            <mat-label >Confirmation de mot de passe</mat-label>
+          </div>
+          <div>
+            <input type="password"   formControlName="c_password" name="c_password" id="c_password" required>
+
+          </div>
+        </div>
+        <div class="container-forget-password " fxLayout="row" >
+          <a id="forgotten-password" type="button"  (click)='loginPage()'>
+            Compte existant?
+          </a>
+
+      </div>
+
+      <div class="container-btn" fxLayout="row"  fxLayoutGap="2%" >
+          <div fxLayoutAlign="start start">
+
+            <button mat-raised-button id="btn-creer-compte" type="submit">Enregistrer</button>
+
+          </div>
+
+        </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
+<app-footer></app-footer>
