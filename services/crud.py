@@ -4,22 +4,30 @@ from sqlalchemy.orm import Session
 from exceptions import (
     CategoriesInfoInfoAlreadyExistError,
     CategoriesInfoNotFoundError,
+    CommercialsInfoInfoAlreadyExistError,
+    CommercialsInfoNotFoundError,
     EtablissementInfoException,
     EtablissementInfoInfoAlreadyExistError,
     EtablissementInfoNotFoundError,
+    ManagersInfoInfoAlreadyExistError,
+    ManagersInfoNotFoundError,
     SousCategoriesInfoInfoAlreadyExistError,
     SousCategoriesInfoNotFoundError
 )
 
 from models import (
     Categories,
+    Commercials,
     Etablissements,
+    Managers,
     SousCategories
 )
 
 from schemas import (
     CreateAndUpdateCategories,
+    CreateAndUpdateCommercials,
     CreateAndUpdateEtablissements,
+    CreateAndUpdateManagers,
     CreateAndUpdateSousCategories
 )
 
@@ -250,3 +258,146 @@ def delete_categories_info(session: Session, _id: int):
     session.commit()
 
     return
+
+
+
+
+
+#### Managers ####
+# Function to get list of managers info
+def get_all_managers(session: Session, limit: int, offset: int) -> List[Managers]:
+    return session.query(Managers).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular categories
+def get_managers_info_by_id(session: Session, _id: int) -> Managers:
+    managers_info = session.query(Managers).get(_id)
+
+    if managers_info is None:
+        raise ManagersInfoNotFoundError
+
+    return managers_info
+
+
+# Function to add a new managers info to the database
+def create_managers(session: Session, info: CreateAndUpdateManagers) -> Managers:
+    managers_details = session.query(Managers).filter(
+            Managers.id_user==info.id_user,
+            Managers.created_at==info.created_at,
+            Managers.updated_at==info.updated_at
+        ).first()
+    if managers_details is not None:
+        raise ManagersInfoInfoAlreadyExistError
+
+    new_categories_info = Managers(**info.dict())
+    session.add(new_categories_info)
+    session.commit()
+    session.refresh(new_categories_info)
+    return new_categories_info
+
+
+# Function to update details of the managers
+def update_managers_info(session: Session, _id: int, info_update: CreateAndUpdateManagers) -> Managers:
+    managers_info = get_managers_info_by_id(session, _id)
+
+    if managers_info is None:
+        raise ManagersInfoNotFoundError
+
+    managers_info.nom = info_update.id_user
+    managers_info.created_at=info_update.created_at
+    managers_info.updated_at=info_update.updated_at
+
+    session.commit()
+    session.refresh(managers_info)
+
+    return managers_info
+
+
+# Function to delete an managers info from the db
+def delete_managers_info(session: Session, _id: int):
+    managers_info = get_managers_info_by_id(session, _id)
+
+    if managers_info is None:
+        raise ManagersInfoNotFoundError
+
+    session.delete(managers_info)
+    session.commit()
+
+    return
+
+
+
+
+
+#### Commercials ####
+# Function to get list of commercials info
+def get_all_commercials(session: Session, limit: int, offset: int) -> List[Commercials]:
+    return session.query(Commercials).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular commercials
+def get_commercials_info_by_id(session: Session, _id: int) -> Commercials:
+    commercials_info = session.query(Commercials).get(_id)
+
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+
+    return commercials_info
+
+
+# Function to add a new commercials info to the database
+def create_commercials(session: Session, info: CreateAndUpdateCommercials) -> Commercials:
+    commercials_details = session.query(Commercials).filter(
+            Commercials.revenu_total==info.revenu_total,
+            Commercials.id_user==info.id_user,
+            Commercials.nombre_etablissement==info.nombre_etablissement,
+            Commercials.numero_cni==info.numero_cni,
+            Commercials.ville==info.ville,
+            Commercials.quartier==info.quartier,
+            Commercials.image_profil==info.image_profil,
+            Commercials.created_at==info.created_at,
+            Commercials.updated_at==info.updated_at
+            
+        ).first()
+    if commercials_details is not None:
+        raise CommercialsInfoInfoAlreadyExistError
+
+    new_commercials_info = Commercials(**info.dict())
+    session.add(new_commercials_info)
+    session.commit()
+    session.refresh(new_commercials_info)
+    return new_commercials_info
+
+
+# Function to update details of the commercials
+def update_commercials_info(session: Session, _id: int, info_update: CreateAndUpdateCommercials) -> Commercials:
+    commercials_info = get_commercials_info_by_id(session, _id)
+
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+
+    commercials_info.revenu_total = info_update.revenu_total
+    commercials_info.id_user=info_update.id_user
+    commercials_info.nombre_etablissement=info_update.nombre_etablissement
+    commercials_info.numero_cni=info_update.numero_cni
+    commercials_info.ville=info_update.ville
+    commercials_info.quartier=info_update.quartier
+    commercials_info.image_profil=info_update.image_profil
+    commercials_info.updated_at=info_update.created_at
+    commercials_info.updated_at=info_update.updated_at
+
+    session.commit()
+    session.refresh(commercials_info)
+
+    return commercials_info
+
+
+# Function to delete an commercials info from the db
+def delete_commercials_info(session: Session, _id: int):
+    commercials_info = get_commercials_info_by_id(session, _id)
+
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+
+    session.delete(commercials_info)
+    session.commit()
+
+    return 
