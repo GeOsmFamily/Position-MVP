@@ -6,10 +6,10 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiServiceService {
+export class ApiService {
   headers: HttpHeaders = new HttpHeaders({});
   headers_nodejs: Headers = new Headers({});
- // url_prefix = environment.url_prefix;
+  url_prefix = environment.url_backend;
 
   headersPhoton = new HttpHeaders()
     .set('Access-Control-Allow-Origin', '*')
@@ -51,7 +51,7 @@ export class ApiServiceService {
     return promise;
   }
 
-/*  getRequest(path: string): Promise<any> {
+ getRequest(path: string): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.http
         .get(this.url_prefix + path, { headers: this.headers })
@@ -73,7 +73,9 @@ export class ApiServiceService {
   post_requete(url: string, data: Object): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(this.url_prefix + url, data, { headers: this.get_header() })
+        .post(this.url_prefix + url, data,{
+          headers: this.get_header(),
+        })
         .toPromise()
         .then(
           (res) => {
@@ -86,5 +88,23 @@ export class ApiServiceService {
           }
         );
     });
-  }*/
+  }
+
+  logout_post_requete(url: string, data: Object): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .post(this.url_prefix + url, data, { 'headers': {'Authorization': 'Bearer  ' + localStorage.getItem('access_token')} })
+        .toPromise()
+        .then(
+          (res) => {
+            resolve(res);
+          },
+          (msg) => {
+            // Error
+
+            reject(msg.error);
+          }
+        );
+    });
+  }
 }

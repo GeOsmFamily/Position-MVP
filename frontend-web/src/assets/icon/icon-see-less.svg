@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/icon-see-less</title>
+    <defs>
+        <path d="M8.125,14.9999928 L12.005,11.1199928 L15.885,14.9999928 C16.275,15.3899928 16.905,15.3899928 17.295,14.9999928 C17.685,14.6099928 17.685,13.9799928 17.295,13.5899928 L12.705,8.9999928 C12.5181685,8.81274013 12.2645176,8.7075072 12,8.7075072 C11.7354824,8.7075072 11.4818315,8.81274013 11.295,8.9999928 L6.705,13.5899928 C6.315,13.9799928 6.315,14.6099928 6.705,14.9999928 C7.095,15.3799928 7.735,15.3899928 8.125,14.9999928 Z" id="path-1"></path>
+    </defs>
+    <g id="icon/icon-see-less" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="icon/hardware/keyboard_arrow_up_24px" fill="#9E9E9E" fill-rule="nonzero" xlink:href="#path-1"></use>
+    </g>
+</svg>

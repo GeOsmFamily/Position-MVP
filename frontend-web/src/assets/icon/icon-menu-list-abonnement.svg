@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/icon-menu-list-abonnement</title>
+    <g id="icon/icon-menu-list-abonnement" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <line x1="17.5" y1="13.5" x2="12.5" y2="13.5" id="Line-2" stroke="#05BF95" stroke-width="1.5" stroke-linecap="round"></line>
+        <line x1="17.5" y1="15.4951207" x2="9.68110271" y2="15.4951207" id="Line-2" stroke="#05BF95" stroke-width="1.5" stroke-linecap="round"></line>
+        <rect id="Rectangle" stroke="#05BF95" stroke-width="1.5" x="4" y="6" width="16" height="12" rx="2"></rect>
+        <rect id="Rectangle" stroke="#05BF95" stroke-width="1.75" x="7" y="9.01113007" width="2" height="1"></rect>
+    </g>
+</svg>

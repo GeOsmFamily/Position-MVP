@@ -3,12 +3,20 @@
 <div  class="primaryColorBG buttons" >
   <div class="vertical-toolbar-groupe-btn-1">
     <div id="zooms"> </div>
+    <div id="logout">
+      <button matTooltip="" style="  border: 2px solid white;
+      background-color: #FFFFFF;
+      height: 50px;
+      border-radius:50%;
+      width: 50px;cursor: pointer;" (click)="logout()">
+        fermer
+      </button>
     <div id="myLocation">
       <button matTooltip="" style="  border: 2px solid white;
       background-color: #FFFFFF;
       height: 50px;
       border-radius:50%;
-      width: 50px;cursor: pointer;" (click)="userLocation()">
+      width: 50px;cursor: pointer;" (click)="ajout_etablissement()">
         <img src="assets/enterprise-svgrepo-com.svg">
       </button>
     </div>

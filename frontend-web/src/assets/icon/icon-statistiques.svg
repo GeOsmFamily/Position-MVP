@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/icon-statistiques</title>
+    <g id="icon/icon-statistiques" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#05BF95" x="3" y="11" width="3" height="8" rx="1"></rect>
+        <rect id="Rectangle" fill="#05BF95" x="8" y="8" width="3" height="11" rx="1"></rect>
+        <rect id="Rectangle" fill="#05BF95" x="18" y="5" width="3" height="14" rx="1"></rect>
+        <rect id="Rectangle" fill="#05BF95" x="13" y="9" width="3" height="10" rx="1"></rect>
+    </g>
+</svg>

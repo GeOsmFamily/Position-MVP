@@ -12,7 +12,8 @@ import {
   map,
   catchError,
 } from 'rxjs/operators';
-import { ApiServiceService } from 'src/app/services/api/api.service';
+import { ApiService } from 'src/app/services/api/api.service';
+
 
 @Component({
   selector: 'app-header',
@@ -32,7 +33,7 @@ export class HeaderComponent implements OnInit {
     };
 
 
-  constructor(public fb: FormBuilder,  public apiService: ApiServiceService,) {
+  constructor(public fb: FormBuilder,  public apiService: ApiService,) {
 
   }
 
@@ -72,11 +73,11 @@ export class HeaderComponent implements OnInit {
   }>[] {
 
 
-    var querryObs = [
+    var querryObs: Observable<{ type: string; error: boolean; value: { [key: string]: any; }; }>[] = [
 
     ];
 
-      querryObs.push(
+ /*     querryObs.push(
         from(
           this.apiService.getRequestFromOtherHost(
             'https://nominatim.openstreetmap.org/search?q=' +
@@ -92,7 +93,7 @@ export class HeaderComponent implements OnInit {
             of({ error: true, type: 'nominatim', value: { features: [] } })
           )
         )
-      );
+      );*/
 
 
 
