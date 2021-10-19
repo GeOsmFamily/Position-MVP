@@ -1,28 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/loginActivity"
-        android:icon="@drawable/ic_baseline_person_24"
-        android:title="@string/connect" />
-    <item
-        android:id="@+id/favoritesFragment"
-        android:icon="@drawable/ic_favoris"
-        android:title="@string/menu_favorites" />
-    <item
-        android:id="@+id/menuLanguage"
-        android:icon="@drawable/ic_langue"
-        android:title="@string/menu_language" />
-    <item
-        android:id="@+id/menuRecommend"
-        android:icon="@drawable/ic_recommander"
-        android:title="@string/menu_recommand" />
-    <item
-        android:id="@+id/tutorielFragment"
-        android:icon="@drawable/ic_tutoriel"
-        android:title="@string/menu_tuto" />
-    <item
-        android:id="@+id/aboutDialog"
-        android:icon="@drawable/ic_baseline_info_24"
-        android:title="@string/menu_about" />
+    <group>
+        <item
+            android:id="@+id/myBussiness"
+            android:icon="@drawable/ic_baseline_business_24"
+            android:title="@string/myBussiness"/>
+
+
+    </group>
+
+    <group android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/favoritesFragment"
+            android:icon="@drawable/ic_favoris"
+            android:title="@string/menu_favorites" />
+        <item
+            android:id="@+id/menuLanguage"
+            android:icon="@drawable/ic_langue"
+            android:title="@string/menu_language" />
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/aboutDialog"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="@string/menu_about" />
+
+        <item
+            android:id="@+id/loginActivity"
+            android:icon="@drawable/ic_baseline_login_24"
+            android:title="@string/connect" />
+    </group>
+
+
+
 </menu>

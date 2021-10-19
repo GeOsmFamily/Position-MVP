@@ -107,6 +107,13 @@ dependencies {
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
+    //JWT
+    implementation 'com.auth0.android:jwtdecode:2.0.0'
+
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
+
 
 
 }

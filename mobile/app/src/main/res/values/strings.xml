@@ -2,7 +2,7 @@
     <string name="mapbox_access_token">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
     <string name="app_name">Position</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="version">v0.1.5</string>
+    <string name="version">Version</string>
 
 
     <string name="tuto_start">Start</string>
@@ -92,7 +92,22 @@
 
     <string name="fill">Fill in all the fields</string>
 
-    <string name="connect">Login to your account</string>
+    <string name="connect">Login-Logout</string>
 
     <string name="logout">Logout</string>
+    <string name="addNewBussiness">New Bussiness</string>
+    <string name="myBussiness">My Business</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+
+    <string name="connectToSaveBusiness">Login to register an establishment</string>
+    <string name="noCommercial">You are not a salesman</string>
+    <string name="connectToViewBusiness">Log in with your manager account to see your establishment</string>
+    <string name="app_version" translatable="false">v0.1.5+Build01</string>
+    <string name="description">Description</string>
+    <string name="About_us">A propos de nous</string>
+    <string name="mail">Email</string>
+    <string name="ADDRESS_CONTACT">infos@geo.sm</string>
+    <string name="phone">Phone</string>
+    <string name="PHONE">+237 6 90 34 25 46</string>
 </resources>
