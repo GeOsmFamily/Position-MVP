@@ -6,4 +6,4 @@ services:
     ports:
       - "8000:15500"
     volumes:
-      - ./app/:/usr/src/app
+      - ./prod/:/usr/src/app
