@@ -6,7 +6,25 @@
   right: 0;
   width: 100%;
   height: 100%;
+  margin: 0;
+
 
 }
 
+@media (max-width: 283px){
+  #map{
+  margin:0px
+  }
+}
 
+app-fiche-entreprise {
+  position: absolute;
+  left: -360px;
+  top: 0px;
+  bottom: 0px;
+  width: 360px;
+  transition: 0.5s;
+  background: #fff;
+  z-index: 2;
+  overflow-y: auto;
+}

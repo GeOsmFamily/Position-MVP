@@ -1,0 +1,72 @@
+div.item {
+  vertical-align: top;
+  display: inline-block;
+  text-align: center;
+  //width: 120px;
+  margin-left: 10px;
+}
+img {
+  //width: 100px;
+  //height: 100px;
+  //background-color: grey;
+}
+.caption {
+  display: block;
+  color: #05BF95;
+}
+.caption:focus{
+ color:#05BF95;
+}
+
+.clear-logo
+{
+  float: right;
+
+  width:20px;
+}
+
+.parent {
+  position: relative;
+  display: inline-block;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  border-radius: 90px;
+  background-color: white;
+  width: 30px;
+  height: 30px;
+}
+
+
+.horaires{
+ float:left;
+  width:70%;
+  //padding-left:10%;
+}
+.logo-wrapper {
+	float:left;
+    width:20%;
+}
+.logo-wrapper img{
+    max-width:100%
+}
+
+.logo {
+    position: relative;
+    /* padding-top: 50%; */
+    height: 100%;
+}
+.openCloseTime,.adresse
+{
+  margin-left: -40px;
+  margin-top: 6px;
+}
+hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}

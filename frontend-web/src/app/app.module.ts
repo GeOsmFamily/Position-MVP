@@ -6,16 +6,28 @@ import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
 import { VerticalToolbarComponent } from './components/map/vertical-toolbar/vertical-toolbar.component';
 import { MaterialModule } from './modules/material';
+import { HeaderComponent } from './components/map/header/header.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { FicheEntrepriseComponent } from './components/map/fiche-entreprise/fiche-entreprise.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    VerticalToolbarComponent
+    VerticalToolbarComponent,
+    HeaderComponent,
+    FicheEntrepriseComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MaterialModule 
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
