@@ -60,7 +60,7 @@
                   Keep me logged in
                 </b-form-checkbox>
                   <div class="form-group">
-                    <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
+                    <div v-if="message" class="alert alert-danger" role="alert">{{message.message}}</div>
                   </div>
                 </b-form>
                 <div class="divider" />
@@ -144,7 +144,7 @@ export default {
         if (user.email && user.password) {
           this.$store.dispatch('auth/login', user).then(
             () => {
-              this.$router.push('/profile');
+              this.$router.push('/');
             },
             error => {
               this.loading = false;

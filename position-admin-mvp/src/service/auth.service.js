@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://services.position.cm/';
+const API_URL = 'http://localhost:8000/';
 
 class AuthService {
   login(user) {
@@ -12,14 +12,14 @@ class AuthService {
         headers:{
           "Access-Control-Allow-Origin": "*",
           "Accept":"application/json",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         }
       })
       .then(response => {
-        if (response.data.accessToken) {
-          localStorage.setItem('user', JSON.stringify(response.data));
+        console.log(response.data);
+        if (response.data.access_token) {
+          localStorage.setItem('user', JSON.stringify(response.data.access_token));
         }
-
         return response.data;
       });
   }
