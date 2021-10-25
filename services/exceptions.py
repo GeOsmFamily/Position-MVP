@@ -82,3 +82,19 @@ class CommercialsInfoInfoAlreadyExistError(CommercialsInfoException):
     def __init__(self):
         self.status_code = 409
         self.detail = "Commercials Info Already Exists"
+
+
+
+#### Horaires ####
+class HorairesInfoException(Exception):
+    ...
+
+class HorairesInfoNotFoundError(HorairesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Horaires Info Not Found"
+
+class HorairesInfoInfoAlreadyExistError(HorairesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Horaires Info Already Exists"

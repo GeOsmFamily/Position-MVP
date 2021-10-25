@@ -1,7 +1,7 @@
 # schemas.py
 from pydantic import BaseModel
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, time
 
 
 
@@ -126,4 +126,24 @@ class PaginatedCommercialsInfo(BaseModel):
     data: List[Commercials]
 
 
-
+#### Horaires schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateHoraires(BaseModel):
+    id: Optional[int]
+    id_etablissement : int
+    jour : str
+    ouvert : int
+    heureOuverture : Optional[time]
+    heureFermeture: Optional[time]
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+# TO support list and get APIs
+class Horaires(CreateAndUpdateHoraires):
+    id: int
+    class Config():
+        orm_mode = True
+# To support list Commercials APISousCommercials
+class PaginatedHorairesInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Horaires]

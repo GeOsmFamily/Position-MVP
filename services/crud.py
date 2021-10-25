@@ -6,13 +6,14 @@ from exceptions import (
     CategoriesInfoNotFoundError,
     CommercialsInfoInfoAlreadyExistError,
     CommercialsInfoNotFoundError,
-    EtablissementInfoException,
     EtablissementInfoInfoAlreadyExistError,
     EtablissementInfoNotFoundError,
+    HorairesInfoInfoAlreadyExistError,
+    HorairesInfoNotFoundError,
     ManagersInfoInfoAlreadyExistError,
     ManagersInfoNotFoundError,
     SousCategoriesInfoInfoAlreadyExistError,
-    SousCategoriesInfoNotFoundError
+    SousCategoriesInfoNotFoundError,
 )
 
 from models import (
@@ -20,13 +21,15 @@ from models import (
     Commercials,
     Etablissements,
     Managers,
-    SousCategories
+    SousCategories,
+    Horaires
 )
 
 from schemas import (
     CreateAndUpdateCategories,
     CreateAndUpdateCommercials,
     CreateAndUpdateEtablissements,
+    CreateAndUpdateHoraires,
     CreateAndUpdateManagers,
     CreateAndUpdateSousCategories
 )
@@ -336,11 +339,18 @@ def get_all_commercials(session: Session, limit: int, offset: int) -> List[Comme
 # Function to  get info of a particular commercials
 def get_commercials_info_by_id(session: Session, _id: int) -> Commercials:
     commercials_info = session.query(Commercials).get(_id)
-
     if commercials_info is None:
         raise CommercialsInfoNotFoundError
 
     return commercials_info
+
+# Function to get list of commercials info by town
+def get_all_commercials_by_town(session: Session, limit: int, offset: int, town: str) -> List[Commercials]:
+    return session.query(Commercials).filter(Commercials.ville==town).offset(offset).limit(limit).all()
+
+# Function to get list of commercials info by quartier
+def get_all_commercials_by_quartier(session: Session, limit: int, offset: int, quartier: str) -> List[Commercials]:
+    return session.query(Commercials).filter(Commercials.quartier==quartier).offset(offset).limit(limit).all()
 
 
 # Function to add a new commercials info to the database
@@ -398,6 +408,76 @@ def delete_commercials_info(session: Session, _id: int):
         raise CommercialsInfoNotFoundError
 
     session.delete(commercials_info)
+    session.commit()
+
+    return 
+
+
+#### Horaires ####
+# Function to get list of Horaires info
+def get_all_horaires(session: Session, limit: int, offset: int) -> List[Horaires]:
+    return session.query(Horaires).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular Horaires
+def get_horaires_info_by_id(session: Session, _id: int) -> Horaires:
+    horaires_info = session.query(Horaires).get(_id)
+
+    if horaires_info is None:
+        raise HorairesInfoNotFoundError
+
+    return horaires_info
+
+
+# Function to add a new Horaires info to the database
+def create_horaires(session: Session, info: CreateAndUpdateHoraires) -> Horaires:
+    horaires_details = session.query(Horaires).filter(
+            Horaires.id_etablissement==info.id_etablissement,
+            Horaires.jour==info.jour,
+            Horaires.ouvert==info.ouvert,
+            Horaires.heureOuverture==info.heureOuverture,
+            Horaires.heureFermeture==info.heureFermeture,
+            Horaires.created_at==info.created_at,
+            Horaires.updated_at==info.updated_at
+        ).first()
+    if horaires_details is not None:
+        raise HorairesInfoInfoAlreadyExistError
+
+    new_horaires_info = Horaires(**info.dict())
+    session.add(new_horaires_info)
+    session.commit()
+    session.refresh(new_horaires_info)
+    return new_horaires_info
+
+
+# Function to update details of the Horaires
+def update_horaires_info(session: Session, _id: int, info_update: CreateAndUpdateHoraires) -> Horaires:
+    horaires_info = get_horaires_info_by_id(session, _id)
+
+    if horaires_info is None:
+        raise HorairesInfoNotFoundError
+
+    horaires_info.id_etablissement = info_update.id_etablissement
+    horaires_info.jour=info_update.jour
+    horaires_info.ouvert=info_update.ouvert
+    horaires_info.heureOuverture=info_update.heureOuverture
+    horaires_info.heureFermeture=info_update.heureFermeture
+    horaires_info.updated_at=info_update.created_at
+    horaires_info.updated_at=info_update.updated_at
+
+    session.commit()
+    session.refresh(horaires_info)
+
+    return horaires_info
+
+
+# Function to delete an Horaires info from the db
+def delete_horaires_info(session: Session, _id: int):
+    horaires_info = get_horaires_info_by_id(session, _id)
+
+    if horaires_info is None:
+        raise HorairesInfoNotFoundError
+
+    session.delete(horaires_info)
     session.commit()
 
     return 

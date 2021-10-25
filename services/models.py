@@ -2,7 +2,7 @@
 from sqlalchemy.schema import Column
 from sqlalchemy.types import String, Integer, DateTime, Boolean, Enum
 from database import Base
-from sqlalchemy.types import Date
+from sqlalchemy.types import Date, Time
 
 
 #### Etablissements models ####
@@ -72,6 +72,20 @@ class Commercials(Base):
     ville = Column(String(191), index=True)
     quartier = Column(String(191), index=True)
     image_profil = Column(String(191), index=True)
+    created_at = Column(Date)
+    updated_at = Column(Date)
+
+
+#### Horaires models ####
+class Horaires(Base):
+    __tablename__ = "horaires"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_etablissement = Column(Integer)
+    jour = Column(String(191), index=True)
+    ouvert = Column(Integer)
+    heureOuverture = Column(Time)
+    heureFermeture = Column(Time)
     created_at = Column(Date)
     updated_at = Column(Date)
 
