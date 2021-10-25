@@ -16,7 +16,9 @@ from crud import (
     delete_souscategories_info,
     get_all_categories,
     get_all_commercials,
+    get_all_commercials_by_nbe,
     get_all_commercials_by_quartier,
+    get_all_commercials_by_revenue,
     get_all_commercials_by_town,
     get_all_ets_by_payment,
     get_all_horaires,
@@ -459,7 +461,7 @@ class Commercial:
 
     # API to get the list of d info
     @router.get("/commercials", response_model=PaginatedCommercialsInfo)
-    def list_ets(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+    def list_com(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])
@@ -475,7 +477,7 @@ class Commercial:
 
     # API to get the list of commercial by town
     @router.get("/commercials/by_town", response_model=PaginatedCommercialsInfo)
-    def list_ets(self, town: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+    def list_com_by_town(self, town: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])
@@ -487,9 +489,9 @@ class Commercial:
         response = {"limit": limit, "offset": offset, "data": commercials_list}
         return response
 
-    # API to get the list of commercial by town
+    # API to get the list of commercial by questiers
     @router.get("/commercials/by_quartier", response_model=PaginatedCommercialsInfo)
-    def list_ets(self, quartier: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+    def list_com_by_quaters(self, quartier: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])
@@ -498,6 +500,34 @@ class Commercial:
         if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
             raise HTTPException(status_code=401, detail=auth_response['message'])
         commercials_list = get_all_commercials_by_quartier(self.session, limit, offset, quartier=quartier)
+        response = {"limit": limit, "offset": offset, "data": commercials_list}
+        return response
+
+    # API to get the list of commercial by nbe
+    @router.get("/commercials/by_nbe", response_model=PaginatedCommercialsInfo)
+    def list_ets(self, nbe: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        commercials_list = get_all_commercials_by_nbe(self.session, limit, offset, nbe=nbe)
+        response = {"limit": limit, "offset": offset, "data": commercials_list}
+        return response
+
+        # API to get the list of commercial by revenue
+    @router.get("/commercials/by_revenue", response_model=PaginatedCommercialsInfo)
+    def list_com_by_revenue(self, revenue: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        commercials_list = get_all_commercials_by_revenue(self.session, limit, offset, revenue=revenue)
         response = {"limit": limit, "offset": offset, "data": commercials_list}
         return response
 

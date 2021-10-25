@@ -352,6 +352,15 @@ def get_all_commercials_by_town(session: Session, limit: int, offset: int, town:
 def get_all_commercials_by_quartier(session: Session, limit: int, offset: int, quartier: str) -> List[Commercials]:
     return session.query(Commercials).filter(Commercials.quartier==quartier).offset(offset).limit(limit).all()
 
+# Function to get list of commercials info by nbre d'entreprise
+def get_all_commercials_by_nbe(session: Session, limit: int, offset: int, nbe: str) -> List[Commercials]:
+    return session.query(Commercials).filter(Commercials.nombre_etablissement==nbe).offset(offset).limit(limit).all()
+
+# Function to get list of commercials info by revenu total
+def get_all_commercials_by_revenue(session: Session, limit: int, offset: int, revenue: str) -> List[Commercials]:
+    return session.query(Commercials).filter(Commercials.revenu_total==revenue).offset(offset).limit(limit).all()
+
+
 
 # Function to add a new commercials info to the database
 def create_commercials(session: Session, info: CreateAndUpdateCommercials) -> Commercials:
