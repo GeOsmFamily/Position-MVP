@@ -34,6 +34,8 @@ import { map as geoportailMap } from './../components/map/map.component';
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { timer } from 'rxjs/internal/observable/timer';
+import { Translate } from 'ol/interaction';
+import Collection from 'ol/Collection';
 
 const typeLayer = [
   'geosmCatalogue',
@@ -115,7 +117,7 @@ export class MapHelper {
     let positionFeature = new Feature();
     positionFeature.setStyle(
       [
-        
+
       new Style({
         image: new Icon({
         scale: 0.1,
@@ -145,16 +147,25 @@ export class MapHelper {
       projection: this.map?.getView().getProjection(),
     });
 
-
-
+/*
+    var translate1=this.markerInteractionFeature(positionFeature)
+    this.map?.addInteraction(translate1);
+    */
 
     geolocation.once('change:position', () => {
       var coordinates = geolocation.getPosition();
       positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
       if (coordinates) {
+
         this.fit_view(new Point(coordinates), 18)
       }
     });
+
+     /* this.map?.on('pointermove', (e) => {
+      if (e.dragging) return;
+      var hit = this.map?.hasFeatureAtPixel(this.map?.getEventPixel(e.originalEvent));
+      //this.map?.getTargetElement().style.cursor = hit ? 'pointer' : '';
+    });*/
 /*
     geolocation.on('change:position', () => {
       var coordinates = geolocation.getPosition();
@@ -198,12 +209,80 @@ export class MapHelper {
     'duration': 500
   })
 
-}
-
-
-
-
 
 
 
 }
+//Put interaction on marker feature
+markerInteractionFeature(featureMarker:any):Translate{
+
+  return new Translate({
+    features: new Collection([featureMarker])
+  });
+}
+//Put interaction on marker feature
+trackMarkerFeaturePosition(translateMarker:any,marker:Point):Translate{
+
+  return translateMarker.on('translatestart',  function (evt: { coordinate: any; }) {
+    //coordMarker1 = marker1.getCoordinates();
+  console.log(evt.coordinate)
+  });
+}
+
+moveMarkerOnMap(){
+
+  //et categorie icon and replace it on src oparameter
+  let positionFeature = new Feature();
+  positionFeature.setStyle(
+    [
+
+    new Style({
+      image: new Icon({
+      scale: 0.1,
+        src: '/assets/location-marker.svg',
+        anchor:[0.5,0.95]
+      }),
+      // text: new Text({
+      //   font: "15px Calibri,sans-serif",
+      //   fill: new Fill({ color: "#000" }),
+      //   text:"Your position",
+      //   stroke: new Stroke({ color: "#000", width: 1 }),
+      //   padding: [10, 10, 10, 10],
+      //   backgroundFill:new Fill({ color: "#fff" }),
+      //   offsetX: 0,
+      //   offsetY: 30,
+      // })
+    })
+  ]
+  );
+
+
+
+  let geolocation = new Geolocation({
+    // enableHighAccuracy must be set to true to have the heading value.
+    trackingOptions: {
+      enableHighAccuracy: true,
+    },
+    tracking: true,
+    projection: this.map?.getView().getProjection(),
+  });
+
+/*
+  var translate1=this.markerInteractionFeature(positionFeature)
+  this.map?.addInteraction(translate1);
+  */
+
+  geolocation.once('change:position', () => {
+    var coordinates = geolocation.getPosition();
+    positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
+    
+  });
+
+  var translate1=this.markerInteractionFeature(positionFeature)
+  this.map?.addInteraction(translate1);
+  this.trackMarkerFeaturePosition(translate1,<Point>positionFeature.getGeometry())
+
+}
+
+}
+

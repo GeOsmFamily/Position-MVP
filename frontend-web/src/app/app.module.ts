@@ -18,6 +18,7 @@ import { HeaderComponent } from './components/map/header/header.component';
 import { EtablissementComponent } from './components/map/etablissement/etablissement.component';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
     { prefix: './assets/i18n/', suffix: '.json' },
@@ -35,7 +36,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FooterComponent,
     ResetPasswordComponent,
     HeaderComponent,
-    EtablissementComponent
+    EtablissementComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -1,31 +1,39 @@
+.container{
+  margin-top:150px;
+}
 mat-card {
 
-  padding-bottom: 9%;
+  padding-bottom: 20px;
   margin:0 auto;
   max-width:500px;
   text-align: center;
+
   background-color: white;
   color: black;
+
 }
 
 mat-form-field {
   display: block;
 }
-mat-label{
-  margin-bottom: 50px;
+
+::ng-deep .mat-form-field-underline {
+  display: none;
 }
-mat-label
-{
-  margin-bottom: 25px;
+.form-group{
+  margin-bottom: -30px;
+  margin-left: 20px;
+
+
 }
 .champ{
-  text-align: left;padding-left: 24%;
+  text-align: left;
   margin-top: -10px;
 }
 input{
   max-width:400px;
 	width: 70%;
-  padding: 12px;
+  padding: 0px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -40,6 +48,7 @@ input{
 .container-forget-password{
   text-align: left;padding-left: 24%;
   margin-bottom: 20px;
+  margin-left: 20px;
 }
 #forgotten-password{
   color: darkcyan;font-weight: bold;
@@ -77,7 +86,9 @@ display: table-column;
   text-align: left;
   padding-left: 24%;
   max-width:400px;
-	width: 80%;
+	width: 70%;
+  margin-bottom: 30px;
+  margin-left: 20px;
 
 }
 @media (max-width: 767px) {
@@ -85,9 +96,21 @@ display: table-column;
     max-width: auto;
     margin-top:10%;
     text-align: center;
-    box-shadow: none;
+    box-shadow: 0px;
     border: none;
 
+  }
+  .form-group,.container-forget-password,.container-btn{
+   // margin-bottom: -30px;
+    margin-left: -30px;
+
+
+  }
+  .container{
+    margin-top: 10px;
+  }
+  .mat-card:not([class*=mat-elevation-z]){
+    box-shadow: none;
   }
   .champ{
     text-align: left;
@@ -97,6 +120,8 @@ display: table-column;
   }
   input{
     width: 106%;
+   // margin-left: 0px;
+   padding-left: 10px;
 
   }
   .container-forget-password,.container-btn{
@@ -107,14 +132,14 @@ display: table-column;
 
 
  @media (min-width: 768px) {
-  
+
   mat-card{
     margin-left: auto;
   margin-right: auto;
   display: table;
   border:1px whitesmoke solid;
     input{
-      width:90%;
+      width:70%;
 
     }
     .champ{

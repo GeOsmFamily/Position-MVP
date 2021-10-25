@@ -28,6 +28,17 @@ app-fiche-entreprise {
   z-index: 2;
   overflow-y: auto;
 }
+app-etablissement{
+  position: absolute;
+  left: -360px;
+  top: 0px;
+  bottom: 0px;
+  width: 360px;
+  transition: 0.5s;
+  background: #fff;
+  z-index: 3;
+  overflow-y: auto;
+}
 
 app-login
 {

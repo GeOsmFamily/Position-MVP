@@ -13,6 +13,7 @@ import VectorSource from 'ol/source/Vector';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import { FicheEntrepriseComponent } from './fiche-entreprise/fiche-entreprise.component';
 import { LoginComponent } from '../auth/login/login.component';
+import { EtablissementComponent } from './etablissement/etablissement.component';
 
 
 
@@ -40,13 +41,16 @@ export const map = new Map({
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-map:Map|undefined
+
 
 coordinates=[0,0]
 
 
 @ViewChild(FicheEntrepriseComponent, { static: true })
 ficheEntrepriseComponent: FicheEntrepriseComponent | undefined;
+
+@ViewChild(EtablissementComponent, { static: true })
+etablissementComponent: EtablissementComponent | undefined;
 
 @ViewChild(LoginComponent, { static: true })
 loginComponent: LoginComponent | undefined;
@@ -77,6 +81,9 @@ this.getPosition()
 
     });*/
     this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
+    this.componentHelper.setComponent('EtablissementComponent',this.etablissementComponent)
+
+
   }
 
   //return map
@@ -153,8 +160,8 @@ geolocation.on('change:position', function () {
    */
  mapClicked() {
   map.on('singleclick', (event) => {
-    this.componentHelper.openFicheEntreprise()
-    console.log( this.componentHelper.openFicheEntreprise())
+    this.componentHelper.openEtablissement()
+   // console.log( this.componentHelper.openEtablissement())
   console.log("map has been clicked")
 });
 }

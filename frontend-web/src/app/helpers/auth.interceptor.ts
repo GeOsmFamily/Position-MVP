@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req).pipe(
         catchError((error) => {
           if (error.status === 401) {
-            if (error.error.message == "Token is exp") {
+            if (error.error.message ) {
                 //Genrate params for token refreshing
                 console.log("refreshing token")
               this.autService.refreshToken()
@@ -37,6 +37,8 @@ export class AuthInterceptor implements HttpInterceptor {
               });
              //REFRESH FUNTION FROM AUTH SERVICE
             }else {
+              console.log("Nothing to be done")
+
                 //Logout from account or do some other stuff
             }
         }

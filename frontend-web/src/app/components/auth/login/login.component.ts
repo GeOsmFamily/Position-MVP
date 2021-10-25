@@ -13,7 +13,9 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required,Validators.minLength(9),Validators.maxLength(20), Validators.email]],
-    password: ['',[Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
+    password: [''],
+    // password: ['',[Validators.required, Validators.minLength(9), Validators.maxLength(20)]],
+
   },
   );
   submitted = false;
@@ -30,9 +32,9 @@ export class LoginComponent implements OnInit {
   submit(): void {
     this.submitted = true;
 
-    if (this.loginForm.invalid) {
+    /*if (this.loginForm.invalid) {
       return;
-    }
+    }*/
 
     //console.log(JSON.stringify(this.loginForm.value, null, 2));
 
