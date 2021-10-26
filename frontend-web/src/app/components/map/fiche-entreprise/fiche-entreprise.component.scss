@@ -21,7 +21,6 @@ img {
 
 .clear-logo
 {
-  float: right;
 
   width:20px;
 }
@@ -70,4 +69,11 @@ hr {
   margin-bottom: 10px;
   border: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+
+.carousel-control-next, .carousel-control-prev {
+  height: 30px;
+  top: 50%;
+  transform: translateY(-50%);
 }

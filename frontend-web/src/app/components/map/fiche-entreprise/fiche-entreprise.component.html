@@ -29,8 +29,8 @@
     <button style=" display: flex;
     justify-content: center;
     align-items: center;
-        " class="close" mat-mini-fab disabled aria-label="Example icon button with a home icon">
-      <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" (click)="close()"/>
+        " class="close"  (click)="close()">
+      <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" />
 
     </button>
   </div>
@@ -50,7 +50,7 @@
 
       <div class="item">
 
-      <img matPrefix src="assets/button/icon-tel.svg" style=" border: thin solid #05BF95;border-radius: 5px;"/>
+      <img src="assets/button/icon-tel.svg" style=" border: thin solid #05BF95;border-radius: 5px;"/>
 
 
         <span class="caption">Contacter</span>
@@ -58,7 +58,7 @@
 
     <div class="item">
 
-      <img matPrefix src="assets/button/icon-action-vignette-itinéraire.svg" style=" border: thin solid #05BF95;border-radius: 5px;" class="btn ">
+      <img src="assets/button/icon-action-vignette-itinéraire.svg" width="70%" style=" border: thin solid #05BF95;border-radius: 5px;" class="btn ">
 
       <span class="caption">Itinéraire</span>
   </div>
@@ -91,7 +91,7 @@
 
         <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style=" float:left;"/>
 
-      <div style="display: inline-block;margin-top: -10px;">
+      <div style="display: inline-block;">
         <p>ouvert maintenant:  08:30 - 19:30</p>
         <p>ouvert maintenant:  08:30 - 19:30</p>
       </div>
