@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as $ from 'jquery';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { PositionApiService } from 'src/app/services/position-api/position-api.service';
 
 @Component({
   selector: 'app-etablissement',
@@ -11,21 +11,39 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 export class EtablissementComponent implements OnInit {
 
   progressbarValue=12
+
+
+ 
+
+
   etablissementForm=this.fb.group({
     nomEtablissement: [''],
     categorie: [''],
     Tel1: [''],
     Tel2: [''],
-    heureOuvert: [''],
-    heureFerme: [''],
+    heureOuvertlun: [''],
+    heureFermelun: [''],
+    heureOuvertmar: [''],
+    heureFermemar: [''],
+    heureOuvertmer: [''],
+    heureFermemer: [''],
+    heureOuvertjeu: [''],
+    heureFermejeu: [''],
+    heureOuvertven: [''],
+    heureFermeven: [''],
+    heureOuvertsam: [''],
+    heureFermesam: [''],
+    heureOuvertdim: [''],
+    heureFermedim: [''],
   })
 
   checked = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private positionApi:PositionApiService) { }
 
   ngOnInit(): void {
     this.etablissementWizard()
+    this.positionApi.GetRequestCategories()
 
   }
 
@@ -55,9 +73,9 @@ $(".next").click(function(){
 
 current_fs = $(this).parent();
 next_fs = $(this).parent().next();
-var value =$("#progressbar li").eq($("fieldset").index(next_fs)).get(0).textContent
+var value =$("#progressbar li").eq($("fieldset").index(next_fs)).get(0)!.textContent
 console.log(value+"rrr")
-console.log($("#progressbar li").eq($("fieldset").index(current_fs)).get(0).textContent)
+console.log($("#progressbar li").eq($("fieldset").index(current_fs)).get(0)!.textContent)
 $("#account").html(value!);
 //Add Class Active
 //$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
@@ -91,7 +109,7 @@ previous_fs = $(this).parent().prev();
 console.log(previous_fs)
 
 
-  var value =$("#progressbar li").eq($("fieldset").index(previous_fs)).get(0).textContent
+  var value =$("#progressbar li").eq($("fieldset").index(previous_fs)).get(0)!.textContent
   $("#account").html(value!);
   console.log(value)
 

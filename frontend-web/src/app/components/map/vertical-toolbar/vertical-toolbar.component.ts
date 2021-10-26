@@ -1,5 +1,6 @@
 import { Component, OnInit , Input} from '@angular/core';
 import { Router } from '@angular/router';
+import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import {
   Feature,Map
@@ -15,7 +16,7 @@ import { MapComponent } from '../map.component';
 export class VerticalToolbarComponent implements OnInit {
   @Input() map: Map | undefined;
  maphelper= new MapHelper()
-  constructor(public mapcomponent:MapComponent,private router:Router,public authService: AuthService) { }
+  constructor(public componentHelper:ComponentHelper,public mapcomponent:MapComponent,private router:Router,public authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -36,7 +37,11 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   ajout_etablissement(){
-    this.router.navigate(['ajouterEtablissement'])
+    if(localStorage.getItem('access_token')){
+      this.componentHelper.openEtablissement()
+    }
+    else
+    this.router.navigate(['login'])
 
 
 

@@ -35,6 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
                 }
               });
+              console.log("new token :"+localStorage.getItem('access_token'))
              //REFRESH FUNTION FROM AUTH SERVICE
             }else {
               console.log("Nothing to be done")

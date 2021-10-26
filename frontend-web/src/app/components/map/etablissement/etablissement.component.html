@@ -4,6 +4,13 @@
           <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
 
               <form id="msform" class="form" [formGroup]="etablissementForm">
+                <button style=" display: flex;
+                justify-content: center;
+                align-items: center;
+                    " class="close" mat-mini-fab disabled aria-label="Example icon button with a home icon">
+                  <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" (click)="close()"/>
+
+                </button>
                   <!-- progressbar -->
                  <div style="text-align: center;">
                   <ul id="progressbar" >
@@ -50,7 +57,7 @@
                           </mat-form-field>
                          </div>
 
-                          <button class="btn-sm" mat-raised-button  class=" btn-connexion"  >Annuler</button>
+                          <button class="btn-sm" mat-raised-button  class=" btn-connexion" (click)="close()">Annuler</button>
 
                           <input type="button" name="next" class="next action-button" value="Suivant" />
 
@@ -156,11 +163,10 @@
                   </fieldset>
                   <fieldset>
                     <div class="form-card">
-                        <div class="row">
+                        <div class="row jour">
 
-                            Lundi
-
-                            <mat-form-field style="width:70px;margin-left: 40px;" class="">
+                            Lun
+                            <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
                               <input matInput type="text"   class="form-control"  formControlName="heureOuvertlun" name="heureOuvertlun" placeholder="" />
 
                               </mat-form-field>
@@ -172,9 +178,9 @@
 
 
                         </div>
-                        <div class="row">
+                        <div class="row jour">
 
-                          Mardi
+                          Mar
 
                           <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
                             <input matInput type="text"   class="form-control"  formControlName="heureOuvertmar" name="heureOuvertmar" placeholder="" />
@@ -188,9 +194,9 @@
 
 
                       </div>
-                      <div class="row">
+                      <div class="row jour">
 
-                        Mercredi
+                        Mer
 
                         <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
                           <input matInput type="text"   class="form-control"  formControlName="heureOuvertmer" name="heureOuvertmer" placeholder="" />
@@ -204,9 +210,9 @@
 
 
                     </div>
-                    <div class="row">
+                    <div class="row jour">
 
-                      Jeudi
+                      Jeu
 
                       <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
                         <input matInput type="text"   class="form-control"  formControlName="heureOuvertjeu" name="heureOuvertjeu" placeholder="" />
@@ -220,9 +226,9 @@
 
 
                   </div>
-                  <div class="row">
+                  <div class="row jour">
 
-                    Vendredi
+                    Ven
 
                     <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
                       <input matInput type="text"   class="form-control"  formControlName="heureOuvertven" name="heureOuvertven" placeholder="" />
@@ -236,9 +242,9 @@
 
 
                 </div>
-                <div class="row">
+                <div class="row jour">
 
-                  Samedi
+                  Sam
 
                   <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
                     <input matInput type="text"   class="form-control"  formControlName="heureOuvertsam" name="heureOuvertsam" placeholder="" />
@@ -252,9 +258,9 @@
 
 
               </div>
-              <div class="row">
+              <div class="row jour">
 
-                Dimanche
+                Dim
 
                 <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
                   <input matInput type="text"   class="form-control"  formControlName="heureOuvertdim" name="heureOuvertdim" placeholder="" />

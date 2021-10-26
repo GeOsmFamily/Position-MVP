@@ -85,11 +85,11 @@ margin-right: 30px;
   margin: 10px 0px 10px 5px;
 
 }
-
+/*
 #msform .action-button:hover,
 #msform .action-button:focus {
-  background-color: rgb(255, 187, 0);
-}
+  //background-color: rgb(255, 187, 0);
+}*/
 
 #msform .action-button-previous {
   width: 100px;
@@ -108,7 +108,7 @@ margin-right: 30px;
 
 #msform .action-button-previous:hover,
 #msform .action-button-previous:focus {
-  background-color: #000000
+  background-color: white
 }
 
 .card {
@@ -168,6 +168,8 @@ margin-right: 30px;
 }
 ul{
   text-align: center;
+  margin-bottom:-80px;
+
 }
 /*#progressbar #account:before {
   font-family: FontAwesome;
@@ -230,7 +232,7 @@ strong{
   text-align: center;
 }
 li{
-  display: inline-block;
+ // display: inline-block;
   text-align: center;
 }
 
@@ -280,3 +282,13 @@ input{
   color: #05BF95;
  }
 
+ .clear-logo
+ {
+   float: right;
+   margin-top: -17px;
+   width:20px;
+ }
+ .jour{
+   //text-align: center;
+   justify-content: center;
+ }

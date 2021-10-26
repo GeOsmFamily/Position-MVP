@@ -1,17 +1,17 @@
-
 .buttons{
-
+/*
   position: absolute;
   bottom:40px;
     right:0;
    margin-right: 30px;
+   */
 }
 :host {             // host targets selector: 'home'
 
 
 display: block;
   width: 100px;
-  height:150px   // takes parent width
+ // height:150px   // takes parent width
 
 }
 .vertical-toolbar-groupe-btn-1 {

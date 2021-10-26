@@ -39,7 +39,12 @@ app-etablissement{
   z-index: 3;
   overflow-y: auto;
 }
+app-vertical-toolbar{
+  position: absolute;
+  bottom:10px;
+    right:0px;
 
+}
 app-login
 {
   top: 0px;

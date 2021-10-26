@@ -160,7 +160,8 @@ geolocation.on('change:position', function () {
    */
  mapClicked() {
   map.on('singleclick', (event) => {
-    this.componentHelper.openEtablissement()
+
+    this.componentHelper.openFicheEntreprise()
    // console.log( this.componentHelper.openEtablissement())
   console.log("map has been clicked")
 });
