@@ -1,5 +1,11 @@
 
 <div class="container" >
+
+  <div class="d-flex justify-content-center" *ngIf="loading">
+    <div class="spinner-border" role="status" >
+      <span class="sr-only" id="loading">Loading...</span>
+    </div>
+  </div>
   <mat-card >
     <div class="conatiner">
       <img id="logo-position" class="img-fluid" mat-card-image src="assets/logo-nom.svg" alt="logo position">
@@ -62,6 +68,9 @@
               <button class="btn-sm" mat-raised-button  id="btn-connexion" type="submit" >connexion</button>
 
         </div>
+
+
+
 
       </form>
 

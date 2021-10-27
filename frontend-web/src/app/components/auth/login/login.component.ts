@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder , FormGroup} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Validators } from '@angular/forms';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import { Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  loading:boolean|undefined
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required,Validators.minLength(9),Validators.maxLength(20), Validators.email]],
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
+    this.loading=true
     this.submitted = true;
 
     /*if (this.loginForm.invalid) {
@@ -48,6 +51,7 @@ export class LoginComponent implements OnInit {
         console.log(this.loginForm.value.email)
         this.router.navigate(['home'])
       } else {
+        this.loading=true
         if(localStorage.getItem('role')!= '2')
          {
           console.log("vous n'avez pas de droit  ")
@@ -58,7 +62,12 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+   hideloader() {
 
+    // Setting display of spinner
+    // element to none
+    document.getElementById('loading')!.style.display = 'none';
+}
   onReset(): void {
     this.submitted = false;
     this.loginForm.reset();

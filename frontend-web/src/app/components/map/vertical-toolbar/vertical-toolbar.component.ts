@@ -37,7 +37,7 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   ajout_etablissement(){
-    if(localStorage.getItem('access_token')){
+    if(localStorage.getItem('access_token') && localStorage.getItem('role')=='2'){
       this.componentHelper.openEtablissement()
     }
     else

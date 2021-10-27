@@ -44,8 +44,8 @@ export class MapComponent implements OnInit {
 
 
 coordinates=[0,0]
-
-
+ token=localStorage.getItem("access_token")
+ role=localStorage.getItem("role")
 @ViewChild(FicheEntrepriseComponent, { static: true })
 ficheEntrepriseComponent: FicheEntrepriseComponent | undefined;
 
@@ -72,7 +72,15 @@ this.getPosition()
 
   ngAfterViewInit(): void {
 
+    $(document).ready(function () {
 
+      window.setTimeout(function() {
+          $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+              $(this).remove();
+          });
+      }, 5000);
+
+      });
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
    /* map.on('pointermove', function(event) {
