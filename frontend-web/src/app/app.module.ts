@@ -18,6 +18,10 @@ import { HeaderComponent } from './components/map/header/header.component';
 import { EtablissementComponent } from './components/map/etablissement/etablissement.component';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
+import { NgImageSliderModule } from 'ng-image-slider';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
     { prefix: './assets/i18n/', suffix: '.json' },
@@ -35,7 +39,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FooterComponent,
     ResetPasswordComponent,
     HeaderComponent,
-    EtablissementComponent
+    EtablissementComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    NgImageSliderModule,
+    SlickCarouselModule,
+    NgbModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

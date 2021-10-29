@@ -4,14 +4,17 @@
   left: 0;
   bottom: 0;
   width: 100%;
+
   background-color: rgb(255, 187, 0);
   color: white;
-  height: 40px;
+ // height: 40px;
   padding-top: 5px;
   display: flex;
 align-items: center;
 justify-content: center;
 margin-top: 100px;
+padding-top: 10px;
+padding-bottom: 10px;
 }
 mat-form-field,.mat-select-panel {
   border-color: white;
@@ -21,13 +24,17 @@ mat-form-field,.mat-select-panel {
   padding-right: 0;
   text-align: center;
   border: 1px solid;
-  width: 30px;
+  width: 100px;
+  height: 30px;
+    padding: 0px;
+    border-radius: 5px  ;
 
 
  mat-option{
     border-color: white;
     background-color: rgb(255, 187, 0);
     color: white;
+    padding: 0px;
   }
 
 }
@@ -58,3 +65,8 @@ select.decorated option:hover {
  }
 
 
+ ::ng-deep.mat-form-field-infix{
+   border-top: none;
+  padding: 0;
+
+}

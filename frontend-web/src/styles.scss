@@ -15,7 +15,11 @@ body {
   height: 100vh;
 
 }
-
+@media (max-width: 767px) {
+  body{
+    height: 100vh;
+  }
+}
 .mat-select-panel {
   background-color: rgb(255, 187, 0);
   color:white;

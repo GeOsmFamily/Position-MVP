@@ -1,20 +1,42 @@
 
 
-<div  class="container" style="display: inline-block;">
+<div>
   <!-- Photo de l'entreprise-->
   <div class="parent " style="width: 100%; overflow: hidden;">
-    <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
+   <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
+   -->
+   <ngb-carousel >
+    <ng-template ngbSlide>
+      <div class="picsum-img-wrapper">
+        <img src="assets/resto.jpg" alt="Angular Carousel 1" width="100%" class="img-fluid">
+      </div>
+      <div class="carousel-caption">
+        <h3>Title Goes Here</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+    </ng-template>
+    <ng-template ngbSlide>
+      <div class="picsum-img-wrapper">
+        <img src="assets/resto.jpg" alt="Angular Carousel 2" width="100%" class="img-fluid">
+      </div>
+      <div class="carousel-caption">
+        <h3>Title Goes Here</h3>
+        <p>Consectetur tortor volutpat pretium.</p>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+
     <button style=" display: flex;
     justify-content: center;
     align-items: center;
-        " class="close" mat-mini-fab disabled aria-label="Example icon button with a home icon">
-      <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" (click)="close()"/>
+        " class="close"  (click)="close()">
+      <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" />
 
     </button>
   </div>
 
   <!-- Bloc contenant les informations de l'entreprise-->
-   <div class="container" style="margin-top: 20px; margin-left: 20px;">
+   <div class="container" style="margin-top: 20px;">
 
     <!-- Nom et catégorie de l'entreprise-->
     <div class="bg-light clearfix">
@@ -28,7 +50,7 @@
 
       <div class="item">
 
-      <img matPrefix src="assets/button/icon-tel.svg" style=" border: thin solid #05BF95;border-radius: 5px;"/>
+      <img src="assets/button/icon-tel.svg" style=" border: thin solid #05BF95;border-radius: 5px;"/>
 
 
         <span class="caption">Contacter</span>
@@ -36,7 +58,7 @@
 
     <div class="item">
 
-      <img matPrefix src="assets/button/icon-action-vignette-itinéraire.svg" style=" border: thin solid #05BF95;border-radius: 5px;" class="btn btn-light">
+      <img src="assets/button/icon-action-vignette-itinéraire.svg" width="70%" style=" border: thin solid #05BF95;border-radius: 5px;" class="btn ">
 
       <span class="caption">Itinéraire</span>
   </div>
@@ -69,7 +91,7 @@
 
         <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style=" float:left;"/>
 
-      <div style="display: inline-block;margin-top: -10px;">
+      <div style="display: inline-block;">
         <p>ouvert maintenant:  08:30 - 19:30</p>
         <p>ouvert maintenant:  08:30 - 19:30</p>
       </div>
