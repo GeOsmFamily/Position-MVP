@@ -3,7 +3,19 @@
 
 # services
 /services/commercial/.env
+/services/.env
 /services/commercial/requirements.txt
 /services/establishment/.env
 /services/establishment/requirements.txt
-
+/services/requirements.txt
+/services/.cmd
+/services/docker-compose.yml
+/services/api.py
+/services/main.py
+/services/crud.py
+/services/database.py
+/services/exceptions.py
+/services/models.py
+/services/schemas.py
+/services/auth.py
+/services/TODO.todo

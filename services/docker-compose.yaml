@@ -1,0 +1,9 @@
+version: "3"
+services:
+  position_api:
+    build: .
+    container_name: "position-api"
+    ports:
+      - "6003:15500"
+    volumes:
+      - ./prod/:/usr/src/app

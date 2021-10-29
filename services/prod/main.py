@@ -4,23 +4,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
-import api
-
+from api import router
 # Initialize the app
 app = FastAPI()
 
-app.include_router(api.router)
+app.include_router(router)
 
 origins = [
-    '127.0.0.1',
+    "127.0.0.1",
     "https://position.services.cm",
-    "http://localhost",
-    "http://localhost:8080",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_methods=["*"],
     allow_headers=["*"],
     allow_credentials=True,
@@ -33,4 +30,4 @@ app.add_middleware(
 # GET operation at route '/'
 @app.get('/')
 def root_api():
-    return {"message": "Welcome to Balasundar's Technical Blog"}
+    return {"message": "Welcome to Position'services API"}
