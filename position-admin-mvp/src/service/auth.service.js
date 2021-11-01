@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/';
+const API_URL = 'https://services.position.cm/';
 
 class AuthService {
   login(user) {
@@ -9,11 +9,10 @@ class AuthService {
         email: user.email,
         password: user.password
       },{
-        useCredentials: true,
         headers:{
-          "Access-Control-Allow-Origin": "*",
-          "Accept":"application/json",
-          "Content-Type": "application/json",
+          //"Access-Control-Allow-Origin": "*",
+          //"Accept":"application/json",
+          //"Content-Type": "application/json",
         }
       })
       .then(response => {

@@ -3,11 +3,6 @@ module.exports = {
   productionSourceMap: false,
   publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
   devServer: {
-    proxy: {
-      '^/api': {
-        target: 'http://localhost:3080',
-        changeOrigin: true
-      },
-    }
+    proxy: 'http://localhost:8000',
   }
 };
