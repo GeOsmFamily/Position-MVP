@@ -18,6 +18,20 @@ export default {
     },
   },
   created(){
+    this.$store.dispatch('user/getUser').then(
+      () => {
+        console.log("success");
+      },
+      error => {
+        /*this.loading = false;
+        this.message =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();*/
+        console.log(error.message ||
+          error.toString());
+      }
+    );
   }
 };
 </script>

@@ -6,27 +6,15 @@ export const user = {
   namespaced: true,
   state: userData,
   actions: {
-    getUser({commit,context},userData){
-      console.log(context.rootState.auth.user);
-      return UserService.getUserData().then(userData => {
-        commit('userSuccess',userData);
-        return Promise.resolve(userData);
+    getUser({commit}){
+      return UserService.getUserData(JSON.parse(localStorage.getItem('user'))).then(data => {
+        console.log(data);
+        commit('userSuccess',data);
+        return Promise.resolve(data);
       },
         error => {
         commit('userFailure');
         return Promise.reject(error);
-        }
-      );
-    },
-    login({ commit }, user) {
-      return AuthService.login(user).then(
-        user => {
-          commit('loginSuccess', user);
-          return Promise.resolve(user);
-        },
-        error => {
-          commit('loginFailure');
-          return Promise.reject(error);
         }
       );
     },

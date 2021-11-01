@@ -9,6 +9,7 @@ class AuthService {
         email: user.email,
         password: user.password
       },{
+        useCredentials: true,
         headers:{
           "Access-Control-Allow-Origin": "*",
           "Accept":"application/json",
