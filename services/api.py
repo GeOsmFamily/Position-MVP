@@ -83,6 +83,7 @@ class Etablissements:
     # API to get the list of Etablissement info
     @router.get("/etablissements", response_model=PaginatedEtablissementInfo)
     def list_ets(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        print(">>>>>>>>>>>", authorization)
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])

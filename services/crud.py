@@ -22,7 +22,8 @@ from models import (
     Etablissements,
     Managers,
     SousCategories,
-    Horaires
+    Horaires,
+    Users
 )
 
 from schemas import (
@@ -359,6 +360,11 @@ def get_all_commercials_by_nbe(session: Session, limit: int, offset: int, nbe: s
 # Function to get list of commercials info by revenu total
 def get_all_commercials_by_revenue(session: Session, limit: int, offset: int, revenue: str) -> List[Commercials]:
     return session.query(Commercials).filter(Commercials.revenu_total==revenue).offset(offset).limit(limit).all()
+
+# Function to get list of commercials info by revenu their name
+def get_all_commercials_by_name(session: Session, limit: int, offset: int, name: str) -> List[Commercials]:
+    user = session.query(Users).filter(Users.name == name).offset(offset).limit(limit).all()
+    return session.query(Commercials).filter(Commercials.id_user==user[id]).offset(offset).limit(limit).all()
 
 
 

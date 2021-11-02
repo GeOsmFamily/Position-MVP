@@ -147,3 +147,33 @@ class PaginatedHorairesInfo(BaseModel):
     limit: int
     offset: int
     data: List[Horaires]
+    
+
+
+#### Users schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateUsers(BaseModel):
+    id: Optional[int]
+    name : str
+    email : str
+    phone : str
+    password : str
+    email_verified_at: Optional[time]
+    remember_token: Optional[time]
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+# TO support list and get APIs
+class Users(CreateAndUpdateUsers):
+    id: int
+    class Config():
+        orm_mode = True
+# To support list Commercials APISousCommercials
+class PaginatedUsersInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Users]
+
+
+
+
+

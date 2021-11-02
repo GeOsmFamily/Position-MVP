@@ -90,3 +90,19 @@ class Horaires(Base):
     updated_at = Column(Date)
 
 
+
+#### Users models ####
+class Users(Base):
+    __tablename__ = "horaires"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(154), index=True)
+    email = Column(String(254), index=True)
+    phone = Column(String(254), index=True)
+    password = Column(String(254), index=True)
+    email_verified_at = Column(Date)
+    remember_token = Column(Date)
+    created_at = Column(Date)
+    updated_at = Column(Date)
+
+
