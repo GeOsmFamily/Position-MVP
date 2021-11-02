@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://services.position.cm/';
+const API_URL = 'https://cors-anywhere.herokuapp.com/https://services.position.cm/';
 
 class AuthService {
   login(user) {
@@ -10,9 +10,9 @@ class AuthService {
         password: user.password
       },{
         headers:{
-          //"Access-Control-Allow-Origin": "*",
-          //"Accept":"application/json",
-          //"Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Accept":"application/json",
+          "Content-Type": "application/json",
         }
       })
       .then(response => {

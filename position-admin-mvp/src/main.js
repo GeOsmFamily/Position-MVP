@@ -25,6 +25,7 @@ api.interceptors.request.use(
 );
 api.interceptors.response.use(
   response => {
+    console.log("interceptor");
     if (response.status === 200 || response.status === 201) {
       return Promise.resolve(response);
     } else {

@@ -17,10 +17,16 @@ export default {
       return (this.$route.meta.layout || default_layout) + "-layout";
     },
   },
-  created(){
+  beforeCreate(){
     this.$store.dispatch('user/getUser').then(
-      () => {
+      data => {
         console.log("success");
+        console.log(data);
+        this.$store.dispatch('category/fetchCategories').then(
+          data => {
+            console.log(data);
+          }
+        )
       },
       error => {
         /*this.loading = false;

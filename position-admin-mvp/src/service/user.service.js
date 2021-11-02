@@ -1,21 +1,18 @@
 import axios from "axios";
 import authHeader from './auth.header';
 
-const API_URL = 'http://localhost:8000/';
+const API_URL = 'https://cors-anywhere.herokuapp.com/https://services.position.cm/';
 
 class UserService {
 
   getUserData(token){
-    console.log(token);
     return axios.get(API_URL + 'auth/me',{
-      withCredentials : true,
       crossDomain: true,
-      //useCredentials: true,
       headers:{
         "Access-Control-Allow-Origin": "*",
         "Accept":"application/json",
         "Content-Type": "application/json",
-        //"Authorization": "Bearear " + token
+        "Authorization": "Bearer " + token
       }
     });
   }

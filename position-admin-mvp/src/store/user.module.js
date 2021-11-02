@@ -8,9 +8,8 @@ export const user = {
   actions: {
     getUser({commit}){
       return UserService.getUserData(JSON.parse(localStorage.getItem('user'))).then(data => {
-        console.log(data);
-        commit('userSuccess',data);
-        return Promise.resolve(data);
+        commit('userSuccess',data.data);
+        return Promise.resolve(data.data);
       },
         error => {
         commit('userFailure');
