@@ -1,39 +1,21 @@
 # crud.py
+from exceptions import (  
+    CategoriesInfoInfoAlreadyExistError, CategoriesInfoNotFoundError,
+    CommercialsInfoInfoAlreadyExistError, CommercialsInfoNotFoundError,
+    EtablissementInfoInfoAlreadyExistError, EtablissementInfoNotFoundError, HorairesInfoInfoAlreadyExistError, HorairesInfoNotFoundError,
+    ManagersInfoInfoAlreadyExistError, ManagersInfoNotFoundError,
+    SousCategoriesInfoInfoAlreadyExistError, SousCategoriesInfoNotFoundError)
+#     return 
+from os import SCHED_IDLE
 from typing import List
+
 from sqlalchemy.orm import Session
-from exceptions import (
-    CategoriesInfoInfoAlreadyExistError,
-    CategoriesInfoNotFoundError,
-    CommercialsInfoInfoAlreadyExistError,
-    CommercialsInfoNotFoundError,
-    EtablissementInfoInfoAlreadyExistError,
-    EtablissementInfoNotFoundError,
-    HorairesInfoInfoAlreadyExistError,
-    HorairesInfoNotFoundError,
-    ManagersInfoInfoAlreadyExistError,
-    ManagersInfoNotFoundError,
-    SousCategoriesInfoInfoAlreadyExistError,
-    SousCategoriesInfoNotFoundError,
-)
 
-from models import (
-    Categories,
-    Commercials,
-    Etablissements,
-    Managers,
-    SousCategories,
-    Horaires,
-    Users
-)
-
-from schemas import (
-    CreateAndUpdateCategories,
-    CreateAndUpdateCommercials,
-    CreateAndUpdateEtablissements,
-    CreateAndUpdateHoraires,
-    CreateAndUpdateManagers,
-    CreateAndUpdateSousCategories
-)
+from models import (Categories, Commercials,  
+                    Etablissements, Horaires, Managers, SousCategories)
+from schemas import (CreateAndUpdateCategories, 
+                     CreateAndUpdateCommercials, CreateAndUpdateEtablissements, CreateAndUpdateHoraires,
+                     CreateAndUpdateManagers, CreateAndUpdateSousCategories)
 
 
 #### etablissements ####
@@ -148,7 +130,6 @@ def get_souscategories_info_by_id(session: Session, _id: int) -> SousCategories:
 
     return souscategories_info
 
-
 # Function to add a new souscategories info to the database
 def create_souscategories(session: Session, ets_info: CreateAndUpdateSousCategories) -> SousCategories:
     souscategories_details = session.query(SousCategories).filter(
@@ -166,7 +147,6 @@ def create_souscategories(session: Session, ets_info: CreateAndUpdateSousCategor
     session.refresh(new_souscategories_info)
     return new_souscategories_info
 
-
 # Function to update details of the souscategories
 def update_souscategories_info(session: Session, _id: int, info_update: CreateAndUpdateSousCategories) -> SousCategories:
     souscategories_info = get_souscategories_info_by_id(session, _id)
@@ -183,7 +163,6 @@ def update_souscategories_info(session: Session, _id: int, info_update: CreateAn
     session.refresh(souscategories_info)
 
     return souscategories_info
-
 
 # Function to delete an souscategories info from the db
 def delete_souscategories_info(session: Session, _id: int):
@@ -208,12 +187,10 @@ def get_all_categories(session: Session, limit: int, offset: int) -> List[Catego
 # Function to  get info of a particular categories
 def get_categories_info_by_id(session: Session, _id: int) -> Categories:
     categories_info = session.query(Categories).get(_id)
-
     if categories_info is None:
         raise CategoriesInfoNotFoundError
 
     return categories_info
-
 
 # Function to add a new categories info to the database
 def create_categories(session: Session, ets_info: CreateAndUpdateCategories) -> Categories:
@@ -232,7 +209,6 @@ def create_categories(session: Session, ets_info: CreateAndUpdateCategories) -> 
     session.refresh(new_categories_info)
     return new_categories_info
 
-
 # Function to update details of the categories
 def update_categories_info(session: Session, _id: int, info_update: CreateAndUpdateCategories) -> Categories:
     categories_info = get_categories_info_by_id(session, _id)
@@ -250,7 +226,6 @@ def update_categories_info(session: Session, _id: int, info_update: CreateAndUpd
 
     return categories_info
 
-
 # Function to delete an categories info from the db
 def delete_categories_info(session: Session, _id: int):
     categories_info = get_categories_info_by_id(session, _id)
@@ -262,8 +237,6 @@ def delete_categories_info(session: Session, _id: int):
     session.commit()
 
     return
-
-
 
 
 
@@ -352,20 +325,6 @@ def get_all_commercials_by_town(session: Session, limit: int, offset: int, town:
 # Function to get list of commercials info by quartier
 def get_all_commercials_by_quartier(session: Session, limit: int, offset: int, quartier: str) -> List[Commercials]:
     return session.query(Commercials).filter(Commercials.quartier==quartier).offset(offset).limit(limit).all()
-
-# Function to get list of commercials info by nbre d'entreprise
-def get_all_commercials_by_nbe(session: Session, limit: int, offset: int, nbe: str) -> List[Commercials]:
-    return session.query(Commercials).filter(Commercials.nombre_etablissement==nbe).offset(offset).limit(limit).all()
-
-# Function to get list of commercials info by revenu total
-def get_all_commercials_by_revenue(session: Session, limit: int, offset: int, revenue: str) -> List[Commercials]:
-    return session.query(Commercials).filter(Commercials.revenu_total==revenue).offset(offset).limit(limit).all()
-
-# Function to get list of commercials info by revenu their name
-def get_all_commercials_by_name(session: Session, limit: int, offset: int, name: str) -> List[Commercials]:
-    user = session.query(Users).filter(Users.name == name).offset(offset).limit(limit).all()
-    return session.query(Commercials).filter(Commercials.id_user==user[id]).offset(offset).limit(limit).all()
-
 
 
 # Function to add a new commercials info to the database
@@ -494,5 +453,3 @@ def delete_horaires_info(session: Session, _id: int):
 
     session.delete(horaires_info)
     session.commit()
-
-    return 

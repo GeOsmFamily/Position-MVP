@@ -3,7 +3,27 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime, time
 
-
+#### Horaires schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateHoraires(BaseModel):
+    id: Optional[int]
+    id_etablissement : int
+    jour : str
+    ouvert : int
+    heureOuverture : Optional[time]
+    heureFermeture: Optional[time]
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+# TO support list and get APIs
+class Horaires(CreateAndUpdateHoraires):
+    id: int
+    class Config():
+        orm_mode = True
+# To support list Commercials APISousCommercials
+class PaginatedHorairesInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Horaires]
 
 #### Etablissements schemas ####
 # TO support creation and update APIs
@@ -25,6 +45,8 @@ class CreateAndUpdateEtablissements(BaseModel):
     paid : int
     created_at : Optional[datetime]
     updated_at : Optional[datetime]
+    
+    horaires: List[Horaires] = []
 # TO support list and get APIs
 class Etablissement(CreateAndUpdateEtablissements):
     id: int
@@ -37,15 +59,14 @@ class PaginatedEtablissementInfo(BaseModel):
     offset: int
     data: List[Etablissement]
 
-
-
+    
 
 #### Sous categories schemas ####
 # TO support creation and update APIs
 class CreateAndUpdateSousCategories(BaseModel):
-    id: Optional[int]
+    id: int
     nom : str
-    id_categorie : str
+    id_categorie : int
     created_at : Optional[datetime]
     updated_at : Optional[datetime]
 # TO support list and get APIs
@@ -63,11 +84,13 @@ class PaginatedSousCategoriesInfo(BaseModel):
 #### categories schemas ####
 # TO support creation and update APIs
 class CreateAndUpdateCategories(BaseModel):
-    id: Optional[int]
+    id: int
     nom : str
     logo_url : Optional[str]
     created_at : Optional[datetime]
     updated_at : Optional[datetime]
+    
+    sous_categories: List[SousCategories] = []
 # TO support list and get APIs
 class Categories(CreateAndUpdateCategories):
     id: int
@@ -124,54 +147,6 @@ class PaginatedCommercialsInfo(BaseModel):
     limit: int
     offset: int
     data: List[Commercials]
-
-
-#### Horaires schemas ####
-# TO support creation and update APIs
-class CreateAndUpdateHoraires(BaseModel):
-    id: Optional[int]
-    id_etablissement : int
-    jour : str
-    ouvert : int
-    heureOuverture : Optional[time]
-    heureFermeture: Optional[time]
-    created_at : Optional[datetime]
-    updated_at : Optional[datetime]
-# TO support list and get APIs
-class Horaires(CreateAndUpdateHoraires):
-    id: int
-    class Config():
-        orm_mode = True
-# To support list Commercials APISousCommercials
-class PaginatedHorairesInfo(BaseModel):
-    limit: int
-    offset: int
-    data: List[Horaires]
-    
-
-
-#### Users schemas ####
-# TO support creation and update APIs
-class CreateAndUpdateUsers(BaseModel):
-    id: Optional[int]
-    name : str
-    email : str
-    phone : str
-    password : str
-    email_verified_at: Optional[time]
-    remember_token: Optional[time]
-    created_at : Optional[datetime]
-    updated_at : Optional[datetime]
-# TO support list and get APIs
-class Users(CreateAndUpdateUsers):
-    id: int
-    class Config():
-        orm_mode = True
-# To support list Commercials APISousCommercials
-class PaginatedUsersInfo(BaseModel):
-    limit: int
-    offset: int
-    data: List[Users]
 
 
 
