@@ -2,14 +2,10 @@
 /position-admin-mvp/node_modules
 
 # services
-/services/commercial/.env
 /services/.env
-/services/commercial/requirements.txt
-/services/establishment/.env
-/services/establishment/requirements.txt
-/services/requirements.txt
 /services/.cmd
-/services/docker-compose.yml
+/services/_pycache__
+/services/__init__.py
 /services/api.py
 /services/main.py
 /services/crud.py
