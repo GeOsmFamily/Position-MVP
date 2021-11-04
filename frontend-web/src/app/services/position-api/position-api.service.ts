@@ -30,7 +30,7 @@ export class PositionApiService {
 
   public GetRequestCategories(){
    const options = {  };
-    this.httpClient.get(this.url_prefix,{ headers: this.entetes,params: new HttpParams({fromString:"limit=10"}) })
+    this.httpClient.get(this.url_prefix + "categories",{ headers: this.entetes,params: new HttpParams({fromString:"limit=10"}) })
     .subscribe((data)=>{
       console.log(data);
      // this.products = data;
