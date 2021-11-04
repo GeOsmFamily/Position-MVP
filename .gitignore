@@ -2,6 +2,7 @@
 /position-admin-mvp/node_modules
 
 # services
+/services/venv/
 /services/.env
 /services/.cmd
 /services/_pycache__
