@@ -309,6 +309,7 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
 
+
         findPositionDialog.setOnClickListener(v -> getPositionCode());
 
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
