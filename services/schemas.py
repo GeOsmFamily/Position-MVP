@@ -3,6 +3,24 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime, time
 
+#### Telephones schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateTelephones(BaseModel):
+    id: Optional[int]
+    id_etablissement : int
+    numero : str
+    whatsapp : str
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+class Telephones(CreateAndUpdateTelephones):
+    id: int
+    class Config():
+        orm_mode = True
+class PaginatedTelephonesInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Telephones]
+
 #### Horaires schemas ####
 # TO support creation and update APIs
 class CreateAndUpdateHoraires(BaseModel):
@@ -14,16 +32,31 @@ class CreateAndUpdateHoraires(BaseModel):
     heureFermeture: Optional[time]
     created_at : Optional[datetime]
     updated_at : Optional[datetime]
-# TO support list and get APIs
 class Horaires(CreateAndUpdateHoraires):
     id: int
     class Config():
         orm_mode = True
-# To support list Commercials APISousCommercials
 class PaginatedHorairesInfo(BaseModel):
     limit: int
     offset: int
     data: List[Horaires]
+    
+#### Images schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateImages(BaseModel):
+    id: Optional[int]
+    id_etablissement : int
+    image_url : str
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+class Images(CreateAndUpdateImages):
+    id: int
+    class Config():
+        orm_mode = True
+class PaginatedImagesInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Images]
 
 #### Etablissements schemas ####
 # TO support creation and update APIs
@@ -47,13 +80,13 @@ class CreateAndUpdateEtablissements(BaseModel):
     updated_at : Optional[datetime]
     
     horaires: List[Horaires] = []
-# TO support list and get APIs
+    images: List[Images] = []
+    telephones: List[Telephones] = []
 class Etablissement(CreateAndUpdateEtablissements):
     id: int
 
     class Config():
         orm_mode = True
-# To support list Etablissement API
 class PaginatedEtablissementInfo(BaseModel):
     limit: int
     offset: int
@@ -69,12 +102,10 @@ class CreateAndUpdateSousCategories(BaseModel):
     id_categorie : int
     created_at : Optional[datetime]
     updated_at : Optional[datetime]
-# TO support list and get APIs
 class SousCategories(CreateAndUpdateSousCategories):
     id: int
     class Config():
         orm_mode = True
-# To support list Etablissement APISousCategories
 class PaginatedSousCategoriesInfo(BaseModel):
     limit: int
     offset: int

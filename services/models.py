@@ -30,6 +30,8 @@ class Etablissements(Base):
     updated_at = Column(Date)
     
     horaires = relationship("Horaires", back_populates="etablissements")
+    images = relationship("Images", back_populates="etablissements")
+    telephones = relationship("Telephones", back_populates="etablissements")
     
 #### Horaires models ####
 class Horaires(Base):
@@ -45,6 +47,32 @@ class Horaires(Base):
     updated_at = Column(Date)
     
     etablissements = relationship("Etablissements", back_populates="horaires")
+
+#### Images des etalissements ####
+class Images(Base):
+    __tablename__ = "images"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_etablissement = Column(Integer, ForeignKey('etablissements.id'))
+    image_url = Column(String(191))
+    created_at = Column(Date)
+    updated_at = Column(Date)
+    
+    etablissements = relationship("Etablissements", back_populates="images")
+
+
+#### Telephones des etalissements ####
+class Telephones(Base):
+    __tablename__ = "telephones"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_etablissement = Column(Integer, ForeignKey('etablissements.id'))
+    numero = Column(String(191))
+    whatsapp = Column(String(191))
+    created_at = Column(Date)
+    updated_at = Column(Date)
+    
+    etablissements = relationship("Etablissements", back_populates="telephones")
 
 
 
@@ -73,7 +101,6 @@ class SousCategories(Base):
     updated_at = Column(Date)
     
     categorie = relationship("Categories", back_populates="sous_categories")
-
 
 
 #### Managers models ####

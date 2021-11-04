@@ -2,9 +2,9 @@
 from exceptions import (  
     CategoriesInfoInfoAlreadyExistError, CategoriesInfoNotFoundError,
     CommercialsInfoInfoAlreadyExistError, CommercialsInfoNotFoundError,
-    EtablissementInfoInfoAlreadyExistError, EtablissementInfoNotFoundError, HorairesInfoInfoAlreadyExistError, HorairesInfoNotFoundError,
+    EtablissementInfoInfoAlreadyExistError, EtablissementInfoNotFoundError, HorairesInfoInfoAlreadyExistError, HorairesInfoNotFoundError, ImagesInfoInfoAlreadyExistError, ImagesInfoNotFoundError,
     ManagersInfoInfoAlreadyExistError, ManagersInfoNotFoundError,
-    SousCategoriesInfoInfoAlreadyExistError, SousCategoriesInfoNotFoundError)
+    SousCategoriesInfoInfoAlreadyExistError, SousCategoriesInfoNotFoundError, TelephonesInfoInfoAlreadyExistError, TelephonesInfoNotFoundError)
 #     return 
 from os import SCHED_IDLE
 from typing import List
@@ -12,10 +12,10 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from models import (Categories, Commercials,  
-                    Etablissements, Horaires, Managers, SousCategories)
+                    Etablissements, Horaires, Images, Managers, SousCategories, Telephones)
 from schemas import (CreateAndUpdateCategories, 
-                     CreateAndUpdateCommercials, CreateAndUpdateEtablissements, CreateAndUpdateHoraires,
-                     CreateAndUpdateManagers, CreateAndUpdateSousCategories)
+                     CreateAndUpdateCommercials, CreateAndUpdateEtablissements, CreateAndUpdateHoraires, CreateAndUpdateImages,
+                     CreateAndUpdateManagers, CreateAndUpdateSousCategories, CreateAndUpdateTelephones)
 
 
 #### etablissements ####
@@ -112,10 +112,6 @@ def delete_ets_info(session: Session, _id: int):
 
 
 
-
-
-
-
 #### souscategories ####
 # Function to get list of souscategories info
 def get_all_souscategories(session: Session, limit: int, offset: int) -> List[SousCategories]:
@@ -175,7 +171,6 @@ def delete_souscategories_info(session: Session, _id: int):
     session.commit()
 
     return
-
 
 
 
@@ -254,7 +249,6 @@ def get_managers_info_by_id(session: Session, _id: int) -> Managers:
 
     return managers_info
 
-
 # Function to add a new managers info to the database
 def create_managers(session: Session, info: CreateAndUpdateManagers) -> Managers:
     managers_details = session.query(Managers).filter(
@@ -270,7 +264,6 @@ def create_managers(session: Session, info: CreateAndUpdateManagers) -> Managers
     session.commit()
     session.refresh(new_categories_info)
     return new_categories_info
-
 
 # Function to update details of the managers
 def update_managers_info(session: Session, _id: int, info_update: CreateAndUpdateManagers) -> Managers:
@@ -288,7 +281,6 @@ def update_managers_info(session: Session, _id: int, info_update: CreateAndUpdat
 
     return managers_info
 
-
 # Function to delete an managers info from the db
 def delete_managers_info(session: Session, _id: int):
     managers_info = get_managers_info_by_id(session, _id)
@@ -300,9 +292,6 @@ def delete_managers_info(session: Session, _id: int):
     session.commit()
 
     return
-
-
-
 
 
 #### Commercials ####
@@ -325,7 +314,6 @@ def get_all_commercials_by_town(session: Session, limit: int, offset: int, town:
 # Function to get list of commercials info by quartier
 def get_all_commercials_by_quartier(session: Session, limit: int, offset: int, quartier: str) -> List[Commercials]:
     return session.query(Commercials).filter(Commercials.quartier==quartier).offset(offset).limit(limit).all()
-
 
 # Function to add a new commercials info to the database
 def create_commercials(session: Session, info: CreateAndUpdateCommercials) -> Commercials:
@@ -350,7 +338,6 @@ def create_commercials(session: Session, info: CreateAndUpdateCommercials) -> Co
     session.refresh(new_commercials_info)
     return new_commercials_info
 
-
 # Function to update details of the commercials
 def update_commercials_info(session: Session, _id: int, info_update: CreateAndUpdateCommercials) -> Commercials:
     commercials_info = get_commercials_info_by_id(session, _id)
@@ -372,7 +359,6 @@ def update_commercials_info(session: Session, _id: int, info_update: CreateAndUp
     session.refresh(commercials_info)
 
     return commercials_info
-
 
 # Function to delete an commercials info from the db
 def delete_commercials_info(session: Session, _id: int):
@@ -401,7 +387,6 @@ def get_horaires_info_by_id(session: Session, _id: int) -> Horaires:
 
     return horaires_info
 
-
 # Function to add a new Horaires info to the database
 def create_horaires(session: Session, info: CreateAndUpdateHoraires) -> Horaires:
     horaires_details = session.query(Horaires).filter(
@@ -421,7 +406,6 @@ def create_horaires(session: Session, info: CreateAndUpdateHoraires) -> Horaires
     session.commit()
     session.refresh(new_horaires_info)
     return new_horaires_info
-
 
 # Function to update details of the Horaires
 def update_horaires_info(session: Session, _id: int, info_update: CreateAndUpdateHoraires) -> Horaires:
@@ -443,7 +427,6 @@ def update_horaires_info(session: Session, _id: int, info_update: CreateAndUpdat
 
     return horaires_info
 
-
 # Function to delete an Horaires info from the db
 def delete_horaires_info(session: Session, _id: int):
     horaires_info = get_horaires_info_by_id(session, _id)
@@ -452,4 +435,125 @@ def delete_horaires_info(session: Session, _id: int):
         raise HorairesInfoNotFoundError
 
     session.delete(horaires_info)
+    session.commit()
+
+
+#### Images ####
+# Function to get list of Images info
+def get_all_images(session: Session, limit: int, offset: int) -> List[Images]:
+    return session.query(Images).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular Images
+def get_images_info_by_id(session: Session, _id: int) -> Images:
+    images_info = session.query(Images).get(_id)
+
+    if images_info is None:
+        raise ImagesInfoNotFoundError
+
+    return images_info
+
+# Function to add a new Images info to the database
+def create_Images(session: Session, info: CreateAndUpdateImages) -> Images:
+    images_details = session.query(Images).filter(
+            Images.id_etablissement==info.id_etablissement,
+            Images.images_url==info.image_url,
+            Images.created_at==info.created_at,
+            Images.updated_at==info.updated_at
+        ).first()
+    if images_details is not None:
+        raise ImagesInfoInfoAlreadyExistError
+
+    new_images_info = Images(**info.dict())
+    session.add(new_images_info)
+    session.commit()
+    session.refresh(new_images_info)
+    return new_images_info
+
+# Function to update details of the Images
+def update_images_info(session: Session, _id: int, info_update: CreateAndUpdateImages) -> Images:
+    images_info = get_images_info_by_id(session, _id)
+
+    if images_info is None:
+        raise ImagesInfoNotFoundError
+
+    images_info.id_etablissement = info_update.id_etablissement
+    images_info.image_url=info_update.image_url
+    images_info.updated_at=info_update.created_at
+    images_info.updated_at=info_update.updated_at
+
+    session.commit()
+    session.refresh(images_info)
+
+    return images_info
+
+# Function to delete an Images info from the db
+def delete_images_info(session: Session, _id: int):
+    images_info = get_images_info_by_id(session, _id)
+
+    if images_info is None:
+        raise ImagesInfoNotFoundError
+
+    session.delete(images_info)
+    session.commit()
+
+
+
+#### Telephones ####
+# Function to get list of Telephones info
+def get_all_telephones(session: Session, limit: int, offset: int) -> List[Telephones]:
+    return session.query(Telephones).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular Telephones
+def get_telephones_info_by_id(session: Session, _id: int) -> Telephones:
+    telephones_info = session.query(Telephones).get(_id)
+
+    if telephones_info is None:
+        raise TelephonesInfoNotFoundError
+
+    return telephones_info
+
+# Function to add a new Telephones info to the database
+def create_Telephones(session: Session, info: CreateAndUpdateTelephones) -> Telephones:
+    telephones_details = session.query(Telephones).filter(
+            Telephones.id_etablissement==info.id_etablissement,
+            Telephones.numero==info.numero,
+            Telephones.whatsapp==info.whatsapp,
+            Telephones.created_at==info.created_at,
+            Telephones.updated_at==info.updated_at
+        ).first()
+    if telephones_details is not None:
+        raise TelephonesInfoInfoAlreadyExistError
+
+    new_telephones_info = Telephones(**info.dict())
+    session.add(new_telephones_info)
+    session.commit()
+    session.refresh(new_telephones_info)
+    return new_telephones_info
+
+# Function to update details of the Telephones
+def update_telephones_info(session: Session, _id: int, info_update: CreateAndUpdateTelephones) -> Telephones:
+    telephones_info = get_telephones_info_by_id(session, _id)
+
+    if telephones_info is None:
+        raise TelephonesInfoNotFoundError
+
+    telephones_info.id_etablissement = info_update.id_etablissement
+    telephones_info.numer=info_update.numero
+    telephones_info.whatsapp=info_update.whatsapp
+    telephones_info.updated_at=info_update.created_at
+    telephones_info.updated_at=info_update.updated_at
+
+    session.commit()
+    session.refresh(telephones_info)
+
+    return telephones_info
+
+# Function to delete an Telephones info from the db
+def delete_telephones_info(session: Session, _id: int):
+    telephones_info = get_telephones_info_by_id(session, _id)
+
+    if telephones_info is None:
+        raise TelephonesInfoNotFoundError
+
+    session.delete(telephones_info)
     session.commit()
