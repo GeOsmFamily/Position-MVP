@@ -22,6 +22,7 @@ export default {
       data => {
         console.log(data);
       }).catch( onerror => {
+        console.log(onerror);
       this.$store.dispatch('auth/logout').then(
         () => {
           this.$router.push('/pages/login-boxed');

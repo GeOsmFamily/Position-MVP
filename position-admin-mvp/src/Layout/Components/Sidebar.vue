@@ -76,6 +76,15 @@ export default {
         },
         {
           header: true,
+          title: "Categories",
+        },
+        {
+          title: "Créer une catégorie",
+          icon: "pe-7s-rocket",
+          href: "/category/create"
+        },
+        {
+          header: true,
           title: "UI Components",
         },
         {
