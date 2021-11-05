@@ -1,19 +1,28 @@
 import axios from "axios";
 
-const API_URL = 'https://cors-anywhere.herokuapp.com/https://api.position.cm/';
+const API_URL = "https://cors-anywhere.herokuapp.com/https://api.position.cm/";
 
 class CategoryService {
-
-  getListCategories(token){
+  getListCategories(token) {
     console.log(token);
-    return axios.get(API_URL + 'categories',{
-      //crossDomain: true,
-      headers:{
+    return axios.get(API_URL + "categories", {
+      headers: {
         "Access-Control-Allow-Origin": "*",
-        "Accept":"application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
-      }
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+  createCategory(token, data) {
+    console.log(token);
+    return axios.post(API_URL + "categories", data, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
     });
   }
 }
