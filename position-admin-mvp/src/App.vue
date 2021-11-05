@@ -10,7 +10,7 @@
 
 <script>
 const default_layout = "default";
-
+import  "./service/api";
 export default {
   computed: {
     layout() {
@@ -20,24 +20,14 @@ export default {
   beforeCreate(){
     this.$store.dispatch('user/getUser').then(
       data => {
-        console.log("success");
         console.log(data);
-        this.$store.dispatch('category/fetchCategories').then(
-          data => {
-            console.log(data);
-          }
-        )
-      },
-      error => {
-        /*this.loading = false;
-        this.message =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();*/
-        console.log(error.message ||
-          error.toString());
-      }
-    );
+      }).catch( onerror => {
+      this.$store.dispatch('auth/logout').then(
+        () => {
+          this.$router.push('/pages/login-boxed');
+        }
+      )
+    })
   }
 };
 </script>

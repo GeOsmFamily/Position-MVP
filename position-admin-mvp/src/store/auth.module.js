@@ -22,7 +22,15 @@ export const auth = {
       );
     },
     logout({ commit }) {
-      AuthService.logout();
+      AuthService.logout(token).then(
+         data =>  {
+          commit('logout');
+          return Promise.resolve(data);
+        },
+        error => {
+           return Promise.reject(error);
+        }
+      );
       commit('logout');
     },
     register({ commit }, user) {
@@ -45,11 +53,11 @@ export const auth = {
     },
     loginFailure(state) {
       state.status.loggedIn = false;
-      state.user = null;
+      state.token = null;
     },
     logout(state) {
       state.status.loggedIn = false;
-      state.user = null;
+      state.token = null;
     },
     registerSuccess(state) {
       state.status.loggedIn = false;

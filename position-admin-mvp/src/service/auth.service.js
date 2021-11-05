@@ -24,8 +24,19 @@ class AuthService {
       });
   }
 
-  logout() {
-    localStorage.removeItem('user');
+  logout(token) {
+    return axios.post(API_URL+"auth/logout ",{},{
+      crossDomain: true,
+      headers:{
+        "Access-Control-Allow-Origin": "*",
+        "Accept":"application/json",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      }
+    }).then(response => {
+      localStorage.removeItem('user');
+      return response.data;
+    });
   }
 
   register(user) {

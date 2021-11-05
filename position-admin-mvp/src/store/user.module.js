@@ -1,10 +1,10 @@
 import UserService from '../service/user.service';
 
-const userData = {user: null};
+const initialState = {user: null};
 
 export const user = {
   namespaced: true,
-  state: userData,
+  state: initialState,
   actions: {
     getUser({commit}){
       return UserService.getUserData(JSON.parse(localStorage.getItem('user'))).then(data => {
@@ -20,10 +20,10 @@ export const user = {
   },
   mutations: {
     userSuccess(state,data) {
-      state.userData.user = data;
+      state.user = data;
     },
     userFailure(state){
-      state.userData.user = null;
+      state.user = null;
     }
   }
 };
