@@ -7,11 +7,10 @@ export const category = {
   state: initialState,
   actions: {
     fetchCategories({commit,rootState}){
-      console.log("categories")
       commit('toggleLoading',true);
-      return CategoryService.getListCategories(rootState.auth.user).then(
+      return CategoryService.getListCategories(rootState.auth.token).then(
         categories => {
-          console.log(categories);
+          console.log(categories.data.data);
           commit('toggleLoading',false);
           commit('categoriesSuccess',categories);
           return Promise.resolve(categories);

@@ -337,10 +337,13 @@ export default {
     PageTitle,
   },
   data: () => ({
-    heading: "Form Layouts",
+    heading: "Catégorie",
     subheading:
-      "Build whatever layout you need with our ArchitectUI framework.",
+      "Ajouter une nouvelle catégorie",
     icon: "pe-7s-graph text-success",
   }),
+  created() {
+    this.$store.dispatch("category/fetchCategories");
+  }
 };
 </script>
