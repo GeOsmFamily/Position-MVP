@@ -39,7 +39,7 @@ from schemas import (Categories, Commercials, CreateAndUpdateCategories,
                      PaginatedHorairesInfo, PaginatedImagesInfo,
                      PaginatedManagersInfo, PaginatedSousCategoriesInfo,
                      PaginatedTelephonesInfo, SousCategories, Telephones)
-from services.schemas import Telephones
+
 
 router = APIRouter()
 

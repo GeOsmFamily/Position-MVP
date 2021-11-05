@@ -115,7 +115,7 @@ class PaginatedSousCategoriesInfo(BaseModel):
 #### categories schemas ####
 # TO support creation and update APIs
 class CreateAndUpdateCategories(BaseModel):
-    id: int
+    id: Optional[int]
     nom : str
     logo_url : Optional[str]
     created_at : Optional[datetime]
