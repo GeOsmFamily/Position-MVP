@@ -56,6 +56,8 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         name = findViewById(R.id.name);
         phone = findViewById(R.id.phone);
+        whatsapp1 = findViewById(R.id.whatsapp1);
+        whatsapp2 = findViewById(R.id.whatsapp2);
         description = findViewById(R.id.description);
         next = findViewById(R.id.next);
         category = findViewById(R.id.category);
@@ -71,23 +73,25 @@ public class NewBusinessActivity extends AppCompatActivity {
         next.setOnClickListener(v -> {
             String getname = name.getText().toString();
             String getphone = phone.getText().toString();
+            String getWhatsapp1 = whatsapp1.getText().toString();
+            String getWhatsapp2 = whatsapp2.getText().toString();
             String getsouscategory = (String) sous_categories.getSelectedItem();
             String getcategory = (String) category.getSelectedItem();
             String getdescription = description.getText().toString();
             if(TextUtils.isEmpty(getname)){
-                Toast.makeText(this, "Please Enter Store Name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Entrez le nom de l'entreprise", Toast.LENGTH_SHORT).show();
             }
             else if(TextUtils.isEmpty(getphone)){
-                Toast.makeText(this, "Please Enter Phone", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Entrez le numéro de Téléphone", Toast.LENGTH_SHORT).show();
             }
             else if(getsouscategory.isEmpty()){
-                Toast.makeText(this, "Please Select Sous_Category", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Selectionner une sous-categorie", Toast.LENGTH_SHORT).show();
             }
             else if(getcategory.isEmpty()){
-                Toast.makeText(this, "Please Select Category", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Selectionner une catégorie", Toast.LENGTH_SHORT).show();
             }
             else if(TextUtils.isEmpty(getdescription)){
-                Toast.makeText(this, "Please Enter Description", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Entrez une catégorie", Toast.LENGTH_SHORT).show();
             }
             else {
               //  uploadData();
@@ -96,7 +100,11 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         backbtn.setOnClickListener(v -> finish());
 
-      /*  getSousCategory();
-        getCategory();*/
+        getSousCategory();
+        getCategory();
+    }
+
+    private void getCategory(){
+
     }
 }
