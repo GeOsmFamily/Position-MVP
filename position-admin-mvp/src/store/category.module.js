@@ -56,5 +56,8 @@ export const category = {
     loading: ({ loading }) => {
       return loading;
     },
+    categories: ({ categories }) => {
+      return categories;
+    },
   },
 };

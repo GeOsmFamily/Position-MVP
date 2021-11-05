@@ -100,8 +100,8 @@ export default {
           console.log("requête envoyée");
           this.$store
             .dispatch("category/createCategory", {
-              name: this.name,
-              logo: this.logo,
+              nom: this.name,
+              logo_url: this.logo,
             })
             .then(
               (data) => {
@@ -109,18 +109,16 @@ export default {
                 //this.$router.push("/");
               },
               (error) => {
+                console.log(error.response.data.detail[0]);
                 this.message =
                   (error.response && error.response.data) ||
-                  error.message ||
+                  error.response.data.detail ||
                   error.toString();
               }
             );
         }
       }
     },
-  },
-  created() {
-    //this.$store.dispatch("category/fetchCategories");
   },
 };
 </script>

@@ -81,7 +81,12 @@ export default {
         {
           title: "Créer une catégorie",
           icon: "pe-7s-rocket",
-          href: "/category/create"
+          href: "/category/create",
+        },
+        {
+          title: "Lister les catégories",
+          icon: "pe-7s-rocket",
+          href: "/category/list",
         },
         {
           header: true,

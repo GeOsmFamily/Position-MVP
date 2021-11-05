@@ -37,8 +37,12 @@ const routes = [
   {
     path: "/category/create",
     name: "category-create",
-    //meta: {layout: "userpages"},
     component: () => import("../DemoPages/Category/Layouts.vue"),
+  },
+  {
+    path: "/category/list",
+    name: "category-list",
+    component: () => import("../DemoPages/Category/RegularTables.vue"),
   },
   {
     path: "/pages/register-boxed",
