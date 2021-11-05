@@ -16,7 +16,7 @@ from models import (Categories, Commercials,
 from schemas import (CreateAndUpdateCategories, 
                      CreateAndUpdateCommercials, CreateAndUpdateEtablissements, CreateAndUpdateHoraires, CreateAndUpdateImages,
                      CreateAndUpdateManagers, CreateAndUpdateSousCategories, CreateAndUpdateTelephones)
-
+from datetime import datetime
 
 #### etablissements ####
 # Function to get list of etablissements info
@@ -27,7 +27,6 @@ def get_all_ets(session: Session, limit: int, offset: int) -> List[Etablissement
 def get_all_ets_by_payment(session: Session, limit: int, offset: int, pay: int) -> List[Etablissements]:
     return session.query(Etablissements).filter_by(paid=int(pay)).offset(offset).limit(limit).all()
 
-
 # Function to  get info of a particular etablissement
 def get_etablissement_info_by_id(session: Session, _id: int) -> Etablissements:
     ets_info = session.query(Etablissements).get(_id)
@@ -36,7 +35,6 @@ def get_etablissement_info_by_id(session: Session, _id: int) -> Etablissements:
         raise EtablissementInfoNotFoundError
 
     return ets_info
-
 
 # Function to add a new etablissement info to the database
 def create_ets(session: Session, ets_info: CreateAndUpdateEtablissements) -> Etablissements:
@@ -61,12 +59,13 @@ def create_ets(session: Session, ets_info: CreateAndUpdateEtablissements) -> Eta
     if ets_details is not None:
         raise EtablissementInfoInfoAlreadyExistError
 
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_ets_info = Etablissements(**ets_info.dict())
     session.add(new_ets_info)
     session.commit()
     session.refresh(new_ets_info)
     return new_ets_info
-
 
 # Function to update details of the ets
 def update_ets_info(session: Session, _id: int, info_update: CreateAndUpdateEtablissements) -> Etablissements:
@@ -89,14 +88,12 @@ def update_ets_info(session: Session, _id: int, info_update: CreateAndUpdateEtab
     ets_info.id_commercial=info_update.id_commercial
     ets_info.id_manager=info_update.id_manager
     ets_info.paid=info_update.paid
-    ets_info.created_at=info_update.created_at
-    ets_info.updated_at=info_update.updated_at
+    ets_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(ets_info)
 
     return ets_info
-
 
 # Function to delete an ets info from the db
 def delete_ets_info(session: Session, _id: int):
@@ -137,6 +134,8 @@ def create_souscategories(session: Session, ets_info: CreateAndUpdateSousCategor
     if souscategories_details is not None:
         raise SousCategoriesInfoInfoAlreadyExistError
 
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_souscategories_info = SousCategories(**ets_info.dict())
     session.add(new_souscategories_info)
     session.commit()
@@ -152,8 +151,7 @@ def update_souscategories_info(session: Session, _id: int, info_update: CreateAn
 
     souscategories_info.nom = info_update.nom
     souscategories_info.id_categorie = info_update.id_categorie
-    souscategories_info.created_at=info_update.created_at
-    souscategories_info.updated_at=info_update.updated_at
+    souscategories_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(souscategories_info)
@@ -197,7 +195,9 @@ def create_categories(session: Session, ets_info: CreateAndUpdateCategories) -> 
         ).first()
     if categories_details is not None:
         raise CategoriesInfoInfoAlreadyExistError
-
+    
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_categories_info = Categories(**ets_info.dict())
     session.add(new_categories_info)
     session.commit()
@@ -213,8 +213,7 @@ def update_categories_info(session: Session, _id: int, info_update: CreateAndUpd
 
     categories_info.nom = info_update.nom
     categories_info.logo_url = info_update.logo_url
-    categories_info.created_at=info_update.created_at
-    categories_info.updated_at=info_update.updated_at
+    categories_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(categories_info)
@@ -259,6 +258,8 @@ def create_managers(session: Session, info: CreateAndUpdateManagers) -> Managers
     if managers_details is not None:
         raise ManagersInfoInfoAlreadyExistError
 
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_categories_info = Managers(**info.dict())
     session.add(new_categories_info)
     session.commit()
@@ -273,8 +274,7 @@ def update_managers_info(session: Session, _id: int, info_update: CreateAndUpdat
         raise ManagersInfoNotFoundError
 
     managers_info.nom = info_update.id_user
-    managers_info.created_at=info_update.created_at
-    managers_info.updated_at=info_update.updated_at
+    managers_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(managers_info)
@@ -332,6 +332,8 @@ def create_commercials(session: Session, info: CreateAndUpdateCommercials) -> Co
     if commercials_details is not None:
         raise CommercialsInfoInfoAlreadyExistError
 
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_commercials_info = Commercials(**info.dict())
     session.add(new_commercials_info)
     session.commit()
@@ -352,8 +354,7 @@ def update_commercials_info(session: Session, _id: int, info_update: CreateAndUp
     commercials_info.ville=info_update.ville
     commercials_info.quartier=info_update.quartier
     commercials_info.image_profil=info_update.image_profil
-    commercials_info.updated_at=info_update.created_at
-    commercials_info.updated_at=info_update.updated_at
+    commercials_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(commercials_info)
@@ -401,6 +402,8 @@ def create_horaires(session: Session, info: CreateAndUpdateHoraires) -> Horaires
     if horaires_details is not None:
         raise HorairesInfoInfoAlreadyExistError
 
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_horaires_info = Horaires(**info.dict())
     session.add(new_horaires_info)
     session.commit()
@@ -419,8 +422,7 @@ def update_horaires_info(session: Session, _id: int, info_update: CreateAndUpdat
     horaires_info.ouvert=info_update.ouvert
     horaires_info.heureOuverture=info_update.heureOuverture
     horaires_info.heureFermeture=info_update.heureFermeture
-    horaires_info.updated_at=info_update.created_at
-    horaires_info.updated_at=info_update.updated_at
+    horaires_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(horaires_info)
@@ -463,6 +465,8 @@ def create_Images(session: Session, info: CreateAndUpdateImages) -> Images:
     if images_details is not None:
         raise ImagesInfoInfoAlreadyExistError
 
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_images_info = Images(**info.dict())
     session.add(new_images_info)
     session.commit()
@@ -478,8 +482,7 @@ def update_images_info(session: Session, _id: int, info_update: CreateAndUpdateI
 
     images_info.id_etablissement = info_update.id_etablissement
     images_info.image_url=info_update.image_url
-    images_info.updated_at=info_update.created_at
-    images_info.updated_at=info_update.updated_at
+    images_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(images_info)
@@ -524,6 +527,8 @@ def create_Telephones(session: Session, info: CreateAndUpdateTelephones) -> Tele
     if telephones_details is not None:
         raise TelephonesInfoInfoAlreadyExistError
 
+    ets_info.created_at=datetime.now()
+    ets_info.updated_at=datetime.now()
     new_telephones_info = Telephones(**info.dict())
     session.add(new_telephones_info)
     session.commit()
@@ -540,8 +545,7 @@ def update_telephones_info(session: Session, _id: int, info_update: CreateAndUpd
     telephones_info.id_etablissement = info_update.id_etablissement
     telephones_info.numer=info_update.numero
     telephones_info.whatsapp=info_update.whatsapp
-    telephones_info.updated_at=info_update.created_at
-    telephones_info.updated_at=info_update.updated_at
+    telephones_info.updated_at=datetime.now()
 
     session.commit()
     session.refresh(telephones_info)
