@@ -8,6 +8,8 @@ import Default from "./Layout/Wrappers/baseLayout.vue";
 import Pages from "./Layout/Wrappers/pagesLayout.vue";
 import api from "@/service/api";
 import VueDataTables from "vue-data-tables";
+import Element from "element-ui";
+import VueGoodTablePlugin from "vue-good-table";
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = api;
@@ -68,7 +70,9 @@ api.interceptors.response.use(
 );
 Vue.use(BootstrapVue);
 Vue.use(Vuelidate);
+Vue.use(Element);
 Vue.use(VueDataTables);
+Vue.use(VueGoodTablePlugin);
 Vue.component("default-layout", Default);
 Vue.component("userpages-layout", Pages);
 new Vue({
