@@ -52,13 +52,9 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['home'])
       } else {
         this.loading=true
-        if(localStorage.getItem('role')!= '2')
-         {
-          console.log("vous n'avez pas de droit  ")
+
           this.router.navigate(['home']);
-         }
-         else
-        this.router.navigate(['home']);
+         
       }
     });
   }

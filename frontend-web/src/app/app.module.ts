@@ -21,6 +21,9 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotifierModule } from 'angular-notifier';
+import { ArchwizardModule } from 'angular-archwizard';
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -41,6 +44,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     HeaderComponent,
     EtablissementComponent,
 
+
   ],
   imports: [
     BrowserModule,
@@ -53,6 +57,21 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NgImageSliderModule,
     SlickCarouselModule,
     NgbModule,
+    ArchwizardModule,
+    NotifierModule.withConfig({
+      position: {
+        horizontal: {
+          position: 'right',
+          distance: 12,
+        },
+
+        vertical: {
+          position: 'top',
+          distance: 12,
+          gap: 10,
+        },
+      },
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

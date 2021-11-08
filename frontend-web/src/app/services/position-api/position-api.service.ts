@@ -10,6 +10,7 @@ import jwt_decode, { JwtPayload } from "jwt-decode";
 import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
+import { ListeCategorie } from 'src/app/interfaces/categorieInterface';
 
 
 @Injectable({
@@ -22,7 +23,7 @@ export class PositionApiService {
    entetes= new HttpHeaders()
   .set('content-type', 'application/json')
   .set('Access-Control-Allow-Origin', '*')
-  .set('Authorization','Bearer  ' + localStorage.getItem('access_token'));
+  .set('Authorization','Bearer ' + localStorage.getItem('access_token'));
 
 
   constructor(public router: Router,private httpClient: HttpClient) {
@@ -30,11 +31,19 @@ export class PositionApiService {
 
   public GetRequestCategories(){
    const options = {  };
-    this.httpClient.get(this.url_prefix,{ headers: this.entetes,params: new HttpParams({fromString:"limit=10"}) })
-    .subscribe((data)=>{
+    if(localStorage.getItem("access_token")){
+
+         console.log("postApi ="+ localStorage.getItem("access_token"))
+      console.log(this.entetes)
+    this.httpClient.get(this. url_prefix+"categories",{ headers: this.entetes .set('Authorization','Bearer ' + localStorage.getItem('access_token')?.trim()),params: new HttpParams({fromString:"limit=10"}) })
+    .subscribe(
+      (data)=>{
       console.log(data);
      // this.products = data;
     })  ;
+
+    }
+
   }
 
 

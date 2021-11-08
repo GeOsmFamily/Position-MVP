@@ -3,13 +3,7 @@
   <div id="map" class=" map" (click)="mapClicked()">
 
   </div>
-  <div class="alert alert-success" *ngIf="role=='2'" style="position: absolute;z-index: 4;">
-    Vous êtes connectés en tant que commercial
-    </div>
-    <div class="alert alert-danger" *ngIf="role!= '2'" style="position: absolute;z-index: 4;">
-      Vous n'avez aucun droit d'ajout d'entreprises
-      </div>
-
+  
 
   <app-vertical-toolbar [map]="getMap()"></app-vertical-toolbar>
 

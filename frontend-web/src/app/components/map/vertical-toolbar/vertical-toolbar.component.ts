@@ -8,6 +8,9 @@ import {
 } from 'src/app/modules/ol';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { MapComponent } from '../map.component';
+import { NotifierService } from 'angular-notifier';
+import { PositionApiService } from 'src/app/services/position-api/position-api.service';
+
 @Component({
   selector: 'app-vertical-toolbar',
   templateUrl: './vertical-toolbar.component.html',
@@ -16,7 +19,12 @@ import { MapComponent } from '../map.component';
 export class VerticalToolbarComponent implements OnInit {
   @Input() map: Map | undefined;
  maphelper= new MapHelper()
-  constructor(public componentHelper:ComponentHelper,public mapcomponent:MapComponent,private router:Router,public authService: AuthService) { }
+
+ private readonly notifier: NotifierService;
+
+  constructor(public positionApi:PositionApiService, notifierService: NotifierService,public componentHelper:ComponentHelper,public mapcomponent:MapComponent,private router:Router,public authService: AuthService) {
+    this.notifier = notifierService;
+   }
 
   ngOnInit(): void {
   }
@@ -37,11 +45,27 @@ export class VerticalToolbarComponent implements OnInit {
   }
 
   ajout_etablissement(){
-    if(localStorage.getItem('access_token') && localStorage.getItem('role')=='2'){
-      this.componentHelper.openEtablissement()
+
+    if(localStorage.getItem('access_token') ==null){
+      console.log("no log in)")
+      this.router.navigate(['login'])
     }
-    else
-    this.router.navigate(['login'])
+    else{
+
+      if(localStorage.getItem('role')=='2'){
+        console.log("role= "+localStorage.getItem('role'))
+        this.positionApi.GetRequestCategories()
+        this.componentHelper.openEtablissement()
+      }
+      else {
+        console.log("role= "+localStorage.getItem('role'))
+        this.notifier.notify('error', 'vous n\'avez pas ce droit');
+      }
+
+    }
+
+
+
 
 
 
@@ -54,8 +78,9 @@ export class VerticalToolbarComponent implements OnInit {
           console.log(localStorage.getItem('access_token'))
           //console.log( this.authService.headers)
           this.authService.logout()
-          console.log(localStorage.getItem('access_token'+0))
+          //console.log(localStorage.getItem('access_token'+0))
           localStorage.removeItem('access_token')
+
 
         }
       //  console.log(localStorage.getItem('access_token'))

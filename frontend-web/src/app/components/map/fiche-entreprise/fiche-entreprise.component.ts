@@ -44,7 +44,7 @@ export class FicheEntrepriseComponent implements OnInit {
 
   close(){
 console.log("closing")
-    $('app-fiche-entreprise').css('left','-360px')
+    $('app-fiche-entreprise').css('left','-310px')
   }
   alert1(){
     alert("hello")

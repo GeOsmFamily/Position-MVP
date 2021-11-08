@@ -52,6 +52,8 @@ const typeLayer = [
 export class MapHelper {
   map: Map | undefined;
   environment = environment;
+  geolocation:Geolocation|undefined
+
 
   constructor(map?: Map) {
     if (map) {
@@ -60,6 +62,14 @@ export class MapHelper {
     } else {
       this.map = geoportailMap;
     }
+    this.geolocation = new Geolocation({
+      // enableHighAccuracy must be set to true to have the heading value.
+      trackingOptions: {
+        enableHighAccuracy: true,
+      },
+      tracking: true,
+      projection: this.map?.getView().getProjection(),
+    });
   }
 
   /**
@@ -105,7 +115,86 @@ export class MapHelper {
   }
   return layer_to_remove
 }
+geolocatEnterprise() {
 
+
+  let positionFeature = new Feature();
+  positionFeature.setStyle(
+    [
+
+    new Style({
+      image: new Icon({
+      scale: 1,
+        src: '/assets/icon-categorie/icon-categorie-achats.svg',
+        anchor:[0.5,0.95]
+      }),
+      // text: new Text({
+      //   font: "15px Calibri,sans-serif",
+      //   fill: new Fill({ color: "#000" }),
+      //   text:"Your position",
+      //   stroke: new Stroke({ color: "#000", width: 1 }),
+      //   padding: [10, 10, 10, 10],
+      //   backgroundFill:new Fill({ color: "#fff" }),
+      //   offsetX: 0,
+      //   offsetY: 30,
+      // })
+    })
+  ]
+  );
+
+
+
+
+
+  this.geolocation?.once('change:position', () => {
+    var coordinates = this.geolocation?.getPosition();
+    console.log(coordinates)
+    positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
+    if (coordinates) {
+      console.log("coordinate =" + coordinates)
+    //  this.fit_view(new Point(coordinates), 18)
+    }
+  });
+
+   /* this.map?.on('pointermove', (e) => {
+    if (e.dragging) return;
+    var hit = this.map?.hasFeatureAtPixel(this.map?.getEventPixel(e.originalEvent));
+    //this.map?.getTargetElement().style.cursor = hit ? 'pointer' : '';
+  });*/
+/*
+  geolocation.on('change:position', () => {
+    var coordinates = geolocation.getPosition();
+    positionFeature.setGeometry(coordinates ? new Point(coordinates) :undefined);
+    if (coordinates) {
+      this.fit_view(new Point(coordinates), 18)
+    }
+  });
+
+  geolocation.on('change:position', () => {
+    var coordinates = geolocation.getPosition();
+    positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
+  });
+*/
+var translate1=this.markerInteractionFeature(positionFeature)
+this.map?.addInteraction(translate1);
+
+  this.geolocation?.on('error', (e) => {
+    console.error(e)
+  });
+  var  vector_layer  = new VectorLayer({
+    // @ts-ignore
+
+    nom: "entreprise",
+    source: new VectorSource({
+      features :  [positionFeature]
+    })
+
+    })
+
+
+  this.map?.addLayer(vector_layer )
+
+}
 
   geolocateUser() {
     if (this.getLayerByName('user_position').length == 0) {
@@ -138,22 +227,14 @@ export class MapHelper {
     ]
     );
 
-    let geolocation = new Geolocation({
-      // enableHighAccuracy must be set to true to have the heading value.
-      trackingOptions: {
-        enableHighAccuracy: true,
-      },
-      tracking: true,
-      projection: this.map?.getView().getProjection(),
-    });
 
 /*
     var translate1=this.markerInteractionFeature(positionFeature)
     this.map?.addInteraction(translate1);
     */
 
-    geolocation.once('change:position', () => {
-      var coordinates = geolocation.getPosition();
+    this.geolocation?.once('change:position', () => {
+      var coordinates = this.geolocation?.getPosition();
       positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
       if (coordinates) {
 
@@ -180,13 +261,14 @@ export class MapHelper {
       positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
     });
 */
-    geolocation.on('error', (e) => {
+    this.geolocation?.on('error', (e) => {
       console.error(e)
     });
 
     geolocalisationLayer.getSource().addFeature(positionFeature)
     console.log(geolocalisationLayer)
   }
+
 
 
 /**
@@ -275,7 +357,7 @@ moveMarkerOnMap(){
   geolocation.once('change:position', () => {
     var coordinates = geolocation.getPosition();
     positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
-    
+
   });
 
   var translate1=this.markerInteractionFeature(positionFeature)
