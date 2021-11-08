@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Gautier/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/simple_spinner_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable-v24/ic_header.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/bg_round_surface.xml" value="0.2203125" />
@@ -71,6 +72,7 @@
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business2.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business3.xml" value="0.2" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business4.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_place_selection.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_profile.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_search.xml" value="0.1" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_settings.xml" value="0.19010416666666666" />

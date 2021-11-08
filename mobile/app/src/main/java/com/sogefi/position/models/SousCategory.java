@@ -7,40 +7,62 @@ import java.util.List;
 
 
 
-public class SousCategories {
+public class SousCategory {
 
-    @SerializedName("limit")
+    @SerializedName("id")
     @Expose
-    private Integer limit;
-    @SerializedName("offset")
+    private Integer id;
+    @SerializedName("nom")
     @Expose
-    private Integer offset;
-    @SerializedName("data")
+    private String nom;
+    @SerializedName("id_categorie")
     @Expose
-    private List<DatumSousCategories> data = null;
+    private Integer idCategorie;
+    @SerializedName("created_at")
+    @Expose
+    private Object createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private Object updatedAt;
 
-    public Integer getLimit() {
-        return limit;
+    public Integer getId() {
+        return id;
     }
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getOffset() {
-        return offset;
+    public String getNom() {
+        return nom;
     }
 
-    public void setOffset(Integer offset) {
-        this.offset = offset;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public List<DatumSousCategories> getData() {
-        return data;
+    public Integer getIdCategorie() {
+        return idCategorie;
     }
 
-    public void setData(List<DatumSousCategories> data) {
-        this.data = data;
+    public void setIdCategorie(Integer idCategorie) {
+        this.idCategorie = idCategorie;
+    }
+
+    public Object getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Object createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Object getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Object updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }
