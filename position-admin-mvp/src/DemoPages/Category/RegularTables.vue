@@ -9,75 +9,56 @@
       <b-spinner variant="success" label="Spinning"></b-spinner>
     </div>
     <b-card title="Catégories" class="main-card mb-4" v-if="!loading">
-      <vue-good-table :columns="fields" :rows="categories" :fixed-header="true">
+      <vue-good-table
+        :columns="fields"
+        :rows="categories"
+        :fixed-header="true"
+        :search-options="{
+          enabled: true,
+          skipDiacritics: true,
+          placeholder: 'Rechercher une catégorie',
+        }"
+        :pagination-options="{
+          enabled: true,
+          mode: 'pages',
+          perPage: 5,
+          position: 'bottom',
+          perPageDropdown: [10, 15],
+          dropdownAllowAll: false,
+          jumpFirstOrLast: true,
+          firstLabel: 'Début',
+          lastLabel: 'Fin',
+          nextLabel: 'suiv',
+          prevLabel: 'prec',
+          rowsPerPageLabel: 'Lignes par page',
+          ofLabel: 'de',
+          pageLabel: 'page', // for 'pages' mode
+          allLabel: 'Tout',
+        }"
+        styleClass="vgt-table bordered striped"
+        compactMode
+      >
+        <template slot="table-row" slot-scope="props">
+          <span v-if="props.column.field === 'actions'">
+            <button @click="editRow(props.row.id)">Edit</button>
+            <button @click="deleteRow(props.row.id)">Delete</button>
+          </span>
+          <span v-else>
+            {{ props.formattedRow[props.column.field] }}
+          </span>
+        </template>
         <div slot="emptystate">No data yet.</div>
       </vue-good-table>
-      <!--      <vuetable
-        ref="vuetable"
-        api-url="https://vuetable.ratiw.net/api/users"
-        :fields="fields"
-        :api-mode="false"
-        :data="categories"
-        :per-page="perPage"
-        :data-manager="dataManager"
-        pagination-path="pagination"
-        @vuetable:pagination-data="onPaginationData"
-      >
-        <div slot="actions" slot-scope="props">
-          <button
-            class="ui small button"
-            @click="onActionClicked('view-item', props.rowData)"
-          >
-            <i class="zoom icon"></i>
-          </button>
-          <button
-            class="ui small button"
-            @click="onActionClicked('edit-item', props.rowData)"
-          >
-            <i class="edit icon"></i>
-          </button>
-          <button
-            class="ui small button"
-            @click="onActionClicked('delete-item', props.rowData)"
-          >
-            <i class="delete icon"></i>
-          </button>
-        </div>
-      </vuetable>-->
-      <!--      <b-table
-        :striped="true"
-        :bordered="true"
-        :outlined="true"
-        :small="false"
-        :hover="true"
-        :dark="false"
-        :fixed="true"
-        :foot-clone="false"
-        :items="categories"
-        :fields="fields"
-      >
-      </b-table>-->
     </b-card>
-    <!--    <div style="padding-top: 10px">
-      <vuetable-pagination
-        ref="pagination"
-        @vuetable-pagination:change-page="onChangePage"
-      ></vuetable-pagination>
-    </div>-->
   </div>
 </template>
 
 <script>
 import PageTitle from "../../Layout/Components/PageTitle.vue";
-// import Vuetable from "vuetable-2";
-// import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
-import _ from "lodash";
 import "vue-good-table/dist/vue-good-table.css";
 export default {
   components: {
     PageTitle,
-    // Vuetable,
-    // VuetablePagination,
   },
   data: () => ({
     heading: "Catégories",
@@ -109,6 +90,11 @@ export default {
         dateInputFormat: "yyyy-MM-dd",
         dateOutputFormat: "MMM do yy",
       },
+      {
+        label: "Actions",
+        field: "actions",
+        sortable: false,
+      },
     ],
     perPage: 10,
     striped: false,
@@ -120,12 +106,6 @@ export default {
     fixed: false,
     footClone: false,
   }),
-  watch: {
-    data(newVal, oldVal) {
-      console.log(newVal, oldVal);
-      this.$refs.vuetable.refresh();
-    },
-  },
   computed: {
     loading() {
       return this.$store.getters["category/loading"];
@@ -138,45 +118,7 @@ export default {
     if (this.categories == null || this.categories.length === 0)
       this.$store.dispatch("category/fetchCategories");
   },
-  methods: {
-    onPaginationData(paginationData) {
-      this.$refs.pagination.setPaginationData(paginationData);
-    },
-    onChangePage(page) {
-      this.$refs.vuetable.changePage(page);
-    },
-    dataManager(sortOrder, pagination) {
-      if (this.data.length < 1) return;
-
-      let local = this.data;
-
-      // sortOrder can be empty, so we have to check for that as well
-      if (sortOrder.length > 0) {
-        console.log("orderBy:", sortOrder[0].sortField, sortOrder[0].direction);
-        local = _.orderBy(
-          local,
-          sortOrder[0].sortField,
-          sortOrder[0].direction
-        );
-      }
-
-      pagination = this.$refs.vuetable.makePagination(
-        local.length,
-        this.perPage
-      );
-      console.log("pagination:", pagination);
-      let from = pagination.from - 1;
-      let to = from + this.perPage;
-
-      return {
-        pagination: pagination,
-        data: _.slice(local, from, to),
-      };
-    },
-    onActionClicked(action, data) {
-      console.log("slot actions: on-click", data.name);
-    },
-  },
+  methods: {},
 };
 </script>
 <style scoped>

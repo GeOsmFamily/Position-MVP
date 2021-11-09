@@ -5,7 +5,7 @@ const API_URL = "https://cors-anywhere.herokuapp.com/https://api.position.cm/";
 class CategoryService {
   getListCategories(token) {
     console.log(token);
-    return axios.get(API_URL + "categories", {
+    return axios.get(API_URL + "categories?limit=50", {
       headers: {
         "Access-Control-Allow-Origin": "*",
         Accept: "application/json",
