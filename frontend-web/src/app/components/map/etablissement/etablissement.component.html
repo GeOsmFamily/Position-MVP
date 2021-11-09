@@ -33,7 +33,7 @@ align-items: center;
   <mat-step [stepControl]="firstFormGroup" >
     <form id="msform" class="form" [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Ajouter le profil</ng-template>
-      <div>
+      <div class="field">
         <mat-label class="fieldlabels">Nom de l'établissement</mat-label>
 
       </div>
@@ -51,7 +51,7 @@ align-items: center;
 
     </mat-form-field>
 
-    <div class="field">
+    <div class="">
       <mat-label class="fieldlabels">Sous-catégorie</mat-label>
     </div>
     <mat-form-field appearance="fill" class="container-fluid" style="height: 30px;border: 1px solid black;">
@@ -64,7 +64,7 @@ align-items: center;
     </mat-form-field>
 
 
-      <div style="margin: auto;text-align: center;">
+      <div style="margin-top: 30px;text-align: center;">
         <button class="btn-sm" mat-raised-button  class=" btn-connexion" (click)="close()">Annuler</button>
         <button class="next action-button" mat-button matStepperNext>Suivant</button>
       </div>

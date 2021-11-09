@@ -151,8 +151,11 @@ margin-right: 30px;
 }
 
 .fieldlabels {
-  color: gray;
-  text-align: left
+ font-family: "OpenSans light";
+  text-align: left;
+  margin-bottom: 30px;
+
+
 }
 
 #progressbar {
@@ -256,13 +259,14 @@ input{
 
 .mat-form-field
 {
-  margin-top: -20px;
+  margin-bottom: -25px;
   text-align: center;
 }
 .field{
-  margin-top: -30px;
+  //margin-top: -30px;
+  margin-bottom: -10px;
 }
-::ng-deep .mat-form-field-underline {
+:deep:ng- .mat-form-field-underline {
   display: none;
 }
 .example-margin {
@@ -319,6 +323,8 @@ background-color: white;
   text-align: center;
   margin-top: 20px;
   margin-bottom: -20px;
+  font-family: "OpenSans bold"
+
 }
 ::ng-deep.mat-progress-bar-buffer{
   background-color: whitesmoke

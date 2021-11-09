@@ -49,12 +49,12 @@ export class LoginComponent implements OnInit {
         // Affichage d'un message d'erreur
         console.log(response.msg)
         console.log(this.loginForm.value.email)
-        this.router.navigate(['home'])
+        this.router.navigate(['login'])
       } else {
         this.loading=true
 
           this.router.navigate(['home']);
-         
+
       }
     });
   }
