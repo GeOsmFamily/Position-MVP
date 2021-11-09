@@ -29,4 +29,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('auth/logout', [App\Http\Controllers\Api\UserController::class, 'logout']);
     Route::post('user/update', [App\Http\Controllers\Api\UserController::class, 'updateUser']);
     Route::get('user/me', [App\Http\Controllers\Api\UserController::class, 'getUser']);
+
+    Route::resource('commercial', App\Http\Controllers\Api\CommercialController::class);
 });

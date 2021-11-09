@@ -40,6 +40,9 @@ use Laravel\Passport\HasApiTokens;
  * @mixin \Eloquent
  * @property int $role
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read int|null $clients_count
+ * @property-read \App\Models\Commercial|null $commercial
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -76,4 +79,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function commercial()
+    {
+        return $this->hasOne(Commercial::class, 'idUser');
+    }
 }

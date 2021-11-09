@@ -136,7 +136,7 @@ Response
 
 ```
 
-[POST auth/password/forgot](http://127.0.0.1:8000/api/auth/password/forgot) - Forgot Password
+[POST api/auth/password/forgot](http://127.0.0.1:8000/api/auth/password/forgot) - Forgot Password
 
 Request
 
@@ -156,4 +156,213 @@ Response
     "data": "",
     "message": "Un lien de reinitialisation vous a été envoyé par mail."
 }
+```
+
+### Users
+
+### Commerciaux
+
+[GET api/commercial](http://127.0.0.1:8000/api/commercial) - Commercial List
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success":true,
+"data":[
+{
+"name":"Commercial",
+"email":"bt@geo.sm",
+"phone":"699999998",
+"role":2,
+"id":1,
+"idUser":5,
+"numeroCni":12345678,
+"numeroBadge":12,
+"ville":"Douala",
+"quartier":"Yassa",
+"imageProfil":null,
+"zone":"Akwa"
+}
+],
+"message":"Liste des Commerciaux"
+}
+
+```
+
+[POST api/commercial](http://127.0.0.1:8000/api/commercial) - Commercial Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+"name":"Commercial",
+"email":"bt@geo.sm",
+"phone":"699999998",
+"password":"secret",
+"numeroCni":12345678,
+"numeroBadge":12,
+"ville":"Douala",
+"quartier":"Yassa",
+"imageProfil":null,
+"zone":"Akwa"
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+"numeroCni": "12345678",
+"numeroBadge": "12",
+"ville": "Douala",
+"quartier": "Yassa",
+"zone": "Akwa",
+"idUser": 6,
+"updated_at": "2021-11-08T16:23:21.000000Z",
+"created_at": "2021-11-08T16:23:21.000000Z",
+"id": 2
+},
+"message": "Création du commercial reussie"
+}
+
+```
+
+[GET api/commercial/{id}](http://127.0.0.1:8000/api/commercial) - Commercial by Id
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success":true,
+"data":[
+{
+"name":"Commercial",
+"email":"bt@geo.sm",
+"phone":"699999998",
+"role":2,
+"id":1,
+"idUser":5,
+"numeroCni":12345678,
+"numeroBadge":12,
+"ville":"Douala",
+"quartier":"Yassa",
+"imageProfil":null,
+"zone":"Akwa",
+"actif":"1"
+}
+],
+"message":"Commercial"
+}
+
+```
+
+[PUT api/commercial/{id}](http://127.0.0.1:8000/api/commercial) - Update Commercial Field
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+"name":"Commercial",
+"phone":"699999998",
+"numeroCni":12345678,
+"numeroBadge":12,
+"ville":"Douala",
+"quartier":"Yassa",
+"imageProfil":null,
+"zone":"Akwa",
+"actif" : "0"
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+"id": 2,
+"idUser": 6,
+"numeroCni": 12345678,
+"numeroBadge": 12,
+"ville": "Douala",
+"quartier": "Yassa",
+"imageProfil": null,
+"zone": "Akwa",
+"actif": 1,
+"created_at": "2021-11-08T16:23:21.000000Z",
+"updated_at": "2021-11-08T16:23:21.000000Z"
+},
+"message": "Update success"
+}
+
+```
+
+[DELETE api/commercial/{id}](http://127.0.0.1:8000/api/commercial) - Delete Commercial
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": "",
+"message": "Suppression réussie"
+}
+
 ```
