@@ -40,8 +40,21 @@
       >
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field === 'actions'">
-            <button @click="editRow(props.row.id)">Edit</button>
-            <button @click="deleteRow(props.row.id)">Delete</button>
+            <b-button class="mx-1" variant="info" @click="editRow(props.row.id)"
+              >Edit</b-button
+            >
+            <b-button
+              variant="success"
+              class="mx-1"
+              @click="editRow(props.row.id)"
+              >Edit</b-button
+            >
+            <b-button
+              variant="danger"
+              class="mx-1"
+              @click="deleteRow(props.row.id)"
+              >Delete</b-button
+            >
           </span>
           <span v-else>
             {{ props.formattedRow[props.column.field] }}
