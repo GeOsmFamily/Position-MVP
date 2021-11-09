@@ -1,15 +1,17 @@
 
 
 
-def read_last_image_identification():
-    file = open("images.txt","r")
+def read_last_image_identification(table: str):
+    filename = "images_" + table + ".txt" 
+    file = open(filename,"r")
     _id = file.read()
     file.close()
     return int(_id) + 1
 
-def save_last_image_identification():
+def save_last_image_identification(table: str):
     _lastId = read_last_image_identification()
-    file = open("images.txt","w")
+    filename = "images_" + table + ".txt" 
+    file = open(filename,"w")
     _id = int(_lastId) 
     file.write(str(_id))
     file.close()
