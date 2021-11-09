@@ -49,7 +49,7 @@ export const auth = {
   mutations: {
     loginSuccess(state, user) {
       state.status.loggedIn = true;
-      state.user = user;
+      state.token = user;
     },
     loginFailure(state) {
       state.status.loggedIn = false;

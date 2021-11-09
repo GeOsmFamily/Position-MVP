@@ -40,6 +40,17 @@ export const category = {
         }
       );
     },
+    deleteCategory({ dispatch, rootState }, id) {
+      return CategoryService.deleteCategory(rootState.auth.token, id).then(
+        (result) => {
+          dispatch("fetchCategories");
+          return Promise.resolve(result);
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+    },
   },
   mutations: {
     categoriesSuccess(state, categories) {

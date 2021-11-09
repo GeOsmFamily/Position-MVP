@@ -25,6 +25,22 @@ class CategoryService {
       },
     });
   }
+  deleteCategory(token, id) {
+    return axios.delete(
+      API_URL + "categories/",
+      {
+        categorie_id: id,
+      },
+      {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+  }
 }
 
 export default new CategoryService();
