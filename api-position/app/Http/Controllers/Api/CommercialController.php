@@ -18,27 +18,35 @@ class CommercialController extends BaseController
      */
     public function index()
     {
-        $commercials = Commercial::all();
-        foreach ($commercials as $commercial) {
-            $user = User::find($commercial->idUser);
-            $result['name'] = $user->name;
-            $result['email'] = $user->email;
-            $result['phone'] = $user->phone;
-            $result['role'] = $user->role;
-            $result['id'] = $commercial->id;
-            $result['idUser'] = $user->id;
-            $result['numeroCni'] = $commercial->numeroCni;
-            $result['numeroBadge'] = $commercial->numeroBadge;
-            $result['ville'] = $commercial->ville;
-            $result['quartier'] = $commercial->quartier;
-            $result['imageProfil'] = $commercial->imageProfil;
-            $result['zone'] = $commercial->zone;
-            $result['actif'] = $commercial->actif;
+        $user = Auth::user();
 
-            $data[] = $result;
+        $role = $user->role;
+
+        if ($role == 1) {
+            $commercials = Commercial::all();
+            foreach ($commercials as $commercial) {
+                $user = User::find($commercial->idUser);
+                $result['name'] = $user->name;
+                $result['email'] = $user->email;
+                $result['phone'] = $user->phone;
+                $result['role'] = $user->role;
+                $result['id'] = $commercial->id;
+                $result['idUser'] = $user->id;
+                $result['numeroCni'] = $commercial->numeroCni;
+                $result['numeroBadge'] = $commercial->numeroBadge;
+                $result['ville'] = $commercial->ville;
+                $result['quartier'] = $commercial->quartier;
+                $result['imageProfil'] = $commercial->imageProfil;
+                $result['zone'] = $commercial->zone;
+                $result['actif'] = $commercial->actif;
+
+                $data[] = $result;
+            }
+
+            return $this->sendResponse($data, 'Liste des Commerciaux');
+        } else {
+            return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
         }
-
-        return $this->sendResponse($data, 'Liste des Commerciaux');
     }
 
     /**
@@ -124,24 +132,54 @@ class CommercialController extends BaseController
      */
     public function show($id)
     {
+        $user = Auth::user();
 
-        $commercial = Commercial::find($id);
-        $user = User::find($commercial->idUser);
-        $result['name'] = $user->name;
-        $result['email'] = $user->email;
-        $result['phone'] = $user->phone;
-        $result['role'] = $user->role;
-        $result['id'] = $commercial->id;
-        $result['idUser'] = $user->id;
-        $result['numeroCni'] = $commercial->numeroCni;
-        $result['numeroBadge'] = $commercial->numeroBadge;
-        $result['ville'] = $commercial->ville;
-        $result['quartier'] = $commercial->quartier;
-        $result['imageProfil'] = $commercial->imageProfil;
+        $role = $user->role;
 
-        $result['actif'] = $commercial->actif;
+        if ($role == 1 || $role == 2) {
+            $commercial = Commercial::find($id);
+            if ($role == 2) {
+                if ($user->id == $commercial->idUser) {
+                    $user = User::find($commercial->idUser);
+                    $result['name'] = $user->name;
+                    $result['email'] = $user->email;
+                    $result['phone'] = $user->phone;
+                    $result['role'] = $user->role;
+                    $result['id'] = $commercial->id;
+                    $result['idUser'] = $user->id;
+                    $result['numeroCni'] = $commercial->numeroCni;
+                    $result['numeroBadge'] = $commercial->numeroBadge;
+                    $result['ville'] = $commercial->ville;
+                    $result['quartier'] = $commercial->quartier;
+                    $result['imageProfil'] = $commercial->imageProfil;
 
-        return $this->sendResponse($result, "Commercial");
+                    $result['actif'] = $commercial->actif;
+
+                    return $this->sendResponse($result, "Commercial");
+                } else {
+                    return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+                }
+            } else {
+                $user = User::find($commercial->idUser);
+                $result['name'] = $user->name;
+                $result['email'] = $user->email;
+                $result['phone'] = $user->phone;
+                $result['role'] = $user->role;
+                $result['id'] = $commercial->id;
+                $result['idUser'] = $user->id;
+                $result['numeroCni'] = $commercial->numeroCni;
+                $result['numeroBadge'] = $commercial->numeroBadge;
+                $result['ville'] = $commercial->ville;
+                $result['quartier'] = $commercial->quartier;
+                $result['imageProfil'] = $commercial->imageProfil;
+
+                $result['actif'] = $commercial->actif;
+
+                return $this->sendResponse($result, "Commercial");
+            }
+        } else {
+            return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+        }
     }
 
     /**
@@ -169,40 +207,82 @@ class CommercialController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1) {
-            $request->validate([
-                'image' => 'mimes:png|max:10000'
-            ]);
-
-
-
+        if ($role == 1 || $role == 2) {
             $commercial = Commercial::find($id);
+            if ($role == 2) {
+                if ($user->id == $commercial->idUser) {
+                    $request->validate([
+                        'image' => 'mimes:png|max:10000'
+                    ]);
 
 
-            $userUpdate = User::find($commercial->idUser);
-            $userUpdate->name = $request->name ?? $userUpdate->name;
-            $userUpdate->phone = $request->phone ?? $userUpdate->phone;
-            $userUpdate->save();
 
-            $commercial->numeroCni = $request->numeroCni ?? $commercial->numeroCni;
-            $commercial->numeroBadge = $request->numeroBadge ?? $commercial->numeroBadge;
-            $commercial->ville = $request->ville ?? $commercial->ville;
-            $commercial->quartier = $request->quartier ?? $commercial->quartier;
-            $commercial->zone = $request->zone ?? $commercial->zone;
-            $commercial->actif = $request->actif ?? $commercial->actif;
 
-            if ($request->file()) {
-                $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
-                $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
-                $commercial->imageProfil = '/storage/' . $filePath;
-            }
 
-            $save = $commercial->save();
 
-            if ($save) {
-                return $this->sendResponse($commercial, "Update success", 201);
+                    $userUpdate = User::find($commercial->idUser);
+                    $userUpdate->name = $request->name ?? $userUpdate->name;
+                    $userUpdate->phone = $request->phone ?? $userUpdate->phone;
+                    $userUpdate->save();
+
+                    $commercial->numeroCni = $request->numeroCni ?? $commercial->numeroCni;
+                    $commercial->numeroBadge = $request->numeroBadge ?? $commercial->numeroBadge;
+                    $commercial->ville = $request->ville ?? $commercial->ville;
+                    $commercial->quartier = $request->quartier ?? $commercial->quartier;
+                    $commercial->zone = $request->zone ?? $commercial->zone;
+                    $commercial->actif = $request->actif ?? $commercial->actif;
+
+                    if ($request->file()) {
+                        $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
+                        $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                        $commercial->imageProfil = '/storage/' . $filePath;
+                    }
+
+                    $save = $commercial->save();
+
+                    if ($save) {
+                        return $this->sendResponse($commercial, "Update success", 201);
+                    } else {
+                        return $this->sendError("Echec de mise à jour", ['error' => 'Unauthorised']);
+                    }
+                } else {
+                    return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+                }
             } else {
-                return $this->sendError("Echec de mise à jour", ['error' => 'Unauthorised']);
+                $request->validate([
+                    'image' => 'mimes:png|max:10000'
+                ]);
+
+
+
+
+
+
+                $userUpdate = User::find($commercial->idUser);
+                $userUpdate->name = $request->name ?? $userUpdate->name;
+                $userUpdate->phone = $request->phone ?? $userUpdate->phone;
+                $userUpdate->save();
+
+                $commercial->numeroCni = $request->numeroCni ?? $commercial->numeroCni;
+                $commercial->numeroBadge = $request->numeroBadge ?? $commercial->numeroBadge;
+                $commercial->ville = $request->ville ?? $commercial->ville;
+                $commercial->quartier = $request->quartier ?? $commercial->quartier;
+                $commercial->zone = $request->zone ?? $commercial->zone;
+                $commercial->actif = $request->actif ?? $commercial->actif;
+
+                if ($request->file()) {
+                    $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
+                    $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                    $commercial->imageProfil = '/storage/' . $filePath;
+                }
+
+                $save = $commercial->save();
+
+                if ($save) {
+                    return $this->sendResponse($commercial, "Update success", 201);
+                } else {
+                    return $this->sendError("Echec de mise à jour", ['error' => 'Unauthorised']);
+                }
             }
         } else {
             return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);

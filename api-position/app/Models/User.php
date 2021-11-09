@@ -43,6 +43,7 @@ use Laravel\Passport\HasApiTokens;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
  * @property-read int|null $clients_count
  * @property-read \App\Models\Commercial|null $commercial
+ * @property-read \App\Models\Manager|null $manager
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -83,5 +84,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function commercial()
     {
         return $this->hasOne(Commercial::class, 'idUser');
+    }
+
+    public function manager()
+    {
+        return $this->hasOne(Manager::class, 'idUser');
     }
 }

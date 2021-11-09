@@ -37,7 +37,7 @@ Insert your generated hash
 Authorization: Bearer YourAccessToken
 ```
 
-### Authentication
+## Authentication
 
 [POST api/auth/login](http://127.0.0.1:8000/api/auth/login) - Login
 
@@ -158,9 +158,7 @@ Response
 }
 ```
 
-### Users
-
-### Commerciaux
+## Commerciaux
 
 [GET api/commercial](http://127.0.0.1:8000/api/commercial) - Commercial List
 
@@ -341,6 +339,174 @@ Response
 ```
 
 [DELETE api/commercial/{id}](http://127.0.0.1:8000/api/commercial) - Delete Commercial
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": "",
+"message": "Suppression réussie"
+}
+
+```
+
+## Manager
+
+[GET api/manager](http://127.0.0.1:8000/api/manager) - Manager List
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+{
+    "success":true,
+    "data":[
+        {
+            "name":"Manager",
+            "email":"tchoukouahaboris@outlook.fr",
+            "phone":"699999996",
+            "role":3,
+            "idUser":20,
+            "id":1
+        }
+    ],
+    "message":"Liste des Managers"
+}
+
+```
+
+[POST api/manager](http://127.0.0.1:8000/api/manager) - Manager Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+    "name":"Manager",
+    "email":"bt@geo.sm",
+    "phone":"699999998",
+    "password":"secret",
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+"idUser": 6,
+"updated_at": "2021-11-08T16:23:21.000000Z",
+"created_at": "2021-11-08T16:23:21.000000Z",
+"id": 2
+},
+"message": "Création du Manager reussie"
+}
+
+```
+
+[GET api/manager/{id}](http://127.0.0.1:8000/api/manager) - Manager by Id
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success":true,
+"data":[
+{
+"name":"Manager",
+"email":"bt@geo.sm",
+"phone":"699999998",
+"role":3,
+"id":1,
+"idUser":5
+}
+],
+"message":"Manager"
+}
+
+```
+
+[PUT api/manager/{id}](http://127.0.0.1:8000/api/manager) - Update Manager Field
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+"name":"Manager",
+"phone":"699999998",
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+"id": 2,
+"idUser": 6,
+"created_at": "2021-11-08T16:23:21.000000Z",
+"updated_at": "2021-11-08T16:23:21.000000Z"
+},
+"message": "Update success"
+}
+
+```
+
+[DELETE api/manager/{id}](http://127.0.0.1:8000/api/manager) - Delete Manager
 
 Request
 
