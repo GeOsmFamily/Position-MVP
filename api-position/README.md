@@ -12,7 +12,22 @@ $ cp .env.example .env
 $ php artisan key:generate
 $ php artisan migrate
 $ php artisan passport:install
+$ php artisan db:seed
 $ php artisan storage:link
+
+```
+
+go to .env file and add mail config :
+
+```
+MAIL_MAILER=smtp
+MAIL_HOST=your host
+MAIL_PORT=your port
+MAIL_USERNAME=your username
+MAIL_PASSWORD=your password
+MAIL_ENCRYPTION=TLS
+MAIL_FROM_ADDRESS=infos@position.cm
+MAIL_FROM_NAME=Position
 
 ```
 
@@ -507,6 +522,348 @@ Response
 ```
 
 [DELETE api/manager/{id}](http://127.0.0.1:8000/api/manager) - Delete Manager
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": "",
+"message": "Suppression réussie"
+}
+
+```
+
+## Catégories
+
+[GET api/categories](http://127.0.0.1:8000/api/categories) - Categories List
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+{
+    "success":true,
+    "data":[
+        {
+            "id":1,
+            "nom":"Achats",
+            "logo_url":null,
+            "created_at":"2021-11-09T17:54:43.000000Z",
+            "updated_at":"2021-11-09T17:54:43.000000Z"
+        },
+            ...
+    ],
+    "message":"Liste des Categories"
+}
+
+```
+
+[POST api/categories](http://127.0.0.1:8000/api/categories) - Categories Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+    "nom":"Categorie",
+    "logo_url":"file",
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "id":1,
+            "nom":"Achats",
+            "logo_url":null,
+            "created_at":"2021-11-09T17:54:43.000000Z",
+            "updated_at":"2021-11-09T17:54:43.000000Z"
+},
+"message": "Création de la cotegorie reussie"
+}
+
+```
+
+[GET api/categories/{id}](http://127.0.0.1:8000/api/categories) - Categorie by Id
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success":true,
+    "data":{
+        "id":3,
+        "nom":"Agriculture",
+        "logo_url":null,
+        "created_at":"2021-11-09T17:54:43.000000Z",
+        "updated_at":"2021-11-09T17:54:43.000000Z",
+        "sous_categories":[
+            {
+                "id":33,
+                "nom":"Mat\u00e9riels et Produits agricoles",
+                "idCategorie":3,
+                "logoUrl":null,
+                "created_at":"2021-11-10T11:55:55.000000Z",
+                "updated_at":"2021-11-10T11:55:55.000000Z"
+            },
+            ....
+        ]
+    },
+    "message":"Categorie"
+}
+
+```
+
+[PUT api/categories/{id}](http://127.0.0.1:8000/api/categories) - Update Categorie Field
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+"nom":"Categorie",
+"logo_url":"file",
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "id":1,
+            "nom":"Achats",
+            "logo_url":null,
+            "created_at":"2021-11-09T17:54:43.000000Z",
+            "updated_at":"2021-11-09T17:54:43.000000Z"
+},
+"message": "Update success"
+}
+
+```
+
+[DELETE api/categories/{id}](http://127.0.0.1:8000/api/categories) - Delete Categorie
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": "",
+"message": "Suppression réussie"
+}
+
+```
+
+## Sous-Catégories
+
+[GET api/souscategories](http://127.0.0.1:8000/api/souscategories) - Sous-Categories List
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+{
+    "success":true,
+    "data":[
+        {
+            "id": 1,
+            "nom": "Boutiques",
+            "idCategorie": 1,
+            "logoUrl": null,
+            "created_at": "2021-11-10T11:55:55.000000Z",
+            "updated_at": "2021-11-10T11:55:55.000000Z"
+        },
+            ...
+    ],
+    "message":"Liste des Sous Categories"
+}
+
+```
+
+[POST api/souscategories](http://127.0.0.1:8000/api/souscategories) - Sous Categories Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+    "nom":"Categorie",
+    "logoUrl":"file",
+    "idCategorie" : "1"
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "id": 1,
+            "nom": "Boutiques",
+            "idCategorie": 1,
+            "logoUrl": null,
+            "created_at": "2021-11-10T11:55:55.000000Z",
+            "updated_at": "2021-11-10T11:55:55.000000Z"
+},
+"message": "Création de la sous categorie reussie"
+}
+
+```
+
+[GET api/souscategories/{id}](http://127.0.0.1:8000/api/souscategories) - Sous-Categorie by Id
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success":true,
+    "data":{
+        "id": 1,
+        "nom": "Boutiques",
+        "idCategorie": 1,
+        "logoUrl": null,
+        "created_at": "2021-11-10T11:55:55.000000Z",
+        "updated_at": "2021-11-10T11:55:55.000000Z"
+    },
+    "message":"SousCategorie"
+}
+
+```
+
+[PUT api/souscategories/{id}](http://127.0.0.1:8000/api/souscategories) - Update Sous Categorie Field
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+"nom":"SousCategorie",
+"logoUrl":"file",
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "id": 1,
+            "nom": "Boutiques",
+            "idCategorie": 1,
+            "logoUrl": null,
+            "created_at": "2021-11-10T11:55:55.000000Z",
+            "updated_at": "2021-11-10T11:55:55.000000Z"
+},
+"message": "Update success"
+}
+
+```
+
+[DELETE api/souscategories/{id}](http://127.0.0.1:8000/api/souscategories) - Delete Sous-Categorie
 
 Request
 

@@ -74,7 +74,7 @@ class CommercialController extends BaseController
         if ($role == 1) {
 
             $request->validate([
-                'image' => 'mimes:png|max:10000'
+                'imageProfil' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
 
             try {
@@ -212,7 +212,7 @@ class CommercialController extends BaseController
             if ($role == 2) {
                 if ($user->id == $commercial->idUser) {
                     $request->validate([
-                        'image' => 'mimes:png|max:10000'
+                        'imageProfil' => 'mimes:png,jpg,jpeg|max:10000'
                     ]);
 
 
@@ -250,7 +250,7 @@ class CommercialController extends BaseController
                 }
             } else {
                 $request->validate([
-                    'image' => 'mimes:png|max:10000'
+                    'imageProfil' => 'mimes:png|max:10000'
                 ]);
 
 

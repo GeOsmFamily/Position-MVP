@@ -25,6 +25,13 @@ Route::get('auth/email/resend', [App\Http\Controllers\Api\VerificationController
 Route::post('auth/password/forgot', [App\Http\Controllers\Api\UserController::class, 'forgot']);
 Route::post('auth/password/reset', [App\Http\Controllers\Api\UserController::class, 'reset'])->name('password.reset');
 
+Route::get('categories', [App\Http\Controllers\Api\CategorieController::class, 'index']);
+Route::get('categories/{id}', [App\Http\Controllers\Api\CategorieController::class, 'show']);
+
+Route::get('souscategories', [App\Http\Controllers\Api\SousCategorieController::class, 'index']);
+Route::get('souscategories/{id}', [App\Http\Controllers\Api\SousCategorieController::class, 'show']);
+
+
 Route::middleware('auth:api')->group(function () {
     Route::get('auth/logout', [App\Http\Controllers\Api\UserController::class, 'logout']);
     Route::post('user/update', [App\Http\Controllers\Api\UserController::class, 'updateUser']);
@@ -32,4 +39,12 @@ Route::middleware('auth:api')->group(function () {
 
     Route::resource('commercial', App\Http\Controllers\Api\CommercialController::class);
     Route::resource('manager', App\Http\Controllers\Api\ManagerController::class);
+
+    Route::post('categories', [App\Http\Controllers\Api\CategorieController::class, 'store']);
+    Route::put('categories/{id}', [App\Http\Controllers\Api\CategorieController::class, 'update']);
+    Route::delete('categories/{id}', [App\Http\Controllers\Api\CategorieController::class, 'destroy']);
+
+    Route::post('souscategories', [App\Http\Controllers\Api\SousCategorieController::class, 'store']);
+    Route::put('souscategories/{id}', [App\Http\Controllers\Api\SousCategorieController::class, 'update']);
+    Route::delete('souscategories/{id}', [App\Http\Controllers\Api\SousCategorieController::class, 'destroy']);
 });
