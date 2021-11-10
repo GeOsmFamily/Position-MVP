@@ -10,12 +10,25 @@
 
 <script>
 const default_layout = "default";
-
+import "./service/api";
 export default {
   computed: {
     layout() {
       return (this.$route.meta.layout || default_layout) + "-layout";
     },
+  },
+  beforeCreate() {
+    this.$store
+      .dispatch("user/getUser")
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((onerror) => {
+        console.log(onerror);
+        this.$store.dispatch("auth/logout").then(() => {
+          this.$router.push("/pages/login-boxed");
+        });
+      });
   },
 };
 </script>
