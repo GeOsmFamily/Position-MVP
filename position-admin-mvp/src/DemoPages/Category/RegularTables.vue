@@ -41,19 +41,20 @@
         <template slot="table-row" slot-scope="props">
           <span v-if="props.column.field === 'actions'">
             <b-button class="mx-1" variant="info" @click="editRow(props.row.id)"
-              >Edit</b-button
+              >Détails</b-button
             >
             <b-button
               variant="success"
               class="mx-1"
               @click="editRow(props.row.id)"
-              >Edit</b-button
+              >Modifier</b-button
             >
             <b-button
               variant="danger"
               class="mx-1"
-              @click="deleteRow(props.row.id)"
-              >Delete</b-button
+              v-b-modal.my-modal
+              @click="setRow(props.row)"
+              >Supprimer</b-button
             >
           </span>
           <span v-else>
@@ -62,6 +63,26 @@
         </template>
         <div slot="emptystate">No data yet.</div>
       </vue-good-table>
+
+      <b-modal
+        id="my-modal"
+        title="Supprimer la catégorie"
+        hide-backdrop
+        hide-footer
+      >
+        <div class="d-block text-center">
+          <h5>
+            Voulez vous vraiment supprimer la catégorie
+            {{ currentRow != null ? currentRow.id : "" }}!
+          </h5>
+        </div>
+        <b-button class="mt-3" variant="outline-danger" block
+          >Close Me</b-button
+        >
+        <b-button class="mt-2" variant="outline-warning" block
+          >Toggle Me</b-button
+        >
+      </b-modal>
     </b-card>
   </div>
 </template>
@@ -77,7 +98,7 @@ export default {
     heading: "Catégories",
     subheading: "Liste des catégories",
     icon: "pe-7s-drawer icon-gradient bg-happy-itmeo",
-
+    currentRow: null,
     fields: [
       {
         label: "No",
@@ -131,7 +152,11 @@ export default {
     if (this.categories == null || this.categories.length === 0)
       this.$store.dispatch("category/fetchCategories");
   },
-  methods: {},
+  methods: {
+    setRow(data) {
+      this.currentRow = data;
+    },
+  },
 };
 </script>
 <style scoped>
