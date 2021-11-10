@@ -1,22 +1,24 @@
 version: "3"
 services:
-    position-service-app:
+    position-api:
         build:
             context: .
             dockerfile: .docker/Dockerfile
         image: position-service-api
+        container_name: api-position
         ports:
-            - 6000:80
+            - port_api:80
         volumes:
             - ./:/var/www/html
 
-    position-service-mysql:
+    position-api-mysql:
         restart: always
         image: mysql:5.7
+        container_name: api-position-mysql
         ports:
-            - "6001:3306"
+            - "port_db:3306"
         environment:
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=api-position
+            - MYSQL_ROOT_PASSWORD=
+            - MYSQL_DATABASE=
         volumes:
             - ./db:/var/lib/mysql

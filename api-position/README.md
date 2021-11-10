@@ -1,25 +1,41 @@
 # Position Api
 
-New Admin Laravel for project Position
+New Api Laravel for project Position
 
 ## Installation
 
 ```sh
 $ git clone https://github.com/GeOsmFamily/Position-MVP.git
 $ cd Position-MVP/api-position
+```
+
+-   edit docker-compose.yml and add Password for Mysql
+
+```sh
+MYSQL_ROOT_PASSWORD=
+MYSQL_DATABASE=
+```
+
+-   add port_api & port_db in docker-compose.yml
+
+```
+port_api:80
+"port_db:3306"
+```
+
+```
+$ docker-compose up -d
+$ docker exec -it api-position bash
 $ composer install
 $ cp .env.example .env
-$ php artisan key:generate
-$ php artisan migrate
-$ php artisan passport:install
-$ php artisan db:seed
-$ php artisan storage:link
-
 ```
 
-go to .env file and add mail config :
+-   edit & add DB & Email infos in .env
 
 ```
+DB_DATABASE=database name
+DB_USERNAME=database username
+DB_PASSWORD=database password
 MAIL_MAILER=smtp
 MAIL_HOST=your host
 MAIL_PORT=your port
@@ -28,7 +44,25 @@ MAIL_PASSWORD=your password
 MAIL_ENCRYPTION=TLS
 MAIL_FROM_ADDRESS=infos@position.cm
 MAIL_FROM_NAME=Position
+```
 
+```
+$ php artisan key:generate
+$ php artisan migrate
+$ php artisan passport:install
+$ php artisan db:seed
+$ php artisan storage:link
+$ exit
+```
+
+-   Add authorization in docker
+
+```
+go to position-api folder
+$ chown -R www-data:www-data *
+$ docker exec -it api-position-mysql bash
+$ cd /var/lib
+$ chown -R mysql:mysql mysql
 ```
 
 ## Documentation
