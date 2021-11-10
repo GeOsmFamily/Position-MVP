@@ -82,3 +82,49 @@ class CommercialsInfoInfoAlreadyExistError(CommercialsInfoException):
     def __init__(self):
         self.status_code = 409
         self.detail = "Commercials Info Already Exists"
+
+
+
+#### Horaires ####
+class HorairesInfoException(Exception):
+    ...
+
+class HorairesInfoNotFoundError(HorairesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Horaires Info Not Found"
+
+class HorairesInfoInfoAlreadyExistError(HorairesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Horaires Info Already Exists"
+
+
+#### Images ####
+class ImagesInfoException(Exception):
+    ...
+
+class ImagesInfoNotFoundError(ImagesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Images Info Not Found"
+
+class ImagesInfoInfoAlreadyExistError(ImagesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Images Info Already Exists"
+
+
+#### Telephones ####
+class TelephonesInfoException(Exception):
+    ...
+
+class TelephonesInfoNotFoundError(TelephonesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Telephones Info Not Found"
+
+class TelephonesInfoInfoAlreadyExistError(TelephonesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Telephones Info Already Exists"

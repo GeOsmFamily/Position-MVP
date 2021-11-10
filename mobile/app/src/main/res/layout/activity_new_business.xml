@@ -154,7 +154,7 @@
                         android:layout_gravity="center"
                         android:src="@drawable/ic_baseline_local_phone_24"/>
 
-                    <customfonts.TextViewSFProDisplayRegular
+                    <customfonts.EditTextSFProDisplayRegular
                         android:id="@+id/whatsapp1"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -184,7 +184,7 @@
                         android:layout_gravity="center"
                         android:src="@drawable/ic_baseline_local_phone_24" />
 
-                    <customfonts.TextViewSFProDisplayRegular
+                    <customfonts.EditTextSFProDisplayRegular
                         android:id="@+id/whatsapp2"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"

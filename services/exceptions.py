@@ -98,3 +98,48 @@ class HorairesInfoInfoAlreadyExistError(HorairesInfoException):
     def __init__(self):
         self.status_code = 409
         self.detail = "Horaires Info Already Exists"
+
+
+#### Images ####
+class ImagesInfoException(Exception):
+    ...
+
+class ImagesInfoNotFoundError(ImagesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Images Info Not Found"
+
+class ImagesInfoInfoAlreadyExistError(ImagesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Images Info Already Exists"
+
+
+#### Telephones ####
+class TelephonesInfoException(Exception):
+    ...
+
+class TelephonesInfoNotFoundError(TelephonesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Telephones Info Not Found"
+
+class TelephonesInfoInfoAlreadyExistError(TelephonesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Telephones Info Already Exists"
+
+
+#### FTP exceptions  ####
+class FTPImagesException(Exception):
+    ...
+
+class FTPImagesNotFoundError(FTPImagesException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Image Not Found"
+
+class FTPImagesAlreadyExistError(FTPImagesException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Image Already Exists"

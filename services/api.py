@@ -1,81 +1,55 @@
 # api.py
-from fastapi import APIRouter, Depends, HTTPException, Header
+from exceptions import (CategoriesInfoException, CommercialsInfoException,
+                        EtablissementInfoException, FTPImagesException, HorairesInfoException,
+                        ImagesInfoException, ManagersInfoException,
+                        SousCategoriesInfoException, TelephonesInfoException)
+
+from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi_utils.cbv import cbv
-from auth import verify_token
 from sqlalchemy.orm import Session
-from crud import (
-    create_commercials,
-    create_horaires,
-    create_managers,
-    create_souscategories,
-    delete_categories_info,
-    delete_commercials_info,
-    delete_ets_info,
-    delete_horaires_info,
-    delete_managers_info,
-    delete_souscategories_info,
-    get_all_categories,
-    get_all_commercials,
-    get_all_commercials_by_nbe,
-    get_all_commercials_by_quartier,
-    get_all_commercials_by_revenue,
-    get_all_commercials_by_town,
-    get_all_ets_by_payment,
-    get_all_horaires,
-    get_all_managers,
-    get_all_souscategories,
-    get_categories_info_by_id,
-    get_commercials_info_by_id,
-    get_etablissement_info_by_id,
-    get_all_ets,
-    create_ets,
-    create_categories,
-    get_horaires_info_by_id,
-    get_managers_info_by_id,
-    get_souscategories_info_by_id,
-    update_categories_info,
-    update_commercials_info,
-    update_ets_info,
-    update_horaires_info,
-    update_managers_info,
-    update_souscategories_info,
-)
+
+from auth import has_authority, verify_token
+from crud import (create_categories, create_commercials, create_ets,
+                  create_horaires, create_Images, create_managers,
+                  create_souscategories, create_Telephones,
+                  delete_categories_info, delete_commercials_info,
+                  delete_ets_info, delete_horaires_info, delete_images_info,
+                  delete_managers_info, delete_souscategories_info,
+                  delete_telephones_info, get_all_categories,
+                  get_all_commercials, get_all_commercials_by_quartier,
+                  get_all_commercials_by_town, get_all_ets,
+                  get_all_ets_by_payment, get_all_horaires, get_all_images,
+                  get_all_managers, get_all_souscategories, get_all_telephones,
+                  get_categories_info_by_id, get_commercials_info_by_id,
+                  get_etablissement_info_by_id, get_images_info_by_id,
+                  get_managers_info_by_id, get_souscategories_info_by_id,
+                  get_telephones_info_by_id, update_categories_info,
+                  update_commercials_info, update_ets_info,
+                  update_horaires_info, update_images_info,
+                  update_managers_info, update_souscategories_info,
+                  update_telephones_info)
 from database import get_db
-from exceptions import (
-    CategoriesInfoException,
-    CommercialsInfoException,
-    EtablissementInfoException,
-    HorairesInfoException,
-    ManagersInfoException,
-    SousCategoriesInfoException
-)
-from schemas import (
-    Categories,
-    Commercials,
-    CreateAndUpdateCategories,
-    CreateAndUpdateCommercials,
-    CreateAndUpdateHoraires,
-    CreateAndUpdateManagers,
-    Etablissement,
-    CreateAndUpdateEtablissements,
-    Horaires,
-    Managers,
-    PaginatedCategoriesInfo,
-    PaginatedCommercialsInfo,
-    PaginatedEtablissementInfo,
-    PaginatedHorairesInfo,
-    PaginatedManagersInfo,
-    SousCategories,
-    CreateAndUpdateSousCategories,
-    PaginatedSousCategoriesInfo,
-)
-from auth import verify_token, has_authority
+from schemas import (Categories, Commercials, CreateAndUpdateCategories,
+                     CreateAndUpdateCommercials, CreateAndUpdateEtablissements,
+                     CreateAndUpdateHoraires, CreateAndUpdateImages,
+                     CreateAndUpdateManagers, CreateAndUpdateSousCategories,
+                     CreateAndUpdateTelephones, Etablissement, Horaires,
+                     Images, Managers, PaginatedCategoriesInfo,
+                     PaginatedCommercialsInfo, PaginatedEtablissementInfo,
+                     PaginatedHorairesInfo, PaginatedImagesInfo,
+                     PaginatedManagersInfo, PaginatedSousCategoriesInfo,
+                     PaginatedTelephonesInfo, SousCategories, Telephones)
+
+from fastapi import UploadFile, File
+from os import getcwd, remove
+from fastapi.responses import FileResponse, JSONResponse
+
+from utils import read_last_image_identification, save_last_image_identification
 
 router = APIRouter()
 
 
 #### Etablissement ####
-# Example of Class based view
 @cbv(router)
 class Etablissements:
     session: Session = Depends(get_db)
@@ -83,6 +57,7 @@ class Etablissements:
     # API to get the list of Etablissement info
     @router.get("/etablissements", response_model=PaginatedEtablissementInfo)
     def list_ets(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        print(">>>>>>>>>>>", authorization)
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])
@@ -125,8 +100,7 @@ class Etablissements:
             return ets_info
         except EtablissementInfoException as cie:
             raise HTTPException(**cie.__dict__)
-
-
+        
 # API endpoint to get info of a particular etablissement
 @router.get("/etablissement/", response_model=Etablissement)
 def get_ets_info(etablissement_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -143,7 +117,6 @@ def get_ets_info(etablissement_id: int, session: Session = Depends(get_db), auth
     except EtablissementInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
-
 # API to update a existing etablissement info
 @router.put("/etablissement/", response_model=Etablissement)
 def update_etablissement(etablissement_id: int, new_info: CreateAndUpdateEtablissements, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -159,7 +132,6 @@ def update_etablissement(etablissement_id: int, new_info: CreateAndUpdateEtablis
         return ets_info
     except EtablissementInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
 
 # API to delete a etablissement info from the data base
 @router.delete("/etablissement/")
@@ -178,11 +150,7 @@ def delete_etablissement(etablissement_id: int, session: Session = Depends(get_d
 
 
 
-
-
-
 #### SousCategories ####
-# Example of Class based view
 @cbv(router)
 class SousCategorie:
     session: Session = Depends(get_db)
@@ -218,7 +186,6 @@ class SousCategorie:
         except SousCategoriesInfoException as cie:
             raise HTTPException(**cie.__dict__)
 
-
 # API endpoint to get info of a particular souscategories
 @router.get("/souscategories/", response_model=SousCategories)
 def get_souscategories_info(souscategories_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -235,7 +202,6 @@ def get_souscategories_info(souscategories_id: int, session: Session = Depends(g
     except SousCategoriesInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
-
 # API to update a existing souscategories info
 @router.put("/souscategories/", response_model=SousCategories)
 def update_souscategories(souscategories_id: int, new_info: CreateAndUpdateSousCategories, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -251,7 +217,6 @@ def update_souscategories(souscategories_id: int, new_info: CreateAndUpdateSousC
         return souscategories_info
     except SousCategoriesInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
 
 # API to delete a souscategories info from the data base
 @router.delete("/souscategories/")
@@ -270,10 +235,7 @@ def delete_souscategories(souscategories_id: int, session: Session = Depends(get
 
 
 
-
-
 #### Categories ####
-# Example of Class based view
 @cbv(router)
 class Categorie:
     session: Session = Depends(get_db)
@@ -309,7 +271,6 @@ class Categorie:
         except CategoriesInfoException as cie:
             raise HTTPException(**cie.__dict__)
 
-
 # API endpoint to get info of a particular categories
 @router.get("/categories/", response_model=Categories)
 def get_categories_info(categories_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -325,7 +286,6 @@ def get_categories_info(categories_id: int, session: Session = Depends(get_db), 
         return categories_info
     except CategoriesInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
 
 # API to update a existing categories info
 @router.put("/categories/", response_model=Categories)
@@ -343,7 +303,6 @@ def update_categories(categories_id: int, new_info: CreateAndUpdateCategories, s
     except CategoriesInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
-
 # API to delete a categories info from the data base
 @router.delete("/categories/")
 def delete_categories(categories_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -360,9 +319,7 @@ def delete_categories(categories_id: int, session: Session = Depends(get_db), au
         raise HTTPException(**cie.__dict__)
 
 
-
 #### Manager ####
-# Example of Class based view
 @cbv(router)
 class Manager:
     session: Session = Depends(get_db)
@@ -398,7 +355,6 @@ class Manager:
         except ManagersInfoException as cie:
             raise HTTPException(**cie.__dict__)
 
-
 # API endpoint to get info of a particular managers
 @router.get("/managers/", response_model=Managers)
 def get_managers_info(manager_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -415,7 +371,6 @@ def get_managers_info(manager_id: int, session: Session = Depends(get_db), autho
     except ManagersInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
-
 # API to update a existing managers info
 @router.put("/managers/", response_model=Managers)
 def update_managers(managers_id: int, new_info: CreateAndUpdateManagers, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -431,7 +386,6 @@ def update_managers(managers_id: int, new_info: CreateAndUpdateManagers, session
         return managers_info
     except ManagersInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
 
 # API to delete a managers info from the data base
 @router.delete("/managers/")
@@ -450,18 +404,14 @@ def delete_managers(managers_id: int, session: Session = Depends(get_db), author
 
 
 
-
-
-
 #### Commercials ####
-# Example of Class based view
 @cbv(router)
 class Commercial:
     session: Session = Depends(get_db)
 
     # API to get the list of d info
     @router.get("/commercials", response_model=PaginatedCommercialsInfo)
-    def list_com(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+    def list_ets(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])
@@ -474,10 +424,9 @@ class Commercial:
 
         return response
 
-
     # API to get the list of commercial by town
     @router.get("/commercials/by_town", response_model=PaginatedCommercialsInfo)
-    def list_com_by_town(self, town: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+    def list_ets(self, town: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])
@@ -489,9 +438,9 @@ class Commercial:
         response = {"limit": limit, "offset": offset, "data": commercials_list}
         return response
 
-    # API to get the list of commercial by questiers
+    # API to get the list of commercial by town
     @router.get("/commercials/by_quartier", response_model=PaginatedCommercialsInfo)
-    def list_com_by_quaters(self, quartier: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+    def list_ets(self, quartier: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
         auth_response = verify_token(authorization.split(' ')[1])
@@ -500,34 +449,6 @@ class Commercial:
         if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
             raise HTTPException(status_code=401, detail=auth_response['message'])
         commercials_list = get_all_commercials_by_quartier(self.session, limit, offset, quartier=quartier)
-        response = {"limit": limit, "offset": offset, "data": commercials_list}
-        return response
-
-    # API to get the list of commercial by nbe
-    @router.get("/commercials/by_nbe", response_model=PaginatedCommercialsInfo)
-    def list_ets(self, nbe: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
-        if authorization is None:
-            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-        auth_response = verify_token(authorization.split(' ')[1])
-        if ('user_id' not in auth_response):
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        commercials_list = get_all_commercials_by_nbe(self.session, limit, offset, nbe=nbe)
-        response = {"limit": limit, "offset": offset, "data": commercials_list}
-        return response
-
-        # API to get the list of commercial by revenue
-    @router.get("/commercials/by_revenue", response_model=PaginatedCommercialsInfo)
-    def list_com_by_revenue(self, revenue: str, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
-        if authorization is None:
-            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-        auth_response = verify_token(authorization.split(' ')[1])
-        if ('user_id' not in auth_response):
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        commercials_list = get_all_commercials_by_revenue(self.session, limit, offset, revenue=revenue)
         response = {"limit": limit, "offset": offset, "data": commercials_list}
         return response
 
@@ -547,7 +468,6 @@ class Commercial:
         except CommercialsInfoException as cie:
             raise HTTPException(**cie.__dict__)
 
-
 # API endpoint to get info of a particular commercials
 @router.get("/commercials/", response_model=Commercials)
 def get_commercials_info(commercials_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -564,7 +484,6 @@ def get_commercials_info(commercials_id: int, session: Session = Depends(get_db)
     except CommercialsInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
-
 # API to update a existing commercials info
 @router.put("/commercials/", response_model=Commercials)
 def update_commercials(commercials_id: int, new_info: CreateAndUpdateCommercials, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -580,7 +499,6 @@ def update_commercials(commercials_id: int, new_info: CreateAndUpdateCommercials
         return commercials_info
     except CommercialsInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
 
 # API to delete a commercials info from the data base
 @router.delete("/commercials/")
@@ -601,7 +519,6 @@ def delete_commercials(commercials_id: int, session: Session = Depends(get_db), 
 
 
 #### Horaires ####
-# Example of Class based view
 @cbv(router)
 class Horaire:
     session: Session = Depends(get_db)
@@ -638,7 +555,6 @@ class Horaire:
         except HorairesInfoException as cie:
             raise HTTPException(**cie.__dict__)
 
-
 # API endpoint to get info of a particular horaires
 @router.get("/horaires/", response_model=Horaires)
 def get_horaires_info(horaires_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -655,7 +571,6 @@ def get_horaires_info(horaires_id: int, session: Session = Depends(get_db), auth
     except HorairesInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
-
 # API to update a existing horaires info
 @router.put("/horaires/", response_model=Horaires)
 def update_horaires(horaires_id: int, new_info: CreateAndUpdateHoraires, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -671,8 +586,7 @@ def update_horaires(horaires_id: int, new_info: CreateAndUpdateHoraires, session
         return horaires_info
     except HorairesInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
-
+                                                                                                                                   
 # API to delete a horaires info from the data base
 @router.delete("/horaires/")
 def delete_horaires(horaires_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -688,3 +602,295 @@ def delete_horaires(horaires_id: int, session: Session = Depends(get_db), author
     except HorairesInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
+
+
+#### Images ####
+@cbv(router)
+class Image:
+    session: Session = Depends(get_db)
+
+    # API to get the list of d info
+    @router.get("/images", response_model=PaginatedImagesInfo)
+    def list_images(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        images_list = get_all_images(self.session, limit, offset)
+        response = {"limit": limit, "offset": offset, "data": images_list}
+
+        return response
+
+    # API endpoint to add a images info to the database
+    @router.post("/images")
+    def add_images(self, images_info: CreateAndUpdateImages, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        try:
+            images_info = create_Images(self.session, images_info)
+            return images_info
+        except ImagesInfoException as cie:
+            raise HTTPException(**cie.__dict__)
+    
+    
+    # Images FTP FOR ETABLISSMENTS
+    @router.post("/file/upload/etablissement")
+    async def upload_file(self, file: UploadFile = File(...), authorization:str = Header(None)):
+
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        try:
+            extension = file.filename.split(".")[1]
+            filename = "ETS_POSITION_" + str(read_last_image_identification()) + '.' + extension
+            with open("images/etablissements/"+ filename, 'wb') as image:
+                content = await file.read()
+                image.write(content)
+                image.close()
+            save_last_image_identification()
+            return JSONResponse(content={"filename": filename}, status_code=200)
+        except FTPImagesException as cie:
+            raise HTTPException(**cie.__dict__)
+        
+    @router.get("/file/download/etablissement")
+    def download_file(self, name_file: str):
+        filename = "/images/etablissements/" + name_file
+        return FileResponse(path=getcwd() + filename, media_type='application/octet-stream', filename=name_file)
+
+    @router.get("/file/get/etablissement")
+    def get_file(self, name_file: str):
+        filename = "/images/etablissements/" + name_file
+        return FileResponse(path=getcwd() + filename)
+
+    @router.delete("/file/delete/etablissement")
+    def delete_file(self, name_file: str, authorization:str = Header(None)):
+        
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+
+        filename = "/images/etablissements/" + name_file
+        try:
+            remove(getcwd() + filename)
+            return JSONResponse(content={
+                "removed": True
+                }, status_code=200)   
+        except FileNotFoundError:
+            return JSONResponse(content={
+                "removed": False,
+                "error_message": "File not found"
+            }, status_code=404)
+            
+
+    # Images FTP FOR ETABLISSMENTS
+    @router.post("/file/upload/commerciaux")
+    async def upload_file(self, file: UploadFile = File(...), authorization:str = Header(None)):
+
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        try:
+            extension = file.filename.split(".")[1]
+            filename = "ETS_POSITION_" + str(read_last_image_identification()) + '.' + extension
+            with open("images/commerciaux/"+ filename, 'wb') as image:
+                content = await file.read()
+                image.write(content)
+                image.close()
+            save_last_image_identification()
+            return JSONResponse(content={"filename": filename}, status_code=200)
+        except FTPImagesException as cie:
+            raise HTTPException(**cie.__dict__)
+        
+    @router.get("/file/download/commerciaux")
+    def download_file(self, name_file: str):
+        filename = "/images/commerciaux/" + name_file
+        return FileResponse(path=getcwd() + filename, media_type='application/octet-stream', filename=name_file)
+
+    @router.get("/file/get/commerciaux")
+    def get_file(self, name_file: str):
+        filename = "/images/commerciaux/" + name_file
+        return FileResponse(path=getcwd() + filename)
+
+    @router.delete("/file/delete/commerciaux")
+    def delete_file(self, name_file: str, authorization:str = Header(None)):
+        
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+
+        filename = "/images/commerciaux/" + name_file
+        try:
+            remove(getcwd() + filename)
+            return JSONResponse(content={
+                "removed": True
+                }, status_code=200)   
+        except FileNotFoundError:
+            return JSONResponse(content={
+                "removed": False,
+                "error_message": "File not found"
+            }, status_code=404)
+
+
+
+
+# API endpoint to get info of a particular images
+@router.get("/images/", response_model=Images)
+def get_images_info(images_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        images_info = get_images_info_by_id(session, images_id)
+        return images_info
+    except ImagesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+# API to update a existing images info
+@router.put("/images/", response_model=Images)
+def update_images(images_id: int, new_info: CreateAndUpdateImages, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        images_info = update_images_info(session, images_id, new_info)
+        return images_info
+    except ImagesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+                                                                                                                                   
+# API to delete a images info from the data base
+@router.delete("/images/")
+def delete_images(images_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        return delete_images_info(session, images_id)
+    except ImagesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+
+
+#### Telephones ####
+@cbv(router)
+class Telephone:
+    session: Session = Depends(get_db)
+
+    # API to get the list of d info
+    @router.get("/telephones", response_model=PaginatedTelephonesInfo)
+    def list_telephones(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        telephones_list = get_all_telephones(self.session, limit, offset)
+        response = {"limit": limit, "offset": offset, "data": telephones_list}
+
+        return response
+
+    # API endpoint to add a telephones info to the database
+    @router.post("/telephones")
+    def add_telephones(self, telephones_info: CreateAndUpdateTelephones, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        try:
+            telephones_info = create_Telephones(self.session, telephones_info)
+            return telephones_info
+        except TelephonesInfoException as cie:
+            raise HTTPException(**cie.__dict__)
+
+# API endpoint to get info of a particular telephones
+@router.get("/telephones/", response_model=Telephones)
+def get_telephones_info(telephones_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        telephones_info = get_telephones_info_by_id(session, telephones_id)
+        return telephones_info
+    except TelephonesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+# API to update a existing telephones info
+@router.put("/telephones/", response_model=Telephones)
+def update_telephones(telephones_id: int, new_info: CreateAndUpdateTelephones, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        telephones_info = update_telephones_info(session, telephones_id, new_info)
+        return telephones_info
+    except TelephonesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+                                                                                                                                   
+# API to delete a telephones info from the data base
+@router.delete("/telephones/")
+def delete_telephones(telephones_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        return delete_telephones_info(session, telephones_id)
+    except TelephonesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
