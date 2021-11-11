@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  url_backend: 'https://services.position.cm/',
+  url_position_Api:'https://api.position.cm/',
+  avaible_language: ['fr', 'en'],
+  default_language: 'fr'
 };
 
 /*

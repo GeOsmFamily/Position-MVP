@@ -1,0 +1,81 @@
+
+<div class="container" >
+
+  <div class="d-flex justify-content-center" *ngIf="loading">
+    <div class="spinner-border" role="status" >
+      <span class="sr-only" id="loading">Loading...</span>
+    </div>
+  </div>
+  <mat-card >
+    <div class="conatiner">
+      <img id="logo-position" class="img-fluid" mat-card-image src="assets/logo-nom.svg" alt="logo position">
+
+    </div>
+    <img id="logo-welcome"  class="img-fluid" mat-card-image src="assets/welcome-large.svg" alt="logo position">
+
+    <mat-card-content style="margin-left: 30px;">
+      <form  class="form" [formGroup]="loginForm" (submit)="submit()">
+
+
+        <div class=" champ form-group">
+          <div >
+            <mat-label >Email ou Numéro de téléphone</mat-label>
+            </div>
+
+            <mat-form-field>
+              <input matInput type="text"   class="form-control"  formControlName="email"  name="email" id="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+
+            </mat-form-field>
+            <div *ngIf="submitted && f.email.errors" class="invalid-feedback" style="margin-top: -30px;margin-bottom: 30px;color: red;">
+              <div *ngIf="f.email.errors.required">Email ou téléphone obligatoire</div>
+              <div *ngIf="f.email.errors.email">Email ou téléphone invalide </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="champ form-group"  >
+            <div>
+              <mat-label>Mot de passe</mat-label>
+            </div>
+            <div>
+            <mat-form-field>
+              <input  matInput   class="form-control" type="password"  formControlName="password" name="password" id="password"  [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+
+            </mat-form-field>
+           <!-- <div *ngIf="submitted && f.password.errors" class="invalid-feedback" style="margin-top:-30px;margin-bottom: 15px;color: red;">
+              <div *ngIf="f.password.errors.required">Mot de passe obligatoire</div>
+              <div *ngIf="f.password.errors.minlength">
+                le mot de passe doit contenir au moins 6 caractères
+              </div>
+              <div *ngIf="f.password.errors.maxlength">
+                le mot de passe doit contenir au plus 40 caractères
+              </div>
+            </div>-->
+            </div>
+          </div>
+          <div class="container-forget-password" fxLayout="row" >
+            <a id="forgotten-password" type="button"  (click)='resetPwdPage()'>
+              mot de passe oublié?
+            </a>
+
+        </div>
+
+        <div class="container-btn">
+           <!--   <button class="btn-sm" mat-raised-button id="btn-creer-compte" (click)="registerPage()">Créer un compte</button>
+           -->
+              <button class="btn-sm" mat-raised-button  id="btn-connexion" type="submit" >connexion</button>
+
+        </div>
+
+
+
+
+      </form>
+
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<app-footer></app-footer>

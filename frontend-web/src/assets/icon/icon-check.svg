@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon/icon-check</title>
+    <defs>
+        <path d="M10.4748287,13.863219 L8.80667262,12.1932365 C8.7185684,12.1039411 8.59841522,12.0536824 8.47304141,12.0536824 C8.34766759,12.0536824 8.22751441,12.1039411 8.13941019,12.1932365 C7.95352994,12.3793203 7.95352994,12.6751457 8.13941019,12.8612295 L10.1364313,14.8604372 C10.3223116,15.0465209 10.6225797,15.0465209 10.8084599,14.8604372 L15.8605898,9.80754713 C16.0464701,9.62146336 16.0464701,9.32563788 15.8605898,9.13955411 C15.7724856,9.0502587 15.6523324,9 15.5269586,9 C15.4015848,9 15.2814316,9.0502587 15.1933274,9.13955411 L10.4748287,13.863219 Z" id="path-1"></path>
+    </defs>
+    <g id="icon/icon-check" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <mask id="mask-2" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <use id="icon/action/done_24px" stroke="#013F5F" fill="#013F5F" fill-rule="nonzero" xlink:href="#path-1"></use>
+    </g>
+</svg>

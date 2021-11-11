@@ -1,0 +1,341 @@
+<div class="container-fluid">
+  <div class="row justify-content-center">
+      <div class="col-11 col-sm-12 col-md-12 col-lg-12 col-xl-12 text-center p-0 mt-3 mb-2">
+          <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+
+              <form id="msform" class="form" [formGroup]="etablissementForm">
+                <button style=" display: flex;
+                justify-content: center;
+                align-items: center;
+                    " class="close" mat-mini-fab disabled aria-label="Example icon button with a home icon">
+                  <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" (click)="close()"/>
+
+                </button>
+                  <!-- progressbar -->
+                 <div style="text-align: center;">
+                  <ul id="progressbar" >
+                    <li class="active" id="account" ><strong>Ajouter le profil</strong></li>
+                    <li id="personal" style="visibility:  hidden;" ><strong>Ajouter la description</strong></li>
+                    <li id="payment" style="visibility:  hidden;"  ><strong>Ajouter l'adresse</strong></li>
+                    <li id="confirm" style="visibility:  hidden;"  ><strong>Ajouter le contact</strong></li>
+                    <li id="confirm" style="visibility:  hidden;"  ><strong>Ajouter les horaires</strong></li>
+                    <li id="confirm" style="visibility:  hidden;"  ><strong>Ajouter les photos</strong></li>
+
+                  </ul>
+
+                </div>
+                  <div class="progress" style="margin-top: -30px">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div> <br> <!-- fieldsets -->
+                  <fieldset>
+                      <div class="form-card">
+                          <div class="row">
+                           <!--   <div class="col-7">
+                                  <h2 class="fs-title">Account Information:</h2>
+                              </div>
+                              <div class="col-5">
+                                  <h2 class="steps">Step 1 - 4</h2>
+                              </div>-->
+                          </div>
+
+                            <div>
+                              <mat-label class="fieldlabels">Nom de l'établissement</mat-label>
+
+                            </div>
+                            <mat-form-field class="container-fluid" >
+                              <input matInput type="text"   class="form-control"  formControlName="nomEtablissement" name="nomEtablissement" placeholder="" />
+
+                              </mat-form-field>
+
+
+                          <div class="field">
+                            <mat-label class="fieldlabels">Catégorie</mat-label>
+                          </div>
+                          <mat-form-field class="container-fluid">
+                            <input matInput type="text" class="form-control"  formControlName="categorie" name="categorie" placeholder="" />
+
+                          </mat-form-field>
+                         </div>
+
+                          <button class="btn-sm" mat-raised-button  class=" btn-connexion" (click)="close()">Annuler</button>
+
+                          <input type="button" name="next" class="next action-button" value="Suivant" />
+
+
+                  </fieldset>
+                  <fieldset>
+                      <div class="form-card">
+                          <div class="row">
+                             <!-- <div class="col-7">
+                                  <h2 class="fs-title">Personal Information:</h2>
+                              </div>
+                              <div class="col-5">
+                                  <h2 class="steps">Step 2 - 4</h2>
+                              </div>-->
+                          </div>
+                          <div>
+                            <mat-label class="fieldlabels">Description</mat-label>
+
+                          </div>
+                          <textarea type="text" id="form7" class="md-textarea form-control md-textarea-auto" mdbInput></textarea>
+                      </div>
+                      <input type="button" name="previous" class="previous action-button-previous" value="Précédent" />
+                      <input type="button" name="next" class="next action-button" value="Suivant" />
+                    </fieldset>
+                  <fieldset>
+                      <div class="form-card">
+                          <div class="row">
+
+                          </div>
+                          <div>
+                            <mat-label class="fieldlabels">Adresse</mat-label>
+
+                          </div>
+                          <mat-form-field class="container-fluid" >
+                            <input matInput type="text"   class="form-control"  formControlName="nomEtablissement" name="nomEtablissement" placeholder="" />
+
+                            </mat-form-field>
+                            <div class="row">
+                              <div class="col-5">
+                                <mat-label>Code postal</mat-label>
+                                <mat-form-field class="container-fluid" >
+                                  <input matInput type="text"   class="form-control"  formControlName="nomEtablissement" name="nomEtablissement" placeholder="" />
+
+                                  </mat-form-field>
+                              </div>
+
+                              <div class="col-6 ml-2">
+                                <mat-label>Ville</mat-label>
+                                <mat-form-field class="container-fluid" >
+                                  <input matInput type="text"   class="form-control"  formControlName="nomEtablissement" name="nomEtablissement" placeholder="" />
+
+                                  </mat-form-field>
+                              </div>
+                            </div>
+                            <div>
+                              <mat-label class="fieldlabels">Indications</mat-label>
+
+                            </div>
+                            <textarea type="text" id="form7" class="md-textarea form-control md-textarea-auto" mdbInput></textarea>
+
+                      </div>
+                      <input type="button" name="previous" class="previous action-button-previous" value="Précédent" />
+                      <input type="button" name="next" class="next action-button" value="Suivant" />
+                        </fieldset>
+                  <fieldset>
+                      <div class="form-card">
+                          <div class="row">
+
+                          </div>
+                          <div>
+                            <mat-label class="fieldlabels">Site internet(url)</mat-label>
+
+                          </div>
+                          <mat-form-field class="container-fluid" >
+                            <input matInput type="text"   class="form-control"  formControlName="nomEtablissement" name="nomEtablissement" placeholder="" />
+
+                            </mat-form-field>
+
+
+                            <div>
+                              <mat-label class="fieldlabels">Téléphone 1</mat-label>
+
+                            </div>
+                            <mat-form-field class="container-fluid" >
+                              <input matInput type="text"   class="form-control"  formControlName="nomEtablissement" name="nomEtablissement" placeholder="" />
+
+                              </mat-form-field>
+                              <mat-checkbox formControlName="Tel1" class="example-margin" [(ngModel)]="checked">Whatsapp installé</mat-checkbox>
+
+                              <div>
+                                <mat-label class="fieldlabels">Téléphone 2</mat-label>
+
+                              </div>
+                              <mat-form-field class="container-fluid" >
+                                <input matInput type="text"   class="form-control"  formControlName="nomEtablissement" name="nomEtablissement" placeholder="" />
+
+                                </mat-form-field>
+                                <mat-checkbox formControlName="Tel2" class="example-margin" [(ngModel)]="checked">Whatsapp installé</mat-checkbox>
+
+                      </div>
+                      <input type="button" name="previous" class="previous action-button-previous" value="Précédent" />
+                      <input type="button" name="next" class="next action-button" value="Suivant" />
+                  </fieldset>
+                  <fieldset>
+                    <div class="form-card">
+                        <div class="row jour">
+
+                            Lun
+                            <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+                              <input matInput type="text"   class="form-control"  formControlName="heureOuvertlun" name="heureOuvertlun" placeholder="" />
+
+                              </mat-form-field>
+
+                            <mat-form-field style="width:70px;margin-left: 20px;">
+                              <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermelun" name="heureFermelun" placeholder="" />
+
+                              </mat-form-field>
+
+
+                        </div>
+                        <div class="row jour">
+
+                          Mar
+
+                          <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+                            <input matInput type="text"   class="form-control"  formControlName="heureOuvertmar" name="heureOuvertmar" placeholder="" />
+
+                            </mat-form-field>
+
+                          <mat-form-field style="width:70px;margin-left: 20px;">
+                            <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermemar" name="heureFermemar" placeholder="" />
+
+                            </mat-form-field>
+
+
+                      </div>
+                      <div class="row jour">
+
+                        Mer
+
+                        <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+                          <input matInput type="text"   class="form-control"  formControlName="heureOuvertmer" name="heureOuvertmer" placeholder="" />
+
+                          </mat-form-field>
+
+                        <mat-form-field style="width:70px;margin-left: 20px;">
+                          <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermemer" name="heureFermemer" placeholder="" />
+
+                          </mat-form-field>
+
+
+                    </div>
+                    <div class="row jour">
+
+                      Jeu
+
+                      <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+                        <input matInput type="text"   class="form-control"  formControlName="heureOuvertjeu" name="heureOuvertjeu" placeholder="" />
+
+                        </mat-form-field>
+
+                      <mat-form-field style="width:70px;margin-left: 20px;">
+                        <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermejeu" name="heureFermejeu" placeholder="" />
+
+                        </mat-form-field>
+
+
+                  </div>
+                  <div class="row jour">
+
+                    Ven
+
+                    <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+                      <input matInput type="text"   class="form-control"  formControlName="heureOuvertven" name="heureOuvertven" placeholder="" />
+
+                      </mat-form-field>
+
+                    <mat-form-field style="width:70px;margin-left: 20px;">
+                      <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermeven" name="heureFermeven" placeholder="" />
+
+                      </mat-form-field>
+
+
+                </div>
+                <div class="row jour">
+
+                  Sam
+
+                  <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+                    <input matInput type="text"   class="form-control"  formControlName="heureOuvertsam" name="heureOuvertsam" placeholder="" />
+
+                    </mat-form-field>
+
+                  <mat-form-field style="width:70px;margin-left: 20px;">
+                    <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermesam" name="heureFermesam" placeholder="" />
+
+                    </mat-form-field>
+
+
+              </div>
+              <div class="row jour">
+
+                Dim
+
+                <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+                  <input matInput type="text"   class="form-control"  formControlName="heureOuvertdim" name="heureOuvertdim" placeholder="" />
+
+                  </mat-form-field>
+
+                <mat-form-field style="width:70px;margin-left: 20px;">
+                  <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermedim" name="heureFermedim" placeholder="" />
+
+                  </mat-form-field>
+
+
+            </div>
+                    </div>
+                    <input type="button" name="previous" class="previous action-button-previous" value="Précédent" />
+                    <input type="button" name="next" class="next action-button" value="Suivant" />
+                   </fieldset>
+                   <fieldset>
+                    <div class="form-card">
+                       <div class="row">
+
+                        <div class="text-center col-6" style="width: 130px;
+                       border: 1px gray solid;
+                       padding: 12px;
+                       border-radius: 12px;">
+
+                           <div style="margin-left: -10px;">
+                            <img class="img-fluid" src="assets/icon-medias.svg" alt=""/>
+                            <p>Ajouter une photo</p>
+                           </div>
+                       </div>
+                       <div class="text-center col-6 offset-lg-4" style="width: 150px;
+                       border: 1px gray solid;
+                       padding: 12px;
+                       border-radius: 12px;">
+
+                            <img class="img-fluid" src="assets/icon-medias.svg" alt=""/>
+                            <p>Ajouter une photo</p>
+                       </div>
+                       <div class="text-center col-6" style="width: 150px;
+                       border: 1px gray solid;
+                       padding: 12px;
+                       border-radius: 12px;">
+
+                            <img class="img-fluid" src="assets/icon-medias.svg" alt=""/>
+                            <p>Ajouter une photo</p>
+                       </div>
+                       </div>
+
+
+
+                    </div>
+                    <input type="button" name="previous" class="previous action-button-previous" value="Précédent" />
+                    <input type="button" name="next" class="next action-button" value="Suivant" />
+                   </fieldset>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

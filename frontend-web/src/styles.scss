@@ -12,6 +12,38 @@ body {
   margin: 0;
   font-family: 'OpenSans semibold';
   font-size:13px;
+  height: 100vh;
 
+}
+@media (max-width: 767px) {
+  body{
+    height: 100vh;
+  }
+}
+.mat-select-panel {
+  background-color: rgb(255, 187, 0);
+  color:white;
+  margin-top: 30px !important;
+  width: 30px;
+}
+
+
+::ng-deep .mat-form-field {
+  .mat-input-element {
+      color: black;
+      border: saddlebrown;
+  }
+  .mat-form-field-label {
+      color: slategray;
+  }
+  .mat-form-field-underline {
+      background-color: slategray;
+  }
+  .mat-form-field-ripple {
+      background-color: slategray;
+  }
+  .mat-form-field-required-marker {
+      color: slategray;
+  }
 }
 

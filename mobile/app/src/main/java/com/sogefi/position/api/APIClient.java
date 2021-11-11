@@ -18,9 +18,11 @@ public class APIClient {
 
     public static final String BASE_URL1 = "https://nominatim.openstreetmap.org/";
     public static final String BASE_URL2 = "https://services.position.cm/";
+    public static final String BASE_URL3 = "https://api.position.cm/";
     private static Retrofit retrofit1 = null;
     private static Retrofit retrofit2 = null;
     private static Retrofit retrofit3 = null;
+    private static Retrofit retrofit4 = null;
 
 
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
@@ -99,5 +101,16 @@ public class APIClient {
                     .build();
         }
         return retrofit2;
+    }
+
+    public static Retrofit getNewClient4() {
+        if (retrofit4 == null) {
+            retrofit4 = new Retrofit.Builder()
+                    .baseUrl(BASE_URL3)
+                    .client(getUnsafeOkHttpClient().build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofit4;
     }
 }
