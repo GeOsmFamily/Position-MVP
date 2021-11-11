@@ -35,6 +35,16 @@ const routes = [
     component: () => import("../DemoPages/UserPages/LoginBoxed.vue"),
   },
   {
+    path: "/category/create",
+    name: "category-create",
+    component: () => import("../DemoPages/Category/Layouts.vue"),
+  },
+  {
+    path: "/category/list",
+    name: "category-list",
+    component: () => import("../DemoPages/Category/RegularTables.vue"),
+  },
+  {
     path: "/pages/register-boxed",
     name: "register-boxed",
     meta: { layout: "userpages" },

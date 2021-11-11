@@ -31,14 +31,21 @@ Route::get('categories/{id}', [App\Http\Controllers\Api\CategorieController::cla
 Route::get('souscategories', [App\Http\Controllers\Api\SousCategorieController::class, 'index']);
 Route::get('souscategories/{id}', [App\Http\Controllers\Api\SousCategorieController::class, 'show']);
 
+Route::get('batiments', [App\Http\Controllers\Api\BatimentController::class, 'index']);
+Route::get('batiments/{id}', [App\Http\Controllers\Api\BatimentController::class, 'show']);
+
+
+Route::get('etablissements', [App\Http\Controllers\Api\EtablissementController::class, 'index']);
+Route::get('etablissements/{id}', [App\Http\Controllers\Api\EtablissementController::class, 'show']);
+
 
 Route::middleware('auth:api')->group(function () {
     Route::get('auth/logout', [App\Http\Controllers\Api\UserController::class, 'logout']);
     Route::post('user/update', [App\Http\Controllers\Api\UserController::class, 'updateUser']);
     Route::get('user/me', [App\Http\Controllers\Api\UserController::class, 'getUser']);
 
-    Route::resource('commercial', App\Http\Controllers\Api\CommercialController::class);
-    Route::resource('manager', App\Http\Controllers\Api\ManagerController::class);
+    Route::apiResource('commercial', App\Http\Controllers\Api\CommercialController::class);
+    Route::apiResource('manager', App\Http\Controllers\Api\ManagerController::class);
 
     Route::post('categories', [App\Http\Controllers\Api\CategorieController::class, 'store']);
     Route::put('categories/{id}', [App\Http\Controllers\Api\CategorieController::class, 'update']);
@@ -47,4 +54,23 @@ Route::middleware('auth:api')->group(function () {
     Route::post('souscategories', [App\Http\Controllers\Api\SousCategorieController::class, 'store']);
     Route::put('souscategories/{id}', [App\Http\Controllers\Api\SousCategorieController::class, 'update']);
     Route::delete('souscategories/{id}', [App\Http\Controllers\Api\SousCategorieController::class, 'destroy']);
+
+    Route::post('batiments', [App\Http\Controllers\Api\BatimentController::class, 'store']);
+    Route::put('batiments/{id}', [App\Http\Controllers\Api\BatimentController::class, 'update']);
+    Route::delete('batiments/{id}', [App\Http\Controllers\Api\BatimentController::class, 'destroy']);
+
+    Route::post('etablissements', [App\Http\Controllers\Api\EtablissementController::class, 'store']);
+    Route::put('etablissements/{id}', [App\Http\Controllers\Api\EtablissementController::class, 'update']);
+    Route::delete('etablissements/{id}', [App\Http\Controllers\Api\EtablissementController::class, 'destroy']);
+
+    Route::post('images', [App\Http\Controllers\Api\ImageController::class, 'store']);
+    Route::delete('images/{id}', [App\Http\Controllers\Api\ImageController::class, 'destroy']);
+
+    Route::post('telephones', [App\Http\Controllers\Api\TelephoneController::class, 'store']);
+    Route::put('telephones/{id}', [App\Http\Controllers\Api\TelephoneController::class, 'update']);
+    Route::delete('telephones/{id}', [App\Http\Controllers\Api\TelephoneController::class, 'destroy']);
+
+    Route::post('horaires', [App\Http\Controllers\Api\HoraireController::class, 'store']);
+    Route::put('horaires/{id}', [App\Http\Controllers\Api\HoraireController::class, 'update']);
+    Route::delete('horaires/{id}', [App\Http\Controllers\Api\HoraireController::class, 'destroy']);
 });
