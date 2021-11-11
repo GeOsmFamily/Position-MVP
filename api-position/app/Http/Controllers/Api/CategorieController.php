@@ -42,7 +42,7 @@ class CategorieController extends BaseController
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->logo_url->getClientOriginalName();
-                $filePath = $request->file('logo_url')->storeAs('uploads/categories/logos', $fileName, 'public');
+                $filePath = $request->file('logo_url')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
                 $categorie->logo_url = '/storage/' . $filePath;
             }
 
@@ -100,7 +100,7 @@ class CategorieController extends BaseController
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->logo_url->getClientOriginalName();
-                $filePath = $request->file('logo_url')->storeAs('uploads/categories/logos', $fileName, 'public');
+                $filePath = $request->file('logo_url')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
                 $categorie->logo_url = '/storage/' . $filePath;
             }
 

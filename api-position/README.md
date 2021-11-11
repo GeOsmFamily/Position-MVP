@@ -161,6 +161,41 @@ Response
 
 ```
 
+[GET api/user/me](http://127.0.0.1:8000/api/user/me) - Infos User
+
+Request
+
+```
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+```
+
+Response
+
+```
+{
+    "success": true,
+    "data": {
+        "user": {
+            "id": 1,
+            "name": "Admin",
+            "email": "admin@position.cm",
+            "email_verified_at": "2021-10-19T11:18:29.000000Z",
+            "phone": 699999999,
+            "role": 1,
+            "created_at": "2021-10-19T11:17:48.000000Z",
+            "updated_at": "2021-10-19T11:18:29.000000Z"
+        }
+    },
+    "message": "Utilisateur"
+}
+
+```
+
 [GET api/auth/logout](http://127.0.0.1:8000/api/auth/logout) - Logout
 
 Request
@@ -920,6 +955,783 @@ Response
 "success": true,
 "data": "",
 "message": "Suppression réussie"
+}
+
+```
+
+## Batiments
+
+[GET api/batiments](http://127.0.0.1:8000/api/batiments) - Batiments List
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+{
+    "success":true,
+    "data":[
+        {
+            "nom": "Rocks",
+            "nombreNiveaux": "3",
+            "codeBatiment": "BATIMENT_YDE_1",
+            "longitude": "13",
+            "latitude": "7",
+            "indication": "face polytech",
+            "rue": "542 rue de melen",
+            "ville": "Yaounde",
+            "commune": "Yaounde IV",
+            "quartier": "Melen",
+            "image": "url",
+            "updated_at": "2021-11-11T12:42:23.000000Z",
+            "created_at": "2021-11-11T12:42:23.000000Z",
+            "id": 1
+        },
+            ...
+    ],
+    "message":"Liste des Batiments"
+}
+
+```
+
+[POST api/batiments](http://127.0.0.1:8000/api/batiments) - Batiments Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+            "nom": "Rocks",
+            "nombreNiveaux": "3",
+            "codeBatiment": "BATIMENT_YDE_1",
+            "longitude": "13",
+            "latitude": "7",
+            "indication": "face polytech",
+            "rue": "542 rue de melen",
+            "ville": "Yaounde",
+            "commune": "Yaounde IV",
+            "quartier": "Melen",
+            "image": "file"
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "nom": "Rocks",
+            "nombreNiveaux": "3",
+            "codeBatiment": "BATIMENT_YDE_1",
+            "longitude": "13",
+            "latitude": "7",
+            "indication": "face polytech",
+            "rue": "542 rue de melen",
+            "ville": "Yaounde",
+            "commune": "Yaounde IV",
+            "quartier": "Melen",
+            "image": "url",
+            "updated_at": "2021-11-11T12:42:23.000000Z",
+            "created_at": "2021-11-11T12:42:23.000000Z",
+            "id": 1
+},
+"message": "Création du batiment reussie"
+}
+
+```
+
+[GET api/batiments/{id}](http://127.0.0.1:8000/api/batiments) - Batiments by Id
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "nom": "Rocks",
+        "nombreNiveaux": 3,
+        "codeBatiment": "BATIMENT_YDE_1",
+        "longitude": 13,
+        "latitude": 7,
+        "image": null,
+        "indication": "face polytech",
+        "rue": "542 rue de melen",
+        "ville": "Yaounde",
+        "commune": "Yaounde IV",
+        "quartier": "Melen",
+        "created_at": "2021-11-11T12:42:23.000000Z",
+        "updated_at": "2021-11-11T12:42:23.000000Z",
+        "etablissements": [
+            {
+                "id": 1,
+                "idBatiment": 1,
+                "nom": "SOGEFI",
+                "indicationAdresse": "porte gauche",
+                "codePostal": "14440",
+                "siteInternet": "sogefi.cm",
+                "idSousCategorie": 12,
+                "idCommercial": 1,
+                "idManager": null,
+                "etage": 1,
+                "cover": null,
+                "created_at": "2021-11-11T13:06:17.000000Z",
+                "updated_at": "2021-11-11T13:06:17.000000Z"
+            },
+            ...
+        ],
+    },
+    "message": "Batiment"
+}
+
+```
+
+[PUT api/batiments/{id}](http://127.0.0.1:8000/api/batiments) - Update Batiment Field
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+        "nom": "Rocks",
+        "nombreNiveaux": 3,
+        "codeBatiment": "BATIMENT_YDE_1",
+        "longitude": 13,
+        "latitude": 7,
+        "image": "file",
+        "indication": "face polytech",
+        "rue": "542 rue de melen",
+        "ville": "Yaounde",
+        "commune": "Yaounde IV",
+        "quartier": "Melen"
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "id": 1,
+            "nom": "Rocks",
+            "nombreNiveaux": 3,
+            "codeBatiment": "BATIMENT_YDE_1",
+            "longitude": 13,
+            "latitude": 7,
+            "image": "url",
+            "indication": "face polytech",
+            "rue": "542 rue de melen",
+            "ville": "Yaounde",
+            "commune": "Yaounde IV",
+            "quartier": "Melen",
+            "created_at": "2021-11-11T12:42:23.000000Z",
+            "updated_at": "2021-11-11T12:42:23.000000Z"
+},
+"message": "Update success"
+}
+
+```
+
+[DELETE api/batiments/{id}](http://127.0.0.1:8000/api/batiments) - Delete Batiment
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
+}
+
+```
+
+## Etablissements
+
+[GET api/etablissements](http://127.0.0.1:8000/api/etablissements) - Etablissements List
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+{
+    "success":true,
+    "data":[
+        {
+            "id": 1,
+            "idBatiment": 1,
+            "nom": "SOGEFI",
+            "indicationAdresse": "porte gauche",
+            "codePostal": "14440",
+            "siteInternet": "sogefi.cm",
+            "idSousCategorie": 12,
+            "idCommercial": 1,
+            "idManager": null,
+            "etage": 1,
+            "cover": null,
+            "created_at": "2021-11-11T13:06:17.000000Z",
+            "updated_at": "2021-11-11T13:06:17.000000Z"
+        },
+            ...
+    ],
+    "message":"Liste des Etablissements"
+}
+
+```
+
+[POST api/etablissements](http://127.0.0.1:8000/api/etablissements) - Etablissement Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+            "id": 1,
+            "idBatiment": 1,
+            "nom": "SOGEFI",
+            "indicationAdresse": "porte gauche",
+            "codePostal": "14440",
+            "siteInternet": "sogefi.cm",
+            "idSousCategorie": 12,
+            "idCommercial": 1,
+            "idManager": null,
+            "etage": 1,
+            "cover": file,
+            "created_at": "2021-11-11T13:06:17.000000Z",
+            "updated_at": "2021-11-11T13:06:17.000000Z"
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "id": 1,
+            "idBatiment": 1,
+            "nom": "SOGEFI",
+            "indicationAdresse": "porte gauche",
+            "codePostal": "14440",
+            "siteInternet": "sogefi.cm",
+            "idSousCategorie": 12,
+            "idCommercial": 1,
+            "idManager": null,
+            "etage": 1,
+            "cover": "url",
+            "created_at": "2021-11-11T13:06:17.000000Z",
+            "updated_at": "2021-11-11T13:06:17.000000Z"
+},
+"message": "Création de l'etablissement reussie"
+}
+
+```
+
+[GET api/etablissements/{id}](http://127.0.0.1:8000/api/etablissements/{id}) - Etablissement by Id
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success":true,
+    "data":{
+        "id": 1,
+        "idBatiment": 1,
+        "nom": "SOGEFI",
+        "indicationAdresse": "porte gauche",
+        "codePostal": "14440",
+        "siteInternet": "sogefi.cm",
+        "idSousCategorie": 12,
+        "idCommercial": 1,
+        "idManager": null,
+        "etage": 1,
+        "cover": "url,
+        "created_at": "2021-11-11T13:06:17.000000Z",
+        "updated_at": "2021-11-11T13:06:17.000000Z",
+        "images": [
+            {
+                "id": 1,
+                "idEtablissement": "1",
+                "imageUrl": "/storage/uploads/batiments/images/BATIMENT_YDE_1/SOGEFI/1636637743_images.jpg",
+                "created_at": "2021-11-11T13:35:43.000000Z",
+                "updated_at": "2021-11-11T13:35:43.000000Z"
+            },
+            {
+                "id": 2,
+                "idEtablissement": "1",
+                "imageUrl": "/storage/uploads/batiments/images/BATIMENT_YDE_1/SOGEFI/1636637951_bailleurs.png",
+                "created_at": "2021-11-11T13:39:11.000000Z",
+                "updated_at": "2021-11-11T13:39:11.000000Z"
+            },
+            ...
+        ],
+        "telephones": [
+            {
+                "id": 1,
+                "idEtablissement": 1,
+                "numero": "699999999",
+                "whatsapp": 0,
+                "created_at": "2021-11-11T14:02:38.000000Z",
+                "updated_at": "2021-11-11T14:02:38.000000Z"
+            },
+            {
+                "id": 2,
+                "idEtablissement": 1,
+                "numero": "699999998",
+                "whatsapp": 1,
+                "created_at": "2021-11-11T14:03:23.000000Z",
+                "updated_at": "2021-11-11T14:03:23.000000Z"
+            },
+            ...
+        ],
+        "horaires": [
+            {
+                "id": 1,
+                "idEtablissement": 1,
+                "jour": "lundi",
+                "ouvert": 1,
+                "heureOuverture": "12:00:00",
+                "heureFermeture": "14:00:00",
+                "created_at": "2021-11-11T14:49:26.000000Z",
+                "updated_at": "2021-11-11T14:49:26.000000Z"
+            },
+            ...
+        ]
+
+    },
+    "message":"Etablissement"
+}
+
+```
+
+[PUT api/etablissements/{id}](http://127.0.0.1:8000/api/etablissement/{id}) - Update Etablissement Field
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+        "idBatiment": 1,
+        "nom": "SOGEFI",
+        "indicationAdresse": "porte gauche",
+        "codePostal": "14440",
+        "siteInternet": "sogefi.cm",
+        "idSousCategorie": 12,
+        "idCommercial": 1,
+        "idManager": 1,
+        "etage": 1,
+        "cover": file
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+           "id": 1,
+            "idBatiment": 1,
+            "nom": "SOGEFI",
+            "indicationAdresse": "porte gauche",
+            "codePostal": "14440",
+            "siteInternet": "sogefi.cm",
+            "idSousCategorie": 12,
+            "idCommercial": 1,
+            "idManager": null,
+            "etage": 1,
+            "cover": null,
+            "created_at": "2021-11-11T13:06:17.000000Z",
+            "updated_at": "2021-11-11T13:06:17.000000Z"
+},
+"message": "Update success"
+}
+
+```
+
+[DELETE api/etablissements/{id}](http://127.0.0.1:8000/api/etablissements/{id}) - Delete Etablissement
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
+}
+
+```
+
+## Images
+
+[POST api/images](http://127.0.0.1:8000/api/images) - Images Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+            "idEtablissement": 1,
+            "imageUrl": file,
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "idEtablissement": 1,
+            "imageUrl": "/storage/uploads/batiments/images/BATIMENT_YDE_1/SOGEFI/1636637951_bailleurs.png",
+            "updated_at": "2021-11-11T13:39:11.000000Z",
+            "created_at": "2021-11-11T13:39:11.000000Z",
+            "id": 2
+},
+"message": "Ajout de l'image reussi"
+}
+
+```
+
+[DELETE api/images/{id}](http://127.0.0.1:8000/api/images/{id}) - Delete Images
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
+}
+
+```
+
+## Telephones
+
+[POST api/telephones](http://127.0.0.1:8000/api/telephones) - Telephones Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+            "idEtablissement": 1,
+            "numero": "699999998",
+            "whatsapp": "1"
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "idEtablissement": 1,
+            "numero": "699999998",
+            "whatsapp": "1",
+            "updated_at": "2021-11-11T14:03:23.000000Z",
+            "created_at": "2021-11-11T14:03:23.000000Z",
+            "id": 2
+},
+"message": "Ajout du telephone reussi"
+}
+
+```
+
+[PUT api/telephones/{id}](http://127.0.0.1:8000/api/telephones/{id}) - Telephones update
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+            "idEtablissement": 1,
+            "numero": "699999998",
+            "whatsapp": "1"
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "idEtablissement": 1,
+            "numero": "699999998",
+            "whatsapp": "1",
+            "updated_at": "2021-11-11T14:03:23.000000Z",
+            "created_at": "2021-11-11T14:03:23.000000Z",
+            "id": 2
+        },
+"message": "Update Success"
+}
+
+```
+
+[DELETE api/telephones/{id}](http://127.0.0.1:8000/api/telephones/{id}) - Delete Telephone
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
+}
+
+```
+
+## Horaires
+
+[POST api/horaires](http://127.0.0.1:8000/api/horaires) - Horaires Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+            "idEtablissement": 1,
+            "jour": "lundi",
+            "ouvert": "1",
+            "heureOuverture": "12:00",
+            "heureFermeture": "14:00"
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "idEtablissement": 1,
+            "jour": "lundi",
+            "ouvert": "1",
+            "heureOuverture": "12:00",
+            "heureFermeture": "14:00",
+            "updated_at": "2021-11-11T14:49:26.000000Z",
+            "created_at": "2021-11-11T14:49:26.000000Z",
+            "id": 1
+},
+"message": "Ajout de l'horaire reussi"
+}
+
+```
+
+[PUT api/horaires/{id}](http://127.0.0.1:8000/api/horaires/{id}) - Horaires update
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+            "idEtablissement": 1,
+            "jour": "lundi",
+            "ouvert": "1",
+            "heureOuverture": "12:00",
+            "heureFermeture": "14:00"
+
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+"data": {
+            "idEtablissement": 1,
+            "jour": "lundi",
+            "ouvert": "1",
+            "heureOuverture": "12:00",
+            "heureFermeture": "14:00",
+            "updated_at": "2021-11-11T14:49:26.000000Z",
+            "created_at": "2021-11-11T14:49:26.000000Z",
+            "id": 1
+        },
+"message": "Update Success"
+}
+
+```
+
+[DELETE api/horaires/{id}](http://127.0.0.1:8000/api/horaires/{id}) - Delete Horaire
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
 }
 
 ```

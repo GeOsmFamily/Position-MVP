@@ -312,7 +312,7 @@ class CommercialController extends BaseController
 
             $commercialDestroy = Commercial::destroy($id);
 
-            if ($commercialDestroy) {
+            if ($commercialDestroy != 0) {
                 return $this->sendResponse("", "Suppression réussie");
             } else {
                 return $this->sendError("Echec de Suppression", ['error' => 'Unauthorised']);

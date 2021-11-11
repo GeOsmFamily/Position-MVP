@@ -128,3 +128,18 @@ class TelephonesInfoInfoAlreadyExistError(TelephonesInfoException):
     def __init__(self):
         self.status_code = 409
         self.detail = "Telephones Info Already Exists"
+
+
+#### FTP exceptions  ####
+class FTPImagesException(Exception):
+    ...
+
+class FTPImagesNotFoundError(FTPImagesException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Image Not Found"
+
+class FTPImagesAlreadyExistError(FTPImagesException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Image Already Exists"
