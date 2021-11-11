@@ -6,4 +6,7 @@ services:
     ports:
       - "6003:15500"
     volumes:
-      - ./prod/:/usr/src/app
+      - position-vol:/usr/src/app/images
+Volumes:
+  position-vol:
+    driver: local
