@@ -16,7 +16,12 @@ from models import (Categories, Commercials,
 from schemas import (CreateAndUpdateCategories, 
                      CreateAndUpdateCommercials, CreateAndUpdateEtablissements, CreateAndUpdateHoraires, CreateAndUpdateImages,
                      CreateAndUpdateManagers, CreateAndUpdateSousCategories, CreateAndUpdateTelephones)
+
 from datetime import datetime
+
+from fastapi import UploadFile, File
+from os import getcwd, remove
+from fastapi.responses import FileResponse, JSONResponse
 
 #### etablissements ####
 # Function to get list of etablissements info
@@ -561,3 +566,4 @@ def delete_telephones_info(session: Session, _id: int):
 
     session.delete(telephones_info)
     session.commit()
+
