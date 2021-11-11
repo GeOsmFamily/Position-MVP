@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Manager whereIdUser($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Manager whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Etablissement[] $etablissements
+ * @property-read int|null $etablissements_count
  */
 class Manager extends Model
 {
@@ -33,5 +35,10 @@ class Manager extends Model
     public function user()
     {
         return $this->belongsTo(User::class, "idUser");
+    }
+
+    public function etablissements()
+    {
+        return $this->hasMany(Etablissement::class, "idManager");
     }
 }

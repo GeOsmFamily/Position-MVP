@@ -35,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereVille($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereZone($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Etablissement[] $etablissements
+ * @property-read int|null $etablissements_count
  */
 class Commercial extends Model
 {
@@ -47,5 +49,10 @@ class Commercial extends Model
     public function user()
     {
         return $this->belongsTo(User::class, "idUser");
+    }
+
+    public function etablissements()
+    {
+        return $this->hasMany(Etablissement::class, "idCommercial");
     }
 }

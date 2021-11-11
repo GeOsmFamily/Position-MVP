@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\SousCategorie;
+use App\Models\Batiment;
 use Auth;
 use Illuminate\Http\Request;
 
-class SousCategorieController extends BaseController
+class BatimentController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class SousCategorieController extends BaseController
      */
     public function index()
     {
-        $souscategories = SousCategorie::all();
+        $batiments = Batiment::all();
 
-        return $this->sendResponse($souscategories, 'Liste des Sous-Categories');
+        return $this->sendResponse($batiments, 'Liste des Batiments');
     }
 
     /**
@@ -32,26 +32,24 @@ class SousCategorieController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1) {
+        if ($role == 1 || $role == 2) {
             $request->validate([
-                'logoUrl' => 'mimes:png,svg|max:1000'
+                'image' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
-            $souscategorie = SousCategorie::create($input);
+            $batiment = Batiment::create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logoUrl->getClientOriginalName();
-                $filePath = $request->file('logoUrl')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
-                $souscategorie->logoUrl = '/storage/' . $filePath;
+                $fileName = time() . '_' . $request->image->getClientOriginalName();
+                $filePath = $request->file('image')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $batiment->image = '/storage/' . $filePath;
             }
 
-            $save = $souscategorie->save();
-
-
+            $save = $batiment->save();
 
             if ($save) {
-                return $this->sendResponse($souscategorie, "Création de la sous-categorie reussie", 201);
+                return $this->sendResponse($batiment, "Création du batiment reussie", 201);
             } else {
                 return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
             }
@@ -63,22 +61,25 @@ class SousCategorieController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SousCategorie  $sousCategorie
+     * @param  \App\Models\Batiment  $batiment
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $souscategorie = SousCategorie::find($id);
+        $batiment = Batiment::find($id);
 
+        $etablissements = $batiment->etablissements;
 
-        return $this->sendResponse($souscategorie, 'SousCategorie');
+        $batiment["etablissements"] = $etablissements;
+
+        return $this->sendResponse($batiment, 'Batiment');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SousCategorie  $sousCategorie
+     * @param  \App\Models\Batiment  $batiment
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -87,26 +88,26 @@ class SousCategorieController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1) {
-            $souscategorie = SousCategorie::find($id);
+        if ($role == 1 || $role == 2) {
+            $batiment = Batiment::find($id);
             $request->validate([
-                'logoUrl' => 'mimes:png,svg|max:1000'
+                'image' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
 
-            $souscategorie->nom = $request->nom ?? $souscategorie->nom;
+            $input = $request->all();
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logoUrl->getClientOriginalName();
-                $filePath = $request->file('logoUrl')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
-                $souscategorie->logoUrl = '/storage/' . $filePath;
+                $fileName = time() . '_' . $request->image->getClientOriginalName();
+                $filePath = $request->file('image')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $batiment->image = '/storage/' . $filePath;
             }
 
-            $save = $souscategorie->save();
+            $save = $batiment->save($input);
 
 
 
             if ($save) {
-                return $this->sendResponse($souscategorie, "Update Success", 201);
+                return $this->sendResponse($batiment, "Update Success", 201);
             } else {
                 return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
             }
@@ -118,7 +119,7 @@ class SousCategorieController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SousCategorie  $sousCategorie
+     * @param  \App\Models\Batiment  $batiment
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -128,10 +129,13 @@ class SousCategorieController extends BaseController
         $role = $user->role;
 
         if ($role == 1) {
+            $batiment = Batiment::find($id);
 
-            $souscategorieDestroy =  SousCategorie::destroy($id);
+            $batiment->etablissements()->delete();
 
-            if ($souscategorieDestroy) {
+            $batimentDestroy =  Batiment::destroy($id);
+
+            if ($batimentDestroy) {
                 return $this->sendResponse("", "Suppression réussie");
             } else {
                 return $this->sendError("Echec de Suppression", ['error' => 'Unauthorised']);
