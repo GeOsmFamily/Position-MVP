@@ -27,15 +27,16 @@ export class VerticalToolbarComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.positionApi.getCategories()
   }
 
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    if(localStorage.getItem('role')=='2'){
+   /* if(localStorage.getItem('role')=='2'){
       console.log("role= "+localStorage.getItem('role'))
-      this.positionApi.GetRequestCategories()
-    }
+
+    }*/
   }
   userLocation(){
     // Begin geolocation
@@ -81,7 +82,7 @@ this.componentHelper.openEtablissement()
   }
   logout(){
 
-    if(localStorage.getItem('access_token')!=null)
+    /*if(localStorage.getItem('access_token')!=null)
         {
           console.log(localStorage.getItem('access_token'))
           //console.log( this.authService.headers)
@@ -93,5 +94,6 @@ this.componentHelper.openEtablissement()
         }
       //  console.log(localStorage.getItem('access_token'))
     this.router.navigate(['home'])
-  }
+  }*/
+}
 }

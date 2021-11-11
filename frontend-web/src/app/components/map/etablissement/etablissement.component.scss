@@ -61,16 +61,18 @@ margin-right: 30px;
 
 #msform input,
 #msform textarea {
-  padding: 8px 15px 8px 0px;
-  border: 1px solid #ccc;
-  border-radius: 0px;
+  //padding: 8px 15px 8px 0px;
+  padding: 0;
+  border: 2px solid #ccc;
+  border-radius: 5px;
   margin-bottom: 25px;
   margin-top: 2px;
+  padding-left: 10px;
   width: 100%;
   box-sizing: border-box;
-  font-family: montserrat;
+  //font-family: montserrat;
   color: #2C3E50;
-  background-color: #ECEFF1;
+  background-color:white;
   font-size: 16px;
   letter-spacing: 1px
 }
@@ -85,16 +87,19 @@ margin-right: 30px;
 }
 
 #msform .action-button {
-  width: 100px;
-  background:#05BF95;
-  font-weight: bold;
+  width: 30px;
+  background: #05BF95;
+  font-size: 10px;
   color: white;
   border: 0 none;
-  border-radius: 9px;
+  border-radius: 5px;
   cursor: pointer;
-  line-height: 26px;
-  padding: 1px 5px 1px 5px;
+  line-height: 2px;
+  /* padding: 1px 5px 1px 5px; */
+  /* padding-left: 2px; */
   margin: 10px 0px 10px 5px;
+  height: 20px;
+  text-align: center;
 
 }
 /*
@@ -106,7 +111,8 @@ margin-right: 30px;
 #msform .action-button-previous {
   width: 100px;
   background: #616161;
-  font-weight: bold;
+  font-family: "OpenSans bold";
+    font-size: 10px;
   color: white;
   border: 0 none;
   border-radius: 0px;
@@ -254,23 +260,30 @@ li{
 input{
 
   height: 30px;
+  background-color: white;
 }
 
 
 .mat-form-field
 {
   margin-bottom: -25px;
-  text-align: center;
+
+
+
 }
 .field{
   //margin-top: -30px;
   margin-bottom: -10px;
+  font-family: OpenSans light;
+
 }
 :deep:ng- .mat-form-field-underline {
   display: none;
 }
 .example-margin {
   margin: 0 10px;
+  margin-top: 30px;
+  margin-bottom: -10px;
 }
 
 .mat-checkbox-ripple .mat-ripple-element,
@@ -297,6 +310,8 @@ input{
   background: white;
   box-shadow: none;
   color: #05BF95;
+  font-family:"OpenSans bold" ;
+  font-size: 10px;
  }
 
  .clear-logo
@@ -356,4 +371,11 @@ background-color: white;
 
  ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex{
   margin-top: -29px;
+}
+
+.day{
+  padding-top:20px
+}
+::ng-deep .mat-form-field-underline {
+  display: none;
 }

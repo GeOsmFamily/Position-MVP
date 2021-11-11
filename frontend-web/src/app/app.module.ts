@@ -23,6 +23,9 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotifierModule } from 'angular-notifier';
 import { ArchwizardModule } from 'angular-archwizard';
+import { VerticalPagePrimaryComponent } from './components/map/vertical-page-primary/vertical-page-primary.component';
+import { CategoriesComponent } from './components/map/vertical-page-primary/categories/categories.component';
+import { SearchComponent } from './components/map/vertical-page-primary/search/search.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -43,6 +46,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ResetPasswordComponent,
     HeaderComponent,
     EtablissementComponent,
+    VerticalPagePrimaryComponent,
+    CategoriesComponent,
+    SearchComponent,
 
 
   ],

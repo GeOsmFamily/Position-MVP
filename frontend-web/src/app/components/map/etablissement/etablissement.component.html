@@ -54,7 +54,7 @@ align-items: center;
     <div class="">
       <mat-label class="fieldlabels">Sous-catégorie</mat-label>
     </div>
-    <mat-form-field appearance="fill" class="container-fluid" style="height: 30px;border: 1px solid black;">
+    <mat-form-field appearance="fill" class="container-fluid" style="height: 30px;border: 1px solid black;text-align: center;">
       <mat-label>---</mat-label>
       <mat-select>
         <mat-option>kkkk</mat-option>
@@ -91,7 +91,7 @@ align-items: center;
   <mat-step [stepControl]="adresseFormGroup" >
     <form id="msform" class="form" [formGroup]="adresseFormGroup">
       <ng-template matStepLabel>Ajouter l'adresse</ng-template>
-      <div>
+      <div class="field">
         <mat-label class="fieldlabels">Adresse</mat-label>
 
       </div>
@@ -101,7 +101,10 @@ align-items: center;
         </mat-form-field>
         <div class="row">
           <div class="col-5">
-            <mat-label>Code postal</mat-label>
+            <div class="field">
+              <mat-label>Code postal</mat-label>
+            </div>
+
             <mat-form-field class="container-fluid" >
               <input matInput type="text"   class="form-control"  formControlName="codePostal" name="nomEtablissement" placeholder="" />
 
@@ -109,17 +112,20 @@ align-items: center;
           </div>
 
           <div class="col-6 ml-2">
-            <mat-label>Ville</mat-label>
+              <div class="field">
+                <mat-label>Ville</mat-label>
+              </div>
+
             <mat-form-field class="container-fluid" >
               <input matInput type="text"   class="form-control"  formControlName="ville" name="nomEtablissement" placeholder="" />
 
               </mat-form-field>
           </div>
         </div>
-        <div>
+
           <mat-label class="fieldlabels">Indications</mat-label>
 
-        </div>
+
         <textarea type="text" id="form7" formControlName="indication" class="md-textarea form-control md-textarea-auto" mdbInput></textarea>
 
       <div class="buttons-group">
@@ -132,7 +138,7 @@ align-items: center;
   <mat-step [stepControl]="contactFormGroup" >
     <form id="msform" class="form" [formGroup]="contactFormGroup">
       <ng-template matStepLabel>Ajouter le contact</ng-template>
-      <div>
+      <div class="field">
         <mat-label class="fieldlabels">Site internet(url)</mat-label>
 
       </div>
@@ -142,7 +148,7 @@ align-items: center;
         </mat-form-field>
 
 
-        <div>
+        <div class="field">
           <mat-label class="fieldlabels">Téléphone 1</mat-label>
 
         </div>
@@ -156,7 +162,7 @@ align-items: center;
 
           </div>
 
-          <div>
+          <div class="field">
             <mat-label class="fieldlabels">Téléphone 2</mat-label>
 
           </div>
@@ -182,13 +188,13 @@ align-items: center;
       <ng-template matStepLabel>Ajouter les horaires</ng-template>
       <div class="row jour">
 
-        Lun
-        <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+       <p class="day">Lun</p>
+        <mat-form-field   style="width:70px;margin-left: 40px;" class="ml-4">
           <input matInput type="text"   class="form-control"  formControlName="heureOuvertlun" name="heureOuvertlun" placeholder="" />
 
           </mat-form-field>
 
-        <mat-form-field style="width:70px;margin-left: 20px;">
+        <mat-form-field  style="width:70px;margin-left: 20px;">
           <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermelun" name="heureFermelun" placeholder="" />
 
           </mat-form-field>
@@ -197,7 +203,9 @@ align-items: center;
     </div>
     <div class="row jour">
 
-      Mar
+      <p class="day">
+        Mar
+      </p>
 
       <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
         <input matInput type="text"   class="form-control"  formControlName="heureOuvertmar" name="heureOuvertmar" placeholder="" />
@@ -213,14 +221,16 @@ align-items: center;
   </div>
   <div class="row jour">
 
-    Mer
+    <p class="day">
+     Mer
+      </p>
 
-    <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+    <mat-form-field  style="width:70px;margin-left: 40px;" class="ml-4">
       <input matInput type="text"   class="form-control"  formControlName="heureOuvertmer" name="heureOuvertmer" placeholder="" />
 
       </mat-form-field>
 
-    <mat-form-field style="width:70px;margin-left: 20px;">
+    <mat-form-field  style="width:70px;margin-left: 20px;">
       <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermemer" name="heureFermemer" placeholder="" />
 
       </mat-form-field>
@@ -229,14 +239,16 @@ align-items: center;
 </div>
 <div class="row jour">
 
-  Jeu
+  <p class="day">
+    Jeu
+  </p>
 
   <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
     <input matInput type="text"   class="form-control"  formControlName="heureOuvertjeu" name="heureOuvertjeu" placeholder="" />
 
     </mat-form-field>
 
-  <mat-form-field style="width:70px;margin-left: 20px;">
+  <mat-form-field  style="width:70px;margin-left: 20px;">
     <input style="padding:0px" matInput type="text"   class="form-control"  formControlName="heureFermejeu" name="heureFermejeu" placeholder="" />
 
     </mat-form-field>
@@ -245,7 +257,9 @@ align-items: center;
 </div>
 <div class="row jour">
 
-Ven
+<p class="day">
+  Ven
+</p>
 
 <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
   <input matInput type="text"   class="form-control"  formControlName="heureOuvertven" name="heureOuvertven" placeholder="" />
@@ -261,7 +275,9 @@ Ven
 </div>
 <div class="row jour">
 
-Sam
+<p class="day">
+  Sam
+</p>
 
 <mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
 <input matInput type="text"   class="form-control"  formControlName="heureOuvertsam" name="heureOuvertsam" placeholder="" />
@@ -277,9 +293,11 @@ Sam
 </div>
 <div class="row jour">
 
-Dim
+<p class="day">
+  Dim
+</p>
 
-<mat-form-field style="width:70px;margin-left: 40px;" class="ml-4">
+<mat-form-field style="width:70px;margin-left: 40px;" class="ml-4"> 
 <input matInput type="text"   class="form-control"  formControlName="heureOuvertdim" name="heureOuvertdim" placeholder="" />
 
 </mat-form-field>

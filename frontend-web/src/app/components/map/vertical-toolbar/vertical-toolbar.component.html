@@ -3,55 +3,32 @@
 <div  class="primaryColorBG buttons" >
   <div class="vertical-toolbar-groupe-btn-1">
     <div id="zooms"> </div>
-    <div id="logout">
-      <button matTooltip="" style="  border: 2px solid white;
-      background-color: #FFFFFF;
-      height: 50px;
-      border-radius:50%;
-      width: 50px;cursor: pointer;" (click)="logout()">
+   <div id="logout">
+      <button matTooltip="" (click)="logout()">
         fermer
       </button>
-    <div id="myLocation">
+  <!--   <div id="myLocation">
 
-       
 
-      <button matTooltip="" style="  border: 2px solid white;
-      background-color: #FFFFFF;
-      height: 50px;
-      border-radius:50%;
-      width: 50px;cursor: pointer;" (click)="ajout_etablissement()">
+
+      <button matTooltip="" (click)="ajout_etablissement()">
         <img src="assets/enterprise-svgrepo-com.svg">
       </button>
-    </div>
+    </div>-->
     <div id="zoom-plus" >
-      <button  class="" (click)="zoom('plus')" style=" border: 2px solid white;
-      background-color: #FFFFFF;
-      height: 50px;
-      border-radius:50%;
-      width: 50px;
-      cursor: pointer;"
+      <button  class="" (click)="zoom('plus')"
         matTooltip="">
         <img src="assets/icon-zoom-plus.svg">
       </button>
     </div>
 
     <div id="zoom-minus" >
-      <button class="primaryColorBG" id="zoom-minus" (click)="zoom('minus')" style="  border: 2px solid white;
-      background-color: #FFFFFF;
-      height: 50px;
-      border-radius:50%;
-      width: 50px;
-      cursor: pointer;"
-        matTooltip="">
+      <button class="primaryColorBG" id="zoom-minus" (click)="zoom('minus')"   matTooltip="">
         <img src="assets/icon-zoom-less.svg">
       </button>
     </div>
     <div id="myLocation">
-      <button matTooltip="" style="  border: 2px solid white;
-      background-color: #FFFFFF;
-      height: 50px;
-      border-radius:50%;
-      width: 50px;cursor: pointer;" (click)="userLocation()">
+      <button matTooltip="" (click)="userLocation()">
         <img src="assets/icon-my_location.svg">
       </button>
     </div>

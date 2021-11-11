@@ -35,7 +35,7 @@ export class ApiService {
   getRequestFromOtherHost(path: string): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.http
-        .get(this.url_prefix+path, { headers: this.headersPhoton })
+        .get(path, { headers: this.headersPhoton })
         .toPromise()
         .then(
           (res) => {

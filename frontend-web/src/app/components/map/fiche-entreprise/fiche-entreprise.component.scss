@@ -33,7 +33,7 @@ img {
   display: inline-block;
 }
 
-.close {
+.closeb {
   position: absolute;
   top: 10px;
   right: 30px;
@@ -86,3 +86,6 @@ hr {
 .picsum-img-wrapper{
   margin: 0;
 }
+ ::ng-deep .close{
+   opacity:1;
+ }

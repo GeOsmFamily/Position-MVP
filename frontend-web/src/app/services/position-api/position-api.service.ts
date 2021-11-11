@@ -18,24 +18,24 @@ import { ListeCategorie } from 'src/app/interfaces/categorieInterface';
 })
 export class PositionApiService {
 
-  url_prefix = environment.url_position_Api;
+  url_prefix = environment.url_backend;
 
    entetes= new HttpHeaders()
   .set('content-type', 'application/json')
-  .set('Access-Control-Allow-Origin', '*')
-  .set('Authorization','Bearer ' + localStorage.getItem('access_token'));
+  .set('Accept','application/json')
+
+
 
 
   constructor(public router: Router,private httpClient: HttpClient) {
     }
 
-  public GetRequestCategories(){
+  public getCategories(){
    const options = {  };
-    if(localStorage.getItem("access_token")){
 
-         console.log("postApi ="+ localStorage.getItem("access_token"))
-      console.log(this.entetes)
-    this.httpClient.get(this. url_prefix+"categories",{ headers: this.entetes .set('Authorization','Bearer ' + localStorage.getItem('access_token')?.trim()),params: new HttpParams({fromString:"limit=10"}) })
+   //this.httpClient.get(this. url_prefix+"api/categories",{ headers: this.entetes .set('Authorization','Bearer ' + localStorage.getItem('access_token')?.trim()),params: new HttpParams({fromString:"limit=10"}) })
+
+    this.httpClient.get(this. url_prefix+"api/categories",{ headers: this.entetes})
     .subscribe(
       (data)=>{
       console.log(data);
@@ -44,7 +44,7 @@ export class PositionApiService {
 
     }
 
-  }
+  
 
 
 }
