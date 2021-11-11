@@ -1,6 +1,6 @@
 # api.py
 from exceptions import (CategoriesInfoException, CommercialsInfoException,
-                        EtablissementInfoException, HorairesInfoException,
+                        EtablissementInfoException, FTPImagesException, HorairesInfoException,
                         ImagesInfoException, ManagersInfoException,
                         SousCategoriesInfoException, TelephonesInfoException)
 
@@ -40,6 +40,11 @@ from schemas import (Categories, Commercials, CreateAndUpdateCategories,
                      PaginatedManagersInfo, PaginatedSousCategoriesInfo,
                      PaginatedTelephonesInfo, SousCategories, Telephones)
 
+from fastapi import UploadFile, File
+from os import getcwd, remove
+from fastapi.responses import FileResponse, JSONResponse
+
+from utils import read_last_image_identification, save_last_image_identification
 
 router = APIRouter()
 
@@ -95,7 +100,7 @@ class Etablissements:
             return ets_info
         except EtablissementInfoException as cie:
             raise HTTPException(**cie.__dict__)
-
+        
 # API endpoint to get info of a particular etablissement
 @router.get("/etablissement/", response_model=Etablissement)
 def get_ets_info(etablissement_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
@@ -603,6 +608,10 @@ def delete_horaires(horaires_id: int, session: Session = Depends(get_db), author
 @cbv(router)
 class Image:
     session: Session = Depends(get_db)
+    
+    def __init__(self) -> None:
+        self.path_etablissement = "/images/etablissements/"
+        self.path_commerciaux = "/images/commerciaux/"
 
     # API to get the list of d info
     @router.get("/images", response_model=PaginatedImagesInfo)
@@ -635,6 +644,121 @@ class Image:
             return images_info
         except ImagesInfoException as cie:
             raise HTTPException(**cie.__dict__)
+    
+    # Images FTP FOR etablissement
+    @router.post("/file/upload/etablissement")
+    async def upload_file_etablissement(self, file: UploadFile = File(...), authorization:str = Header(None)):
+
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        try:
+            extension = file.filename.split(".")[1]
+            filename = "ETS_POSITION_" + str(read_last_image_identification("etablissement")) + '.' + extension
+            with open(self.path_etablissement + filename, 'wb') as image:
+                content = await file.read()
+                image.write(content)
+                image.close()
+            save_last_image_identification("etablissement")
+            return JSONResponse(content={"filename": filename}, status_code=200)
+        except FTPImagesException as cie:
+            raise HTTPException(**cie.__dict__)
+        
+    @router.get("/file/download/etablissement")
+    def download_file_etablissement(self, name_file: str):
+        filename = self.path_etablissement + name_file
+        return FileResponse(path=getcwd() + filename, media_type='application/octet-stream', filename=name_file)
+
+    @router.get("/file/get/etablissement")
+    def get_file_etablissement(self, name_file: str):
+        filename = self.path_etablissement + name_file
+        return FileResponse(path=getcwd() + filename)
+
+    @router.delete("/file/delete/etablissement")
+    def delete_file_etablissement(self, name_file: str, authorization:str = Header(None)):
+        
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        filename = self.path_etablissement + name_file
+        try:
+            remove(getcwd() + filename)
+            return JSONResponse(content={
+                "removed": True
+                }, status_code=200)   
+        except FileNotFoundError:
+            return JSONResponse(content={
+                "removed": False,
+                "error_message": "File not found"
+            }, status_code=404)
+       
+    # Images FTP FOR commerciaux
+    @router.post("/file/upload/commerciaux")
+    async def upload_file_commerciaux(self, file: UploadFile = File(...), authorization:str = Header(None)):
+
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        try:
+            extension = file.filename.split(".")[1]
+            filename = "COM_POSITION_" + str(read_last_image_identification("commerciaux")) + '.' + extension
+            with open(self.path_commerciaux + filename, 'wb') as image:
+                content = await file.read()
+                image.write(content)
+                image.close()
+            save_last_image_identification("commerciaux")
+            return JSONResponse(content={"filename": filename}, status_code=200)
+        except FTPImagesException as cie:
+            raise HTTPException(**cie.__dict__)
+        
+    @router.get("/file/download/commerciaux")
+    def download_file_commerciaux(self, name_file: str):
+        filename = self.path_commerciaux + name_file
+        return FileResponse(path=getcwd() + filename, media_type='application/octet-stream', filename=name_file)
+
+    @router.get("/file/get/commerciaux")
+    def get_file_commerciaux(self, name_file: str):
+        filename = self.path_commerciaux + name_file
+        return FileResponse(path=getcwd() + filename)
+
+    @router.delete("/file/delete/commerciaux")
+    def delete_file_commerciaux(self, name_file: str, authorization:str = Header(None)):
+        
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        filename = self.path_commerciaux + name_file
+        try:
+            remove(getcwd() + filename)
+            return JSONResponse(content={
+                "removed": True
+                }, status_code=200)   
+        except FileNotFoundError:
+            return JSONResponse(content={
+                "removed": False,
+                "error_message": "File not found"
+            }, status_code=404)
+
 
 # API endpoint to get info of a particular images
 @router.get("/images/", response_model=Images)
@@ -682,7 +806,6 @@ def delete_images(images_id: int, session: Session = Depends(get_db), authorizat
         return delete_images_info(session, images_id)
     except ImagesInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
 
 
 
