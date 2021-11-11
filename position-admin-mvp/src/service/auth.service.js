@@ -1,59 +1,34 @@
-import axios from "axios";
-
-const API_URL =
-  "https://cors-anywhere.herokuapp.com/https://services.position.cm/";
+import api from "./api";
 
 class AuthService {
   login(user) {
-    return axios
-      .post(
-        API_URL + "auth/login",
-        {
-          email: user.email,
-          password: user.password,
-        },
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+    return api
+      .post("auth/login", {
+        email: user.email,
+        password: user.password,
+      })
       .then((response) => {
-        if (response.data.access_token) {
+        console.log(response.data);
+        if (response.data.data.token) {
           localStorage.setItem(
             "user",
-            JSON.stringify(response.data.access_token)
+            JSON.stringify(response.data.data.token)
           );
         }
-        return response.data;
+        return response.data.data;
       });
   }
 
   logout(token) {
-    return axios
-      .post(
-        API_URL + "auth/logout ",
-        {},
-        {
-          crossDomain: true,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
-      .then((response) => {
-        localStorage.removeItem("user");
-        return response.data;
-      });
+    console.log(token);
+    return api.get("auth/logout ").then((response) => {
+      localStorage.removeItem("user");
+      return response.data;
+    });
   }
 
   register(user) {
-    return axios.post(API_URL + "signup", {
+    return api.post("signup", {
       username: user.username,
       email: user.email,
       password: user.password,

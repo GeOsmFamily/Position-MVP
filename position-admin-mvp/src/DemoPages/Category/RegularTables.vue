@@ -1,89 +1,125 @@
 <template>
   <div>
-    <page-title
-      :heading="heading"
-      :subheading="subheading"
-      :icon="icon"
-    ></page-title>
-    <div class="text-center" v-if="loading">
-      <b-spinner variant="success" label="Spinning"></b-spinner>
-    </div>
-    <b-card title="Catégories" class="main-card mb-4" v-if="!loading">
-      <vue-good-table
-        :columns="fields"
-        :rows="categories"
-        :fixed-header="true"
-        :search-options="{
-          enabled: true,
-          skipDiacritics: true,
-          placeholder: 'Rechercher une catégorie',
-        }"
-        :pagination-options="{
-          enabled: true,
-          mode: 'pages',
-          perPage: 5,
-          position: 'bottom',
-          perPageDropdown: [10, 15],
-          dropdownAllowAll: false,
-          jumpFirstOrLast: true,
-          firstLabel: 'Début',
-          lastLabel: 'Fin',
-          nextLabel: 'suiv',
-          prevLabel: 'prec',
-          rowsPerPageLabel: 'Lignes par page',
-          ofLabel: 'de',
-          pageLabel: 'page', // for 'pages' mode
-          allLabel: 'Tout',
-        }"
-        styleClass="vgt-table bordered striped"
-        compactMode
-      >
-        <template slot="table-row" slot-scope="props">
-          <span v-if="props.column.field === 'actions'">
-            <b-button class="mx-1" variant="info" @click="editRow(props.row.id)"
-              >Détails</b-button
-            >
-            <b-button
-              variant="success"
-              class="mx-1"
-              @click="editRow(props.row.id)"
-              >Modifier</b-button
-            >
-            <b-button
-              variant="danger"
-              class="mx-1"
-              v-b-modal.my-modal
-              @click="setRow(props.row)"
-              >Supprimer</b-button
-            >
-          </span>
-          <span v-else>
-            {{ props.formattedRow[props.column.field] }}
-          </span>
-        </template>
-        <div slot="emptystate">No data yet.</div>
-      </vue-good-table>
+    <b-overlay
+      :show="deleteLoading"
+      :variant="variant"
+      :opacity="0.85"
+      :blur="blur"
+      rounded="sm"
+    >
+      <page-title
+        :heading="heading"
+        :subheading="subheading"
+        :icon="icon"
+      ></page-title>
+      <div class="text-center" v-if="loading">
+        <b-spinner variant="success" label="Spinning"></b-spinner>
+      </div>
+      <b-card title="Catégories" class="main-card mb-4" v-if="!loading">
+        <vue-good-table
+          :columns="fields"
+          :rows="categories"
+          :fixed-header="true"
+          :search-options="{
+            enabled: true,
+            skipDiacritics: true,
+            placeholder: 'Rechercher une catégorie',
+          }"
+          :pagination-options="{
+            enabled: true,
+            mode: 'pages',
+            perPage: 5,
+            position: 'bottom',
+            perPageDropdown: [10, 15],
+            dropdownAllowAll: false,
+            jumpFirstOrLast: true,
+            firstLabel: 'Début',
+            lastLabel: 'Fin',
+            nextLabel: 'suiv',
+            prevLabel: 'prec',
+            rowsPerPageLabel: 'Lignes par page',
+            ofLabel: 'de',
+            pageLabel: 'page', // for 'pages' mode
+            allLabel: 'Tout',
+          }"
+          styleClass="vgt-table bordered striped"
+          compactMode
+        >
+          <template slot="table-row" slot-scope="props">
+            <span v-if="props.column.field === 'actions'">
+              <b-button
+                class="mx-1"
+                variant="info"
+                @click="editRow(props.row.id)"
+                >Détails</b-button
+              >
+              <b-button
+                variant="success"
+                class="mx-1"
+                @click="editRow(props.row.id)"
+                >Modifier</b-button
+              >
+              <b-button
+                variant="danger"
+                class="mx-1"
+                v-b-modal.my-modal
+                @click="setRow(props.row)"
+                >Supprimer</b-button
+              >
+            </span>
+            <span v-else>
+              {{ props.formattedRow[props.column.field] }}
+            </span>
+          </template>
+          <div slot="emptystate">
+            No data yet.<b-button @click="getCategories">Réessayer</b-button>
+          </div>
+        </vue-good-table>
 
-      <b-modal
-        id="my-modal"
-        title="Supprimer la catégorie"
-        hide-backdrop
-        hide-footer
-      >
-        <div class="d-block text-center">
-          <h5>
-            Voulez vous vraiment supprimer la catégorie
-            {{ currentRow != null ? currentRow.id : "" }}!
-          </h5>
+        <b-modal
+          id="my-modal"
+          title="Supprimer la catégorie"
+          hide-backdrop
+          hide-footer
+        >
+          <div class="d-block text-center">
+            <h5>
+              Voulez vous vraiment supprimer la catégorie
+              {{ currentRow != null ? currentRow.nom : "" }}!
+            </h5>
+          </div>
+          <b-button
+            class="mt-3"
+            variant="outline-danger"
+            @click="deleteCategory"
+            block
+            >Supprimer</b-button
+          >
+          <b-button
+            class="mt-2"
+            variant="outline-dark "
+            @click="closeModal"
+            block
+            >Annuler</b-button
+          >
+        </b-modal>
+      </b-card>
+      <template #overlay>
+        <div class="text-center">
+          <b-icon icon="stopwatch" font-scale="3" animation="cylon"></b-icon>
+          <p id="cancel-label">Please wait...</p>
+          <b-button
+            ref="cancel"
+            variant="outline-danger"
+            size="sm"
+            aria-describedby="cancel-label"
+            @click="show = false"
+          >
+            Cancel
+          </b-button>
         </div>
-        <b-button class="mt-3" variant="outline-danger" block
-          >Close Me</b-button
-        >
-        <b-button class="mt-2" variant="outline-warning" block
-          >Toggle Me</b-button
-        >
-      </b-modal>
-    </b-card>
+      </template>
+    </b-overlay>
   </div>
 </template>
 
@@ -99,6 +135,10 @@ export default {
     subheading: "Liste des catégories",
     icon: "pe-7s-drawer icon-gradient bg-happy-itmeo",
     currentRow: null,
+    deleteLoading: false,
+    variant: "dark",
+    opacity: 0.85,
+    blur: "2px",
     fields: [
       {
         label: "No",
@@ -150,11 +190,22 @@ export default {
   },
   created() {
     if (this.categories == null || this.categories.length === 0)
-      this.$store.dispatch("category/fetchCategories");
+      this.getCategories();
   },
   methods: {
+    getCategories() {
+      this.$store.dispatch("category/fetchCategories");
+    },
     setRow(data) {
+      console.log(data);
       this.currentRow = data;
+    },
+    closeModal() {
+      this.$bvModal.hide("my-modal");
+    },
+    deleteCategory() {
+      this.$bvModal.hide("my-modal");
+      this.deleteLoading = true;
     },
   },
 };
