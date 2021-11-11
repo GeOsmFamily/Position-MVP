@@ -11,9 +11,9 @@ export const category = {
   namespaced: true,
   state: initialState,
   actions: {
-    fetchCategories({ commit, rootState }) {
+    fetchCategories({ commit }) {
       commit("toggleLoading", true);
-      return CategoryService.getListCategories(rootState.auth.token).then(
+      return CategoryService.getListCategories().then(
         (categories) => {
           commit("toggleLoading", false);
           commit("categoriesSuccess", categories.data.data);
@@ -26,9 +26,9 @@ export const category = {
         }
       );
     },
-    createCategory({ commit, rootState }, data) {
+    createCategory({ commit }, data) {
       commit("toggleLoading", true);
-      return CategoryService.createCategory(rootState.auth.token, data).then(
+      return CategoryService.createCategory(data).then(
         (result) => {
           console.log(data);
           commit("toggleLoading", false);
@@ -40,8 +40,8 @@ export const category = {
         }
       );
     },
-    deleteCategory({ dispatch, rootState }, id) {
-      return CategoryService.deleteCategory(rootState.auth.token, id).then(
+    deleteCategory({ dispatch }, id) {
+      return CategoryService.deleteCategory(id).then(
         (result) => {
           dispatch("fetchCategories");
           return Promise.resolve(result);

@@ -19,8 +19,7 @@ class AuthService {
       });
   }
 
-  logout(token) {
-    console.log(token);
+  logout() {
     return api.get("auth/logout ").then((response) => {
       localStorage.removeItem("user");
       return response.data;

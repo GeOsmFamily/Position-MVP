@@ -22,7 +22,7 @@ export const auth = {
       );
     },
     logout({ commit }) {
-      AuthService.logout(token).then(
+      AuthService.logout().then(
         (data) => {
           commit("logout");
           return Promise.resolve(data);

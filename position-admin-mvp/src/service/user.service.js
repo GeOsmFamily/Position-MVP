@@ -1,8 +1,7 @@
 import api from "./api";
 
 class UserService {
-  getUserData(token) {
-    console.log(token);
+  getUserData() {
     return api.get("user/me");
   }
   getPublicContent() {

@@ -1,6 +1,6 @@
 import axios from "axios";
+import store from "../store/index";
 import router from "@/router";
-
 const api = axios.create({
   baseURL: "https://services.position.cm/api/",
   timeout: 1000,
@@ -24,7 +24,6 @@ api.interceptors.request.use(
 );
 api.interceptors.response.use(
   (response) => {
-    console.log("interceptor");
     if (response.status === 200 || response.status === 201) {
       return Promise.resolve(response);
     } else {
@@ -39,24 +38,36 @@ api.interceptors.response.use(
           break;
 
         case 401:
-          alert("session expired");
+          store
+            .dispatch("auth/logout")
+            .then(() => {
+              router.push("/pages/login-boxed");
+            })
+            .catch((onerror) => {
+              console.log(onerror);
+              router.push("/pages/login-boxed");
+            });
           break;
         case 403:
-          router.replace({
+          //Set notification for unauthorized action
+          /* router.replace({
             path: "/login",
             query: { redirect: router.currentRoute.fullPath },
-          });
+          });*/
           break;
         case 404:
           break;
         case 502:
           setTimeout(() => {
-            router.replace({
-              path: "/login",
-              query: {
-                redirect: router.currentRoute.fullPath,
-              },
-            });
+            store
+              .dispatch("auth/logout")
+              .then(() => {
+                router.push("/pages/login-boxed");
+              })
+              .catch((onerror) => {
+                console.log(onerror);
+                router.push("/pages/login-boxed");
+              });
           }, 1000);
       }
       return Promise.reject(error.response);
