@@ -6,6 +6,7 @@ use App\Models\Commercial;
 use App\Models\User;
 use App\Notifications\SendEmailParams;
 use Auth;
+use Carbon\Carbon;
 use Hash;
 use Illuminate\Http\Request;
 
@@ -331,5 +332,9 @@ class CommercialController extends BaseController
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public function statHebdo()
+    {
     }
 }
