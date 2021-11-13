@@ -51,6 +51,7 @@ $ php artisan key:generate
 $ php artisan migrate
 $ php artisan passport:install
 $ php artisan db:seed
+$ php artisan apikey:generate app1
 $ php artisan storage:link
 $ exit
 ```
