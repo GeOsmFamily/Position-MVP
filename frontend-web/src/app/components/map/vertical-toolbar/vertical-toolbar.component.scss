@@ -1,11 +1,11 @@
-.buttons{
-/*
+/*.buttons{
+
   position: absolute;
   bottom:40px;
     right:0;
    margin-right: 30px;
-   */
-}
+   
+}*/
 :host {             // host targets selector: 'home'
 
 
@@ -18,6 +18,12 @@ display: block;
 
   button {
     margin-top: 10px;
+    border: 2px solid white;
+      background-color: #FFFFFF;
+      height: 40px;
+      border-radius:50%;
+      width: 40px;
+      cursor: pointer;
 
   }
 

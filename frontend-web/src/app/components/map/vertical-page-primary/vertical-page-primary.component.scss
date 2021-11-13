@@ -1,0 +1,23 @@
+.img-vertical-page-primary
+{
+  text-align: center;
+  margin-top: 0.5em;
+ 
+
+}
+img{
+  width:70px;
+  margin-bottom: 20px;
+}
+
+@media (max-width:575.98px) {
+  .img-vertical-page-primary{
+   height: 0px;
+   width: 0px;
+   margin: 0px;
+   padding: 0px;
+   visibility: hidden;
+  }
+}
+
+

@@ -1,17 +1,17 @@
 <div>
 
-  <form [formGroup]="form" class="header-search-form">
+  <form [formGroup]="form!" class="header-search-form">
 
     <mat-form-field appearance="fill" style="width: 100%;">
       <input type="text" matInput formControlName="searchWord"  class=" white "
         placeholder="Rechercher un établissement, un lieu..." onfocus="this.placeholder = ''"
-        onblur="this.placeholder = 'Search'"  [matAutocomplete]="auto">
+        onblur="this.placeholder = 'Search'"  [matAutocomplete]="auto" style="line-height: 2.5;">
         <img matPrefix src="assets/icon-search.svg" width="24px" height="24px">
-      <img class="img-fluid" matSuffix *ngIf="form.get('searchWord')?.value" src="assets/icon-clear.svg"
+      <img class="img-fluid" matSuffix *ngIf="form!.get('searchWord')?.value" src="assets/icon-clear.svg"
         (click)="clearSearch()"/>
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayAutocompleFn"
         (optionSelected)="optionAutocomplteSelected($event)">
-        <mat-option *ngIf="!isLoading">
+        <mat-option *ngIf="isLoading">
           <mat-spinner style="display: block;
     margin-left: auto;
     margin-right: auto" diameter="35"></mat-spinner>

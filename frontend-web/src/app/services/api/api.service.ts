@@ -54,7 +54,7 @@ export class ApiService {
  getRequest(path: string): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.http
-        .get(this.url_prefix + path, { headers: this.headers })
+        .get(this. url_prefix+path, { headers: this.headers })
         .toPromise()
         .then(
           (res) => {
@@ -73,7 +73,7 @@ export class ApiService {
   post_requete(url: string, data: Object): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(this.url_prefix + url, data,{
+        .post(this. url_prefix+url, data,{
           headers: this.get_header(),
         })
         .toPromise()
@@ -94,7 +94,7 @@ export class ApiService {
   logout_post_requete(url: string, data: Object): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(this.url_prefix + url, data, { 'headers': {'Authorization': 'Bearer  ' + localStorage.getItem('access_token')} })
+        .post(this. url_prefix+url, data, { 'headers': {'Authorization': 'Bearer  ' + localStorage.getItem('access_token')} })
         .toPromise()
         .then(
           (res) => {

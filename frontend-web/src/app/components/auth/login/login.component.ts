@@ -49,16 +49,12 @@ export class LoginComponent implements OnInit {
         // Affichage d'un message d'erreur
         console.log(response.msg)
         console.log(this.loginForm.value.email)
-        this.router.navigate(['home'])
+        this.router.navigate(['login'])
       } else {
         this.loading=true
-        if(localStorage.getItem('role')!= '2')
-         {
-          console.log("vous n'avez pas de droit  ")
+
           this.router.navigate(['home']);
-         }
-         else
-        this.router.navigate(['home']);
+
       }
     });
   }

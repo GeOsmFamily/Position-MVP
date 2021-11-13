@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth/auth.service';
 import { ConditionalExpr } from '@angular/compiler';
 
-const TOKEN_HEADER_KEY = 'Authorization';       // for Spring Boot back-end
+const TOKEN_HEADER_KEY = 'Authorization';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -24,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       return next.handle(req).pipe(
         catchError((error) => {
-          if (error.status === 401) {
+          if (error.message === 'Token expired') {
             if (error.error.message ) {
                 //Genrate params for token refreshing
                 console.log("refreshing token")
@@ -39,6 +39,7 @@ export class AuthInterceptor implements HttpInterceptor {
              //REFRESH FUNTION FROM AUTH SERVICE
             }else {
               console.log("Nothing to be done")
+              console.log("interceptor ="+  localStorage.getItem('access_token'))
 
                 //Logout from account or do some other stuff
             }

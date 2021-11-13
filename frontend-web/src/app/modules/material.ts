@@ -28,6 +28,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   exports: [
@@ -60,6 +62,8 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatBottomSheetModule,
+    MatStepperModule,
+    MatIconModule
   ],
 })
 export class MaterialModule {}

@@ -1,11 +1,11 @@
-#map {
+/*#map {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-  height: 100%;
+  overflow: hidden;
   margin: 0;
 
 
@@ -15,18 +15,20 @@
   #map{
   margin:0px
   }
+
 }
 
 app-fiche-entreprise {
   position: absolute;
-  left: -360px;
+  left: -310px;
   top: 0px;
   bottom: 0px;
-  width: 360px;
+  width: 310px;
   transition: 0.5s;
   background: #fff;
   z-index: 2;
-  overflow-y: auto;
+  //overflow-y: auto;
+  margin-right: 0px;
 }
 app-etablissement{
   position: absolute;
@@ -52,4 +54,198 @@ app-login
   background: white;
   position: absolute;
   z-index: 2;
+}
+*/
+::ng-deep .mat-drawer-container {
+   background-color:none
+}
+.sidenav-container {
+  width: 100%;
+  height: 100%;
+
+}
+
+.sidenav-left {
+  width: 350px;
+  padding: 5px;
+  border: none !important;
+  height: 100%;
+  background-color:white;
+  z-index: 1;
+
+
+  app-profil {
+    position: absolute;
+    left: -430px;
+    top: 0px;
+    bottom: 0px;
+    width: 430px;
+    transition: 0.5s;
+    background: #fff;
+    z-index: 2;
+    overflow-y: auto;
+  }
+
+  app-menu {
+    position: absolute;
+    left: -430px;
+    top: 0px;
+    bottom: 0px;
+    width: 430px;
+    transition: 0.5s;
+    background: #fff;
+    z-index: 2;
+    overflow-y: auto;
+  }
+}
+
+
+
+.sidenav-content {
+  #map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+
+  }
+  app-vertical-toolbar{
+    z-index: 2;
+    position: absolute;
+     margin-left: 10px;
+  }
+
+}
+
+@media (width: 540px){
+  .header
+  {
+
+    visibility: visible;
+    text-align: center;
+    background-color:transparent;
+    color: white;
+    //font-size: 30px;
+    position:fixed;
+      top:0;
+      width:100%;
+      z-index:1;
+
+  }
+
+
+.sidenav-left {
+
+  //overflow-x: hidden;
+
+  app-profil {
+    position: absolute;
+
+    top: 0px;
+    bottom: 0px;
+
+    transition: 0.5s;
+    background-color: #fff;
+    z-index: 2;
+
+    height: 100vh;
+    visibility: visible;
+
+
+
+  }
+
+}
+
+}
+
+@media (max-width:414)  {
+  .sidenav-left {
+    display: none;
+  }
+  .header {
+
+    display: block;
+    text-align: center;
+    background-color:white;
+    color: white;
+    //font-size: 30px;
+    position:fixed;
+      top:0;
+      width:100%;
+      z-index:100;
+  }
+
+}
+  @media (max-width:400px)  {
+    .header
+  {
+
+    visibility: visible;
+    text-align: center;
+    background-color:transparent;
+    color: white;
+    //font-size: 30px;
+    position:fixed;
+      top:0;
+      width:100%;
+      z-index:100;
+  }
+
+  .sidenav-left {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+
+    }
+  }
+
+  @media(min-width:400px)and  (max-width: 414px){
+    .header
+    {
+
+      visibility: visible;
+      text-align: center;
+      background-color:transparent;
+      color: white;
+      //font-size: 30px;
+      position:fixed;
+        top:0;
+        width:100%;
+        z-index:100;
+    }
+
+    .sidenav-left {
+      width: 0px;
+      height: 0px;
+      padding: 0px;
+
+      }
+  }
+
+
+@media (max-width: 414px){
+  .header
+  {
+
+    visibility: visible;
+    text-align: center;
+    background-color:transparent;
+    color: white;
+    //font-size: 30px;
+    position:fixed;
+      top:0;
+      width:100%;
+      z-index:100;
+  }
+
+  .sidenav-left {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+
+    }
 }

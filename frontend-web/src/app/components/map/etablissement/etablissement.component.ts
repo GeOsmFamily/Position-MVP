@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FicheEntrepriseComponent } from './../fiche-entreprise/fiche-entreprise.component';
+import { MapHelper } from 'src/app/helpers/mapHelper';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as $ from 'jquery';
 import { PositionApiService } from 'src/app/services/position-api/position-api.service';
+import { ComponentHelper } from 'src/app/helpers/componentHelper';
+import { MatStepper } from '@angular/material/stepper';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { pluck } from 'rxjs/operators';
 
 @Component({
   selector: 'app-etablissement',
@@ -9,18 +15,31 @@ import { PositionApiService } from 'src/app/services/position-api/position-api.s
   styleUrls: ['./etablissement.component.scss']
 })
 export class EtablissementComponent implements OnInit {
-
-  progressbarValue=12
-
-
- 
-
-
-  etablissementForm=this.fb.group({
+  firstFormGroup: FormGroup = this._formBuilder.group({
     nomEtablissement: [''],
-    categorie: [''],
-    Tel1: [''],
-    Tel2: [''],
+    categorie: [''  ],
+   // firstCtrl: ['', Validators.required]
+  });
+  secondFormGroup: FormGroup =this._formBuilder.group({
+    description: [''],
+   // secondCtrl:   ['', Validators.required]
+  });
+  adresseFormGroup: FormGroup =this._formBuilder.group({
+    adresse: [''],
+    codePostal: [''],
+    ville: [''],
+    indication: [''],
+   // secondCtrl: ['', Validators.required]
+  });
+  contactFormGroup: FormGroup =this._formBuilder.group({
+    siteInternet:[''],
+    telephone1: [''],
+    telephone2: [''],
+    Tel1coche: [''],
+    Tel2coche: [''],
+   // secondCtrl: ['', Validators.required]
+  });
+  horaireFormGroup: FormGroup =this._formBuilder.group({
     heureOuvertlun: [''],
     heureFermelun: [''],
     heureOuvertmar: [''],
@@ -35,21 +54,87 @@ export class EtablissementComponent implements OnInit {
     heureFermesam: [''],
     heureOuvertdim: [''],
     heureFermedim: [''],
-  })
-
+    // secondCtrl: ['', Validators.required]
+  });
+  isEditable = false;
   checked = false;
+  progressBarValue=10
+ current_label="Ajouter le profil"
+ current_index=-1
+ @ViewChild("stepper", { static: false }) private stepper: MatStepper | undefined;
 
-  constructor(private fb: FormBuilder,private positionApi:PositionApiService) { }
 
-  ngOnInit(): void {
-    this.etablissementWizard()
-    this.positionApi.GetRequestCategories()
+  constructor(private _formBuilder: FormBuilder) {}
+
+  ngOnInit() {
+
 
   }
 
+  selectionChange(event: StepperSelectionEvent):string {
+    console.log(event.selectedStep.label);  
+    let stepLabel = event.selectedStep.label
+    if (stepLabel == "Fill out your name") {
+      this.current_label="Fill out your name"
+
+      console.log("step= "+stepLabel)
+    }
+    return stepLabel
+  }
+  ngAfterViewInit() {
+    this.progressBarValue=10
+    this.stepper?.selectionChange
+      .pipe(pluck("selectedIndex"))
+      .subscribe((res: number) => {
+        console.log("res number= "+ res)
 
 
-  open(){
+       if(res == 0){
+        this.current_label="Ajouter le profil"
+        console.log("ng-after= "+this.current_label)
+       }
+       else if(res==1){
+         this.current_label="Ajouter la description"
+         console.log("ng-after= "+this.current_label)
+       }
+       else if(res==2){
+        this.current_label="adresse"
+        console.log("ng-after= "+this.current_label)
+       }
+       else if(res==3){
+        this.current_label="Ajouter le contact"
+        console.log("ng-after= "+this.current_label)
+       }
+
+       else if(res==4){
+        this.current_label="Ajouter les horaires"
+        console.log("ng-after= "+this.current_label)
+       }
+       else {
+        this.current_label="Ajouter les photos"
+        console.log("ng-after= "+this.current_label)
+       }
+       if(this.current_index>res)
+       {
+          if(this.progressBarValue>10)
+          this.progressBarValue-=18
+
+       }
+
+       else{
+        if(this.progressBarValue<100)
+         this.progressBarValue+=18
+
+
+       }
+       this.current_index=res
+        console.log("current= "+this.current_index+"   "+ "res= "+res)
+console.log("progress= "+this.progressBarValue
+)
+      });
+  }
+
+open(){
     console.log("bjr")
 
     $('app-etablissement').css('left','0px')
@@ -58,105 +143,18 @@ export class EtablissementComponent implements OnInit {
   close(){
 
     $('app-etablissement').css('left','-360px')
+    this.progressBarValue=10
+    this.stepper?.reset()
   }
 
+  submit(){
+    console.log("sousmission du formulaire")
+    this.progressBarValue=10
+    console.log("progressbar= "+ this.progressBarValue)
+    this.close()
 
-  etablissementWizard(){
-    var current_fs:any, next_fs:any, previous_fs:any; //fieldsets
-var opacity;
-var current = 1;
-var steps = $("fieldset").length;
-
-setProgressBar(current);
-
-$(".next").click(function(){
-
-current_fs = $(this).parent();
-next_fs = $(this).parent().next();
-var value =$("#progressbar li").eq($("fieldset").index(next_fs)).get(0)!.textContent
-console.log(value+"rrr")
-console.log($("#progressbar li").eq($("fieldset").index(current_fs)).get(0)!.textContent)
-$("#account").html(value!);
-//Add Class Active
-//$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-
-//show the next fieldset
-next_fs.show();
-//hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-step: function(now:any) {
-// for making fielset appear animation
-opacity = 1 - now;
-
-current_fs.css({
-'display': 'none',
-'position': 'relative'
-});
-next_fs.css({'opacity': opacity});
-},
-duration: 500
-});
-setProgressBar(++current);
-
-});
-
-$(".previous").click(function(){
-
-
-current_fs = $(this).parent();
-
-previous_fs = $(this).parent().prev();
-console.log(previous_fs)
-
-
-  var value =$("#progressbar li").eq($("fieldset").index(previous_fs)).get(0)!.textContent
-  $("#account").html(value!);
-  console.log(value)
-
-
-//Remove class active
-$("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
-$("#progressbar li").eq($("fieldset").index(previous_fs)).css({
-
-
-  });
-//show the previous fieldset
-previous_fs.show();
-
-//hide the current fieldset with style
-current_fs.animate({opacity: 0}, {
-step: function(now:any) {
-// for making fielset appear animation
-opacity = 1 - now;
-
-current_fs.css({
-'display': 'none',
-'position': 'relative'
-});
-previous_fs.css({'opacity': opacity});
-},
-duration: 500
-});
-setProgressBar(--current);
-console.log(current+ "curr")
-if(current==1){
-  console.log("hello")
-  $("#account").html("Ajouter le profil");
-}
-});
-
-function setProgressBar(curStep:any){
-  var t=100 / steps
-var percent = t * curStep;
-percent =parseInt( percent.toFixed());
-$(".progress-bar")
-.css("width",percent+"%")
-}
-
-$(".submit").click(function(){
-return false;
-})
-
+    this.stepper?.reset()
   }
 }
+
 
