@@ -1,32 +1,43 @@
 package com.sogefi.position.models;
 
-
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Categories {
 
-    @SerializedName("nom")
+    @SerializedName("limit")
     @Expose
-    private String nom;
-    @SerializedName("logo_url")
+    private Integer limit;
+    @SerializedName("offset")
     @Expose
-    private String logoUrl;
+    private Integer offset;
+    @SerializedName("data")
+    @Expose
+    private List<Datum> data = null;
 
-    public String getNom() {
-        return nom;
+    public Integer getLimit() {
+        return limit;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 
-    public String getLogoUrl() {
-        return logoUrl;
+    public Integer getOffset() {
+        return offset;
     }
 
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
+    public List<Datum> getData() {
+        return data;
+    }
+
+    public void setData(List<Datum> data) {
+        this.data = data;
     }
 
 }

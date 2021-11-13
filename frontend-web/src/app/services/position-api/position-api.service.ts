@@ -38,11 +38,21 @@ export class PositionApiService {
 
     //this.httpClient.get(this. url_prefix+"api/categories",{ headers: this.entetes .set('Authorization','Bearer ' + localStorage.getItem('access_token')?.trim()),params: new HttpParams({fromString:"limit=10"}) })
 
+<<<<<<< HEAD
     this.httpClient
       .get(this.url_prefix + 'api/categories', { headers: this.entetes })
       .subscribe((data) => {
         console.log(data);
         // this.products = data;
       });
+=======
+  public GetRequestCategories(){
+   const options = {  };
+    this.httpClient.get(this.url_prefix + "categories",{ headers: this.entetes,params: new HttpParams({fromString:"limit=10"}) })
+    .subscribe((data)=>{
+      console.log(data);
+     // this.products = data;
+    })  ;
+>>>>>>> f038205f67f3374e512c467e00083a8b3a935cfc
   }
 }

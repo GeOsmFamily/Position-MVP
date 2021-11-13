@@ -1,0 +1,23 @@
+version: "3"
+services:
+  position_api:
+    build: .
+    container_name: "position-api"
+    ports:
+      - "6003:15500"
+    volumes:
+      - ./prod/images:/usr/src/app/images
+
+
+# version: "3"
+# services:
+#   position_api:
+#     build: .
+#     container_name: "position-api"
+#     ports:
+#       - "6003:15500"
+#     volumes:
+#       - position-vol:/usr/src/app/images
+# Volumes:
+#   position-vol:
+#     driver: local
