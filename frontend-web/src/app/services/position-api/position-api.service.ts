@@ -7,7 +7,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { from } from 'rxjs/internal/observable/from';
-import { catchError, map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { ApiService } from '../api/api.service';
 import { UserInterface } from 'src/app/interfaces/userInterface';
 import { ResetInterface } from 'src/app/interfaces/resetInterface';
@@ -27,9 +27,10 @@ export class PositionApiService {
     .set('content-type', 'application/json')
     .set('Accept', 'application/json')
     .set(
-      'X-Authorization',
+      'X-Authorization ',
       'LMqyHOewo4jcZsJgz24zcUYUOHt6b36EkvdoHvwhERBoqOAZeGWpiE3GRU9sjumc'
     );
+  listeCategorie: ListeCategorie | undefined;
 
   constructor(public router: Router, private httpClient: HttpClient) {}
 
@@ -38,6 +39,12 @@ export class PositionApiService {
 
     //this.httpClient.get(this. url_prefix+"api/categories",{ headers: this.entetes .set('Authorization','Bearer ' + localStorage.getItem('access_token')?.trim()),params: new HttpParams({fromString:"limit=10"}) })
 
+    this.httpClient
+      .get(this.url_prefix + 'api/categories', { headers: this.entetes })
+      .subscribe((data) => {
+        console.log(data);
+        // this.products = data;
+      });
     this.httpClient
       .get(this.url_prefix + 'api/categories', { headers: this.entetes })
       .subscribe((data) => {

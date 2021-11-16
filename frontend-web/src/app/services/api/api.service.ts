@@ -15,12 +15,20 @@ export class ApiService {
     .set('Access-Control-Allow-Origin', '*')
     .set('Accept-Language', 'fr');
 
+      entetes= new HttpHeaders()
+        .set('content-type', 'application/json')
+        .set('Content-Type', 'application/x-www-form-urlencoded')
+        .set('Access-Control-Allow-Origin', '*')
+  .set('Accept','application/json')
+  .set('X-Authorization ','dEeeqWdIr5AaXAKFREAG5Pu33QkR25uOASgFxIkxFDz2wkp13BSP5xGSQGcARf1M')
+
   constructor(private http: HttpClient) {
     this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Access-Control-Allow-Origin', '*');
     this.headers_nodejs.append('Content-Type', 'application/json');
-    this.headers.append('No-Auth', 'True');
+
+
   }
 
   get_header() {
@@ -54,7 +62,7 @@ export class ApiService {
  getRequest(path: string): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.http
-        .get(this. url_prefix+path, { headers: this.headers })
+        .get(this. url_prefix+path, { headers: this.entetes })
         .toPromise()
         .then(
           (res) => {

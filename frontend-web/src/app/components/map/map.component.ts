@@ -79,6 +79,7 @@ this.getPosition()
       console.log( event.coordinate)
 
     });*/
+    this.mapClicked()   
     this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
     this.componentHelper.setComponent('EtablissementComponent',this.etablissementComponent)
 
