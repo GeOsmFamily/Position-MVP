@@ -14,6 +14,10 @@ import {
 import { merge as observerMerge } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { HandleNominatimSearch } from '../../header/handle/handleNominatimSearch';
+import { HandleSousCategoriesSearch } from '../../header/handle/handleSousCategoriesSearch';
+import { Fill, Icon, Stroke, Style, VectorLayer, VectorSource } from 'src/app/modules/ol';
+import { environment } from 'src/environments/environment';
+import { DataHelper } from 'src/app/helpers/dataHelper';
 
 
 @Component({
@@ -30,8 +34,61 @@ export class SearchComponent implements OnInit {
   objectsIn = Object.keys;
   filterOptions: { [key: string]: Array<FilterOptionInterface> } = {
 
-    nominatim: []
+    nominatim: [],
+    souscategories:[],
+    etablissements:[]
   };
+
+//@ts-ignore
+   searchResultLayer: VectorLayer = new VectorLayer({
+    source: new VectorSource(),
+    style: (feature) => {
+      var textLabel;
+      var textStyle = {
+        font: '15px Calibri,sans-serif',
+        fill: new Fill({ color: '#000' }),
+        stroke: new Stroke({ color: '#000', width: 1 }),
+        padding: [10, 10, 10, 10],
+        offsetX: 0,
+        offsetY: 0,
+      };
+      if (feature.get('textLabel')) {
+        textLabel = feature.get('textLabel');
+        //@ts-ignore
+        textStyle['text'] = textLabel;
+        if (feature.getGeometry()?.getType() == 'Point') {
+          textStyle.offsetY = 40;
+          //@ts-ignore
+          textStyle['backgroundFill'] = new Fill({ color: '#fff' });
+        }
+      }
+
+      var color = '#ade36b';
+      return new Style({
+        fill: new Fill({
+          color: [
+            DataHelper.hexToRgb(color)!.r,
+            DataHelper.hexToRgb(color)!.g,
+            DataHelper.hexToRgb(color)!.b,
+            0.5,
+          ],
+        }),
+        stroke: new Stroke({
+          color: environment.primaryColor,
+          width: 6,
+        }),
+        image: new Icon({
+          scale: 0.7,
+          src: '/assets/icones/marker-search.png',
+        }),
+//@ts-ignore
+        text: new Text(textStyle),
+      });
+    },
+    //@ts-ignore
+    type_layer: 'searchResultLayer',
+    nom: 'searchResultLayer',
+  });
 
 
 constructor(public fb: FormBuilder,  public apiService: ApiService,) {
@@ -66,6 +123,18 @@ initialiseForm() {
         this.filterOptions['nominatim'] =
           new HandleNominatimSearch().formatDataForTheList(value.value);
       }
+      else if (value.type == 'souscategories') {
+          console.log(1)
+    console.log(value)
+        this.filterOptions['souscategories'] =
+          new HandleSousCategoriesSearch().formatDataForTheList(value.value.data)
+      }
+      else if(value.type == 'etablissements'){
+     /*   this.filterOptions['etablissements'] =
+        new HandleEtablissementSearch().formatDataForTheList(value.value.data);*/
+
+      }
+
       this.isLoading = false;
       this.cleanFilterOptions();
     });
@@ -82,7 +151,16 @@ getQuerryForSerach(value: string): Observable<{
 
 
   var querryObs: Observable<{ type: string; error: boolean; value: { [key: string]: any; }; }>[] = [
-
+    from(
+      this.apiService.getRequest('search/souscategories?q='+value.toString())
+    ).pipe(
+      map((val: { type: String; value: any }) => {
+        return { type: 'souscategories', value: val, error: false };
+      }),
+      catchError((_err) =>
+        of({ error: _err, type: 'souscategories', value: { features: [] } })
+      )
+    ),
   ];
 
    querryObs.push(
@@ -103,7 +181,18 @@ getQuerryForSerach(value: string): Observable<{
       )
     );
 
-
+    querryObs.push(
+      from(
+        this.apiService.getRequest('search/etablissements?q='+value.toString() )
+      ).pipe(
+        map((val: { type: String; value: any }) => {
+          return { type: 'etablissements', value: val, error: false };
+        }),
+        catchError((_err) =>
+          of({ error: true, type: 'etablissements', value: { features: [] } })
+        )
+      )
+    );
 
 
 
@@ -141,6 +230,12 @@ displayAutocompleFn(option: FilterOptionInterface) {
   if (option.typeOption == 'nominatim') {
     return new HandleNominatimSearch().displayWith(option);
   }
+  else if (option.typeOption == 'souscategories') {
+    return new HandleSousCategoriesSearch().displayWith(option);
+  }
+  else if (option.typeOption == 'etablissements') {
+  //  return new HandleEtablissementsSearch().displayWith(option);
+  }
   return '';
 }
 
@@ -152,6 +247,12 @@ optionAutocomplteSelected(selected: MatAutocompleteSelectedEvent) {
   if (option) {
     if (option.typeOption == 'nominatim') {
       new HandleNominatimSearch().optionSelected(option);
+    }
+    else if (option.typeOption == 'souscategories') {
+      new HandleSousCategoriesSearch().optionSelected(option);
+    }
+    else if (option.typeOption == 'etablissements') {
+    //  new HandleEtablissementsSearch().optionSelected(option);
     }
   }
 }
