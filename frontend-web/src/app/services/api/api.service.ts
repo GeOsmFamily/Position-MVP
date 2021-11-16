@@ -15,20 +15,25 @@ export class ApiService {
     .set('Access-Control-Allow-Origin', '*')
     .set('Accept-Language', 'fr');
 
-      entetes= new HttpHeaders()
-        .set('content-type', 'application/json')
-        .set('Content-Type', 'application/x-www-form-urlencoded')
-        .set('Access-Control-Allow-Origin', '*')
-  .set('Accept','application/json')
-  .set('X-Authorization ','dEeeqWdIr5AaXAKFREAG5Pu33QkR25uOASgFxIkxFDz2wkp13BSP5xGSQGcARf1M')
+  entetes = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set('Content-Type', 'application/x-www-form-urlencoded')
+    .set('Access-Control-Allow-Origin', '*')
+    .set('Accept', 'application/json')
+    .set(
+      'X-Authorization ',
+      'dEeeqWdIr5AaXAKFREAG5Pu33QkR25uOASgFxIkxFDz2wkp13BSP5xGSQGcARf1M'
+    );
 
   constructor(private http: HttpClient) {
     this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Access-Control-Allow-Origin', '*');
+    this.headers.append(
+      'X-Authorization ',
+      'dEeeqWdIr5AaXAKFREAG5Pu33QkR25uOASgFxIkxFDz2wkp13BSP5xGSQGcARf1M'
+    );
     this.headers_nodejs.append('Content-Type', 'application/json');
-
-
   }
 
   get_header() {
@@ -59,10 +64,10 @@ export class ApiService {
     return promise;
   }
 
- getRequest(path: string): Promise<any> {
+  getRequest(path: string): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.http
-        .get(this. url_prefix+path, { headers: this.entetes })
+        .get(this.url_prefix + path, { headers: this.headers })
         .toPromise()
         .then(
           (res) => {
@@ -81,13 +86,13 @@ export class ApiService {
   post_requete(url: string, data: Object): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(this. url_prefix+url, data,{
+        .post(this.url_prefix + url, data, {
           headers: this.get_header(),
         })
         .toPromise()
         .then(
           (res) => {
-            console.log(res)
+            console.log(res);
             resolve(res);
           },
           (msg) => {
@@ -102,7 +107,11 @@ export class ApiService {
   logout_post_requete(url: string, data: Object): Promise<any> {
     return new Promise((resolve, reject) => {
       this.http
-        .post(this. url_prefix+url, data, { 'headers': {'Authorization': 'Bearer  ' + localStorage.getItem('access_token')} })
+        .post(this.url_prefix + url, data, {
+          headers: {
+            Authorization: 'Bearer  ' + localStorage.getItem('access_token'),
+          },
+        })
         .toPromise()
         .then(
           (res) => {

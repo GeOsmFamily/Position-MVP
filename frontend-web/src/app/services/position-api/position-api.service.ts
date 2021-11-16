@@ -28,7 +28,7 @@ export class PositionApiService {
     .set('Accept', 'application/json')
     .set(
       'X-Authorization ',
-      'LMqyHOewo4jcZsJgz24zcUYUOHt6b36EkvdoHvwhERBoqOAZeGWpiE3GRU9sjumc'
+      'dEeeqWdIr5AaXAKFREAG5Pu33QkR25uOASgFxIkxFDz2wkp13BSP5xGSQGcARf1M'
     );
   listeCategorie: ListeCategorie | undefined;
 
@@ -39,12 +39,6 @@ export class PositionApiService {
 
     //this.httpClient.get(this. url_prefix+"api/categories",{ headers: this.entetes .set('Authorization','Bearer ' + localStorage.getItem('access_token')?.trim()),params: new HttpParams({fromString:"limit=10"}) })
 
-    this.httpClient
-      .get(this.url_prefix + 'api/categories', { headers: this.entetes })
-      .subscribe((data) => {
-        console.log(data);
-        // this.products = data;
-      });
     this.httpClient
       .get(this.url_prefix + 'api/categories', { headers: this.entetes })
       .subscribe((data) => {

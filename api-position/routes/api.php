@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('search/souscategories', [
+    App\Http\Controllers\Api\SousCategorieController::class, 'searchSousCategorie'
+]);
+
+Route::get('search/etablissements', [App\Http\Controllers\Api\EtablissementController::class, 'searchEtablissement']);
 Route::middleware('auth.apikey')->group(
     function () {
 
@@ -34,7 +39,7 @@ Route::middleware('auth.apikey')->group(
 
         Route::get('souscategories', [App\Http\Controllers\Api\SousCategorieController::class, 'index']);
         Route::get('souscategories/{id}', [App\Http\Controllers\Api\SousCategorieController::class, 'show']);
-        Route::get('search/souscategories', [App\Http\Controllers\Api\SousCategorieController::class, 'searchSousCategorie']);
+
 
         Route::get('batiments', [App\Http\Controllers\Api\BatimentController::class, 'index']);
         Route::get('batiments/{id}', [App\Http\Controllers\Api\BatimentController::class, 'show']);
@@ -42,7 +47,7 @@ Route::middleware('auth.apikey')->group(
 
         Route::get('etablissements', [App\Http\Controllers\Api\EtablissementController::class, 'index']);
         Route::get('etablissements/{id}', [App\Http\Controllers\Api\EtablissementController::class, 'show']);
-        Route::get('search/etablissements', [App\Http\Controllers\Api\EtablissementController::class, 'searchEtablissement']);
+
 
 
         Route::middleware('auth:api')->group(function () {

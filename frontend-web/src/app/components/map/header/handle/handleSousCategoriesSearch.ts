@@ -1,62 +1,66 @@
-import { MapHelper } from "src/app/helpers/mapHelper";
-import { FilterOptionInterface } from "src/app/interfaces/filterOptionInterface";
-import { Feature, GeoJSON, VectorLayer } from "src/app/modules/ol";
-import { environment } from "src/environments/environment";
+import { MapHelper } from 'src/app/helpers/mapHelper';
+import { FilterOptionInterface } from 'src/app/interfaces/filterOptionInterface';
+import {
+  Cluster,
+  Feature,
+  GeoJSON,
+  VectorLayer,
+  VectorSource,
+} from 'src/app/modules/ol';
+import { environment } from 'src/environments/environment';
 
 export class HandleSousCategoriesSearch {
-
+  features: any | undefined;
+  geojson: any;
   formatDataForTheList(responseData: any): Array<FilterOptionInterface> {
     var responses = Array();
 
+    console.log(responseData);
 
+    responseData.forEach((element: any) => {
+      console.log(element.etablissements);
+      element.etablissements.forEach((elementE: any) => {
+        var geometry = {
+          type: 'Point',
+          coordinates: [
+            elementE.batiment.longitude,
+            elementE.batiment.latitude,
+          ],
+        };
 
-
-    responseData.etablissements.forEach((element:any) => {
-      var geometry = {
-        type: 'Point',
-        coordinates: [element.batiment.longitude, element.batiment.latitude],
-      };
-
-      responses.push({
-        type: 'Feature',
-        geometry: geometry,
-        properties: element,
+        responses.push({
+          type: 'Feature',
+          geometry: geometry,
+          properties: elementE,
+        });
       });
     });
 
-     var geojson = {
+    this.geojson = {
       type: 'FeatureCollection',
       features: responses,
     };
 
+    console.log(this.geojson);
+
     var response: Array<FilterOptionInterface> = [];
     for (let index = 0; index < responseData.length; index++) {
       const element = responseData[index];
-      for (let index = 0; index < geojson.features.length; index++) {
-        const elementGeojson = geojson.features[index];
-        var features = new GeoJSON().readFeatures(element, {
-          dataProjection: 'EPSG:4326',
-          featureProjection: 'EPSG:3857',
-        });
 
-
-
-        if (responseData.length > 0) {
-          var details = Array();
-          if (this._formatType(element)) {
-            details.push(this._formatType(element));
-          }
-
-          response.push({
-            name: responseData[index].nom,
-            id: responseData[index].id,
-            details: details.join(', '),
-            geometry: features[0].getGeometry(),
-            logo: responseData[index].logo_url,
-            typeOption: 'souscategories',
-            ...features[0].getProperties(),
-          });
+      if (responseData.length > 0) {
+        var details = Array();
+        if (this._formatType(element)) {
+          details.push(this._formatType(element));
         }
+
+        response.push({
+          name: responseData[index].nom,
+          id: responseData[index].id,
+          details: details.join(', '),
+          logo: responseData[index].logo_url,
+          geojson: this.geojson,
+          typeOption: 'souscategories',
+        });
       }
     }
 
@@ -71,20 +75,35 @@ export class HandleSousCategoriesSearch {
     }
   }
 
-
-  _formatType(option:any) {
+  _formatType(option: any) {
     return option.nomCategorie;
   }
 
   optionSelected(emprise: FilterOptionInterface) {
-    if (!emprise.geometry) {
+    let mapHelper = new MapHelper();
 
-    } else {
-      this._addGeometryAndZoomTO(emprise);
+    if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
+      var searchResultLayer = new VectorLayer();
+      searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
+
+      const vectorSource = new VectorSource({
+        features: new GeoJSON().readFeatures(emprise.geojson),
+      });
+
+      const clusterSource = new Cluster({
+        distance: parseInt('50'),
+        minDistance: parseInt('30'),
+        source: vectorSource,
+      });
+
+      searchResultLayer.getSource().clear();
+      searchResultLayer.setSource(clusterSource);
+      console.log(emprise.geojson);
+      //  searchResultLayer.getSource().addFeatures(vectorSource);
     }
   }
 
-  _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
+  /* _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
     if (emprise.geometry) {
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
@@ -97,7 +116,6 @@ export class HandleSousCategoriesSearch {
         feature.set('textLabel', textLabel);
         feature.set('logo_url', environment.url_image + emprise.logo_url);
 
-
         feature.setGeometry(emprise.geometry);
 
         searchResultLayer.getSource().clear();
@@ -109,5 +127,5 @@ export class HandleSousCategoriesSearch {
         mapHelper.fit_view(extent, 16);
       }
     }
-  }
+  }*/
 }

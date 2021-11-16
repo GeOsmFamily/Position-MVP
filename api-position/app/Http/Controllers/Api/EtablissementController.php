@@ -167,8 +167,16 @@ class EtablissementController extends BaseController
 
         foreach ($etablissements as $etablissement) {
             $batiment = $etablissement->batiment;
+            $souscategorie = $etablissement->sousCategorie;
+
 
             $etablissement['batiment'] = $batiment;
+            $etablissement['nomSousCategorie'] = $souscategorie->nom;
+
+            $categorie = $souscategorie->categorie;
+
+            $etablissement['nomCategorie'] = $categorie->nom;
+            $etablissement['logo_url'] = $categorie->logo_url;
         }
 
         return $this->sendResponse($etablissements, 'Liste des Etablissements');

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { from, Observable, of } from 'rxjs';
 import { FilterOptionInterface } from 'src/app/interfaces/filterOptionInterface';
@@ -15,32 +20,38 @@ import { merge as observerMerge } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { HandleNominatimSearch } from '../../header/handle/handleNominatimSearch';
 import { HandleSousCategoriesSearch } from '../../header/handle/handleSousCategoriesSearch';
-import { Fill, Icon, Stroke, Style, VectorLayer, VectorSource } from 'src/app/modules/ol';
+import {
+  Fill,
+  Icon,
+  Stroke,
+  Style,
+  VectorLayer,
+  VectorSource,
+  Text,
+} from 'src/app/modules/ol';
 import { environment } from 'src/environments/environment';
 import { DataHelper } from 'src/app/helpers/dataHelper';
-
+import { MapHelper } from 'src/app/helpers/mapHelper';
+import { HandleEtablissementsSearch } from '../../header/handle/handleEtablissementsSearch';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-
-
   form: FormGroup | undefined;
 
   isLoading: boolean | undefined;
   objectsIn = Object.keys;
   filterOptions: { [key: string]: Array<FilterOptionInterface> } = {
-
     nominatim: [],
-    souscategories:[],
-    etablissements:[]
+    souscategories: [],
+    etablissements: [],
   };
 
-//@ts-ignore
-   searchResultLayer: VectorLayer = new VectorLayer({
+  //@ts-ignore
+  searchResultLayer: VectorLayer = new VectorLayer({
     source: new VectorSource(),
     style: (feature) => {
       var textLabel;
@@ -78,10 +89,10 @@ export class SearchComponent implements OnInit {
           width: 6,
         }),
         image: new Icon({
-          scale: 0.7,
-          src: '/assets/icones/marker-search.png',
+          scale: 1.5,
+          src: '/assets/icon-categorie/icon-categorie-achats.svg',
         }),
-//@ts-ignore
+        //@ts-ignore
         text: new Text(textStyle),
       });
     },
@@ -90,80 +101,95 @@ export class SearchComponent implements OnInit {
     nom: 'searchResultLayer',
   });
 
+  constructor(public fb: FormBuilder, public apiService: ApiService) {}
 
-constructor(public fb: FormBuilder,  public apiService: ApiService,) {
+  ngOnInit(): void {
+    this.isLoading = false;
+    this.initialiseForm();
+    this.initialiseSearchResultLayer();
+  }
 
-}
+  initialiseSearchResultLayer() {
+    var mapHelper = new MapHelper();
+    if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
+      this.searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
+      this.searchResultLayer.setZIndex(1000);
+    } else {
+      this.searchResultLayer.setZIndex(1000);
+      mapHelper.map?.addLayer(this.searchResultLayer);
+    }
+    if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
+      mapHelper.getLayerByName('searchResultLayer')[0].getSource().clear();
+    }
+  }
 
-ngOnInit(): void {
-  this.isLoading=false;
-  this.initialiseForm();
-}
-
-
-initialiseForm() {
-  var empriseControl = new FormControl('', [Validators.minLength(2)]);
-  empriseControl.valueChanges
-    .pipe(
-      debounceTime(500),
-      filter((value) => typeof value === 'string' && value.length > 2),
-      tap(() => {
-        this.isLoading = true;
-        console.log('loading');
-      }),
-      switchMap((value) => {
-        return observerMerge(...this.getQuerryForSerach(value)).pipe(
-          map((value) => value),
-          catchError((_err) => of({ error: true }))
-        );
-      })
-    )
-    .subscribe((value: any) => {
-      if (value.type == 'nominatim') {
-        this.filterOptions['nominatim'] =
-          new HandleNominatimSearch().formatDataForTheList(value.value);
-      }
-      else if (value.type == 'souscategories') {
-          console.log(1)
-    console.log(value)
-        this.filterOptions['souscategories'] =
-          new HandleSousCategoriesSearch().formatDataForTheList(value.value.data)
-      }
-      else if(value.type == 'etablissements'){
-     /*   this.filterOptions['etablissements'] =
-        new HandleEtablissementSearch().formatDataForTheList(value.value.data);*/
-
-      }
-
-      this.isLoading = false;
-      this.cleanFilterOptions();
-    });
-
-  this.form = this.fb.group({
-    searchWord: empriseControl,
-  });
-}
-getQuerryForSerach(value: string): Observable<{
-  type: string;
-  error: boolean;
-  value: { [key: string]: any };
-}>[] {
-
-
-  var querryObs: Observable<{ type: string; error: boolean; value: { [key: string]: any; }; }>[] = [
-    from(
-      this.apiService.getRequest('search/souscategories?q='+value.toString())
-    ).pipe(
-      map((val: { type: String; value: any }) => {
-        return { type: 'souscategories', value: val, error: false };
-      }),
-      catchError((_err) =>
-        of({ error: _err, type: 'souscategories', value: { features: [] } })
+  initialiseForm() {
+    var empriseControl = new FormControl('', [Validators.minLength(2)]);
+    empriseControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        filter((value) => typeof value === 'string' && value.length > 2),
+        tap(() => {
+          this.isLoading = true;
+          console.log('loading');
+        }),
+        switchMap((value) => {
+          return observerMerge(...this.getQuerryForSerach(value)).pipe(
+            map((value) => value),
+            catchError((_err) => of({ error: true }))
+          );
+        })
       )
-    ),
-  ];
+      .subscribe((value: any) => {
+        if (value.type == 'nominatim') {
+          this.filterOptions['nominatim'] =
+            new HandleNominatimSearch().formatDataForTheList(value.value);
+        } else if (value.type == 'souscategories') {
+          console.log(value);
+          this.filterOptions['souscategories'] =
+            new HandleSousCategoriesSearch().formatDataForTheList(
+              value.value.data
+            );
+        } else if (value.type == 'etablissements') {
+          this.filterOptions['etablissements'] =
+            new HandleEtablissementsSearch().formatDataForTheList(
+              value.value.data
+            );
+        }
 
-   querryObs.push(
+        this.isLoading = false;
+        this.cleanFilterOptions();
+      });
+
+    this.form = this.fb.group({
+      searchWord: empriseControl,
+    });
+  }
+  getQuerryForSerach(value: string): Observable<{
+    type: string;
+    error: boolean;
+    value: { [key: string]: any };
+  }>[] {
+    var querryObs: Observable<{
+      type: string;
+      error: boolean;
+      value: { [key: string]: any };
+    }>[] = [
+      from(
+        this.apiService.getRequest(
+          'api/search/souscategories?q=' + value.toString()
+        )
+      ).pipe(
+        map((val: { type: String; value: any }) => {
+          return { type: 'souscategories', value: val, error: false };
+        }),
+        catchError((_err) =>
+          of({ error: _err, type: 'souscategories', value: { features: [] } })
+        )
+      ),
+    ];
+
+    querryObs.push(
       from(
         this.apiService.getRequestFromOtherHost(
           'https://nominatim.openstreetmap.org/search?q=' +
@@ -183,7 +209,9 @@ getQuerryForSerach(value: string): Observable<{
 
     querryObs.push(
       from(
-        this.apiService.getRequest('search/etablissements?q='+value.toString() )
+        this.apiService.getRequest(
+          'api/search/etablissements?q=' + value.toString()
+        )
       ).pipe(
         map((val: { type: String; value: any }) => {
           return { type: 'etablissements', value: val, error: false };
@@ -194,67 +222,61 @@ getQuerryForSerach(value: string): Observable<{
       )
     );
 
+    return querryObs;
+  }
 
-
-  return querryObs;
-}
-
-
-cleanFilterOptions() {
-  for (const key in this.filterOptions) {
-    if (this.filterOptions.hasOwnProperty(key)) {
-      const element = this.filterOptions[key];
-      if (element.length == 0) {
-        this.filterOptions[key] = [];
+  cleanFilterOptions() {
+    for (const key in this.filterOptions) {
+      if (this.filterOptions.hasOwnProperty(key)) {
+        const element = this.filterOptions[key];
+        if (element.length == 0) {
+          this.filterOptions[key] = [];
+        }
       }
     }
   }
-}
 
-
-ngAfterViewInit(): void {
-//Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-//Add 'implements AfterViewInit' to the class.
-
-}
-login(){
-console.log(this.form?.value.searchWord)
-}
-
-clearSearch() {
-  this.form?.get('searchWord')?.patchValue('');
-
-}
-
-displayAutocompleFn(option: FilterOptionInterface) {
-  if (option.typeOption == 'nominatim') {
-    return new HandleNominatimSearch().displayWith(option);
+  ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
   }
-  else if (option.typeOption == 'souscategories') {
-    return new HandleSousCategoriesSearch().displayWith(option);
+  login() {
+    console.log(this.form?.value.searchWord);
   }
-  else if (option.typeOption == 'etablissements') {
-  //  return new HandleEtablissementsSearch().displayWith(option);
+
+  clearSearch() {
+    this.form?.get('searchWord')?.patchValue('');
+    var mapHelper = new MapHelper();
+    if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
+      var searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
+
+      searchResultLayer.getSource().clear();
+    }
   }
-  return '';
-}
 
-
-optionAutocomplteSelected(selected: MatAutocompleteSelectedEvent) {
-  var option: FilterOptionInterface = selected.option
-    ? selected.option.value
-    : undefined;
-  if (option) {
+  displayAutocompleFn(option: FilterOptionInterface) {
     if (option.typeOption == 'nominatim') {
-      new HandleNominatimSearch().optionSelected(option);
+      return new HandleNominatimSearch().displayWith(option);
+    } else if (option.typeOption == 'souscategories') {
+      return new HandleSousCategoriesSearch().displayWith(option);
+    } else if (option.typeOption == 'etablissements') {
+      return new HandleEtablissementsSearch().displayWith(option);
     }
-    else if (option.typeOption == 'souscategories') {
-      new HandleSousCategoriesSearch().optionSelected(option);
-    }
-    else if (option.typeOption == 'etablissements') {
-    //  new HandleEtablissementsSearch().optionSelected(option);
+    return '';
+  }
+
+  optionAutocomplteSelected(selected: MatAutocompleteSelectedEvent) {
+    var option: FilterOptionInterface = selected.option
+      ? selected.option.value
+      : undefined;
+    if (option) {
+      if (option.typeOption == 'nominatim') {
+        new HandleNominatimSearch().optionSelected(option);
+      } else if (option.typeOption == 'souscategories') {
+        new HandleSousCategoriesSearch().optionSelected(option);
+      } else if (option.typeOption == 'etablissements') {
+        new HandleEtablissementsSearch().optionSelected(option);
+      }
     }
   }
-}
-
 }

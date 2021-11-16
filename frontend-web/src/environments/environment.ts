@@ -4,12 +4,12 @@
 
 export const environment = {
   production: false,
-  url_backend: 'http://192.168.225.221:8000/',
-  url_image: 'http://192.168.225.221:8000',
-  primaryColor: "#05BF95",
+  url_backend: 'http://localhost:8000/',
+  url_image: 'http://localhost:8000',
+  primaryColor: '#05BF95',
   //  url_position_Api:'https://api.position.cm/',
   avaible_language: ['fr', 'en'],
-  default_language: 'fr'
+  default_language: 'fr',
 };
 
 /*
