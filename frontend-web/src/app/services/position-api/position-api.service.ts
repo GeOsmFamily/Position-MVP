@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { from } from 'rxjs/internal/observable/from';
 import { map, catchError} from 'rxjs/operators';
 import { ApiService } from '../api/api.service';
 import { UserInterface } from 'src/app/interfaces/userInterface';
 import { ResetInterface } from 'src/app/interfaces/resetInterface';
-import jwt_decode, { JwtPayload } from "jwt-decode";
+import jwt_decode, { JwtPayload } from 'jwt-decode';
 import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { ListeCategorie } from 'src/app/interfaces/categorieInterface';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PositionApiService {
-
   url_prefix = environment.url_backend;
 
    entetes= new HttpHeaders()
@@ -49,5 +52,4 @@ this.httpClient.get(this. url_prefix+"api/categories",{ headers: this.entetes})
 
 
 
-
-}
+  }

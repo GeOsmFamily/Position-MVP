@@ -4,6 +4,7 @@ package com.sogefi.position.api;
 
 
 import com.sogefi.position.models.Auth;
+import com.sogefi.position.models.Categories;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.Users;
@@ -42,5 +43,8 @@ public interface ApiInterface {
 
     @GET("auth/me")
     Call<Users> getUser(@Header("Authorization") String token);
+
+    @GET("categories?limit=10&offset=0")
+    Call<Categories> getCategories(@Header("Authorization") String token);
 
 }

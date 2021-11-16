@@ -1,18 +1,15 @@
-
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import {MatIconRegistry} from '@angular/material/icon';
+import { MatIconRegistry } from '@angular/material/icon';
 import * as $ from 'jquery';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { DeviceDetectionService } from 'src/app/services/device-detection.service';
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss']
+  styleUrls: ['./categories.component.scss'],
 })
 export class CategoriesComponent implements OnInit {
-
-
 
 
   constructor(public deviceDetector:DeviceDetectionService, public componentHelper: ComponentHelper,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
@@ -50,8 +47,8 @@ export class CategoriesComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+ 
 
-  }
 
+  ngOnInit(): void {}
 }
