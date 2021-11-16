@@ -30,6 +30,7 @@
     "jquery": "^3.6.0",
     "jwt-decode": "^3.1.2",
     "ng-image-slider": "^2.8.0",
+    "ngx-device-detector": "^2.1.1",
     "ngx-slick-carousel": "^0.5.1",
     "ngx-translate-multi-http-loader": "^3.0.0",
     "ol": "^6.8.1",

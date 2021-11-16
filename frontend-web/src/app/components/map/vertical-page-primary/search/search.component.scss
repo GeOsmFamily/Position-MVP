@@ -110,8 +110,8 @@ div.container > div {
 
 /*
 ::ng-deep .mat-form-field-appearance-fill {
-  border-radius: 4px 4px 0 0; 
-padding: .75em .75em 0 .75em; 
+  border-radius: 4px 4px 0 0;
+padding: .75em .75em 0 .75em;
 
 
 }*/
@@ -233,4 +233,9 @@ img{
 
 .mat-autocomplete-panel {
   width: 317px;
+}
+
+::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke:#05BF95;
+  background-color: blanchedalmond;
 }

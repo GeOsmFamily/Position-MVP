@@ -41,7 +41,7 @@
 
       <mat-autocomplete #auto="matAutocomplete" [panelWidth]="317"  [displayWith]="displayAutocompleFn"
       (optionSelected)="optionAutocomplteSelected($event)" style="width: 317px;">
-      <mat-option *ngIf="isLoading">
+      <mat-option *ngIf="isLoading" style="background-color: white;">
         <mat-spinner style="display: block;
   margin-left: auto;
   margin-right: auto" diameter="35"></mat-spinner>
