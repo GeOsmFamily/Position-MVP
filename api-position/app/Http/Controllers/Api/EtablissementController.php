@@ -157,4 +157,20 @@ class EtablissementController extends BaseController
             return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
         }
     }
+
+    public function searchEtablissement(Request $request)
+    {
+        $q      = $request->input('q');
+        $etablissements = Etablissement::where('nom', 'LIKE', '%' . $q . '%')
+            ->orWhere('indicationAdresse', 'LIKE', '%' . $q . '%')
+            ->get();
+
+        foreach ($etablissements as $etablissement) {
+            $batiment = $etablissement->batiment;
+
+            $etablissement['batiment'] = $batiment;
+        }
+
+        return $this->sendResponse($etablissements, 'Liste des Etablissements');
+    }
 }

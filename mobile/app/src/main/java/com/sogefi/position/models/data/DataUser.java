@@ -1,7 +1,8 @@
-package com.sogefi.position.models;
+package com.sogefi.position.models.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sogefi.position.models.User;
 
 public class DataUser {
 

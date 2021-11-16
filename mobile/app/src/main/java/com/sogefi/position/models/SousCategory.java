@@ -15,15 +15,18 @@ public class SousCategory {
     @SerializedName("nom")
     @Expose
     private String nom;
-    @SerializedName("id_categorie")
+    @SerializedName("idCategorie")
     @Expose
     private Integer idCategorie;
+    @SerializedName("logoUrl")
+    @Expose
+    private Object logoUrl;
     @SerializedName("created_at")
     @Expose
-    private Object createdAt;
+    private String createdAt;
     @SerializedName("updated_at")
     @Expose
-    private Object updatedAt;
+    private String updatedAt;
 
     public Integer getId() {
         return id;
@@ -49,19 +52,27 @@ public class SousCategory {
         this.idCategorie = idCategorie;
     }
 
-    public Object getCreatedAt() {
+    public Object getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(Object logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Object createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Object getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Object updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 

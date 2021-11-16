@@ -17,6 +17,11 @@ class CategorieController extends BaseController
     {
         $categories = Categorie::all();
 
+        foreach ($categories as   $categorie) {
+            $sousCategories = $categorie->sousCategories;
+            $categorie["sous_categories"] = $sousCategories;
+        }
+
         return $this->sendResponse($categories, 'Liste des Categories');
     }
 
@@ -145,5 +150,13 @@ class CategorieController extends BaseController
         } else {
             return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
         }
+    }
+
+    public function searchCategorie(Request $request) {
+        $q      = $request->input('q');
+        $categories = Categorie::where('nom', 'LIKE', '%' . $q . '%')
+            ->get();
+
+        return $this->sendResponse($categories, 'Liste des Categories');
     }
 }

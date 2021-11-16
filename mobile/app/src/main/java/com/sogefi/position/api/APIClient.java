@@ -1,5 +1,8 @@
 package com.sogefi.position.api;
 
+import static com.sogefi.position.utils.Constants.BASEURL;
+import static com.sogefi.position.utils.Constants.NOMINATIMURL;
+
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.HostnameVerifier;
@@ -16,9 +19,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
-    public static final String BASE_URL1 = "https://nominatim.openstreetmap.org/";
-    public static final String BASE_URL2 = "https://services.position.cm/";
-    public static final String BASE_URL3 = "https://api.position.cm/";
     private static Retrofit retrofit1 = null;
     private static Retrofit retrofit2 = null;
     private static Retrofit retrofit3 = null;
@@ -71,7 +71,7 @@ public class APIClient {
     public static Retrofit getNewClient() {
         if (retrofit1 == null) {
             retrofit1 = new Retrofit.Builder()
-                    .baseUrl(BASE_URL1)
+                    .baseUrl(NOMINATIMURL)
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -83,7 +83,7 @@ public class APIClient {
     public static Retrofit getNewClient2() {
         if (retrofit3 == null) {
             retrofit3 = new Retrofit.Builder()
-                    .baseUrl(BASE_URL1)
+                    .baseUrl(NOMINATIMURL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
@@ -95,7 +95,7 @@ public class APIClient {
     public static Retrofit getNewClient3() {
         if (retrofit2 == null) {
             retrofit2 = new Retrofit.Builder()
-                    .baseUrl(BASE_URL2)
+                    .baseUrl(BASEURL)
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -103,14 +103,4 @@ public class APIClient {
         return retrofit2;
     }
 
-    public static Retrofit getNewClient4() {
-        if (retrofit4 == null) {
-            retrofit4 = new Retrofit.Builder()
-                    .baseUrl(BASE_URL3)
-                    .client(getUnsafeOkHttpClient().build())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return retrofit4;
-    }
 }

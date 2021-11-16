@@ -2,6 +2,7 @@ package com.sogefi.position.ui.activities;
 
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.sogefi.position.utils.Constants.API_KEY;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
@@ -1213,7 +1214,8 @@ public class MapActivity extends AppCompatActivity implements
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
                     APIClient.getNewClient3().create(ApiInterface.class);
-            Call<ResponseApi> call = apiService.logout();
+            Call<ResponseApi> call = apiService.logout(API_KEY,pref.getToken());
+
             call.enqueue(new Callback<ResponseApi>() {
                 @Override
                 public void onResponse(@NotNull Call<ResponseApi> call, @NotNull Response<ResponseApi> response) {

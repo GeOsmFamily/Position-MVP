@@ -1,5 +1,7 @@
 package com.sogefi.position.ui.activities;
 
+import static com.sogefi.position.utils.Constants.API_KEY;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -24,9 +26,8 @@ import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
 import com.sogefi.position.models.Categories;
-import com.sogefi.position.models.Datum;
-import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.SousCategory;
+import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.PreferenceManager;
 
@@ -57,6 +58,8 @@ public class NewBusinessActivity extends AppCompatActivity {
     ProgressBar progress;
     PreferenceManager pref;
     Categories categories;
+
+    int idSousCategorie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,12 +125,7 @@ public class NewBusinessActivity extends AppCompatActivity {
         backbtn.setOnClickListener(v -> finish());
         next.setOnClickListener(v -> uploadData());
 
-      /*  category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getSousCategories(position);
-            }
-        });*/
+
 
 
         getCategory();
@@ -138,15 +136,15 @@ public class NewBusinessActivity extends AppCompatActivity {
     private void getCategory(){
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
-                    APIClient.getNewClient4().create(ApiInterface.class);
-            Call<Categories> call = apiService.getCategories("Bearer " + pref.getToken());
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Categories> call = apiService.getCategories(API_KEY);
             call.enqueue(new Callback<Categories>() {
                 @Override
                 public void onResponse(@NotNull Call<Categories> call, @NotNull Response<Categories> response) {
                     Timber.tag("categories").e(response.toString());
                     categories = response.body();
 
-                    List<Datum> CategoryList = response.body().getData();
+                    List<DataCategories> CategoryList = response.body().getData();
 
 
 
@@ -170,6 +168,46 @@ public class NewBusinessActivity extends AppCompatActivity {
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
                         category.setAdapter(spinnerArrayAdapter);
 
+                        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                                String[] SousCategorys = new String[categories.getData().get(position).getSousCategories().size()];
+                                Integer[] SousCategorysId = new Integer[categories.getData().get(position).getSousCategories().size()];
+
+                                for (int j=0; j<categories.getData().get(position).getSousCategories().size(); j++ ) {
+                                    SousCategorys[j] = categories.getData().get(position).getSousCategories().get(j).getNom();
+                                    SousCategorysId[j] = categories.getData().get(position).getSousCategories().get(j).getId();
+
+                                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
+                                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+                                    sous_categories.setAdapter(spinnerArrayAdapter);
+
+                                    sous_categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                            idSousCategorie = SousCategorysId[position];
+
+                                            Toast.makeText(getApplicationContext(), String.valueOf(idSousCategorie), Toast.LENGTH_LONG).show();
+
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parentView) {
+                                            // your code here
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parentView) {
+                                // your code here
+                            }
+
+                        });
+
 
                     }
 
@@ -191,23 +229,6 @@ public class NewBusinessActivity extends AppCompatActivity {
         }
     }
 
-    private void getSousCategories() {
-     int select = category.getSelectedItemPosition() + 1;
-
-       /* String[] SousCategorys = new String[categories.getData().get(select).getSousCategories().size()];
-
-        for (int j=0; j<categories.getData().get(select).getSousCategories().size(); j++ ) {
-            SousCategorys[j] = categories.getData().get(select).getSousCategories().get(j).getNom();
-
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
-            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-            sous_categories.setAdapter(spinnerArrayAdapter);
-
-        }*/
-
-        Toast.makeText(getApplicationContext(), select, Toast.LENGTH_LONG).show();
-
-    }
 
     private void uploadData() {
         Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);

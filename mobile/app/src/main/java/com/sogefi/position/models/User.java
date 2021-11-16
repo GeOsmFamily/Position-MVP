@@ -3,7 +3,7 @@ package com.sogefi.position.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Users {
+public class User {
 
     @SerializedName("id")
     @Expose
@@ -14,12 +14,15 @@ public class Users {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("phone")
-    @Expose
-    private String phone;
     @SerializedName("email_verified_at")
     @Expose
     private String emailVerifiedAt;
+    @SerializedName("phone")
+    @Expose
+    private Integer phone;
+    @SerializedName("role")
+    @Expose
+    private Integer role;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -51,20 +54,28 @@ public class Users {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getEmailVerifiedAt() {
         return emailVerifiedAt;
     }
 
     public void setEmailVerifiedAt(String emailVerifiedAt) {
         this.emailVerifiedAt = emailVerifiedAt;
+    }
+
+    public Integer getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Integer phone) {
+        this.phone = phone;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 
     public String getCreatedAt() {
