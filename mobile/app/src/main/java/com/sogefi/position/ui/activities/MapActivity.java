@@ -373,7 +373,7 @@ public class MapActivity extends AppCompatActivity implements
 
         newBusiness.setOnClickListener(v -> {
             if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
-                Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+                Intent intent = new Intent(MapActivity.this, NewBusiness5Activity.class);
                 drawer.closeDrawers();
                 startActivity(intent);
             } else if(pref.getRoleid().equals("roleid")) {

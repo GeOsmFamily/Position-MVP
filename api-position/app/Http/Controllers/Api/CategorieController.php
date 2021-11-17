@@ -39,15 +39,15 @@ class CategorieController extends BaseController
 
         if ($role == 1) {
             $request->validate([
-                'logo_url' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png,svg|max:1000'
             ]);
             $input = $request->all();
 
             $categorie = Categorie::create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logo_url->getClientOriginalName();
-                $filePath = $request->file('logo_url')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
                 $categorie->logo_url = '/storage/' . $filePath;
             }
 
@@ -98,14 +98,14 @@ class CategorieController extends BaseController
         if ($role == 1) {
             $categorie = Categorie::find($id);
             $request->validate([
-                'logo_url' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png,svg|max:1000'
             ]);
 
             $categorie->nom = $request->nom ?? $categorie->nom;
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logo_url->getClientOriginalName();
-                $filePath = $request->file('logo_url')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
                 $categorie->logo_url = '/storage/' . $filePath;
             }
 
@@ -152,7 +152,8 @@ class CategorieController extends BaseController
         }
     }
 
-    public function searchCategorie(Request $request) {
+    public function searchCategorie(Request $request)
+    {
         $q      = $request->input('q');
         $categories = Categorie::where('nom', 'LIKE', '%' . $q . '%')
             ->get();

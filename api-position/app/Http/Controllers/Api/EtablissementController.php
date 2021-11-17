@@ -35,7 +35,7 @@ class EtablissementController extends BaseController
 
         if ($role == 1 || $role == 2) {
             $request->validate([
-                'cover' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
@@ -44,8 +44,8 @@ class EtablissementController extends BaseController
             $etablissement = $batiment->etablissements()->create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->cover->getClientOriginalName();
-                $filePath = $request->file('cover')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
                 $etablissement->cover = '/storage/' . $filePath;
             }
 
@@ -99,15 +99,15 @@ class EtablissementController extends BaseController
             $etablissement = Etablissement::find($id);
             $batiment = Batiment::find($etablissement->idBatiment);
             $request->validate([
-                'cover' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
 
             $input = $request->all();
 
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->cover->getClientOriginalName();
-                $filePath = $request->file('cover')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
                 $etablissement->cover = '/storage/' . $filePath;
             }
 

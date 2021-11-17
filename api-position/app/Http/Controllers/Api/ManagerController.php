@@ -23,6 +23,8 @@ class ManagerController extends BaseController
 
         $role = $user->role;
 
+        $data = array();
+
         if ($role == 1) {
             $managers = Manager::all();
             foreach ($managers as $manager) {

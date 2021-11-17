@@ -34,15 +34,15 @@ class SousCategorieController extends BaseController
 
         if ($role == 1) {
             $request->validate([
-                'logoUrl' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png,svg|max:1000'
             ]);
             $input = $request->all();
 
             $souscategorie = SousCategorie::create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logoUrl->getClientOriginalName();
-                $filePath = $request->file('logoUrl')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
                 $souscategorie->logoUrl = '/storage/' . $filePath;
             }
 
@@ -90,14 +90,14 @@ class SousCategorieController extends BaseController
         if ($role == 1) {
             $souscategorie = SousCategorie::find($id);
             $request->validate([
-                'logoUrl' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png,svg|max:1000'
             ]);
 
             $souscategorie->nom = $request->nom ?? $souscategorie->nom;
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logoUrl->getClientOriginalName();
-                $filePath = $request->file('logoUrl')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
                 $souscategorie->logoUrl = '/storage/' . $filePath;
             }
 

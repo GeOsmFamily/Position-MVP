@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -74,8 +75,10 @@ public class PicklocationActivity extends AppCompatActivity{
         } else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
 // Retrieve the information from the selected location's CarmenFeature
             CarmenFeature carmenFeature = PlacePicker.getPlace(data);
-            Intent intent = new Intent(this, NewBusiness2Activity.class);
-            intent.putExtra("adresse",carmenFeature.placeName());
+            double longitude = ((Point) carmenFeature.geometry()).longitude();
+            double latitude = ((Point) carmenFeature.geometry()).latitude();
+            Intent intent = new Intent(this, NewBusiness5Activity.class);
+            intent.putExtra("adresse",String.valueOf(longitude)+","+String.valueOf(latitude));
             startActivity(intent);
             finish();
 

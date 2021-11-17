@@ -23,6 +23,8 @@ class CommercialController extends BaseController
 
         $role = $user->role;
 
+        $data = array();
+
         if ($role == 1) {
             $commercials = Commercial::all();
             foreach ($commercials as $commercial) {
@@ -75,7 +77,7 @@ class CommercialController extends BaseController
         if ($role == 1) {
 
             $request->validate([
-                'imageProfil' => 'mimes:png,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
 
             try {
@@ -103,8 +105,8 @@ class CommercialController extends BaseController
                 $commercial = $userNew->commercial()->create($inputCommercial);
 
                 if ($request->file()) {
-                    $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
-                    $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                    $fileName = time() . '_' . $request->file->getClientOriginalName();
+                    $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
                     $commercial->imageProfil = '/storage/' . $filePath;
                 }
 
@@ -213,7 +215,7 @@ class CommercialController extends BaseController
             if ($role == 2) {
                 if ($user->id == $commercial->idUser) {
                     $request->validate([
-                        'imageProfil' => 'mimes:png,jpg,jpeg|max:10000'
+                        'file' => 'mimes:png,jpg,jpeg|max:10000'
                     ]);
 
 
@@ -234,8 +236,8 @@ class CommercialController extends BaseController
                     $commercial->actif = $request->actif ?? $commercial->actif;
 
                     if ($request->file()) {
-                        $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
-                        $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                        $fileName = time() . '_' . $request->file->getClientOriginalName();
+                        $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
                         $commercial->imageProfil = '/storage/' . $filePath;
                     }
 
@@ -251,7 +253,7 @@ class CommercialController extends BaseController
                 }
             } else {
                 $request->validate([
-                    'imageProfil' => 'mimes:png|max:10000'
+                    'file' => 'mimes:png|max:10000'
                 ]);
 
 
@@ -272,8 +274,8 @@ class CommercialController extends BaseController
                 $commercial->actif = $request->actif ?? $commercial->actif;
 
                 if ($request->file()) {
-                    $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
-                    $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                    $fileName = time() . '_' . $request->file->getClientOriginalName();
+                    $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
                     $commercial->imageProfil = '/storage/' . $filePath;
                 }
 

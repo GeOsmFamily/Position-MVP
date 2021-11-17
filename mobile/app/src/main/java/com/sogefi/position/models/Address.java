@@ -17,6 +17,9 @@ public class Address {
     @SerializedName("city")
     @Expose
     private String city = null;
+    @SerializedName("city_district")
+    @Expose
+    private String cityDistrict = null;
     @SerializedName("county")
     @Expose
     private String county;
@@ -66,6 +69,14 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getCityDistrict() {
+        return cityDistrict;
+    }
+
+    public void setCityDistrict(String cityDistrict) {
+        this.cityDistrict = cityDistrict;
     }
 
     public String getCounty() {

@@ -68,6 +68,9 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         pref = new PreferenceManager(this);
 
+        String idBatiment = getIntent().getStringExtra("idBatiment");
+        String nombreNiveau = getIntent().getStringExtra("nombreNiveau");
+
         dialog = new ProgressDialog(this);
         propertyPurpose = new ArrayList<>();
         categoriList = new ArrayList<>();
