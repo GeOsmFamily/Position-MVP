@@ -206,6 +206,16 @@ export default {
     deleteCategory() {
       this.$bvModal.hide("my-modal");
       this.deleteLoading = true;
+      this.$store
+        .dispatch("category/deleteCategory", this.currentRow.id)
+        .then((data) => {
+          this.deleteLoading = false;
+          console.log(data);
+        })
+        .catch((error) => {
+          this.deleteLoading = false;
+          console.log(error);
+        });
     },
   },
 };

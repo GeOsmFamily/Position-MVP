@@ -26,12 +26,13 @@ export const category = {
         }
       );
     },
-    createCategory({ commit }, data) {
+    createCategory({ dispatch, commit }, data) {
       commit("toggleLoading", true);
       return CategoryService.createCategory(data).then(
         (result) => {
           console.log(data);
           commit("toggleLoading", false);
+          dispatch("fetchCategories");
           return Promise.resolve(result);
         },
         (error) => {
