@@ -1,35 +1,23 @@
-import axios from "axios";
-import authHeader from "./auth.header";
-
-const API_URL =
-  "https://cors-anywhere.herokuapp.com/https://services.position.cm/";
+import api from "./api";
 
 class UserService {
-  getUserData(token) {
-    return axios.get(API_URL + "auth/me", {
-      crossDomain: true,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+  getUserData() {
+    return api.get("user/me");
   }
   getPublicContent() {
-    return axios.get(API_URL + "all");
+    return api.get("all");
   }
 
   getUserBoard() {
-    return axios.get(API_URL + "user", { headers: authHeader() });
+    return api.get("user");
   }
 
   getModeratorBoard() {
-    return axios.get(API_URL + "mod", { headers: authHeader() });
+    return api.get("mod");
   }
 
   getAdminBoard() {
-    return axios.get(API_URL + "admin", { headers: authHeader() });
+    return api.get("admin");
   }
 }
 

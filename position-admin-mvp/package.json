@@ -30,6 +30,7 @@
     "sass-loader": "^7.1.0",
     "vee-validate": "^3.4.13",
     "vue": "^2.6.11",
+    "vue-axios": "^3.4.0",
     "vue-chartjs": "^3.4.2",
     "vue-data-tables": "^3.4.5",
     "vue-good-table": "^2.21.11",
