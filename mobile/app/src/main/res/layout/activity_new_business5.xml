@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".ui.activities.NewBusinessActivity">
+    tools:context=".ui.activities.NewBusiness5Activity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/green"
@@ -21,13 +21,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <FrameLayout
-            android:id="@+id/header"
+            android:id="@+id/header5"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@color/green">
 
             <ImageView
-                android:id="@+id/back_btn"
+                android:id="@+id/back_btn5"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical|left"
@@ -35,25 +35,20 @@
                 android:src="@drawable/ic_back" />
 
             <customfonts.TextViewSFProDisplayMedium
-                android:id="@+id/toolbartext"
+                android:id="@+id/toolbartext5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Add Business - Business"
+                android:text="Add Batiment - Batiment"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+
     <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_below="@+id/toolbar"
+        android:id="@+id/scrollView5"
+        android:layout_below="@+id/toolbar5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
@@ -65,14 +60,14 @@
 
 
             <LinearLayout
-                android:id="@+id/llname"
+                android:id="@+id/llname5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:background="@drawable/round_edittext_background"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="90dp"
+                android:layout_marginTop="100dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -83,12 +78,12 @@
                     android:src="@drawable/ic_baseline_business_24"/>
 
                 <customfonts.EditTextSFProDisplayRegular
-                    android:id="@+id/name"
+                    android:id="@+id/name5"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:singleLine="true"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Business Name"
+                    android:hint="Batiment Name"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -96,8 +91,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lletage"
-                android:layout_below="@+id/llname"
+                android:id="@+id/llniveau5"
+                android:layout_below="@+id/llname5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -112,26 +107,26 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_sort_24"/>
+                    android:src="@drawable/ic_baseline_business_24"/>
 
-                <Spinner
-                    android:id="@+id/etage"
+                <customfonts.EditTextSFProDisplayRegular
+                    android:id="@+id/niveaux5"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/round_edittext_background"
-                    android:hint="Etage"
-                    android:textSize="15dp"
                     android:singleLine="true"
+                    android:background="@drawable/round_edittext_background"
+                    android:hint="Nombre Niveaux"
+                    android:textSize="15dp"
                     android:inputType="number"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"/>
             </LinearLayout>
 
-
             <LinearLayout
-                android:id="@+id/llcategory"
-                android:layout_below="@+id/lletage"
+                android:id="@+id/lladdress5"
+                android:layout_below="@+id/llniveau5"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -146,86 +141,128 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_sort_24"/>
+                    android:src="@drawable/ic_location"/>
 
-                <Spinner
-                    android:id="@+id/category"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/round_edittext_background"
-                    android:hint="Category"
-                    android:textSize="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/darker_gray"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/llamenities"
-                android:layout_below="@+id/llcategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/round_edittext_background"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_sort_24"/>
-
-                <Spinner
-                    android:id="@+id/sous_categories"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/round_edittext_background"
-                    android:hint="Tags"
-                    android:textSize="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/darker_gray"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lldescription"
-                android:layout_below="@+id/llamenities"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:background="@drawable/round_edittext_background"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:paddingRight="10dp">
-
-                <customfonts.EditTextSFProDisplayRegular
-                    android:id="@+id/description"
+                <customfonts.TextViewSFProDisplayRegular
+                    android:id="@+id/address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:layout_marginTop="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Description"
+                    android:hint="Address"
                     android:textSize="15dp"
-                    android:maxLines="12"
-                    android:minLines="5"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"/>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llcover"
-                android:layout_below="@id/lldescription"
+                android:id="@+id/lladdressName5"
+                android:layout_below="@+id/lladdress5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/round_edittext_background"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_location"/>
+
+                <customfonts.TextViewSFProDisplayRegular
+                    android:id="@+id/addressName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/round_edittext_background"
+                    android:hint="AddressName"
+                    android:textSize="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llindication"
+                android:layout_below="@+id/lladdressName5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/round_edittext_background"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_location_on_24"/>
+
+                <customfonts.EditTextSFProDisplayRegular
+                    android:id="@+id/indication5"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/round_edittext_background"
+                    android:hint="Indication"
+                    android:textSize="15dp"
+                    android:singleLine="true"
+                    android:inputType="text"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llquartier"
+                android:layout_below="@+id/llindication"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/round_edittext_background"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_location_on_24"/>
+
+                <customfonts.EditTextSFProDisplayRegular
+                    android:id="@+id/quartier5"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/round_edittext_background"
+                    android:hint="Quartier"
+                    android:textSize="15dp"
+                    android:singleLine="true"
+                    android:inputType="text"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llimage5"
+                android:layout_below="@id/llquartier"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -243,14 +280,14 @@
 
 
                     <ImageView
-                        android:id="@+id/cover"
+                        android:id="@+id/image5"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background" />
 
                     <ImageView
-                        android:id="@+id/add1"
+                        android:id="@+id/add"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
@@ -260,14 +297,25 @@
 
             </LinearLayout>
 
+
             <customfonts.Button_SF_Pro_Display_Medium
-                android:id="@+id/next"
-                android:layout_below="@id/llcover"
-                android:layout_margin="10dp"
+                android:id="@+id/next5"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="Next"
-                android:background="@drawable/button_round_1"/>
+                android:layout_below="@id/llimage5"
+                android:layout_margin="20dp"
+                android:background="@drawable/button_round_1"
+                android:text="Next" />
+
+            <ProgressBar
+                android:id="@+id/progressBar5"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/next5"
+                android:layout_marginBottom="16dp"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
     </ScrollView>
 

@@ -1,18 +1,17 @@
 package com.sogefi.position.models;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.sogefi.position.models.data.DataCategories;
+import com.sogefi.position.models.data.DataBatiments;
 
-public class Categories {
+public class Batiments {
 
     @SerializedName("success")
     @Expose
     private Boolean success;
     @SerializedName("data")
     @Expose
-    private List<DataCategories> data = null;
+    private DataBatiments data;
     @SerializedName("message")
     @Expose
     private String message;
@@ -25,11 +24,11 @@ public class Categories {
         this.success = success;
     }
 
-    public List<DataCategories> getData() {
+    public DataBatiments getData() {
         return data;
     }
 
-    public void setData(List<DataCategories> data) {
+    public void setData(DataBatiments data) {
         this.data = data;
     }
 
@@ -42,5 +41,3 @@ public class Categories {
     }
 
 }
-
-

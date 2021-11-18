@@ -1,13 +1,12 @@
-package com.sogefi.position.models;
+package com.sogefi.position.models.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sogefi.position.models.SousCategory;
 
 import java.util.List;
 
-
-
-public class SousCategory {
+public class DataCategories {
 
     @SerializedName("id")
     @Expose
@@ -15,10 +14,7 @@ public class SousCategory {
     @SerializedName("nom")
     @Expose
     private String nom;
-    @SerializedName("idCategorie")
-    @Expose
-    private Integer idCategorie;
-    @SerializedName("logoUrl")
+    @SerializedName("logo_url")
     @Expose
     private Object logoUrl;
     @SerializedName("created_at")
@@ -27,6 +23,9 @@ public class SousCategory {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("sous_categories")
+    @Expose
+    private List<SousCategory> sousCategories = null;
 
     public Integer getId() {
         return id;
@@ -42,14 +41,6 @@ public class SousCategory {
 
     public void setNom(String nom) {
         this.nom = nom;
-    }
-
-    public Integer getIdCategorie() {
-        return idCategorie;
-    }
-
-    public void setIdCategorie(Integer idCategorie) {
-        this.idCategorie = idCategorie;
     }
 
     public Object getLogoUrl() {
@@ -74,6 +65,14 @@ public class SousCategory {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<SousCategory> getSousCategories() {
+        return sousCategories;
+    }
+
+    public void setSousCategories(List<SousCategory> sousCategories) {
+        this.sousCategories = sousCategories;
     }
 
 }

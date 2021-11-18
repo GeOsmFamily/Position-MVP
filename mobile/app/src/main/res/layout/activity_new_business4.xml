@@ -86,12 +86,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/round_edittext_background"/>
+                        android:src="@drawable/round_edittext_background" />
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_add"/>
+                        android:src="@drawable/ic_add" />
                 </RelativeLayout>
 
 

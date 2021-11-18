@@ -1,21 +1,29 @@
 package com.sogefi.position.models;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.sogefi.position.models.data.DataCategories;
+import com.sogefi.position.models.data.DataUser;
 
-public class Categories {
+public class UserModel {
 
     @SerializedName("success")
     @Expose
     private Boolean success;
     @SerializedName("data")
     @Expose
-    private List<DataCategories> data = null;
+    private DataUser data;
     @SerializedName("message")
     @Expose
     private String message;
+    @SerializedName("password")
+    public String password;
+    @SerializedName("phone")
+    public String phone;
+
+    public UserModel(String phone, String password) {
+        this.phone = phone;
+        this.password = password;
+    }
 
     public Boolean getSuccess() {
         return success;
@@ -25,11 +33,11 @@ public class Categories {
         this.success = success;
     }
 
-    public List<DataCategories> getData() {
+    public DataUser getData() {
         return data;
     }
 
-    public void setData(List<DataCategories> data) {
+    public void setData(DataUser data) {
         this.data = data;
     }
 
@@ -42,5 +50,7 @@ public class Categories {
     }
 
 }
+
+
 
 

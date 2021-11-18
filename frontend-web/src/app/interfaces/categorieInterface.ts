@@ -7,7 +7,7 @@ export interface Categorie{
 }
 
 export interface ListeCategorie {
-  limit: number;
-  offset: number;
+  success: boolean;
   data: Categorie[];
+  message: string;
 }

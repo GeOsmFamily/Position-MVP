@@ -2,6 +2,7 @@ package com.sogefi.position.ui.activities;
 
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,10 +11,13 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.plugins.places.picker.PlacePicker;
 import com.mapbox.mapboxsdk.plugins.places.picker.model.PlacePickerOptions;
 import com.sogefi.position.R;
@@ -42,12 +46,15 @@ public class PicklocationActivity extends AppCompatActivity{
      * Set up the PlacePickerOptions and startActivityForResult
      */
     private void goToPickerActivity() {
+        String longitude = getIntent().getStringExtra("longitude");
+        String latitude = getIntent().getStringExtra("latitude");
+
         startActivityForResult(
                 new PlacePicker.IntentBuilder()
                         .accessToken(getString(R.string.mapbox_access_token))
                         .placeOptions(PlacePickerOptions.builder()
                                 .statingCameraPosition(new CameraPosition.Builder()
-                                        .target(new LatLng(40.7544, -73.9862)).zoom(16).build())
+                                        .target(new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude))).zoom(16).build())
                                 .build())
                         .build(this), REQUEST_CODE);
     }
@@ -74,10 +81,18 @@ public class PicklocationActivity extends AppCompatActivity{
         } else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
 // Retrieve the information from the selected location's CarmenFeature
             CarmenFeature carmenFeature = PlacePicker.getPlace(data);
-            Intent intent = new Intent(this, NewBusiness2Activity.class);
-            intent.putExtra("adresse",carmenFeature.placeName());
-            startActivity(intent);
+            double longitude = ((Point) carmenFeature.geometry()).longitude();
+            double latitude = ((Point) carmenFeature.geometry()).latitude();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("adresse",String.valueOf(longitude)+","+String.valueOf(latitude));
+            returnIntent.putExtra("adresseName",carmenFeature.placeName());
+            setResult(202,returnIntent);
             finish();
+
+          /*  Intent intent = new Intent(this, NewBusiness5Activity.class);
+            intent.putExtra("adresse",String.valueOf(longitude)+","+String.valueOf(latitude));
+            startActivity(intent);
+            finish();*/
 
 // Set the TextView text to the entire CarmenFeature. The CarmenFeature
 // also be parsed through to grab and display certain information such as

@@ -1,5 +1,7 @@
 package com.sogefi.position.ui.activities;
 
+import static com.sogefi.position.utils.Constants.API_KEY;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -24,9 +26,8 @@ import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
 import com.sogefi.position.models.Categories;
-import com.sogefi.position.models.Datum;
-import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.SousCategory;
+import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.PreferenceManager;
 
@@ -41,16 +42,13 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class NewBusinessActivity extends AppCompatActivity {
-    EditText name, phone, whatsapp1,whatsapp2, description;
-    TextView  toolbartext;
+    EditText name, description;
     Button next;
     ArrayList<String> propertyPurpose, catNameList, sousCatNameList;
     ArrayList<Categories> categoriList;
     ArrayList<SousCategory> sousCategoriesList;
-    boolean isimage = false;
-    String message;
     ImageView  backbtn;
-    Spinner sous_categories, category;
+    Spinner sous_categories, category,etages;
     ProgressDialog dialog;
     String Id;
     ScrollView scrollView;
@@ -58,12 +56,17 @@ public class NewBusinessActivity extends AppCompatActivity {
     PreferenceManager pref;
     Categories categories;
 
+    int idSousCategorie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_business);
 
         pref = new PreferenceManager(this);
+
+        String idBatiment = getIntent().getStringExtra("idBatiment");
+        String nombreNiveau = getIntent().getStringExtra("nombreNiveau");
 
         dialog = new ProgressDialog(this);
         propertyPurpose = new ArrayList<>();
@@ -75,17 +78,14 @@ public class NewBusinessActivity extends AppCompatActivity {
         Id = i.getStringExtra("Id");
 
         name = findViewById(R.id.name);
-        phone = findViewById(R.id.phone);
-        whatsapp1 = findViewById(R.id.whatsapp1);
-        whatsapp2 = findViewById(R.id.whatsapp2);
         description = findViewById(R.id.description);
         next = findViewById(R.id.next);
         category = findViewById(R.id.category);
         sous_categories = findViewById(R.id.sous_categories);
+        etages = findViewById(R.id.etage);
         backbtn = findViewById(R.id.back_btn);
         progress = findViewById(R.id.progressBar);
         scrollView = findViewById(R.id.scrollView);
-        toolbartext = findViewById(R.id.toolbartext);
 
 
         progress.setVisibility(View.VISIBLE);
@@ -93,26 +93,21 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         next.setOnClickListener(v -> {
             String getname = name.getText().toString();
-            String getphone = phone.getText().toString();
-            String getWhatsapp1 = whatsapp1.getText().toString();
-            String getWhatsapp2 = whatsapp2.getText().toString();
+            String getetage = (String) etages.getSelectedItem();
             String getsouscategory = (String) sous_categories.getSelectedItem();
             String getcategory = (String) category.getSelectedItem();
             String getdescription = description.getText().toString();
             if(TextUtils.isEmpty(getname)){
                 Toast.makeText(this, "Entrez le nom de l'entreprise", Toast.LENGTH_SHORT).show();
             }
-            else if(TextUtils.isEmpty(getphone)){
-                Toast.makeText(this, "Entrez le numéro de Téléphone", Toast.LENGTH_SHORT).show();
+            else if(getetage.isEmpty()){
+                Toast.makeText(this, "Selectionner un etage", Toast.LENGTH_SHORT).show();
             }
             else if(getsouscategory.isEmpty()){
                 Toast.makeText(this, "Selectionner une sous-categorie", Toast.LENGTH_SHORT).show();
             }
             else if(getcategory.isEmpty()){
                 Toast.makeText(this, "Selectionner une catégorie", Toast.LENGTH_SHORT).show();
-            }
-            else if(TextUtils.isEmpty(getdescription)){
-                Toast.makeText(this, "Entrez une catégorie", Toast.LENGTH_SHORT).show();
             }
             else {
                 uploadData();
@@ -121,13 +116,6 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         backbtn.setOnClickListener(v -> finish());
         next.setOnClickListener(v -> uploadData());
-
-      /*  category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getSousCategories(position);
-            }
-        });*/
 
 
         getCategory();
@@ -138,15 +126,15 @@ public class NewBusinessActivity extends AppCompatActivity {
     private void getCategory(){
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
-                    APIClient.getNewClient4().create(ApiInterface.class);
-            Call<Categories> call = apiService.getCategories("Bearer " + pref.getToken());
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Categories> call = apiService.getCategories(API_KEY);
             call.enqueue(new Callback<Categories>() {
                 @Override
                 public void onResponse(@NotNull Call<Categories> call, @NotNull Response<Categories> response) {
                     Timber.tag("categories").e(response.toString());
                     categories = response.body();
 
-                    List<Datum> CategoryList = response.body().getData();
+                    List<DataCategories> CategoryList = response.body().getData();
 
 
 
@@ -170,6 +158,46 @@ public class NewBusinessActivity extends AppCompatActivity {
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
                         category.setAdapter(spinnerArrayAdapter);
 
+                        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                                String[] SousCategorys = new String[categories.getData().get(position).getSousCategories().size()];
+                                Integer[] SousCategorysId = new Integer[categories.getData().get(position).getSousCategories().size()];
+
+                                for (int j=0; j<categories.getData().get(position).getSousCategories().size(); j++ ) {
+                                    SousCategorys[j] = categories.getData().get(position).getSousCategories().get(j).getNom();
+                                    SousCategorysId[j] = categories.getData().get(position).getSousCategories().get(j).getId();
+
+                                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
+                                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+                                    sous_categories.setAdapter(spinnerArrayAdapter);
+
+                                    sous_categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                            idSousCategorie = SousCategorysId[position];
+
+                                            Toast.makeText(getApplicationContext(), String.valueOf(idSousCategorie), Toast.LENGTH_LONG).show();
+
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parentView) {
+                                            // your code here
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parentView) {
+                                // your code here
+                            }
+
+                        });
+
 
                     }
 
@@ -191,23 +219,6 @@ public class NewBusinessActivity extends AppCompatActivity {
         }
     }
 
-    private void getSousCategories() {
-     int select = category.getSelectedItemPosition() + 1;
-
-       /* String[] SousCategorys = new String[categories.getData().get(select).getSousCategories().size()];
-
-        for (int j=0; j<categories.getData().get(select).getSousCategories().size(); j++ ) {
-            SousCategorys[j] = categories.getData().get(select).getSousCategories().get(j).getNom();
-
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
-            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-            sous_categories.setAdapter(spinnerArrayAdapter);
-
-        }*/
-
-        Toast.makeText(getApplicationContext(), select, Toast.LENGTH_LONG).show();
-
-    }
 
     private void uploadData() {
         Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);

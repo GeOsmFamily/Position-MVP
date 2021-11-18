@@ -314,7 +314,7 @@ X-Authorization : yourApiKey
     "numeroBadge":12,
     "ville":"Douala",
     "quartier":"Yassa",
-    "imageProfil":null,
+    "file":null,
     "zone":"Akwa"
 }
 
@@ -403,7 +403,7 @@ X-Authorization : yourApiKey
     "numeroBadge":12,
     "ville":"Douala",
     "quartier":"Yassa",
-    "imageProfil":null,
+    "file":null,
     "zone":"Akwa",
     "actif" : "0"
 }
@@ -663,7 +663,18 @@ Response
             "nom":"Achats",
             "logo_url":null,
             "created_at":"2021-11-09T17:54:43.000000Z",
-            "updated_at":"2021-11-09T17:54:43.000000Z"
+            "updated_at":"2021-11-09T17:54:43.000000Z",
+            "sous_categories":[
+            {
+                "id":33,
+                "nom":"Mat\u00e9riels et Produits agricoles",
+                "idCategorie":3,
+                "logoUrl":null,
+                "created_at":"2021-11-10T11:55:55.000000Z",
+                "updated_at":"2021-11-10T11:55:55.000000Z"
+            },
+            ....
+        ]
         },
             ...
     ],
@@ -684,7 +695,7 @@ Authorization: Bearer YourAccessToken
 X-Authorization : yourApiKey
 {
     "nom":"Categorie",
-    "logo_url":"file",
+    "file":file,
 }
 
 ```
@@ -763,7 +774,7 @@ Authorization: Bearer YourAccessToken
 X-Authorization : yourApiKey
 {
 "nom":"Categorie",
-"logo_url":"file",
+"file":file,
 }
 
 ```
@@ -864,7 +875,7 @@ Authorization: Bearer YourAccessToken
 X-Authorization : yourApiKey
 {
     "nom":"Categorie",
-    "logoUrl":"file",
+    "file":file,
     "idCategorie" : "1"
 }
 
@@ -935,7 +946,7 @@ Authorization: Bearer YourAccessToken
 X-Authorization : yourApiKey
 {
 "nom":"SousCategorie",
-"logoUrl":"file",
+"file":file,
 }
 
 ```
@@ -1054,7 +1065,7 @@ X-Authorization : yourApiKey
             "ville": "Yaounde",
             "commune": "Yaounde IV",
             "quartier": "Melen",
-            "image": "file"
+            "file": file
 }
 
 ```
@@ -1162,7 +1173,7 @@ X-Authorization : yourApiKey
         "codeBatiment": "BATIMENT_YDE_1",
         "longitude": 13,
         "latitude": 7,
-        "image": "file",
+        "file": file,
         "indication": "face polytech",
         "rue": "542 rue de melen",
         "ville": "Yaounde",
@@ -1257,6 +1268,7 @@ Response
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
@@ -1289,11 +1301,12 @@ X-Authorization : yourApiKey
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
             "etage": 1,
-            "cover": file,
+            "file": file,
             "created_at": "2021-11-11T13:06:17.000000Z",
             "updated_at": "2021-11-11T13:06:17.000000Z"
 }
@@ -1313,6 +1326,7 @@ Response
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
@@ -1354,6 +1368,7 @@ Response
         "indicationAdresse": "porte gauche",
         "codePostal": "14440",
         "siteInternet": "sogefi.cm",
+        "description" : "description",
         "idSousCategorie": 12,
         "idCommercial": 1,
         "idManager": null,
@@ -1433,11 +1448,12 @@ X-Authorization : yourApiKey
         "indicationAdresse": "porte gauche",
         "codePostal": "14440",
         "siteInternet": "sogefi.cm",
+        "description" : "description",
         "idSousCategorie": 12,
         "idCommercial": 1,
         "idManager": 1,
         "etage": 1,
-        "cover": file
+        "file": file
 }
 
 ```
@@ -1455,6 +1471,7 @@ Response
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
@@ -1510,7 +1527,7 @@ Authorization: Bearer YourAccessToken
 X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
-            "imageUrl": file,
+            "file": file,
 
 }
 
