@@ -114,3 +114,7 @@ INSERT INTO
   categories(id, nom, logo_url,created_at,updated_at)
 VALUES
   (26, 'Transports', NULL,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+  INSERT INTO
+  categories(id, nom, logo_url,created_at,updated_at)
+VALUES
+  (27, 'Autres', NULL,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
