@@ -2,12 +2,13 @@ import axios from "axios";
 import store from "../store/index";
 import router from "@/router";
 const api = axios.create({
-  baseURL: "https://services.position.cm/api/",
-  timeout: 1000,
+  baseURL: "https://test.position.cm/api/",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
+    "X-Authorization":
+      "sssy1jcp4yAzGt6C0IpgkTqXb9zz9wpbm2QXK92ghHeSFvnqwRRxi7j2ZZf28tDg",
   },
 });
 api.interceptors.request.use(
@@ -31,6 +32,7 @@ api.interceptors.response.use(
     }
   },
   (error) => {
+    console.log(error);
     if (error.response.status) {
       switch (error.response.status) {
         case 400:
@@ -38,15 +40,8 @@ api.interceptors.response.use(
           break;
 
         case 401:
-          store
-            .dispatch("auth/logout")
-            .then(() => {
-              router.push("/pages/login-boxed");
-            })
-            .catch((onerror) => {
-              console.log(onerror);
-              router.push("/pages/login-boxed");
-            });
+          localStorage.removeItem("user");
+          router.push("/pages/login-boxed");
           break;
         case 403:
           //Set notification for unauthorized action
