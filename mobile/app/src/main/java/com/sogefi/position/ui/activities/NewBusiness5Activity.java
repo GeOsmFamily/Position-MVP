@@ -46,13 +46,13 @@ import timber.log.Timber;
 public class NewBusiness5Activity extends AppCompatActivity {
 
     EditText name5,niveaux5,indication5,quartier5;
-    LinearLayout lladdress5;
+    LinearLayout lladdress5,lladdressName5;
     ImageView image5,backbtn5,add;
     PreferenceManager pref;
     ScrollView scrollView5;
     ProgressBar progressBar5;
     Button next;
-    TextView address;
+    TextView address,addressName;
     File image;
 
     @Override
@@ -62,19 +62,15 @@ public class NewBusiness5Activity extends AppCompatActivity {
 
         pref = new PreferenceManager(this);
 
-        String adresse = getIntent().getStringExtra("adresse");
-
-        address = findViewById(R.id.address);
-
-        if(adresse != null) {
-            address.setText(adresse);
-        }
+        String longitude = getIntent().getStringExtra("longitude");
+        String latitude = getIntent().getStringExtra("latitude");
 
         name5 = findViewById(R.id.name5);
         niveaux5 = findViewById(R.id.niveaux5);
         indication5 = findViewById(R.id.indication5);
         quartier5 = findViewById(R.id.quartier5);
         lladdress5 = findViewById(R.id.lladdress5);
+        lladdressName5 = findViewById(R.id.lladdressName5);
         next = findViewById(R.id.next5);
         image5 = findViewById(R.id.image5);
         scrollView5 = findViewById(R.id.scrollView5);
@@ -87,8 +83,16 @@ public class NewBusiness5Activity extends AppCompatActivity {
 
         lladdress5.setOnClickListener(v -> {
             Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
-            startActivity(intent);
-            finish();
+            intent.putExtra("longitude",longitude);
+            intent.putExtra("latitude",latitude);
+            startActivityForResult(intent,202);
+        });
+
+        lladdressName5.setOnClickListener(v -> {
+            Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
+            intent.putExtra("longitude",longitude);
+            intent.putExtra("latitude",latitude);
+            startActivityForResult(intent,202);
         });
 
         image5.setOnClickListener(v -> chooseImage());
@@ -236,6 +240,17 @@ public class NewBusiness5Activity extends AppCompatActivity {
                 add.setVisibility(View.GONE);
                 Picasso.get().load(uri).into(image5);
 
+            }
+        } else if (requestCode == 202) {
+            String adresse = data.getStringExtra("adresse");
+            String adresseName = data.getStringExtra("adresseName");
+
+            address = findViewById(R.id.address);
+            addressName = findViewById(R.id.addressName);
+
+            if(adresse != null) {
+                address.setText(adresse);
+                addressName.setText(adresseName);
             }
         }
 

@@ -42,16 +42,13 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class NewBusinessActivity extends AppCompatActivity {
-    EditText name, phone, whatsapp1,whatsapp2, description;
-    TextView  toolbartext;
+    EditText name, description;
     Button next;
     ArrayList<String> propertyPurpose, catNameList, sousCatNameList;
     ArrayList<Categories> categoriList;
     ArrayList<SousCategory> sousCategoriesList;
-    boolean isimage = false;
-    String message;
     ImageView  backbtn;
-    Spinner sous_categories, category;
+    Spinner sous_categories, category,etages;
     ProgressDialog dialog;
     String Id;
     ScrollView scrollView;
@@ -81,17 +78,14 @@ public class NewBusinessActivity extends AppCompatActivity {
         Id = i.getStringExtra("Id");
 
         name = findViewById(R.id.name);
-        phone = findViewById(R.id.phone);
-        whatsapp1 = findViewById(R.id.whatsapp1);
-        whatsapp2 = findViewById(R.id.whatsapp2);
         description = findViewById(R.id.description);
         next = findViewById(R.id.next);
         category = findViewById(R.id.category);
         sous_categories = findViewById(R.id.sous_categories);
+        etages = findViewById(R.id.etage);
         backbtn = findViewById(R.id.back_btn);
         progress = findViewById(R.id.progressBar);
         scrollView = findViewById(R.id.scrollView);
-        toolbartext = findViewById(R.id.toolbartext);
 
 
         progress.setVisibility(View.VISIBLE);
@@ -99,26 +93,21 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         next.setOnClickListener(v -> {
             String getname = name.getText().toString();
-            String getphone = phone.getText().toString();
-            String getWhatsapp1 = whatsapp1.getText().toString();
-            String getWhatsapp2 = whatsapp2.getText().toString();
+            String getetage = (String) etages.getSelectedItem();
             String getsouscategory = (String) sous_categories.getSelectedItem();
             String getcategory = (String) category.getSelectedItem();
             String getdescription = description.getText().toString();
             if(TextUtils.isEmpty(getname)){
                 Toast.makeText(this, "Entrez le nom de l'entreprise", Toast.LENGTH_SHORT).show();
             }
-            else if(TextUtils.isEmpty(getphone)){
-                Toast.makeText(this, "Entrez le numéro de Téléphone", Toast.LENGTH_SHORT).show();
+            else if(getetage.isEmpty()){
+                Toast.makeText(this, "Selectionner un etage", Toast.LENGTH_SHORT).show();
             }
             else if(getsouscategory.isEmpty()){
                 Toast.makeText(this, "Selectionner une sous-categorie", Toast.LENGTH_SHORT).show();
             }
             else if(getcategory.isEmpty()){
                 Toast.makeText(this, "Selectionner une catégorie", Toast.LENGTH_SHORT).show();
-            }
-            else if(TextUtils.isEmpty(getdescription)){
-                Toast.makeText(this, "Entrez une catégorie", Toast.LENGTH_SHORT).show();
             }
             else {
                 uploadData();
@@ -127,8 +116,6 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         backbtn.setOnClickListener(v -> finish());
         next.setOnClickListener(v -> uploadData());
-
-
 
 
         getCategory();

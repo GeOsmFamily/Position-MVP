@@ -50,19 +50,6 @@ public class DataBatiments {
         @Expose
         private Integer id;
 
-        public DataBatiments(String nom, String nombreNiveaux, String codeBatiment, String longitude, String latitude, String indication, String rue, String ville, String commune, String quartier) {
-            this.nom = nom;
-            this.codeBatiment = codeBatiment;
-            this.nombreNiveaux = nombreNiveaux;
-            this.longitude = longitude;
-            this.latitude = latitude;
-            this.indication = indication;
-            this.rue = rue;
-            this.ville = ville;
-            this.commune= commune;
-            this.quartier = quartier;
-        }
-
         public String getNom() {
             return nom;
         }
