@@ -13,8 +13,7 @@ import com.sogefi.position.R;
 
 public class NewBusiness2Activity extends AppCompatActivity {
     TextView address,indication_adresse,code_postal;
-    Spinner city;
-    LinearLayout lladdress;
+
 
 
     @Override
@@ -22,25 +21,8 @@ public class NewBusiness2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_business2);
 
-        String adresse = getIntent().getStringExtra("adresse");
+        String idEtablissement = getIntent().getStringExtra("idEtablissement");
 
 
-        address = findViewById(R.id.address);
-
-
-        if(adresse != null) {
-            address.setText(adresse);
-        }
-
-        lladdress = findViewById(R.id.lladdress);
-
-        lladdress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(NewBusiness2Activity.this, PicklocationActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 }

@@ -1,3 +1,4 @@
+
 /*#map {
   position: absolute;
   top: 0;
@@ -16,7 +17,7 @@
   margin:0px
   }
 
-}
+
 
 app-fiche-entreprise {
   position: absolute;
@@ -56,8 +57,13 @@ app-login
   z-index: 2;
 }
 */
-::ng-deep .mat-drawer-container {
-   background-color:none
+::ng-deep .mat-drawer-container, .mat-drawer-content  {
+   background-color:none;
+
+
+}
+.mat-drawer-container, .mat-drawer-content  {
+  position: static;
 }
 .sidenav-container {
   width: 100%;
@@ -67,13 +73,26 @@ app-login
 
 .sidenav-left {
   width: 350px;
-  padding: 5px;
+  //padding: 5px;
   border: none !important;
-  height: 100%;
+  //height: 100%;
   background-color:white;
-  z-index: 1;
+  //z-index: 1;
+ color: black;
 
 
+app-fiche-entreprise {
+  position: absolute;
+  left: -310px;
+  top: 0px;
+  bottom: 0px;
+  width: 310px;
+  transition: 0.5s;
+  background: #fff;
+  z-index: 7;
+  //overflow-y: auto;
+  margin-right: 0px;
+}
   app-profil {
     position: absolute;
     left: -430px;
@@ -86,22 +105,14 @@ app-login
     overflow-y: auto;
   }
 
-  app-menu {
-    position: absolute;
-    left: -430px;
-    top: 0px;
-    bottom: 0px;
-    width: 430px;
-    transition: 0.5s;
-    background: #fff;
-    z-index: 2;
-    overflow-y: auto;
-  }
+
 }
 
 
 
 .sidenav-content {
+  margin:0px;
+  padding: 0px;
   #map {
     position: absolute;
     top: 0;
@@ -114,8 +125,15 @@ app-login
   }
   app-vertical-toolbar{
     z-index: 2;
-    position: absolute;
+   /* position: absolute;
      margin-left: 10px;
+     */
+     position: absolute;
+  bottom:40px;
+    right:0;
+  // margin-right: 30px;
+  width:40px;
+
   }
 
 }
@@ -140,7 +158,7 @@ app-login
 .sidenav-left {
 
   //overflow-x: hidden;
-
+  color: black;
   app-profil {
     position: absolute;
 

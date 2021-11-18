@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|SousCategorie whereNom($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SousCategorie whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Etablissement[] $etablissements
+ * @property-read int|null $etablissements_count
  */
 class SousCategorie extends Model
 {
@@ -37,5 +39,10 @@ class SousCategorie extends Model
     public function categorie()
     {
         return $this->belongsTo(Categorie::class, "idCategorie");
+    }
+
+    public function etablissements()
+    {
+        return $this->hasMany(Etablissement::class, "idSousCategorie");
     }
 }

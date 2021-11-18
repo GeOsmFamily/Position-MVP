@@ -476,3 +476,4 @@ INSERT INTO sous_categories(id,nom,idCategorie,logoUrl,created_at,updated_at) VA
 INSERT INTO sous_categories(id,nom,idCategorie,logoUrl,created_at,updated_at) VALUES (476,'Transports Routiers',26,NULL,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 INSERT INTO sous_categories(id,nom,idCategorie,logoUrl,created_at,updated_at) VALUES (477,'Transports Urbains',26,NULL,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 INSERT INTO sous_categories(id,nom,idCategorie,logoUrl,created_at,updated_at) VALUES (478,'Travaux Maritimes',26,NULL,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+INSERT INTO sous_categories(id,nom,idCategorie,logoUrl,created_at,updated_at) VALUES (479,'Autres',27,NULL,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);

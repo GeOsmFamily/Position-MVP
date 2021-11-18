@@ -1,11 +1,16 @@
 package com.sogefi.position.ui.activities;
 
+import static com.sogefi.position.utils.Constants.API_KEY;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,44 +24,47 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
+import com.sogefi.position.models.Batiments;
 import com.sogefi.position.models.Categories;
-import com.sogefi.position.models.Datum;
-import com.sogefi.position.models.ResponseApi;
+import com.sogefi.position.models.Etablissements;
 import com.sogefi.position.models.SousCategory;
+import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.PreferenceManager;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
 public class NewBusinessActivity extends AppCompatActivity {
-    EditText name, phone, whatsapp1,whatsapp2, description;
-    TextView  toolbartext;
+    EditText name, description,etage;
     Button next;
-    ArrayList<String> propertyPurpose, catNameList, sousCatNameList;
-    ArrayList<Categories> categoriList;
-    ArrayList<SousCategory> sousCategoriesList;
-    boolean isimage = false;
-    String message;
-    ImageView  backbtn;
+    ImageView  backbtn,cover,add1;
     Spinner sous_categories, category;
-    ProgressDialog dialog;
-    String Id;
     ScrollView scrollView;
     ProgressBar progress;
+    ProgressBar progressBar;
     PreferenceManager pref;
     Categories categories;
+
+    int idSousCategorie;
+    File image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,45 +73,42 @@ public class NewBusinessActivity extends AppCompatActivity {
 
         pref = new PreferenceManager(this);
 
-        dialog = new ProgressDialog(this);
-        propertyPurpose = new ArrayList<>();
-        categoriList = new ArrayList<>();
-        catNameList = new ArrayList<>();
-        sousCatNameList = new ArrayList<>();
-        sousCategoriesList = new ArrayList<>();
-        Intent i = getIntent();
-        Id = i.getStringExtra("Id");
+        String idBatiment = getIntent().getStringExtra("idBatiment");
+        String nombreNiveau = getIntent().getStringExtra("nombreNiveau");
+
 
         name = findViewById(R.id.name);
-        phone = findViewById(R.id.phone);
-        whatsapp1 = findViewById(R.id.whatsapp1);
-        whatsapp2 = findViewById(R.id.whatsapp2);
         description = findViewById(R.id.description);
         next = findViewById(R.id.next);
         category = findViewById(R.id.category);
         sous_categories = findViewById(R.id.sous_categories);
+        etage = findViewById(R.id.etage);
         backbtn = findViewById(R.id.back_btn);
         progress = findViewById(R.id.progressBar);
         scrollView = findViewById(R.id.scrollView);
-        toolbartext = findViewById(R.id.toolbartext);
+        cover = findViewById(R.id.cover);
+        add1 = findViewById(R.id.add1);
+
+        progressBar = findViewById(R.id.progressBar1);
+        progressBar.setVisibility(View.GONE);
 
 
         progress.setVisibility(View.VISIBLE);
         scrollView.setVisibility(View.GONE);
 
+        cover.setOnClickListener(v -> chooseImage());
+
         next.setOnClickListener(v -> {
             String getname = name.getText().toString();
-            String getphone = phone.getText().toString();
-            String getWhatsapp1 = whatsapp1.getText().toString();
-            String getWhatsapp2 = whatsapp2.getText().toString();
+            String getetage = etage.getText().toString();
             String getsouscategory = (String) sous_categories.getSelectedItem();
             String getcategory = (String) category.getSelectedItem();
             String getdescription = description.getText().toString();
             if(TextUtils.isEmpty(getname)){
                 Toast.makeText(this, "Entrez le nom de l'entreprise", Toast.LENGTH_SHORT).show();
             }
-            else if(TextUtils.isEmpty(getphone)){
-                Toast.makeText(this, "Entrez le numéro de Téléphone", Toast.LENGTH_SHORT).show();
+            else if(getetage.isEmpty()){
+                Toast.makeText(this, "Selectionner un etage", Toast.LENGTH_SHORT).show();
             }
             else if(getsouscategory.isEmpty()){
                 Toast.makeText(this, "Selectionner une sous-categorie", Toast.LENGTH_SHORT).show();
@@ -111,23 +116,12 @@ public class NewBusinessActivity extends AppCompatActivity {
             else if(getcategory.isEmpty()){
                 Toast.makeText(this, "Selectionner une catégorie", Toast.LENGTH_SHORT).show();
             }
-            else if(TextUtils.isEmpty(getdescription)){
-                Toast.makeText(this, "Entrez une catégorie", Toast.LENGTH_SHORT).show();
-            }
             else {
-                uploadData();
+                uploadData(idBatiment,getname,String.valueOf(idSousCategorie),"1","2",getdescription);
             }
         });
 
         backbtn.setOnClickListener(v -> finish());
-        next.setOnClickListener(v -> uploadData());
-
-      /*  category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getSousCategories(position);
-            }
-        });*/
 
 
         getCategory();
@@ -138,15 +132,15 @@ public class NewBusinessActivity extends AppCompatActivity {
     private void getCategory(){
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
-                    APIClient.getNewClient4().create(ApiInterface.class);
-            Call<Categories> call = apiService.getCategories("Bearer " + pref.getToken());
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Categories> call = apiService.getCategories(API_KEY);
             call.enqueue(new Callback<Categories>() {
                 @Override
                 public void onResponse(@NotNull Call<Categories> call, @NotNull Response<Categories> response) {
                     Timber.tag("categories").e(response.toString());
                     categories = response.body();
 
-                    List<Datum> CategoryList = response.body().getData();
+                    List<DataCategories> CategoryList = response.body().getData();
 
 
 
@@ -155,20 +149,50 @@ public class NewBusinessActivity extends AppCompatActivity {
                     for(int i=0; i< CategoryList.size(); i++){
                         Categorys[i]= CategoryList.get(i).getNom();
 
-                       /* String[] SousCategorys = new String[CategoryList.get(i).getSousCategories().size()];
-
-                        for (int j=0; j<CategoryList.get(i).getSousCategories().size(); j++ ) {
-                            SousCategorys[j] = CategoryList.get(i).getSousCategories().get(j).getNom();
-
-                            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
-                            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-                            sous_categories.setAdapter(spinnerArrayAdapter);
-
-                        }*/
 
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, Categorys);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
                         category.setAdapter(spinnerArrayAdapter);
+
+                        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
+                                String[] SousCategorys = new String[categories.getData().get(position).getSousCategories().size()];
+                                Integer[] SousCategorysId = new Integer[categories.getData().get(position).getSousCategories().size()];
+
+                                for (int j=0; j<categories.getData().get(position).getSousCategories().size(); j++ ) {
+                                    SousCategorys[j] = categories.getData().get(position).getSousCategories().get(j).getNom();
+                                    SousCategorysId[j] = categories.getData().get(position).getSousCategories().get(j).getId();
+
+                                    ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
+                                    spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+                                    sous_categories.setAdapter(spinnerArrayAdapter);
+
+                                    sous_categories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                            idSousCategorie = SousCategorysId[position];
+
+                                            Toast.makeText(getApplicationContext(), String.valueOf(idSousCategorie), Toast.LENGTH_LONG).show();
+
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> parentView) {
+                                            // your code here
+                                        }
+                                    });
+
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parentView) {
+                                // your code here
+                            }
+
+                        });
 
 
                     }
@@ -191,27 +215,81 @@ public class NewBusinessActivity extends AppCompatActivity {
         }
     }
 
-    private void getSousCategories() {
-     int select = category.getSelectedItemPosition() + 1;
 
-       /* String[] SousCategorys = new String[categories.getData().get(select).getSousCategories().size()];
+    private void uploadData(String idBatiment, String nom, String idSousCategorie, String idCommercial, String etage,String description) {
 
-        for (int j=0; j<categories.getData().get(select).getSousCategories().size(); j++ ) {
-            SousCategorys[j] = categories.getData().get(select).getSousCategories().get(j).getNom();
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), image);
 
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
-            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-            sous_categories.setAdapter(spinnerArrayAdapter);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("nom", nom)
+                .addFormDataPart("idBatiment", idBatiment)
+                .addFormDataPart("idSousCategorie", idSousCategorie)
+                .addFormDataPart("idCommercial", idCommercial)
+                .addFormDataPart("etage", etage)
+                .addFormDataPart("description", description)
+                .addFormDataPart("file", image.getName(), requestFile)
+                .build();
 
-        }*/
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Etablissements> call = apiService.addetablissements(API_KEY,"Bearer "+pref.getToken(),requestBody);
+            call.enqueue(new Callback<Etablissements>() {
+                @Override
+                public void onResponse(@NotNull Call<Etablissements> call, @NotNull Response<Etablissements> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Error Create", Toast.LENGTH_LONG).show();
+                    } else {
+                        int idEtablissement = response.body().getData().getId();
+                        progressBar.setVisibility(View.GONE);
+                        Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
+                        intent.putExtra("idEtablissement",String.valueOf(idEtablissement));
+                        startActivity(intent);
+                        finish();
+                    }
 
-        Toast.makeText(getApplicationContext(), select, Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Etablissements> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    progressBar.setVisibility(View.GONE);
+                    Timber.tag("etablissements").e(t.toString());
+                    Log.e("error create", t.toString());
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void chooseImage() {
+        ImagePicker.with(this)
+                .crop()
+                .compress(10000)
+                .start(201);
 
     }
 
-    private void uploadData() {
-        Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
-        startActivity(intent);
-        finish();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 201) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                Uri uri = data.getData();
+                image = new File(uri.getPath());
+                add1.setVisibility(View.GONE);
+                Picasso.get().load(uri).into(cover);
+
+            }
+        }
+
     }
 }

@@ -34,15 +34,15 @@ class BatimentController extends BaseController
 
         if ($role == 1 || $role == 2) {
             $request->validate([
-                'image' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
             $batiment = Batiment::create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->image->getClientOriginalName();
-                $filePath = $request->file('image')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
                 $batiment->image = '/storage/' . $filePath;
             }
 
@@ -91,14 +91,14 @@ class BatimentController extends BaseController
         if ($role == 1 || $role == 2) {
             $batiment = Batiment::find($id);
             $request->validate([
-                'image' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
 
             $input = $request->all();
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->image->getClientOriginalName();
-                $filePath = $request->file('image')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
                 $batiment->image = '/storage/' . $filePath;
             }
 

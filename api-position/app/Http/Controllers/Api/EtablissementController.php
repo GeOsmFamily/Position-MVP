@@ -35,7 +35,7 @@ class EtablissementController extends BaseController
 
         if ($role == 1 || $role == 2) {
             $request->validate([
-                'cover' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
@@ -44,8 +44,8 @@ class EtablissementController extends BaseController
             $etablissement = $batiment->etablissements()->create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->cover->getClientOriginalName();
-                $filePath = $request->file('cover')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
                 $etablissement->cover = '/storage/' . $filePath;
             }
 
@@ -99,15 +99,15 @@ class EtablissementController extends BaseController
             $etablissement = Etablissement::find($id);
             $batiment = Batiment::find($etablissement->idBatiment);
             $request->validate([
-                'cover' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
 
             $input = $request->all();
 
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->cover->getClientOriginalName();
-                $filePath = $request->file('cover')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
                 $etablissement->cover = '/storage/' . $filePath;
             }
 
@@ -156,5 +156,29 @@ class EtablissementController extends BaseController
         } else {
             return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
         }
+    }
+
+    public function searchEtablissement(Request $request)
+    {
+        $q      = $request->input('q');
+        $etablissements = Etablissement::where('nom', 'LIKE', '%' . $q . '%')
+            ->orWhere('indicationAdresse', 'LIKE', '%' . $q . '%')
+            ->get();
+
+        foreach ($etablissements as $etablissement) {
+            $batiment = $etablissement->batiment;
+            $souscategorie = $etablissement->sousCategorie;
+
+
+            $etablissement['batiment'] = $batiment;
+            $etablissement['nomSousCategorie'] = $souscategorie->nom;
+
+            $categorie = $souscategorie->categorie;
+
+            $etablissement['nomCategorie'] = $categorie->nom;
+            $etablissement['logo_url'] = $categorie->logo_url;
+        }
+
+        return $this->sendResponse($etablissements, 'Liste des Etablissements');
     }
 }

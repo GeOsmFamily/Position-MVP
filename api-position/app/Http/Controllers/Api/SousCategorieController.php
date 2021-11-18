@@ -34,15 +34,15 @@ class SousCategorieController extends BaseController
 
         if ($role == 1) {
             $request->validate([
-                'logoUrl' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png,svg|max:1000'
             ]);
             $input = $request->all();
 
             $souscategorie = SousCategorie::create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logoUrl->getClientOriginalName();
-                $filePath = $request->file('logoUrl')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
                 $souscategorie->logoUrl = '/storage/' . $filePath;
             }
 
@@ -90,14 +90,14 @@ class SousCategorieController extends BaseController
         if ($role == 1) {
             $souscategorie = SousCategorie::find($id);
             $request->validate([
-                'logoUrl' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png,svg|max:1000'
             ]);
 
             $souscategorie->nom = $request->nom ?? $souscategorie->nom;
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->logoUrl->getClientOriginalName();
-                $filePath = $request->file('logoUrl')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
                 $souscategorie->logoUrl = '/storage/' . $filePath;
             }
 
@@ -139,5 +139,34 @@ class SousCategorieController extends BaseController
         } else {
             return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
         }
+    }
+
+    public function searchSousCategorie(Request $request)
+    {
+        $q      = $request->input('q');
+        $souscategories = SousCategorie::where('nom', 'LIKE', '%' . $q . '%')
+            ->get();
+
+        foreach ($souscategories as $souscategorie) {
+            $etablissements = $souscategorie->etablissements;
+
+            $souscategorie['etablissements'] = $etablissements;
+            $categorie = $souscategorie->categorie;
+
+            $souscategorie['nomCategorie'] = $categorie->nom;
+            $souscategorie['logo_url'] = $categorie->logo_url;
+
+            foreach ($etablissements as $etablissement) {
+                $batiment = $etablissement->batiment;
+
+                $etablissement['batiment'] = $batiment;
+            }
+        }
+
+
+
+
+
+        return $this->sendResponse($souscategories, 'Liste des Sous-Categories');
     }
 }
