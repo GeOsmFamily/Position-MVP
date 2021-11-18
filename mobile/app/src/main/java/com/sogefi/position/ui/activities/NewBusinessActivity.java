@@ -44,13 +44,8 @@ import timber.log.Timber;
 public class NewBusinessActivity extends AppCompatActivity {
     EditText name, description;
     Button next;
-    ArrayList<String> propertyPurpose, catNameList, sousCatNameList;
-    ArrayList<Categories> categoriList;
-    ArrayList<SousCategory> sousCategoriesList;
     ImageView  backbtn;
     Spinner sous_categories, category,etages;
-    ProgressDialog dialog;
-    String Id;
     ScrollView scrollView;
     ProgressBar progress;
     PreferenceManager pref;
@@ -68,14 +63,6 @@ public class NewBusinessActivity extends AppCompatActivity {
         String idBatiment = getIntent().getStringExtra("idBatiment");
         String nombreNiveau = getIntent().getStringExtra("nombreNiveau");
 
-        dialog = new ProgressDialog(this);
-        propertyPurpose = new ArrayList<>();
-        categoriList = new ArrayList<>();
-        catNameList = new ArrayList<>();
-        sousCatNameList = new ArrayList<>();
-        sousCategoriesList = new ArrayList<>();
-        Intent i = getIntent();
-        Id = i.getStringExtra("Id");
 
         name = findViewById(R.id.name);
         description = findViewById(R.id.description);
@@ -143,16 +130,6 @@ public class NewBusinessActivity extends AppCompatActivity {
                     for(int i=0; i< CategoryList.size(); i++){
                         Categorys[i]= CategoryList.get(i).getNom();
 
-                       /* String[] SousCategorys = new String[CategoryList.get(i).getSousCategories().size()];
-
-                        for (int j=0; j<CategoryList.get(i).getSousCategories().size(); j++ ) {
-                            SousCategorys[j] = CategoryList.get(i).getSousCategories().get(j).getNom();
-
-                            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, SousCategorys);
-                            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-                            sous_categories.setAdapter(spinnerArrayAdapter);
-
-                        }*/
 
                         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(NewBusinessActivity.this, android.R.layout.simple_spinner_item, Categorys);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view

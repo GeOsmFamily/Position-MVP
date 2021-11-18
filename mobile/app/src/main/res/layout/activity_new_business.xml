@@ -114,12 +114,12 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_baseline_sort_24"/>
 
-                <Spinner
+                <customfonts.EditTextSFProDisplayRegular
                     android:id="@+id/etage"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Etage"
+                    android:hint="Numéro étage"
                     android:textSize="15dp"
                     android:singleLine="true"
                     android:inputType="number"
