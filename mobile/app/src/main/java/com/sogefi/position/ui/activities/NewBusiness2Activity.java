@@ -21,7 +21,7 @@ public class NewBusiness2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_business2);
 
-
+        String idEtablissement = getIntent().getStringExtra("idEtablissement");
 
 
     }

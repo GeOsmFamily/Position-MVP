@@ -4,10 +4,13 @@ import static com.sogefi.position.utils.Constants.API_KEY;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,37 +24,47 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
+import com.sogefi.position.models.Batiments;
 import com.sogefi.position.models.Categories;
+import com.sogefi.position.models.Etablissements;
 import com.sogefi.position.models.SousCategory;
 import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.PreferenceManager;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
 public class NewBusinessActivity extends AppCompatActivity {
-    EditText name, description;
+    EditText name, description,etage;
     Button next;
-    ImageView  backbtn;
-    Spinner sous_categories, category,etages;
+    ImageView  backbtn,cover,add1;
+    Spinner sous_categories, category;
     ScrollView scrollView;
     ProgressBar progress;
+    ProgressBar progressBar;
     PreferenceManager pref;
     Categories categories;
 
     int idSousCategorie;
+    File image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,18 +82,25 @@ public class NewBusinessActivity extends AppCompatActivity {
         next = findViewById(R.id.next);
         category = findViewById(R.id.category);
         sous_categories = findViewById(R.id.sous_categories);
-        etages = findViewById(R.id.etage);
+        etage = findViewById(R.id.etage);
         backbtn = findViewById(R.id.back_btn);
         progress = findViewById(R.id.progressBar);
         scrollView = findViewById(R.id.scrollView);
+        cover = findViewById(R.id.cover);
+        add1 = findViewById(R.id.add1);
+
+        progressBar = findViewById(R.id.progressBar1);
+        progressBar.setVisibility(View.GONE);
 
 
         progress.setVisibility(View.VISIBLE);
         scrollView.setVisibility(View.GONE);
 
+        cover.setOnClickListener(v -> chooseImage());
+
         next.setOnClickListener(v -> {
             String getname = name.getText().toString();
-            String getetage = (String) etages.getSelectedItem();
+            String getetage = etage.getText().toString();
             String getsouscategory = (String) sous_categories.getSelectedItem();
             String getcategory = (String) category.getSelectedItem();
             String getdescription = description.getText().toString();
@@ -97,12 +117,11 @@ public class NewBusinessActivity extends AppCompatActivity {
                 Toast.makeText(this, "Selectionner une catégorie", Toast.LENGTH_SHORT).show();
             }
             else {
-                uploadData();
+                uploadData(idBatiment,getname,String.valueOf(idSousCategorie),"1","2",getdescription);
             }
         });
 
         backbtn.setOnClickListener(v -> finish());
-        next.setOnClickListener(v -> uploadData());
 
 
         getCategory();
@@ -197,9 +216,80 @@ public class NewBusinessActivity extends AppCompatActivity {
     }
 
 
-    private void uploadData() {
-        Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
-        startActivity(intent);
-        finish();
+    private void uploadData(String idBatiment, String nom, String idSousCategorie, String idCommercial, String etage,String description) {
+
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), image);
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("nom", nom)
+                .addFormDataPart("idBatiment", idBatiment)
+                .addFormDataPart("idSousCategorie", idSousCategorie)
+                .addFormDataPart("idCommercial", idCommercial)
+                .addFormDataPart("etage", etage)
+                .addFormDataPart("description", description)
+                .addFormDataPart("file", image.getName(), requestFile)
+                .build();
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Etablissements> call = apiService.addetablissements(API_KEY,"Bearer "+pref.getToken(),requestBody);
+            call.enqueue(new Callback<Etablissements>() {
+                @Override
+                public void onResponse(@NotNull Call<Etablissements> call, @NotNull Response<Etablissements> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Error Create", Toast.LENGTH_LONG).show();
+                    } else {
+                        int idEtablissement = response.body().getData().getId();
+                        progressBar.setVisibility(View.GONE);
+                        Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
+                        intent.putExtra("idEtablissement",String.valueOf(idEtablissement));
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    progressBar.setVisibility(View.GONE);
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Etablissements> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    progressBar.setVisibility(View.GONE);
+                    Timber.tag("etablissements").e(t.toString());
+                    Log.e("error create", t.toString());
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void chooseImage() {
+        ImagePicker.with(this)
+                .crop()
+                .compress(10000)
+                .start(201);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 201) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                Uri uri = data.getData();
+                image = new File(uri.getPath());
+                add1.setVisibility(View.GONE);
+                Picasso.get().load(uri).into(cover);
+
+            }
+        }
+
     }
 }

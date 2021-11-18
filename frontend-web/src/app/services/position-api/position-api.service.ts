@@ -27,23 +27,26 @@ export class PositionApiService {
     .set('content-type', 'application/json')
     .set('Accept', 'application/json')
     .set(
-      'X-Authorization ',
+      'X-Authorization',
       'dEeeqWdIr5AaXAKFREAG5Pu33QkR25uOASgFxIkxFDz2wkp13BSP5xGSQGcARf1M'
     );
   listeCategorie: ListeCategorie | undefined;
 
-  constructor(public router: Router, private httpClient: HttpClient) {}
+  constructor(
+    public router: Router,
+    private httpClient: HttpClient,
+    public apiService: ApiService
+  ) {}
 
   public getCategories() {
     const options = {};
 
     //this.httpClient.get(this. url_prefix+"api/categories",{ headers: this.entetes .set('Authorization','Bearer ' + localStorage.getItem('access_token')?.trim()),params: new HttpParams({fromString:"limit=10"}) })
 
-    this.httpClient
-      .get(this.url_prefix + 'api/categories', { headers: this.entetes })
-      .subscribe((data) => {
+    this.apiService
+      .getRequest('api/categories', this.entetes)
+      .then((data: ListeCategorie) => {
         console.log(data);
-        // this.products = data;
       });
   }
 }
