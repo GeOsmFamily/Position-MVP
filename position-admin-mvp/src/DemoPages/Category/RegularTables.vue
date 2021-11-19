@@ -154,15 +154,15 @@ export default {
         label: "Crée le",
         field: "created_at",
         type: "date",
-        dateInputFormat: "yyyy-MM-dd",
-        dateOutputFormat: "MMM do yy",
+        dateInputFormat: "dd/mm/yyyy",
+        dateOutputFormat: "dd/mm/yyyy",
       },
       {
         label: "Mis à jour le",
         field: "updated_at",
         type: "date",
-        dateInputFormat: "yyyy-MM-dd",
-        dateOutputFormat: "MMM do yy",
+        dateInputFormat: "dd/mm/yyyy",
+        dateOutputFormat: "dd/mm/yyyy",
       },
       {
         label: "Actions",
@@ -206,6 +206,16 @@ export default {
     deleteCategory() {
       this.$bvModal.hide("my-modal");
       this.deleteLoading = true;
+      this.$store
+        .dispatch("category/deleteCategory", this.currentRow.id)
+        .then((data) => {
+          this.deleteLoading = false;
+          console.log(data);
+        })
+        .catch((error) => {
+          this.deleteLoading = false;
+          console.log(error);
+        });
     },
   },
 };

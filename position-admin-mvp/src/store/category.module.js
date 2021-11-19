@@ -26,12 +26,13 @@ export const category = {
         }
       );
     },
-    createCategory({ commit }, data) {
+    createCategory({ dispatch, commit }, data) {
       commit("toggleLoading", true);
       return CategoryService.createCategory(data).then(
         (result) => {
           console.log(data);
           commit("toggleLoading", false);
+          dispatch("fetchCategories");
           return Promise.resolve(result);
         },
         (error) => {
@@ -54,7 +55,17 @@ export const category = {
   },
   mutations: {
     categoriesSuccess(state, categories) {
-      state.categories = categories;
+      state.categories = categories.map((category) => {
+        category.created_at = new Date(category.created_at).toLocaleDateString(
+          "fr-FR",
+          { year: "numeric", month: "numeric", day: "numeric" }
+        );
+        category.updated_at = new Date(category.updated_at).toLocaleDateString(
+          "fr-FR",
+          { year: "numeric", month: "numeric", day: "numeric" }
+        );
+        return category;
+      });
     },
     categoriesFailure(state) {
       state.categories = null;

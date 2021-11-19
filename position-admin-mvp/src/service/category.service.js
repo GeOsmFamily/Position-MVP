@@ -8,9 +8,7 @@ class CategoryService {
     return api.post("categories", data);
   }
   deleteCategory(id) {
-    return api.delete("categories/", {
-      categorie_id: id,
-    });
+    return api.delete(`categories/${id}`);
   }
 }
 
