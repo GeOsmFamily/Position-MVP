@@ -624,15 +624,27 @@
             </LinearLayout>
 
 
-
             <customfonts.Button_SF_Pro_Display_Medium
-                android:id="@+id/submit"
-                android:layout_below="@id/llbedDimanche"
-                android:layout_margin="30dp"
+                android:id="@+id/next3"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="NEXT"
-                android:background="@drawable/button_round_1"/>
+                android:layout_below="@id/llbedDimanche"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/button_round_1"
+                android:text="NEXT" />
+
+            <ProgressBar
+                android:id="@+id/progress3"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/next3"
+                android:layout_marginBottom="16dp"
+                android:layout_centerHorizontal="true" />
 
 
         </RelativeLayout>

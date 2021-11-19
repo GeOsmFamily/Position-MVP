@@ -64,10 +64,12 @@ export class ApiService {
     return promise;
   }
 
-  getRequest(path: string): Promise<any> {
+  getRequest(path: string, headers?: HttpHeaders): Promise<any> {
     let promise = new Promise((resolve, reject) => {
       this.http
-        .get(this.url_prefix + path, { headers: this.headers })
+        .get(this.url_prefix + path, {
+          headers: headers != null ? headers : this.headers,
+        })
         .toPromise()
         .then(
           (res) => {

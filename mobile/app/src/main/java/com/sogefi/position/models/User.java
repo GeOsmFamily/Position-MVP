@@ -19,7 +19,7 @@ public class User {
     private String emailVerifiedAt;
     @SerializedName("phone")
     @Expose
-    private Integer phone;
+    private String phone;
     @SerializedName("role")
     @Expose
     private Integer role;
@@ -29,6 +29,12 @@ public class User {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("commercial")
+    @Expose
+    private Commercial commercial;
+    @SerializedName("manager")
+    @Expose
+    private Object manager;
 
     public Integer getId() {
         return id;
@@ -62,11 +68,11 @@ public class User {
         this.emailVerifiedAt = emailVerifiedAt;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -92,6 +98,22 @@ public class User {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Commercial getCommercial() {
+        return commercial;
+    }
+
+    public void setCommercial(Commercial commercial) {
+        this.commercial = commercial;
+    }
+
+    public Object getManager() {
+        return manager;
+    }
+
+    public void setManager(Object manager) {
+        this.manager = manager;
     }
 
 }

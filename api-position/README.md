@@ -187,14 +187,28 @@ Response
     "success": true,
     "data": {
         "user": {
-            "id": 1,
-            "name": "Admin",
-            "email": "admin@position.cm",
-            "email_verified_at": "2021-10-19T11:18:29.000000Z",
-            "phone": 699999999,
-            "role": 1,
-            "created_at": "2021-10-19T11:17:48.000000Z",
-            "updated_at": "2021-10-19T11:18:29.000000Z"
+            "id": 5,
+            "name": "Commercial",
+            "email": "bt@geo.sm",
+            "email_verified_at": "2021-11-18T23:55:27.000000Z",
+            "phone": "699999999",
+            "role": 2,
+            "created_at": "2021-11-18T23:55:02.000000Z",
+            "updated_at": "2021-11-18T23:55:27.000000Z",
+            "commercial": {
+                "id": 2,
+                "idUser": 5,
+                "numeroCni": 12345678,
+                "numeroBadge": 52,
+                "ville": "Yaounde",
+                "quartier": "Melen",
+                "imageProfil": "/storage/uploads/commerciaux/profils/1637279707_Image1.jpg",
+                "zone": "Zone 1",
+                "actif": 1,
+                "created_at": "2021-11-18T23:55:07.000000Z",
+                "updated_at": "2021-11-18T23:55:07.000000Z"
+            },
+            "manager": null
         }
     },
     "message": "Utilisateur"
@@ -1594,6 +1608,7 @@ X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
             "numero": "699999998",
+            "principal": "1",
             "whatsapp": "1"
 
 }
@@ -1610,6 +1625,7 @@ Response
             "idEtablissement": 1,
             "numero": "699999998",
             "whatsapp": "1",
+            "principal": "1",
             "updated_at": "2021-11-11T14:03:23.000000Z",
             "created_at": "2021-11-11T14:03:23.000000Z",
             "id": 2
@@ -1632,6 +1648,7 @@ X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
             "numero": "699999998",
+            "principal": "1",
             "whatsapp": "1"
 
 }
@@ -1648,6 +1665,7 @@ Response
             "idEtablissement": 1,
             "numero": "699999998",
             "whatsapp": "1",
+            "principal": "1",
             "updated_at": "2021-11-11T14:03:23.000000Z",
             "created_at": "2021-11-11T14:03:23.000000Z",
             "id": 2

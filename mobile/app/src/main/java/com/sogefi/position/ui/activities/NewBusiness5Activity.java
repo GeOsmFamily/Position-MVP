@@ -81,6 +81,8 @@ public class NewBusiness5Activity extends AppCompatActivity {
         progressBar5.setVisibility(View.GONE);
         scrollView5.setVisibility(View.VISIBLE);
 
+        
+
         lladdress5.setOnClickListener(v -> {
             Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
             intent.putExtra("longitude",longitude);

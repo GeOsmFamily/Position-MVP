@@ -111,6 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                         pref.setName(response.body().getData().getUser().getName());
                         pref.setPhone(response.body().getData().getUser().getPhone().toString());
                         pref.setId(response.body().getData().getUser().toString());
+                        pref.setProfileimage(response.body().getData().getUser().getCommercial().getImageProfil());
+
                     }
 
                 }

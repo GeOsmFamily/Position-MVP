@@ -219,10 +219,6 @@ class CommercialController extends BaseController
                     ]);
 
 
-
-
-
-
                     $userUpdate = User::find($commercial->idUser);
                     $userUpdate->name = $request->name ?? $userUpdate->name;
                     $userUpdate->phone = $request->phone ?? $userUpdate->phone;

@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('auth/email/verify/{id}', [App\Http\Controllers\Api\VerificationController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
+Route::get('auth/email/resend', [App\Http\Controllers\Api\VerificationController::class, 'resend'])->name('verification.resend');
+
+Route::post('auth/password/forgot', [App\Http\Controllers\Api\UserController::class, 'forgot']);
+Route::post('auth/password/reset', [App\Http\Controllers\Api\UserController::class, 'reset'])->name('password.reset');
 
 Route::middleware('auth.apikey')->group(
     function () {
@@ -25,11 +30,7 @@ Route::middleware('auth.apikey')->group(
 
 
 
-        Route::get('auth/email/verify/{id}', [App\Http\Controllers\Api\VerificationController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
-        Route::get('auth/email/resend', [App\Http\Controllers\Api\VerificationController::class, 'resend'])->name('verification.resend');
 
-        Route::post('auth/password/forgot', [App\Http\Controllers\Api\UserController::class, 'forgot']);
-        Route::post('auth/password/reset', [App\Http\Controllers\Api\UserController::class, 'reset'])->name('password.reset');
 
         Route::get('categories', [App\Http\Controllers\Api\CategorieController::class, 'index']);
         Route::get('categories/{id}', [App\Http\Controllers\Api\CategorieController::class, 'show']);

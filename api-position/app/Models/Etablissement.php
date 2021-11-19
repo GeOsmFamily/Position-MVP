@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $idBatiment
  * @property string $nom
- * @property string $indicationAdresse
+ * @property string|null $indicationAdresse
  * @property string|null $codePostal
  * @property string|null $siteInternet
  * @property int $idSousCategorie
