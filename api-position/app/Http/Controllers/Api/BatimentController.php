@@ -94,7 +94,13 @@ class BatimentController extends BaseController
                 'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
 
-            $input = $request->all();
+            $batiment->nom = $request->nom ?? $batiment->nom;
+            $batiment->nombreNiveaux = $request->nombreNiveaux ?? $batiment->nombreNiveaux;
+            $batiment->indication = $request->indication ?? $batiment->indication;
+            $batiment->rue = $request->rue ?? $batiment->rue;
+            $batiment->ville = $request->ville ?? $batiment->ville;
+            $batiment->commune = $request->commune ?? $batiment->commune;
+            $batiment->quartier = $request->quartier ?? $batiment->quartier;
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
@@ -102,7 +108,7 @@ class BatimentController extends BaseController
                 $batiment->image = '/storage/' . $filePath;
             }
 
-            $save = $batiment->save($input);
+            $save = $batiment->save();
 
 
 

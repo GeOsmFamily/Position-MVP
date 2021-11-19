@@ -94,6 +94,7 @@ class SousCategorieController extends BaseController
             ]);
 
             $souscategorie->nom = $request->nom ?? $souscategorie->nom;
+            $souscategorie->idCategorie = $request->idCategorie ?? $souscategorie->idCategorie;
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();

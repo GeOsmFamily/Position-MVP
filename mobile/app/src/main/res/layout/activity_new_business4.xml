@@ -82,13 +82,14 @@
 
 
                     <ImageView
-                        android:id="@+id/image"
+                        android:id="@+id/image41"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background" />
 
                     <ImageView
+                        android:id="@+id/add41"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
@@ -118,13 +119,14 @@
 
 
                     <ImageView
-                        android:id="@+id/image1"
+                        android:id="@+id/image42"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background"/>
 
                     <ImageView
+                        android:id="@+id/add42"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
@@ -141,12 +143,13 @@
 
 
                     <ImageView
-                        android:id="@+id/image2"
+                        android:id="@+id/image43"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background" />
                     <ImageView
+                        android:id="@+id/add43"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
@@ -177,12 +180,13 @@
 
 
                     <ImageView
-                        android:id="@+id/image3"
+                        android:id="@+id/image44"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background"/>
                     <ImageView
+                        android:id="@+id/add44"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
@@ -199,12 +203,13 @@
 
 
                     <ImageView
-                        android:id="@+id/image4"
+                        android:id="@+id/image45"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background" />
                     <ImageView
+                        android:id="@+id/add45"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
@@ -226,6 +231,15 @@
                 android:layout_height="40dp"
                 android:text="Submit"
                 android:background="@drawable/button_round_1"/>
+            <ProgressBar
+                android:id="@+id/progress4"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/submit"
+                android:layout_marginBottom="16dp"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
     </ScrollView>
 

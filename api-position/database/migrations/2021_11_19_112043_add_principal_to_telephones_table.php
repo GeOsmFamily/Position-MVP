@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImagesTable extends Migration
+class AddPrincipalToTelephonesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
-            $table->id();
-            $table->string('idEtablissement');
-            $table->string('imageUrl')->nullable();
-            $table->timestamps();
+        Schema::table('telephones', function (Blueprint $table) {
+            $table->boolean('principal')->default(false);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::table('telephones', function (Blueprint $table) {
+            $table->boolean('principal')->nullable();
+        });
     }
 }

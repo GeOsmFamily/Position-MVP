@@ -3,6 +3,7 @@ package com.sogefi.position.ui.activities;
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.sogefi.position.utils.Constants.API_KEY;
+import static com.sogefi.position.utils.Constants.IMAGEURL;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
@@ -87,6 +88,7 @@ import com.sogefi.position.ui.activities.adapters.LanguagesAdapter;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.MapBoxUtils;
 import com.sogefi.position.utils.PreferenceManager;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
@@ -105,7 +107,7 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class MapActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener, MapboxMap.OnMapClickListener {
+        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener {
 
     private static final String DEEPLINK_QUERY_FRIEND_POSITION = "friend_position";
     private static final String ORIGIN_ICON_ID = "origin-icon-id";
@@ -374,9 +376,6 @@ public class MapActivity extends AppCompatActivity implements
         newBusiness.setOnClickListener(v -> {
             if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
                 LocationComponent locationComponent = mapboxMap.getLocationComponent();
-                locationComponent.setCameraMode(CameraMode.TRACKING);
-                locationComponent.setRenderMode(RenderMode.COMPASS);
-                locationComponent.zoomWhileTracking(18);
                 Location location = locationComponent.getLastKnownLocation();
                 String lon = String.valueOf(location != null ? location.getLongitude() : 0);
                 String lat = String.valueOf(location != null ? location.getLatitude() : 0);
@@ -401,6 +400,11 @@ public class MapActivity extends AppCompatActivity implements
            user_label.setText(pref.getName());
            user_sub_label.setVisibility(View.VISIBLE);
            user_sub_label.setText(pref.getEmail());
+
+           if(pref.getProfileimage() != "profileimage") {
+               Picasso.get().load(IMAGEURL+pref.getProfileimage()).into(user_image);
+           }
+
            user_image.setOnClickListener(v -> {
                Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
                startActivity(intent);
@@ -545,7 +549,7 @@ public class MapActivity extends AppCompatActivity implements
     public void newStyle(String style) {
         mapboxMap.setStyle(style, style1 -> {
             initSpaceStationSymbolLayer(style1);
-            mapboxMap.addOnMapClickListener(MapActivity.this);
+            mapboxMap.addOnMapLongClickListener(MapActivity.this);
         });
         mapBoxUtils.setMapSetting();
 
@@ -636,6 +640,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
+
+        route.setVisibility(View.VISIBLE);
+        save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+        near.setVisibility(View.VISIBLE);
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
         locationComponent.setCameraMode(CameraMode.TRACKING);
         locationComponent.setRenderMode(RenderMode.COMPASS);
@@ -677,6 +686,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.VISIBLE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
+
+        route.setVisibility(View.VISIBLE);
+        save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+        near.setVisibility(View.VISIBLE);
 
         expandBottomSheet();
     }
@@ -743,6 +757,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.VISIBLE);
+
+        route.setVisibility(View.VISIBLE);
+        save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+        near.setVisibility(View.VISIBLE);
     }
 
     //Masquer le clavier
@@ -767,6 +786,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.VISIBLE);
         groupSavePosition.setVisibility(View.GONE);
+
+        route.setVisibility(View.VISIBLE);
+        save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+        near.setVisibility(View.VISIBLE);
 
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
         Point destinationPoint = Point.fromLngLat(symbol.getLatLng().getLongitude(), symbol.getLatLng().getLatitude());
@@ -903,53 +927,9 @@ public class MapActivity extends AppCompatActivity implements
         finish();
     }
 
-    @Override
-    public boolean onMapClick(@NonNull LatLng point) {
-        if (symbolManager != null) symbolManager.deleteAll();
-        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
-        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
-        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
-        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
-
-        arrival.setText("");
-        duration.setText("");
-        lenght.setText("");
-        onBottomSheetLoading(1);
-        groupMyPosition.setVisibility(View.GONE);
-        groupSharePosition.setVisibility(View.VISIBLE);
-        groupRouteSearch.setVisibility(View.GONE);
-        groupRoute.setVisibility(View.GONE);
-        groupSavePosition.setVisibility(View.GONE);
-
-        if (symbolManager != null) symbolManager.deleteAll();
-
-        symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
-
-        symbolManager.setIconAllowOverlap(true);
-        symbolManager.setTextAllowOverlap(true);
-
-        symbol = symbolManager.create(new SymbolOptions()
-                .withLatLng(point)
-                .withIconImage("markerImage")
-                .withIconSize(1.3f)
-                .withSymbolSortKey(10.0f));
-
-        String lon = String.valueOf(point.getLongitude());
-        String lat = String.valueOf(point.getLatitude());
-
-        //On interroge les apis pour recuperer la position
-        if (Function.isNetworkAvailable(getApplicationContext())) {
-            nominatimCoord(lat,lon, adresseV);
-            onBottomSheetLoading(0);
 
 
-        } else {
-            onBottomSheetLoading(0);
-            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
-        }
-        return false;
-    }
 
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
@@ -969,7 +949,7 @@ public class MapActivity extends AppCompatActivity implements
                         getResources().getDrawable(R.drawable.ic_finish)))), style -> {
             enableLocationComponent(style);
             initSpaceStationSymbolLayer(style);
-            mapboxMap.addOnMapClickListener(MapActivity.this);
+            mapboxMap.addOnMapLongClickListener(MapActivity.this);
             if (friendPosition != null) {
                 getSharedPosition(friendPosition);
             }
@@ -1012,6 +992,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
+
+        route.setVisibility(View.GONE);
+        save.setVisibility(View.GONE);
+        share.setVisibility(View.GONE);
+        near.setVisibility(View.GONE);
 
         if (symbolManager != null) symbolManager.deleteAll();
 
@@ -1088,6 +1073,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.VISIBLE);
         groupSavePosition.setVisibility(View.GONE);
 
+        route.setVisibility(View.VISIBLE);
+        save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+        near.setVisibility(View.VISIBLE);
+
         getRoute(ori, dest,DirectionsCriteria.PROFILE_DRIVING_TRAFFIC);
     }
 
@@ -1154,6 +1144,11 @@ public class MapActivity extends AppCompatActivity implements
             groupRouteSearch.setVisibility(View.GONE);
             groupRoute.setVisibility(View.GONE);
             groupSavePosition.setVisibility(View.GONE);
+
+            route.setVisibility(View.GONE);
+            save.setVisibility(View.GONE);
+            share.setVisibility(View.GONE);
+            near.setVisibility(View.GONE);
 
             symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
 
@@ -1237,7 +1232,6 @@ public class MapActivity extends AppCompatActivity implements
                     Intent intent = new Intent(MapActivity.this, SplashActivity.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -1308,5 +1302,59 @@ public class MapActivity extends AppCompatActivity implements
         setNavigationDrawer();
         if (symbolManager != null) symbolManager.onDestroy();
         mapView.onDestroy();
+    }
+
+    @Override
+    public boolean onMapLongClick(@NonNull LatLng point) {
+        if (symbolManager != null) symbolManager.deleteAll();
+        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
+        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
+        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
+        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+
+        arrival.setText("");
+        duration.setText("");
+        lenght.setText("");
+        onBottomSheetLoading(1);
+        groupMyPosition.setVisibility(View.GONE);
+        groupSharePosition.setVisibility(View.VISIBLE);
+        groupRouteSearch.setVisibility(View.GONE);
+        groupRoute.setVisibility(View.GONE);
+        groupSavePosition.setVisibility(View.GONE);
+
+        route.setVisibility(View.GONE);
+        save.setVisibility(View.GONE);
+        share.setVisibility(View.GONE);
+        near.setVisibility(View.GONE);
+
+
+        if (symbolManager != null) symbolManager.deleteAll();
+
+        symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
+
+        symbolManager.setIconAllowOverlap(true);
+        symbolManager.setTextAllowOverlap(true);
+
+        symbol = symbolManager.create(new SymbolOptions()
+                .withLatLng(point)
+                .withIconImage("markerImage")
+                .withIconSize(1.3f)
+                .withSymbolSortKey(10.0f));
+
+        String lon = String.valueOf(point.getLongitude());
+        String lat = String.valueOf(point.getLatitude());
+
+        //On interroge les apis pour recuperer la position
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            nominatimCoord(lat,lon, adresseV);
+            onBottomSheetLoading(0);
+
+
+        } else {
+            onBottomSheetLoading(0);
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+
+        }
+        return true;
     }
 }

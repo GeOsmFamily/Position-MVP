@@ -73,8 +73,10 @@ class HoraireController extends BaseController
 
         if ($role == 1 || $role == 3) {
             $horaire = Horaire::find($id);
-            $input = $request->all();
-            $save = $horaire->save($input);
+
+            $horaire->heureOuverture = $request->heureOuverture ?? $horaire->heureOuverture;
+            $horaire->heureFermeture = $request->heureFermeture ?? $horaire->heureFermeture;
+            $save = $horaire->save();
 
             if ($save) {
                 return $this->sendResponse($horaire, "Update Success", 201);

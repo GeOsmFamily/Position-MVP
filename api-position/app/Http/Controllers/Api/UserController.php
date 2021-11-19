@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Commercial;
+use App\Models\Manager;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,8 +83,13 @@ class UserController extends BaseController
     {
         $user = Auth::user();
 
+        $commercial = $user->commercial;
+        $manager = $user->manager;
+
         if ($user) {
             $success["user"] = $user;
+            $success["user"]["commercial"] = $commercial;
+            $success["user"]["manager"] = $manager;
 
             return $this->sendResponse($success, 'Utilisateur');
         } else {

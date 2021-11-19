@@ -93,6 +93,7 @@ public class NewBusinessActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
 
 
+
         progress.setVisibility(View.VISIBLE);
         scrollView.setVisibility(View.GONE);
 
@@ -117,7 +118,7 @@ public class NewBusinessActivity extends AppCompatActivity {
                 Toast.makeText(this, "Selectionner une catégorie", Toast.LENGTH_SHORT).show();
             }
             else {
-                uploadData(idBatiment,getname,String.valueOf(idSousCategorie),"1","2",getdescription);
+                uploadData(idBatiment,getname,String.valueOf(idSousCategorie),getetage,getdescription);
             }
         });
 
@@ -216,7 +217,7 @@ public class NewBusinessActivity extends AppCompatActivity {
     }
 
 
-    private void uploadData(String idBatiment, String nom, String idSousCategorie, String idCommercial, String etage,String description) {
+    private void uploadData(String idBatiment, String nom, String idSousCategorie, String etage,String description) {
 
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), image);
@@ -226,7 +227,6 @@ public class NewBusinessActivity extends AppCompatActivity {
                 .addFormDataPart("nom", nom)
                 .addFormDataPart("idBatiment", idBatiment)
                 .addFormDataPart("idSousCategorie", idSousCategorie)
-                .addFormDataPart("idCommercial", idCommercial)
                 .addFormDataPart("etage", etage)
                 .addFormDataPart("description", description)
                 .addFormDataPart("file", image.getName(), requestFile)

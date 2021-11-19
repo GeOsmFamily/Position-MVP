@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Batiment;
+use App\Models\Commercial;
 use App\Models\Etablissement;
 use Auth;
 use Illuminate\Http\Request;
@@ -38,6 +39,10 @@ class EtablissementController extends BaseController
                 'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
+
+            $commercial = Commercial::where("idUser", $user->id)->first();
+
+            $input['idCommercial'] = $commercial->id;
 
             $batiment = Batiment::find($request->idBatiment);
 
@@ -102,7 +107,14 @@ class EtablissementController extends BaseController
                 'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
 
-            $input = $request->all();
+            $etablissement->nom = $request->nom ?? $etablissement->nom;
+            $etablissement->indicationAdresse = $request->indicationAdresse ?? $etablissement->indicationAdresse;
+            $etablissement->codePostal = $request->codePostal ?? $etablissement->codePostal;
+            $etablissement->siteInternet = $request->siteInternet ?? $etablissement->siteInternet;
+            $etablissement->description = $request->description ?? $etablissement->description;
+            $etablissement->etage = $request->etage ?? $etablissement->etage;
+            $etablissement->idManager = $request->idManager ?? $etablissement->idManager;
+            $etablissement->vues = $request->vues ?? $etablissement->vues;
 
 
             if ($request->file()) {
@@ -111,12 +123,12 @@ class EtablissementController extends BaseController
                 $etablissement->cover = '/storage/' . $filePath;
             }
 
-            $save = $etablissement->save($input);
+            $save = $etablissement->save();
 
 
 
             if ($save) {
-                return $this->sendResponse($etablissement, "Update Success", 201);
+                return $this->sendResponse($etablissement, "Upload success", 201);
             } else {
                 return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
             }

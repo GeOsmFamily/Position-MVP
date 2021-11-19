@@ -29,6 +29,8 @@ public class PreferenceManager {
 
     private static final String ROLEID = "roleid";
 
+    private static final String PROFILEIMAGE = "profileimage";
+
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -195,6 +197,15 @@ public class PreferenceManager {
 
     public void setRoleid(String roleid) {
         editor.putString(ROLEID, roleid);
+        editor.apply();
+    }
+
+    public String getProfileimage() {
+        return pref.getString(PROFILEIMAGE, "profileimage");
+    }
+
+    public void setProfileimage(String profileimage) {
+        editor.putString(PROFILEIMAGE, profileimage);
         editor.apply();
     }
 
