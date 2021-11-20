@@ -44,6 +44,8 @@ use Laravel\Passport\HasApiTokens;
  * @property-read int|null $clients_count
  * @property-read \App\Models\Commercial|null $commercial
  * @property-read \App\Models\Manager|null $manager
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tracking[] $trackings
+ * @property-read int|null $trackings_count
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -89,5 +91,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function manager()
     {
         return $this->hasOne(Manager::class, 'idUser');
+    }
+
+    public function trackings()
+    {
+        return $this->hasMany(Tracking::class, 'idUser');
     }
 }
