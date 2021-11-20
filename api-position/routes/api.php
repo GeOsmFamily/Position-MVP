@@ -88,6 +88,8 @@ Route::middleware('auth.apikey')->group(
             Route::post('horaires', [App\Http\Controllers\Api\HoraireController::class, 'store']);
             Route::put('horaires/{id}', [App\Http\Controllers\Api\HoraireController::class, 'update']);
             Route::delete('horaires/{id}', [App\Http\Controllers\Api\HoraireController::class, 'destroy']);
+
+            Route::apiResource('tracking', App\Http\Controllers\Api\TrackingController::class);
         });
     }
 );

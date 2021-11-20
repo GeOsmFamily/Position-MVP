@@ -37,6 +37,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -88,6 +92,7 @@ import com.sogefi.position.ui.activities.adapters.LanguagesAdapter;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.MapBoxUtils;
 import com.sogefi.position.utils.PreferenceManager;
+import com.sogefi.position.workers.UpdateLocationWorker;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -100,6 +105,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -116,6 +123,7 @@ public class MapActivity extends AppCompatActivity implements
     private static final String ROUTE_LINE_SOURCE_ID = "route-source-id";
     private static final String ICON_LAYER_ID = "icon-layer-id";
     private static final String ICON_SOURCE_ID = "icon-source-id";
+    private static final String TAG = "LocationUpdate";
     FloatingActionButton location;
     FloatingActionButton layer;
     FloatingActionButton zoomIn;
@@ -279,6 +287,8 @@ public class MapActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        launchWorker();
 
 
 
@@ -1356,5 +1366,44 @@ public class MapActivity extends AppCompatActivity implements
 
         }
         return true;
+    }
+
+    public void launchWorker() {
+        try {
+            if (isWorkScheduled(WorkManager.getInstance().getWorkInfosByTag(TAG).get())) {
+                // worker en cours
+               // WorkManager.getInstance().cancelAllWorkByTag(TAG);
+                Log.d(TAG, "WORKER : " + "En cours");
+            } else {
+                // worker stoppé
+                Log.d(TAG, "WORKER : " + "Arreté");
+                startWorker();
+
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private boolean isWorkScheduled(List<WorkInfo> workInfos) {
+        boolean running = false;
+        if (workInfos == null || workInfos.size() == 0) return false;
+        for (WorkInfo workStatus : workInfos) {
+            running = workStatus.getState() == WorkInfo.State.RUNNING | workStatus.getState() == WorkInfo.State.ENQUEUED;
+        }
+        return running;
+    }
+   //Start My Worker
+    public void startWorker() {
+        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(UpdateLocationWorker.class, 15, TimeUnit.MINUTES)
+                .addTag(TAG)
+                .build();
+        WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
+
+        Toast.makeText(MapActivity.this, "Location Worker Started : " + periodicWork.getId(), Toast.LENGTH_SHORT).show();
     }
 }

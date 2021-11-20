@@ -9,9 +9,11 @@ import com.sogefi.position.models.Images;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.Telephones;
+import com.sogefi.position.models.Tracking;
 import com.sogefi.position.models.UserModel;
 import com.sogefi.position.models.data.DataBatiments;
 import com.sogefi.position.models.data.DataEtablissements;
+import com.sogefi.position.models.data.DataTracking;
 
 import java.util.List;
 
@@ -78,4 +80,10 @@ public interface ApiInterface {
 
     @POST("api/horaires")
     Call<Horaires> addhoraire(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);
+
+
+    @POST("api/tracking")
+    Call<Tracking> addtracking(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body DataTracking body);
+
 }
+
