@@ -22,9 +22,14 @@ import com.google.android.gms.tasks.Task;
 import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
+import com.sogefi.position.database.AppExecutor;
+import com.sogefi.position.database.PositionDataBase;
+import com.sogefi.position.models.Favorite;
 import com.sogefi.position.models.Images;
 import com.sogefi.position.models.Tracking;
 import com.sogefi.position.models.data.DataTracking;
+import com.sogefi.position.repositories.FavoriteRepository;
+import com.sogefi.position.repositories.TrackingRepository;
 import com.sogefi.position.ui.activities.MapActivity;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.PreferenceManager;
@@ -34,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -78,6 +84,10 @@ public class UpdateLocationWorker extends Worker {
      */
     private LocationCallback mLocationCallback;
 
+    TrackingRepository trackingRepository;
+    PositionDataBase mDb;
+    List<DataTracking> dataTrackings;
+
 
     public UpdateLocationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -90,6 +100,20 @@ public class UpdateLocationWorker extends Worker {
         Log.d(TAG, "doWork: Done");
 
         Log.d(TAG, "onStartJob: STARTING JOB..");
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            dataTrackings = new ArrayList<>();
+            AppExecutor.getInstance().diskIO().execute(() -> {
+                dataTrackings.addAll(mDb.trackingDao().getAll());
+            });
+
+            for (int i = 0; i < dataTrackings.size(); i++) {
+                sendLocation(Double.parseDouble( dataTrackings.get(i).getLongitude()),Double.parseDouble(dataTrackings.get(i).getLatitude()));
+                mDb.trackingDao().delete(dataTrackings.get(i));
+            }
+        }
+
+
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
@@ -124,6 +148,7 @@ public class UpdateLocationWorker extends Worker {
                                 mLocation = task.getResult();
                                 Log.d(TAG, "Location : " + mLocation);
 
+
                                 sendLocation(mLocation.getLatitude(),mLocation.getLongitude());
 
 
@@ -157,12 +182,15 @@ public class UpdateLocationWorker extends Worker {
     }
 
     private void sendLocation(double LATITUDE, double LONGITUDE) {
+        mDb = PositionDataBase.getInstance(getApplicationContext());
+        trackingRepository = new TrackingRepository(mDb);
         pref = new PreferenceManager(mContext);
 
         DataTracking dataTracking = new DataTracking(String.valueOf(LONGITUDE),String.valueOf(LATITUDE));
 
 
         if (Function.isNetworkAvailable(getApplicationContext())) {
+
             ApiInterface apiService =
                     APIClient.getNewClient3().create(ApiInterface.class);
             Call<Tracking> call = apiService.addtracking(API_KEY,"Bearer "+pref.getToken(),dataTracking);
@@ -170,6 +198,7 @@ public class UpdateLocationWorker extends Worker {
                 @Override
                 public void onResponse(@NotNull Call<Tracking> call, @NotNull Response<Tracking> response) {
                     if(response.code() == 401 || response.code() == 500) {
+                        trackingRepository.onSave(dataTracking);
                       //  Toast.makeText(getApplicationContext(), "Error add tracking", Toast.LENGTH_LONG).show();
                     } else {
                      //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
@@ -181,14 +210,16 @@ public class UpdateLocationWorker extends Worker {
 
                 @Override
                 public void onFailure(@NotNull Call<Tracking> call, @NotNull Throwable t) {
+                    trackingRepository.onSave(dataTracking);
                     // Log error here since request failed
                     Timber.tag("images").e(t.toString());
                     Log.e("error create", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
                 }
             });
         } else {
-            Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+            trackingRepository.onSave(dataTracking);
+          //  Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
         }
     }
 }

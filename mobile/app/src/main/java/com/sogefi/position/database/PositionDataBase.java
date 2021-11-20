@@ -9,10 +9,11 @@ import androidx.room.TypeConverters;
 
 import com.sogefi.position.db.DoubleListTypeConverter;
 import com.sogefi.position.models.Favorite;
+import com.sogefi.position.models.data.DataTracking;
 
 import timber.log.Timber;
 
-@Database(entities = {Favorite.class}, version = 1, exportSchema = false)
+@Database(entities = {Favorite.class, DataTracking.class}, version = 1, exportSchema = false)
 
 @TypeConverters(
         DoubleListTypeConverter.class
@@ -38,4 +39,5 @@ public abstract class PositionDataBase extends RoomDatabase {
     }
 
     public abstract FavoriteDAO favoriteDao();
+    public abstract TrackingDAO trackingDao();
 }

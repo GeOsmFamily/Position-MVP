@@ -1,8 +1,11 @@
 package com.sogefi.position.models.data;
 
+import androidx.room.Entity;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "TRACKING")
 public class DataTracking {
     @SerializedName("longitude")
     @Expose
