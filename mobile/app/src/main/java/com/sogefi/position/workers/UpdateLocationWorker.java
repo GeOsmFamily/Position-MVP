@@ -102,6 +102,8 @@ public class UpdateLocationWorker extends Worker {
         Log.d(TAG, "onStartJob: STARTING JOB..");
 
         if (Function.isNetworkAvailable(getApplicationContext())) {
+            mDb = PositionDataBase.getInstance(getApplicationContext());
+            trackingRepository = new TrackingRepository(mDb);
             dataTrackings = new ArrayList<>();
             AppExecutor.getInstance().diskIO().execute(() -> {
                 dataTrackings.addAll(mDb.trackingDao().getAll());

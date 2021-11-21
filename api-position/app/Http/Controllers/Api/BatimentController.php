@@ -17,6 +17,12 @@ class BatimentController extends BaseController
     {
         $batiments = Batiment::all();
 
+        foreach ($batiments as $batiment) {
+            $etablissements = $batiment->etablissements;
+
+            $batiment["etablissements"] = $etablissements;
+        }
+
         return $this->sendResponse($batiments, 'Liste des Batiments');
     }
 

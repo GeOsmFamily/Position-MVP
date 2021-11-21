@@ -1049,7 +1049,8 @@ Response
             "image": "url",
             "updated_at": "2021-11-11T12:42:23.000000Z",
             "created_at": "2021-11-11T12:42:23.000000Z",
-            "id": 1
+            "id": 1,
+            "etablissements": []
         },
             ...
     ],

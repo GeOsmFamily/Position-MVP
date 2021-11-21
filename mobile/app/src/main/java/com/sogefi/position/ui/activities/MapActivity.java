@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -71,6 +72,7 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener;
 import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
@@ -82,12 +84,18 @@ import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
 import com.sogefi.position.database.PositionDataBase;
+import com.sogefi.position.models.Batiments;
+import com.sogefi.position.models.BatimentsModel;
+import com.sogefi.position.models.Etablissements;
 import com.sogefi.position.models.Favorite;
 import com.sogefi.position.models.Language;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
+import com.sogefi.position.models.Tracking;
+import com.sogefi.position.models.data.DataEtablissements;
 import com.sogefi.position.repositories.FavoriteRepository;
 import com.sogefi.position.ui.TopIconButton;
+import com.sogefi.position.ui.activities.adapters.EtablissementAdapter;
 import com.sogefi.position.ui.activities.adapters.LanguagesAdapter;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.MapBoxUtils;
@@ -100,6 +108,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,6 +187,8 @@ public class MapActivity extends AppCompatActivity implements
     private ConstraintLayout bottom_sheet;
     private SymbolManager symbolManager;
     private Symbol symbol;
+
+    JSONObject featureCollection = new JSONObject();
 
 
     MapBoxUtils mapBoxUtils;
@@ -916,6 +929,13 @@ public class MapActivity extends AppCompatActivity implements
                 Function.getBitmapFromDrawable(drawableOrigin)
         );
 
+        Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.ic_origin);
+        assert drawableBatiment != null;
+        style.addImage(
+                "markerBatimentImage",
+                Function.getBitmapFromDrawable(drawableBatiment)
+        );
+
         mapBoxUtils.initSources(style);
         mapBoxUtils.initLayers(style);
 
@@ -952,6 +972,8 @@ public class MapActivity extends AppCompatActivity implements
             styleLaunch = pref.getStyle();
         }
 
+
+
         mapboxMap.setStyle(new Style.Builder().fromUri(styleLaunch)
                 .withImage(ORIGIN_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
                         getResources().getDrawable(R.drawable.ic_origin))))
@@ -963,7 +985,12 @@ public class MapActivity extends AppCompatActivity implements
             if (friendPosition != null) {
                 getSharedPosition(friendPosition);
             }
+            if(pref.getRoleid().equals("2")) {
+                getBatiment(style);
+            }
         });
+
+
        mapBoxUtils.setMapSetting();
     }
 
@@ -1405,5 +1432,115 @@ public class MapActivity extends AppCompatActivity implements
         WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
 
         Toast.makeText(MapActivity.this, "Location Worker Started : " + periodicWork.getId(), Toast.LENGTH_SHORT).show();
+    }
+
+    public  void getBatiment(Style style) {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<BatimentsModel> call = apiService.getbatiments(API_KEY);
+            call.enqueue(new Callback<BatimentsModel>() {
+                @Override
+                public void onResponse(@NotNull Call<BatimentsModel> call, @NotNull Response<BatimentsModel> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+
+                          Toast.makeText(getApplicationContext(), "Error get batiments", Toast.LENGTH_LONG).show();
+                    } else {
+                        //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
+
+                        /*  featureCollection.put("type", "FeatureCollection");
+                          JSONObject properties = new JSONObject();
+                          properties.put("name", "ESPG:4326");
+                          JSONObject crs = new JSONObject();
+                          crs.put("type", "name");
+                          crs.put("properties", properties);
+                          featureCollection.put("crs", crs);
+
+                          JSONArray features = new JSONArray();
+                          JSONObject feature = new JSONObject();
+                          feature.put("type", "Feature");*/
+
+                        for (int i = 0; i < response.body().getData().size(); i++) {
+
+                            symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
+
+                            symbolManager.setIconAllowOverlap(true);
+                            symbolManager.setTextAllowOverlap(true);
+
+                            LatLng point = new LatLng(Double.parseDouble(response.body().getData().get(i).getLatitude()),Double.parseDouble(response.body().getData().get(i).getLongitude()));
+
+                            symbol = symbolManager.create(new SymbolOptions()
+                                    .withLatLng(point)
+                                    .withIconImage("markerBatimentImage")
+                                    .withIconSize(1.3f)
+                                    .withSymbolSortKey(10.0f));
+
+                            int idBatiment = response.body().getData().get(i).getId();
+                            String nombreNiveau = response.body().getData().get(i).getNombreNiveaux();
+
+                            List<DataEtablissements> listetablissements = response.body().getData().get(i).getEtablissements();
+
+                            symbolManager.addClickListener(symbol -> {
+                                View dialogEtablissement = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_etablissement, null, false);
+
+                                RecyclerView etablissements = dialogEtablissement.findViewById(R.id.etablissements);
+
+                                Button addEtablissement = dialogEtablissement.findViewById(R.id.add_etablissement);
+
+                                addEtablissement.setOnClickListener(v -> {
+                                    Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+                                    intent.putExtra("idBatiment",String.valueOf(idBatiment));
+                                    intent.putExtra("nombreNiveau",String.valueOf(nombreNiveau));
+                                    startActivity(intent);
+                                });
+
+
+
+
+
+                                etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
+
+                                new MaterialAlertDialogBuilder(MapActivity.this)
+                                        .setView(dialogEtablissement)
+                                        .show();
+                            });
+
+                           /* feature.put("properties", response.body().getData().get(i));
+                            JSONObject geometry = new JSONObject();
+
+                            JSONArray jsonArrayCoord = new JSONArray();
+
+                            jsonArrayCoord.put(0,response.body().getData().get(i).getLongitude());
+                            jsonArrayCoord.put(1,response.body().getData().get(i).getLatitude());
+                            geometry.put("type", "Point");
+                            geometry.put("coordinates", jsonArrayCoord);
+                            feature.put("geometry", geometry);
+
+                            features.put(feature);*/
+                        }
+                          /*  featureCollection.put("features", features);
+
+                            GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source",featureCollection.toString());
+                            style.addSource(geoJsonSource);
+                            Toast.makeText(getApplicationContext(), geoJsonSource.toString(), Toast.LENGTH_LONG).show();*/
+
+                    }
+
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<BatimentsModel> call, @NotNull Throwable t) {
+
+                    // Log error here since request failed
+                    Timber.tag("images").e(t.toString());
+                    Log.e("error create", t.toString());
+                     Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+              Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
     }
 }
