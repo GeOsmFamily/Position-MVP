@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.File;
+import java.util.List;
 
 public class DataBatiments {
 
@@ -49,6 +50,9 @@ public class DataBatiments {
         @SerializedName("id")
         @Expose
         private Integer id;
+    @SerializedName("etablissements")
+    @Expose
+    private List<DataEtablissements> etablissements = null;
 
         public String getNom() {
             return nom;
@@ -161,4 +165,12 @@ public class DataBatiments {
         public void setId(Integer id) {
             this.id = id;
         }
+
+    public List<DataEtablissements> getEtablissements() {
+        return etablissements;
+    }
+
+    public void setEtablissements(List<DataEtablissements> etablissements) {
+        this.etablissements = etablissements;
+    }
 }

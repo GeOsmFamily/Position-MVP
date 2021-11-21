@@ -112,6 +112,8 @@ public class LoginActivity extends AppCompatActivity {
                         pref.setPhone(response.body().getData().getUser().getPhone().toString());
                         pref.setId(response.body().getData().getUser().toString());
                         pref.setProfileimage(response.body().getData().getUser().getCommercial().getImageProfil());
+                        pref.setRoleid(response.body().getData().getUser().getRole().toString());
+                     //   Toast.makeText(getApplicationContext(), response.body().getData().getUser().getRole().toString(), Toast.LENGTH_LONG).show();
 
                     }
 

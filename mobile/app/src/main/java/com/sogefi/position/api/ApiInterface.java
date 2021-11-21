@@ -2,6 +2,7 @@ package com.sogefi.position.api;
 
 
 import com.sogefi.position.models.Batiments;
+import com.sogefi.position.models.BatimentsModel;
 import com.sogefi.position.models.Categories;
 import com.sogefi.position.models.Etablissements;
 import com.sogefi.position.models.Horaires;
@@ -62,6 +63,9 @@ public interface ApiInterface {
 
     @POST("api/batiments")
     Call<Batiments> addbatiments(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);
+
+    @GET("api/batiments")
+    Call<BatimentsModel> getbatiments(@Header("X-Authorization") String apiKey);
 
     @POST("api/etablissements")
     Call<Etablissements> addetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);

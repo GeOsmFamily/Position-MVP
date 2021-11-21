@@ -1,6 +1,7 @@
 package com.sogefi.position.models.data;
 
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -22,6 +23,7 @@ public class DataTracking {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
     @Expose
     private Integer id;
