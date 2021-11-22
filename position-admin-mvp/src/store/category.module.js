@@ -52,6 +52,17 @@ export const category = {
         }
       );
     },
+    editCategory({ dispatch }, data) {
+      return CategoryService.editCategory(data.id, data.category).then(
+        (result) => {
+          dispatch("fetchCategories");
+          return Promise.resolve(result);
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+    },
   },
   mutations: {
     categoriesSuccess(state, categories) {

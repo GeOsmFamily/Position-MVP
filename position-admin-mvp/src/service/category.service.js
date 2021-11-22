@@ -10,6 +10,9 @@ class CategoryService {
   deleteCategory(id) {
     return api.delete(`categories/${id}`);
   }
+  editCategory(id, data) {
+    return api.put(`categories/${id}`, data);
+  }
 }
 
 export default new CategoryService();

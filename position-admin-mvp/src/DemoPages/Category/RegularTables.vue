@@ -53,7 +53,11 @@
                 @click="editRow(props.row.id)"
                 >Détails</b-button
               >
-              <b-button variant="success" class="mx-1" v-b-modal.edit-modal
+              <b-button
+                variant="success"
+                class="mx-1"
+                v-b-modal.edit-modal
+                @click="setRow(props.row)"
                 >Modifier</b-button
               >
               <b-button
@@ -77,7 +81,7 @@
           <b-modal
             id="edit-modal"
             ref="modal"
-            title="`Modifier la catégorie"
+            title="Modifier la catégorie"
             hide-backdrop
             hide-footer
           >
@@ -95,6 +99,7 @@
                   id="Name22"
                   placeholder="Nom de la catégorie"
                   type="text"
+                  :value="currentRow != null ? currentRow.nom : 'test'"
                   class="form-control"
                 />
                 <b-form-invalid-feedback
@@ -108,13 +113,18 @@
                 ><b-form-input
                   name="logo"
                   v-model="logo"
-                  v-model.trim="$v.logo.$model"
-                  :state="!submitted ? null : submitted && !$v.logo.$invalid"
+                  :state="!submitted ? null : submitted"
                   id="logo22"
                   placeholder="https://via.placeholder.com/150.png/09f/fff"
                   type="text"
+                  :value="currentRow != null ? currentRow.logo_url : ''"
                   class="form-control"
                 />
+              </div>
+              <div class="form-group">
+                <div v-if="message" class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>
               </div>
               <br />
               <div class="float-right">
@@ -183,7 +193,7 @@
 <script>
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import "vue-good-table/dist/vue-good-table.css";
-import { required, requiredIf } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   components: {
@@ -191,7 +201,9 @@ export default {
   },
   data: () => ({
     name: "",
+    logo: "",
     nameState: null,
+    message: "",
     submittedNames: [],
     editLoading: false,
     submitted: false,
@@ -248,11 +260,6 @@ export default {
     name: {
       required,
     },
-    logo: {
-      required: requiredIf(function () {
-        return this.logo !== "";
-      }),
-    },
   },
   computed: {
     loading() {
@@ -271,8 +278,9 @@ export default {
       this.$store.dispatch("category/fetchCategories");
     },
     setRow(data) {
-      console.log(data);
       this.currentRow = data;
+      this.name = data.nom;
+      this.logo = data.logo_url;
     },
     closeModal() {
       this.$bvModal.hide("my-modal");
@@ -292,6 +300,7 @@ export default {
         });
     },
     editCategory() {
+      console.log(this.logo);
       this.editLoading = true;
       this.submitted = true;
       this.$v.$touch();
@@ -300,23 +309,24 @@ export default {
       } else {
         if (this.name) {
           this.$store
-            .dispatch("category/createCategory", {
-              nom: this.name,
-              logo_url: this.logo,
-            })
-            .then(
-              (data) => {
-                console.log(data);
-                //this.$router.push("/");
+            .dispatch("category/editCategory", {
+              id: this.currentRow.id,
+              category: {
+                nom: this.name,
               },
-              (error) => {
-                console.log(error.response.data.detail[0]);
-                this.message =
-                  (error.response && error.response.data) ||
-                  error.response.data.detail ||
-                  error.toString();
-              }
-            );
+            })
+            .then((result) => {
+              this.editLoading = false;
+              console.log(result);
+            })
+            .catch((error) => {
+              console.log(error.data);
+              this.editLoading = false;
+              this.message =
+                (error.data.errors && error.data.message) ||
+                error.data.errors.toString() ||
+                error.data.toString();
+            });
         }
       }
     },
