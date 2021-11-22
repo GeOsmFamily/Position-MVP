@@ -137,7 +137,7 @@
                     v-show="editLoading"
                     class="spinner-border spinner-border-sm"
                   ></span>
-                  <span>Submit</span>
+                  <span>Modifier</span>
                 </b-button>
               </div>
             </b-form>
@@ -318,6 +318,16 @@ export default {
             .then((result) => {
               this.editLoading = false;
               console.log(result);
+              this.$bvToast.toast(
+                `Modification de ${this.currentRow.nom} avec succès`,
+                {
+                  title: "Information",
+                  variant: "success",
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  solid: true,
+                }
+              );
             })
             .catch((error) => {
               console.log(error.data);
