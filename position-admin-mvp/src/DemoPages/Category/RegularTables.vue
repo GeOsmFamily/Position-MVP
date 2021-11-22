@@ -53,10 +53,7 @@
                 @click="editRow(props.row.id)"
                 >Détails</b-button
               >
-              <b-button
-                variant="success"
-                class="mx-1"
-                @click="editRow(props.row.id)"
+              <b-button variant="success" class="mx-1" v-b-modal.edit-modal
                 >Modifier</b-button
               >
               <b-button
@@ -76,6 +73,66 @@
           </div>
         </vue-good-table>
 
+        <div>
+          <b-modal
+            id="edit-modal"
+            ref="modal"
+            title="`Modifier la catégorie"
+            hide-backdrop
+            hide-footer
+          >
+            <b-form name="category">
+              <b-form-group
+                id="input-group-1"
+                label="Nom catégorie:"
+                label-for="input-1"
+                description=""
+                ><b-form-input
+                  name="name"
+                  v-model="name"
+                  v-model.trim="$v.name.$model"
+                  :state="!submitted ? null : submitted && !$v.name.$invalid"
+                  id="Name22"
+                  placeholder="Nom de la catégorie"
+                  type="text"
+                  class="form-control"
+                />
+                <b-form-invalid-feedback
+                  :state="!submitted ? null : submitted && $v.name.required"
+                >
+                  Field is required
+                </b-form-invalid-feedback>
+              </b-form-group>
+              <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                <label for="logo22" class="mr-sm-2">Logo</label
+                ><b-form-input
+                  name="logo"
+                  v-model="logo"
+                  v-model.trim="$v.logo.$model"
+                  :state="!submitted ? null : submitted && !$v.logo.$invalid"
+                  id="logo22"
+                  placeholder="https://via.placeholder.com/150.png/09f/fff"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <br />
+              <div class="float-right">
+                <b-button
+                  variant="success"
+                  :disabled="editLoading"
+                  @click="editCategory"
+                >
+                  <span
+                    v-show="editLoading"
+                    class="spinner-border spinner-border-sm"
+                  ></span>
+                  <span>Submit</span>
+                </b-button>
+              </div>
+            </b-form>
+          </b-modal>
+        </div>
         <b-modal
           id="my-modal"
           title="Supprimer la catégorie"
@@ -106,8 +163,8 @@
       </b-card>
       <template #overlay>
         <div class="text-center">
-          <b-icon icon="stopwatch" font-scale="3" animation="cylon"></b-icon>
-          <p id="cancel-label">Please wait...</p>
+          <b-icon icon="stopwatch" font-scale="5" animation="cylon"></b-icon>
+          <p id="cancel-label">Patienter...</p>
           <b-button
             ref="cancel"
             variant="outline-danger"
@@ -126,11 +183,18 @@
 <script>
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import "vue-good-table/dist/vue-good-table.css";
+import { required, requiredIf } from "vuelidate/lib/validators";
+
 export default {
   components: {
     PageTitle,
   },
   data: () => ({
+    name: "",
+    nameState: null,
+    submittedNames: [],
+    editLoading: false,
+    submitted: false,
     heading: "Catégories",
     subheading: "Liste des catégories",
     icon: "pe-7s-drawer icon-gradient bg-happy-itmeo",
@@ -180,6 +244,16 @@ export default {
     fixed: false,
     footClone: false,
   }),
+  validations: {
+    name: {
+      required,
+    },
+    logo: {
+      required: requiredIf(function () {
+        return this.logo !== "";
+      }),
+    },
+  },
   computed: {
     loading() {
       return this.$store.getters["category/loading"];
@@ -216,6 +290,35 @@ export default {
           this.deleteLoading = false;
           console.log(error);
         });
+    },
+    editCategory() {
+      this.editLoading = true;
+      this.submitted = true;
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.editLoading = false;
+      } else {
+        if (this.name) {
+          this.$store
+            .dispatch("category/createCategory", {
+              nom: this.name,
+              logo_url: this.logo,
+            })
+            .then(
+              (data) => {
+                console.log(data);
+                //this.$router.push("/");
+              },
+              (error) => {
+                console.log(error.response.data.detail[0]);
+                this.message =
+                  (error.response && error.response.data) ||
+                  error.response.data.detail ||
+                  error.toString();
+              }
+            );
+        }
+      }
     },
   },
 };
