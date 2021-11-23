@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -37,6 +39,8 @@ import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
@@ -79,6 +83,7 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.nguyenhoanglam.imagepicker.view.GridSpacingItemDecoration;
 import com.sogefi.position.BuildConfig;
 import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
@@ -86,15 +91,18 @@ import com.sogefi.position.api.ApiInterface;
 import com.sogefi.position.database.PositionDataBase;
 import com.sogefi.position.models.Batiments;
 import com.sogefi.position.models.BatimentsModel;
+import com.sogefi.position.models.Categories;
 import com.sogefi.position.models.Etablissements;
 import com.sogefi.position.models.Favorite;
 import com.sogefi.position.models.Language;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.Tracking;
+import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.models.data.DataEtablissements;
 import com.sogefi.position.repositories.FavoriteRepository;
 import com.sogefi.position.ui.TopIconButton;
+import com.sogefi.position.ui.activities.adapters.CategoriesAdapter;
 import com.sogefi.position.ui.activities.adapters.EtablissementAdapter;
 import com.sogefi.position.ui.activities.adapters.LanguagesAdapter;
 import com.sogefi.position.utils.Function;
@@ -193,6 +201,8 @@ public class MapActivity extends AppCompatActivity implements
 
     MapBoxUtils mapBoxUtils;
 
+    RecyclerView chipsLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,8 +259,12 @@ public class MapActivity extends AppCompatActivity implements
         clearButton = findViewById(R.id.clearButton);
         clearRouteButton = findViewById(R.id.clearRouteButton);
         newBusiness = findViewById(R.id.newBussiness);
+        chipsLayout = findViewById(R.id.recycler_chips);
 
 
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        chipsLayout.setLayoutManager(layoutManager);
 
 
 
@@ -436,7 +450,7 @@ public class MapActivity extends AppCompatActivity implements
             user_label.setText("Position");
         }
 
-
+    getCategories();
 
     }
 
@@ -929,7 +943,7 @@ public class MapActivity extends AppCompatActivity implements
                 Function.getBitmapFromDrawable(drawableOrigin)
         );
 
-        Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.ic_origin);
+        Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.ic_baseline_add_location_24);
         assert drawableBatiment != null;
         style.addImage(
                 "markerBatimentImage",
@@ -1472,7 +1486,7 @@ public class MapActivity extends AppCompatActivity implements
                             symbol = symbolManager.create(new SymbolOptions()
                                     .withLatLng(point)
                                     .withIconImage("markerBatimentImage")
-                                    .withIconSize(1.3f)
+                                    .withIconSize(1.9f)
                                     .withSymbolSortKey(10.0f));
 
                             int idBatiment = response.body().getData().get(i).getId();
@@ -1493,10 +1507,6 @@ public class MapActivity extends AppCompatActivity implements
                                     intent.putExtra("nombreNiveau",String.valueOf(nombreNiveau));
                                     startActivity(intent);
                                 });
-
-
-
-
 
                                 etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
 
@@ -1541,6 +1551,33 @@ public class MapActivity extends AppCompatActivity implements
             });
         } else {
               Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void getCategories() {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Categories> call = apiService.getCategories(API_KEY);
+            call.enqueue(new Callback<Categories>() {
+                @Override
+                public void onResponse(@NotNull Call<Categories> call, @NotNull Response<Categories> response) {
+                    Timber.tag("categories").e(response.toString());
+
+                    chipsLayout.setAdapter(new CategoriesAdapter(R.layout.item_chip,MapActivity.this,response.body().getData()));
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Categories> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("logout").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
         }
     }
 }

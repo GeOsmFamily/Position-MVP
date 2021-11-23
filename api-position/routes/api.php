@@ -42,6 +42,10 @@ Route::middleware('auth.apikey')->group(
             App\Http\Controllers\Api\SousCategorieController::class, 'searchSousCategorie'
         ]);
 
+        Route::get('zones', [App\Http\Controllers\Api\ZoneController::class, 'index']);
+        Route::get('zones/{id}', [App\Http\Controllers\Api\ZoneController::class, 'show']);
+
+
 
         Route::get('batiments', [App\Http\Controllers\Api\BatimentController::class, 'index']);
         Route::get('batiments/{id}', [App\Http\Controllers\Api\BatimentController::class, 'show']);
@@ -90,6 +94,10 @@ Route::middleware('auth.apikey')->group(
             Route::delete('horaires/{id}', [App\Http\Controllers\Api\HoraireController::class, 'destroy']);
 
             Route::apiResource('tracking', App\Http\Controllers\Api\TrackingController::class);
+
+            Route::post('zones', [App\Http\Controllers\Api\ZoneController::class, 'store']);
+            Route::put('zones/{id}', [App\Http\Controllers\Api\ZoneController::class, 'update']);
+            Route::delete('zones/{id}', [App\Http\Controllers\Api\ZoneController::class, 'destroy']);
         });
     }
 );

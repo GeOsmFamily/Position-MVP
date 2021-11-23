@@ -48,7 +48,7 @@ class BatimentController extends BaseController
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->codeBatiment, $fileName, 'public');
                 $batiment->image = '/storage/' . $filePath;
             }
 
@@ -110,7 +110,7 @@ class BatimentController extends BaseController
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment, $fileName, 'public');
                 $batiment->image = '/storage/' . $filePath;
             }
 

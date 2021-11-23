@@ -48,7 +48,7 @@ class CategorieController extends BaseController
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
                 $filePath = $request->file('file')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
-                $categorie->logo_url = '/storage/' . $filePath;
+                $categorie->logoUrl = '/storage/' . $filePath;
             }
 
             $save = $categorie->save();
@@ -98,15 +98,15 @@ class CategorieController extends BaseController
         if ($role == 1) {
             $categorie = Categorie::find($id);
             $request->validate([
-                'file' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
             ]);
 
             $categorie->nom = $request->nom ?? $categorie->nom;
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/categories/logos/' . $request->nom, $fileName, 'public');
-                $categorie->logo_url = '/storage/' . $filePath;
+                $filePath = $request->file('file')->storeAs('uploads/categories/logos/' . $categorie->nom, $fileName, 'public');
+                $categorie->logoUrl = '/storage/' . $filePath;
             }
 
             $save = $categorie->save();

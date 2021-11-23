@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Add Batiment - Batiment"
+                android:text="Nouveau Batiment"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -83,7 +83,7 @@
                     android:layout_height="40dp"
                     android:singleLine="true"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Batiment Name"
+                    android:hint="Nom du Batiment"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -185,7 +185,7 @@
                     android:paddingBottom="10dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="AddressName"
+                    android:hint="Addresse"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -303,9 +303,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@id/llimage5"
-                android:layout_margin="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/button_round_1"
-                android:text="Next" />
+                android:text="Suivant" />
 
             <ProgressBar
                 android:id="@+id/progressBar5"

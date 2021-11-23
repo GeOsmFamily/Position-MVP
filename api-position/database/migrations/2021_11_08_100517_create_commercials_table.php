@@ -21,7 +21,7 @@ class CreateCommercialsTable extends Migration
             $table->string('ville');
             $table->string('quartier');
             $table->string('imageProfil')->nullable();
-            $table->string('zone')->nullable();
+            $table->integer('idZone');
             $table->boolean('actif')->default(true);
             $table->timestamps();
         });

@@ -98,7 +98,7 @@ class SousCategorieController extends BaseController
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/sousCategories/logos/' . $request->nom, $fileName, 'public');
+                $filePath = $request->file('file')->storeAs('uploads/sousCategories/logos/' . $souscategorie->nom, $fileName, 'public');
                 $souscategorie->logoUrl = '/storage/' . $filePath;
             }
 

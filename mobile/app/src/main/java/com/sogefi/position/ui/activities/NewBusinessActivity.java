@@ -175,7 +175,6 @@ public class NewBusinessActivity extends AppCompatActivity {
                                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                             idSousCategorie = SousCategorysId[position];
 
-                                            Toast.makeText(getApplicationContext(), String.valueOf(idSousCategorie), Toast.LENGTH_LONG).show();
 
                                         }
 

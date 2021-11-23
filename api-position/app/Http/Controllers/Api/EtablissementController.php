@@ -119,7 +119,7 @@ class EtablissementController extends BaseController
 
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $etablissement->nom, $fileName, 'public');
                 $etablissement->cover = '/storage/' . $filePath;
             }
 
