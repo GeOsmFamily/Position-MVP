@@ -14,7 +14,7 @@ public class DataCategories {
     @SerializedName("nom")
     @Expose
     private String nom;
-    @SerializedName("logo_url")
+    @SerializedName("logoUrl")
     @Expose
     private Object logoUrl;
     @SerializedName("created_at")

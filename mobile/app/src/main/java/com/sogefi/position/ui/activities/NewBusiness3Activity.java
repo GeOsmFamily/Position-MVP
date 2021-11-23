@@ -286,7 +286,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                     Date time = sdf.parse(timeString);
 
-                    sdf = new SimpleDateFormat("hh:mm");
+                    sdf = new SimpleDateFormat("HH:mm");
                     String formatedTime = sdf.format(time);
                     open.setText(formatedTime);
 
@@ -309,7 +309,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                     Date time = sdf.parse(timeString);
 
-                    sdf = new SimpleDateFormat("hh:mm");
+                    sdf = new SimpleDateFormat("HH:mm");
                     String formatedTime = sdf.format(time);
                     closed.setText(formatedTime);
 

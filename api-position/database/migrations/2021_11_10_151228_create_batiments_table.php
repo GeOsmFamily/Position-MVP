@@ -15,7 +15,7 @@ class CreateBatimentsTable extends Migration
     {
         Schema::create('batiments', function (Blueprint $table) {
             $table->id();
-            $table->string("nom");
+            $table->string("nom")->nullable();
             $table->integer("nombreNiveaux");
             $table->string("codeBatiment");
             $table->double("longitude");

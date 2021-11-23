@@ -81,7 +81,7 @@ public class NewBusiness5Activity extends AppCompatActivity {
         progressBar5.setVisibility(View.GONE);
         scrollView5.setVisibility(View.VISIBLE);
 
-        
+
 
         lladdress5.setOnClickListener(v -> {
             Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
@@ -107,9 +107,7 @@ public class NewBusiness5Activity extends AppCompatActivity {
     }
 
     public void getCoordinatesBatiment() {
-        if(TextUtils.isEmpty(name5.getText().toString())){
-            Toast.makeText(this, "Entrez le nom du batiment", Toast.LENGTH_SHORT).show();
-        }
+
         if(TextUtils.isEmpty(niveaux5.getText().toString())){
             Toast.makeText(this, "Entrez le nombre de niveaux", Toast.LENGTH_SHORT).show();
         }

@@ -675,7 +675,7 @@ Response
         {
             "id":1,
             "nom":"Achats",
-            "logo_url":null,
+            "logoUrl":null,
             "created_at":"2021-11-09T17:54:43.000000Z",
             "updated_at":"2021-11-09T17:54:43.000000Z",
             "sous_categories":[
@@ -723,7 +723,7 @@ Response
 "data": {
             "id":1,
             "nom":"Achats",
-            "logo_url":null,
+            "logoUrl":null,
             "created_at":"2021-11-09T17:54:43.000000Z",
             "updated_at":"2021-11-09T17:54:43.000000Z"
 },
@@ -756,7 +756,7 @@ Response
     "data":{
         "id":3,
         "nom":"Agriculture",
-        "logo_url":null,
+        "logoUrl":null,
         "created_at":"2021-11-09T17:54:43.000000Z",
         "updated_at":"2021-11-09T17:54:43.000000Z",
         "sous_categories":[
@@ -802,7 +802,7 @@ Response
 "data": {
             "id":1,
             "nom":"Achats",
-            "logo_url":null,
+            "logoUrl":null,
             "created_at":"2021-11-09T17:54:43.000000Z",
             "updated_at":"2021-11-09T17:54:43.000000Z"
 },

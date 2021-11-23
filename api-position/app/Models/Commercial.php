@@ -43,12 +43,17 @@ class Commercial extends Model
     use HasFactory;
 
     protected $fillable = [
-        "idUser", "numeroCni", "numeroBadge", "ville", "quartier", "imageProfil", "zone", "actif"
+        "idUser", "numeroCni", "numeroBadge", "ville", "quartier", "imageProfil", "idZone", "actif"
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, "idUser");
+    }
+
+    public function zone()
+    {
+        return $this->belongsTo(Zone::class, "idZone");
     }
 
     public function etablissements()

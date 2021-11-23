@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Add Business - Adresses"
+                android:text="Nouvelle Entreprise"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -135,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Phone"
+                    android:hint="Téléphone principal"
                     android:textSize="15dp"
                     android:singleLine="true"
                     android:inputType="number"
@@ -330,7 +330,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/button_round_1"
-                android:text="NEXT" />
+                android:text="Suivant" />
             <ProgressBar
                 android:id="@+id/progress2"
                 android:visibility="gone"
