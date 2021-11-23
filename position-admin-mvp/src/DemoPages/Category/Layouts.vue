@@ -9,7 +9,7 @@
       <div class="card-body">
         <h5 class="card-title">Nouvelle Catégorie</h5>
         <div>
-          <b-form name="category" class="form-inline">
+          <b-form name="category">
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
               <label for="Name22" class="mr-sm-2">Nom</label
               ><b-form-input
@@ -41,8 +41,13 @@
                 class="form-control"
               />
             </div>
+            <br />
             <div class="float-right">
-              <b-button :disabled="loading" @click="handleLogin">
+              <b-button
+                :disabled="loading"
+                @click="handleLogin"
+                variant="success"
+              >
                 <span
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
@@ -106,7 +111,6 @@ export default {
             .then(
               (data) => {
                 console.log(data);
-                //this.$router.push("/");
               },
               (error) => {
                 console.log(error.response.data.detail[0]);

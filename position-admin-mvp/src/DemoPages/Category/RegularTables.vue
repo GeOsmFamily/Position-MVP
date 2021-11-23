@@ -56,7 +56,8 @@
               <b-button
                 variant="success"
                 class="mx-1"
-                @click="editRow(props.row.id)"
+                v-b-modal.edit-modal
+                @click="setRow(props.row)"
                 >Modifier</b-button
               >
               <b-button
@@ -76,6 +77,72 @@
           </div>
         </vue-good-table>
 
+        <div>
+          <b-modal
+            id="edit-modal"
+            ref="modal"
+            title="Modifier la catégorie"
+            hide-backdrop
+            hide-footer
+          >
+            <b-form name="category">
+              <b-form-group
+                id="input-group-1"
+                label="Nom catégorie:"
+                label-for="input-1"
+                description=""
+                ><b-form-input
+                  name="name"
+                  v-model="name"
+                  v-model.trim="$v.name.$model"
+                  :state="!submitted ? null : submitted && !$v.name.$invalid"
+                  id="Name22"
+                  placeholder="Nom de la catégorie"
+                  type="text"
+                  :value="currentRow != null ? currentRow.nom : 'test'"
+                  class="form-control"
+                />
+                <b-form-invalid-feedback
+                  :state="!submitted ? null : submitted && $v.name.required"
+                >
+                  Field is required
+                </b-form-invalid-feedback>
+              </b-form-group>
+              <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                <label for="logo22" class="mr-sm-2">Logo</label
+                ><b-form-input
+                  name="logo"
+                  v-model="logo"
+                  :state="!submitted ? null : submitted"
+                  id="logo22"
+                  placeholder="https://via.placeholder.com/150.png/09f/fff"
+                  type="text"
+                  :value="currentRow != null ? currentRow.logo_url : ''"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <div v-if="message" class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>
+              </div>
+              <br />
+              <div class="float-right">
+                <b-button
+                  variant="success"
+                  :disabled="editLoading"
+                  @click="editCategory"
+                >
+                  <span
+                    v-show="editLoading"
+                    class="spinner-border spinner-border-sm"
+                  ></span>
+                  <span>Modifier</span>
+                </b-button>
+              </div>
+            </b-form>
+          </b-modal>
+        </div>
         <b-modal
           id="my-modal"
           title="Supprimer la catégorie"
@@ -106,8 +173,8 @@
       </b-card>
       <template #overlay>
         <div class="text-center">
-          <b-icon icon="stopwatch" font-scale="3" animation="cylon"></b-icon>
-          <p id="cancel-label">Please wait...</p>
+          <b-icon icon="stopwatch" font-scale="5" animation="cylon"></b-icon>
+          <p id="cancel-label">Patienter...</p>
           <b-button
             ref="cancel"
             variant="outline-danger"
@@ -126,11 +193,20 @@
 <script>
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import "vue-good-table/dist/vue-good-table.css";
+import { required } from "vuelidate/lib/validators";
+
 export default {
   components: {
     PageTitle,
   },
   data: () => ({
+    name: "",
+    logo: "",
+    nameState: null,
+    message: "",
+    submittedNames: [],
+    editLoading: false,
+    submitted: false,
     heading: "Catégories",
     subheading: "Liste des catégories",
     icon: "pe-7s-drawer icon-gradient bg-happy-itmeo",
@@ -180,6 +256,11 @@ export default {
     fixed: false,
     footClone: false,
   }),
+  validations: {
+    name: {
+      required,
+    },
+  },
   computed: {
     loading() {
       return this.$store.getters["category/loading"];
@@ -197,8 +278,9 @@ export default {
       this.$store.dispatch("category/fetchCategories");
     },
     setRow(data) {
-      console.log(data);
       this.currentRow = data;
+      this.name = data.nom;
+      this.logo = data.logo_url;
     },
     closeModal() {
       this.$bvModal.hide("my-modal");
@@ -216,6 +298,47 @@ export default {
           this.deleteLoading = false;
           console.log(error);
         });
+    },
+    editCategory() {
+      console.log(this.logo);
+      this.editLoading = true;
+      this.submitted = true;
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        this.editLoading = false;
+      } else {
+        if (this.name) {
+          this.$store
+            .dispatch("category/editCategory", {
+              id: this.currentRow.id,
+              category: {
+                nom: this.name,
+              },
+            })
+            .then((result) => {
+              this.editLoading = false;
+              console.log(result);
+              this.$bvToast.toast(
+                `Modification de ${this.currentRow.nom} avec succès`,
+                {
+                  title: "Information",
+                  variant: "success",
+                  autoHideDelay: 5000,
+                  appendToast: true,
+                  solid: true,
+                }
+              );
+            })
+            .catch((error) => {
+              console.log(error.data);
+              this.editLoading = false;
+              this.message =
+                (error.data.errors && error.data.message) ||
+                error.data.errors.toString() ||
+                error.data.toString();
+            });
+        }
+      }
     },
   },
 };
