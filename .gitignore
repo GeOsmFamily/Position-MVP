@@ -1,0 +1,18 @@
+/.vscode
+/position-admin-mvp/node_modules
+
+# services
+/services/venv/
+/services/.env
+/services/.cmd
+/services/_pycache__
+/services/__init__.py
+/services/api.py
+/services/main.py
+/services/crud.py
+/services/database.py
+/services/exceptions.py
+/services/models.py
+/services/schemas.py
+/services/auth.py
+/services/TODO.todo

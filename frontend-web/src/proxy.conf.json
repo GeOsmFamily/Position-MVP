@@ -1,0 +1,18 @@
+{
+  "/auth": {
+      "target": "https://services.position.cm",
+      "secure": false,
+      "logLevel": "debug",
+      "changeOrigin": true
+  },
+  "/categories": {
+    "target": "https://api.position.cm",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+}
+
+}
+
+
+

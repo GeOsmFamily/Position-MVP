@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.sogefi.position">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_foreground"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="m">
+        <activity
+            android:name=".ui.activities.NewBusiness4Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.NewBusiness3Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.NewBusiness2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.BusinessActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.ProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.PicklocationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".ui.activities.NewBusinessActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activities.SearchActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.MapActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".ui.activities.FavoriteActivity" />
+        <activity android:name=".ui.activities.NavigationActivity" />
+        <activity android:name=".ui.activities.TutorielActivity" />
+        <activity android:name=".ui.activities.MapActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".ui.activities.SearchActivity" />
+        </activity>
+        <activity android:name=".ui.activities.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="app.position.cm"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <meta-data
+                android:name="default-url"
+                android:value="https://app.position.cm" />
+        </activity>
+
+        <provider
+            android:name=".provider.MySuggestionProvider"
+            android:authorities="com.sogefi.position.provider.MySuggestionProvider" />
+    </application>
+
+</manifest>

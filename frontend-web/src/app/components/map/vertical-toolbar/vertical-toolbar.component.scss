@@ -1,0 +1,35 @@
+/*.buttons{
+
+  position: absolute;
+  bottom:40px;
+    right:0;
+   margin-right: 30px;
+
+}*/
+:host {             // host targets selector: 'home'
+
+
+display: block;
+  width: 100px;
+ // height:150px   // takes parent width
+
+}
+.vertical-toolbar-groupe-btn-1 {
+
+  button {
+    margin-top: 10px;
+    border: 2px solid white;
+      background-color: #FFFFFF;
+      height: 30px;
+      border-radius:50%;
+      width: 30px;
+      cursor: pointer;
+      padding: 0px;
+
+  }
+
+  button:hover {
+    -webkit-filter: drop-shadow(0 0 0.91rem #fff);
+    filter: drop-shadow(0 0 0.91rem #fff);
+  }
+}

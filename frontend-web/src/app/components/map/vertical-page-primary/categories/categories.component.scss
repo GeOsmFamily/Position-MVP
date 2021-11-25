@@ -1,0 +1,80 @@
+.categories{
+  width: 317px;
+  margin: 0 auto;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  z-index: 2;
+  //max-height:40px;
+   border: 2px solid white;
+   border-radius: 10px;
+   //padding: 0px 10px 10px 10px;
+   margin-top: 10px;
+   padding:20 auto;
+
+   background-color: white;
+}
+
+.category-button{
+  border-radius: 10px;
+  border: 2px solid rgb(150, 55, 55);
+ // margin-left: 20px;
+}
+
+
+.mat-button{
+  background-color: white;
+  border-radius: 50px;
+    border: 2px solid rgb(148, 146, 146);
+    padding: 0 5px 0px 5px;
+    margin-bottom: 10px;
+    height: 25px;
+    line-height: 4px;
+    font-size: 10px;
+    font-family: 'OpenSans semibold';
+    border-width: thin;
+    margin-left: 4px;
+}
+
+@media (max-width:400px) {
+.categories{
+
+  width: 320px;
+}
+}
+@media (width:320px) {
+  .categories{
+
+    width: 280px;
+  }}
+
+  @media (width:280px) {
+    .categories{
+
+      width: 250px;
+    }}
+    @media (width:540px) {
+      .categories{
+
+        width:500px;
+      }
+    }
+
+
+
+.mat-icon {
+width: 15px;
+}
+
+.mobileListeView{
+  display: flex;
+     overflow-x: auto;
+}
+
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  button {
+    display: inline-block;
+  }
+}

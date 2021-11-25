@@ -1,0 +1,20 @@
+<div class="footer">
+  <!-- <mat-form-field appearance="fill" class="language_button" disableOptionCentering panelClass="myPanelClass" >
+     <mat-label>Choisir votre langue</mat-label>
+     <mat-select (selectionChange)="change_language($event)" >
+       <mat-option *ngFor="let lang of avaible_language" value="lang.code" >
+          {{lang.name}} </mat-option>
+     </mat-select>
+   </mat-form-field>-->
+
+
+   <mat-form-field appearance="standard" class="language_button" class="language_button "  disableOptionCentering panelClass="myPanelClass">
+    <mat-select (selectionChange)="change_language($event)" value="{{environment.default_language}}"
+      class="primary_transparent_bg">
+      <mat-option value="" disabled> -- --</mat-option>
+      <mat-option *ngFor="let lang of environment.avaible_language" value="{{lang}}"> <span
+          style="text-transform: capitalize;">{{lang}}</span> </mat-option>
+    </mat-select>
+  </mat-form-field>
+   <img class="img-fluid" src="assets/icon-help.svg" style="margin-left: 30px;"/>
+ </div>

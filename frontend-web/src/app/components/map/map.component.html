@@ -1,0 +1,39 @@
+<!--<app-header style="width:200px"></app-header>
+
+  <div id="map" class=" map" (click)="mapClicked()">
+
+  </div>
+<app-fiche-entreprise></app-fiche-entreprise>
+
+  <app-vertical-toolbar [map]="getMap()"></app-vertical-toolbar>
+
+
+<app-fiche-entreprise></app-fiche-entreprise>
+<app-etablissement></app-etablissement>
+-->
+
+
+<mat-sidenav-container class="sidenav-container" #sidenavContainer >
+  <mat-sidenav class="sidenav-left" opened mode="side" position="start">
+      <app-vertical-page-primary class="header"></app-vertical-page-primary>
+
+      <app-fiche-entreprise></app-fiche-entreprise>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content inner">
+
+    <app-vertical-toolbar [map]="getMap()">
+
+    </app-vertical-toolbar>
+
+    <div id="map" class="map">
+
+    </div>
+
+  </mat-sidenav-content>
+
+
+
+</mat-sidenav-container>
+
+
