@@ -34,7 +34,7 @@ class SousCategorieController extends BaseController
 
         if ($role == 1) {
             $request->validate([
-                'file' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png|max:1000'
             ]);
             $input = $request->all();
 
@@ -90,7 +90,7 @@ class SousCategorieController extends BaseController
         if ($role == 1) {
             $souscategorie = SousCategorie::find($id);
             $request->validate([
-                'file' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png|max:1000'
             ]);
 
             $souscategorie->nom = $request->nom ?? $souscategorie->nom;

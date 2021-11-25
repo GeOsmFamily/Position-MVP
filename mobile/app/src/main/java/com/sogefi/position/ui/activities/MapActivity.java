@@ -11,10 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -57,6 +60,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -133,7 +137,7 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class MapActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener {
+        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener, MaterialSearchBar.OnSearchActionListener {
 
     private static final String DEEPLINK_QUERY_FRIEND_POSITION = "friend_position";
     private static final String ORIGIN_ICON_ID = "origin-icon-id";
@@ -186,7 +190,7 @@ public class MapActivity extends AppCompatActivity implements
     NavigationView nav;
     DrawerLayout drawer;
     PreferenceManager pref;
-    SearchView search;
+    MaterialSearchBar search;
     MaterialButton searchB;
     CircularImageView user_image;
     private MapboxMap mapboxMap;
@@ -209,8 +213,14 @@ public class MapActivity extends AppCompatActivity implements
         Mapbox.getInstance(this, getString(R.string.mapbox_access_token));
         setContentView(R.layout.activity_map);
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
-      //  mapBoxUtils= new MapBoxUtils(mapboxMap);
+
+
+
+        //  mapBoxUtils= new MapBoxUtils(mapboxMap);
         pref = new PreferenceManager(this);
 
 
@@ -236,16 +246,39 @@ public class MapActivity extends AppCompatActivity implements
         favoriteRepository = new FavoriteRepository(mDb);
 
         search = findViewById(R.id.search);
-        SearchManager searchManager =
+        search.setOnSearchActionListener(this);
+        search.setNavButtonEnabled(true);
+
+        search.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d("LOG_TAG", getClass().getSimpleName() + " text changed " + search.getText());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+        });
+
+
+       /* SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         search.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+
+
 
         search.setIconifiedByDefault(false);
         search.setSubmitButtonEnabled(true);
 
 
-        search.setQueryHint(getString(R.string.search));
+        search.setQueryHint(getString(R.string.search));*/
 
 
         location = findViewById(R.id.location);
@@ -395,14 +428,14 @@ public class MapActivity extends AppCompatActivity implements
         origin.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.origin), Toast.LENGTH_LONG).show();
             pref.setNameORI("oui");
-            searchManager.startSearch(" ", true, getComponentName(), null, false);
+          //  searchManager.startSearch(" ", true, getComponentName(), null, false);
 
         });
 
         destination.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.destination), Toast.LENGTH_LONG).show();
             pref.setNameDest("oui");
-            searchManager.startSearch(" ", true, getComponentName(), null, false);
+          //  searchManager.startSearch(" ", true, getComponentName(), null, false);
 
         });
 
@@ -662,9 +695,7 @@ public class MapActivity extends AppCompatActivity implements
 
     //Methode pour recuperer la position de l'utilisateur
     public void getPositionCode() {
-        if (!search.isIconified()) {
-            search.setIconified(true);
-        }
+      search.closeSearch();
         if (symbolManager != null) symbolManager.deleteAll();
         Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
@@ -1578,6 +1609,31 @@ public class MapActivity extends AppCompatActivity implements
             });
         } else {
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+        String s = enabled ? "enabled" : "disabled";
+        Toast.makeText(MapActivity.this, "Search " + s, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+        switch (buttonCode) {
+            case MaterialSearchBar.BUTTON_NAVIGATION:
+                drawer.openDrawer(GravityCompat.START);
+                break;
+            case MaterialSearchBar.BUTTON_SPEECH:
+                break;
+            case MaterialSearchBar.BUTTON_BACK:
+                search.closeSearch();
+                break;
         }
     }
 }

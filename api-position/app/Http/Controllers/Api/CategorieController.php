@@ -39,7 +39,7 @@ class CategorieController extends BaseController
 
         if ($role == 1) {
             $request->validate([
-                'file' => 'mimes:png,svg|max:1000'
+                'file' => 'mimes:png|max:1000'
             ]);
             $input = $request->all();
 
@@ -98,7 +98,7 @@ class CategorieController extends BaseController
         if ($role == 1) {
             $categorie = Categorie::find($id);
             $request->validate([
-                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
 
             $categorie->nom = $request->nom ?? $categorie->nom;

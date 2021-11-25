@@ -30,32 +30,43 @@
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
+                android:layout_marginTop="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_baseline_menu_24">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/searchbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/bg_search_bar"
                     android:elevation="4dp">
 
 
-                    <androidx.appcompat.widget.SearchView
+                    <com.mancj.materialsearchbar.MaterialSearchBar
                         android:id="@+id/search"
+                        style="@style/MaterialSearchBarLight"
+                        app:mt_speechMode="true"
+                        app:mt_placeholder="@string/search"
+                        app:mt_navIconEnabled="true"
+                        app:mt_hint="@string/search"
+                        app:mt_maxSuggestionsCount="10"
+
+
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        app:searchIcon="@drawable/ic_logo_carr_"
+
                         android:background="@null"
                         android:ellipsize="end"
                         android:inputType="text"
