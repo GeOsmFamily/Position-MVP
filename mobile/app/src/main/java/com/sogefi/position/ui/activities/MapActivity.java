@@ -1514,7 +1514,6 @@ public class MapActivity extends AppCompatActivity implements
                 .build();
         WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
 
-        Toast.makeText(MapActivity.this, "Location Worker Started : " + periodicWork.getId(), Toast.LENGTH_SHORT).show();
     }
 
     public  void getBatiment(Style style) {
@@ -1652,13 +1651,10 @@ public class MapActivity extends AppCompatActivity implements
 
     @Override
     public void onSearchStateChanged(boolean enabled) {
-        String s = enabled ? "enabled" : "disabled";
-        Toast.makeText(MapActivity.this, "Search " + s, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSearchConfirmed(CharSequence text) {
-        Toast.makeText(MapActivity.this, "Search " + text, Toast.LENGTH_SHORT).show();
         searchApi(search.getText());
     }
 
@@ -1701,6 +1697,7 @@ public class MapActivity extends AppCompatActivity implements
             if (!matches.isEmpty())
             {
                 String Query = matches.get(0);
+                search.openSearch();
                 search.setText(Query);
             }
         }

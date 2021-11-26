@@ -99,7 +99,7 @@ class CommercialController extends BaseController
                 $inputCommercial['numeroBadge'] = $request->numeroBadge;
                 $inputCommercial['ville'] = $request->ville;
                 $inputCommercial['quartier'] = $request->quartier;
-                $inputCommercial['zone'] = $request->zone;
+                $inputCommercial['idZone'] = $request->idZone;
 
 
                 $commercial = $userNew->commercial()->create($inputCommercial);
