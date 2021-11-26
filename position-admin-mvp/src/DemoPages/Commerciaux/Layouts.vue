@@ -54,6 +54,30 @@
             </div>
             <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+              <label for="Badge22" class="mr-sm-2">Numéro Badge</label
+              ><b-form-input
+                name="badge"
+                v-model="badge"
+                v-model.trim="$v.badge.$model"
+                :state="!submitted ? null : submitted && !$v.badge.$invalid"
+                id="Badge22"
+                placeholder="Numéro de badge du commercial"
+                type="number"
+                class="form-control"
+              />
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.badge.required"
+              >
+                Field is required
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.badge.numeric"
+              >
+                This field must be a number
+              </b-form-invalid-feedback>
+            </div>
+            <br />
+            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
               <label for="Phone22" class="mr-sm-2">Telephone</label>
               <vue-tel-input v-model="phone"></vue-tel-input>
             </div>
@@ -106,7 +130,7 @@
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
                 ></span>
-                <span>Submit</span>
+                <span>Enregistrer</span>
               </b-button>
             </div>
           </b-form>
@@ -118,7 +142,7 @@
 
 <script>
 import PageTitle from "../../Layout/Components/PageTitle.vue";
-import { required, email } from "vuelidate/lib/validators";
+import { required, email, numeric } from "vuelidate/lib/validators";
 export default {
   components: {
     PageTitle,
@@ -130,6 +154,7 @@ export default {
     name: "",
     email: "",
     phone: "",
+    badge: "",
     zone: "",
     town: "",
     message: "",
@@ -153,6 +178,10 @@ export default {
     },
     zone: {
       required,
+    },
+    badge: {
+      required,
+      numeric,
     },
   },
   methods: {
