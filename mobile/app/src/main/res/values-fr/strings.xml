@@ -34,7 +34,7 @@
     <string name="arrival_hour">Arrivée</string>
     <string name="total_time">Temps</string>
     <string name="length">Distance</string>
-    <string name="search">Rechercher</string>
+    <string name="search">Rechercher un etablissement,un Lieu ou une Catégorie</string>
     <string name="origin_placeholder">Ma position</string>
     <string name="destination_placeholder">Vers</string>
     <string name="search_placeholder">Rechercher une position</string>

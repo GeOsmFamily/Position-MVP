@@ -36,7 +36,7 @@ class EtablissementController extends BaseController
 
         if ($role == 1 || $role == 2) {
             $request->validate([
-                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
@@ -104,7 +104,7 @@ class EtablissementController extends BaseController
             $etablissement = Etablissement::find($id);
             $batiment = Batiment::find($etablissement->idBatiment);
             $request->validate([
-                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
 
             $etablissement->nom = $request->nom ?? $etablissement->nom;

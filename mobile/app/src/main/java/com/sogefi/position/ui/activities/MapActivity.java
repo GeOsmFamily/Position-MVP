@@ -11,15 +11,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -57,6 +65,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -97,14 +106,18 @@ import com.sogefi.position.models.Favorite;
 import com.sogefi.position.models.Language;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
+import com.sogefi.position.models.Search;
+import com.sogefi.position.models.SearchEtablissement;
 import com.sogefi.position.models.Tracking;
 import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.models.data.DataEtablissements;
+import com.sogefi.position.models.data.DataSearchEtablissement;
 import com.sogefi.position.repositories.FavoriteRepository;
 import com.sogefi.position.ui.TopIconButton;
 import com.sogefi.position.ui.activities.adapters.CategoriesAdapter;
 import com.sogefi.position.ui.activities.adapters.EtablissementAdapter;
 import com.sogefi.position.ui.activities.adapters.LanguagesAdapter;
+import com.sogefi.position.ui.activities.adapters.SearchAdapter;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.MapBoxUtils;
 import com.sogefi.position.utils.PreferenceManager;
@@ -127,13 +140,17 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
 public class MapActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener {
+        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener, MaterialSearchBar.OnSearchActionListener {
 
     private static final String DEEPLINK_QUERY_FRIEND_POSITION = "friend_position";
     private static final String ORIGIN_ICON_ID = "origin-icon-id";
@@ -186,7 +203,7 @@ public class MapActivity extends AppCompatActivity implements
     NavigationView nav;
     DrawerLayout drawer;
     PreferenceManager pref;
-    SearchView search;
+    MaterialSearchBar search;
     MaterialButton searchB;
     CircularImageView user_image;
     private MapboxMap mapboxMap;
@@ -195,13 +212,19 @@ public class MapActivity extends AppCompatActivity implements
     private ConstraintLayout bottom_sheet;
     private SymbolManager symbolManager;
     private Symbol symbol;
+    private static final int REQUEST_CODE = 1234;
+    private SearchAdapter searchAdapter;
 
     JSONObject featureCollection = new JSONObject();
-
-
     MapBoxUtils mapBoxUtils;
 
     RecyclerView chipsLayout;
+
+    List<Search> searchResult = new ArrayList<>();
+    List<Nominatim> nominatimList = new ArrayList<>();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,7 +233,11 @@ public class MapActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_map);
 
 
-      //  mapBoxUtils= new MapBoxUtils(mapboxMap);
+
+
+
+
+        //  mapBoxUtils= new MapBoxUtils(mapboxMap);
         pref = new PreferenceManager(this);
 
 
@@ -232,20 +259,53 @@ public class MapActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
         setNavigationDrawer();
+        whiteNotificationBar(toolbar);
 
         favoriteRepository = new FavoriteRepository(mDb);
 
         search = findViewById(R.id.search);
-        SearchManager searchManager =
+        search.setCardViewElevation(50);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+         searchAdapter = new SearchAdapter(inflater);
+        search.setOnSearchActionListener(this);
+        search.setNavButtonEnabled(true);
+
+
+        search.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+             /*   search.clearSuggestions();
+                searchResult.clear();
+                if(search.getText().length() > 3) {
+                    searchApi(search.getText());
+                }*/
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+        });
+
+
+       /* SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         search.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+
+
 
         search.setIconifiedByDefault(false);
         search.setSubmitButtonEnabled(true);
 
 
-        search.setQueryHint(getString(R.string.search));
+        search.setQueryHint(getString(R.string.search));*/
 
 
         location = findViewById(R.id.location);
@@ -395,14 +455,14 @@ public class MapActivity extends AppCompatActivity implements
         origin.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.origin), Toast.LENGTH_LONG).show();
             pref.setNameORI("oui");
-            searchManager.startSearch(" ", true, getComponentName(), null, false);
+          //  searchManager.startSearch(" ", true, getComponentName(), null, false);
 
         });
 
         destination.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.destination), Toast.LENGTH_LONG).show();
             pref.setNameDest("oui");
-            searchManager.startSearch(" ", true, getComponentName(), null, false);
+          //  searchManager.startSearch(" ", true, getComponentName(), null, false);
 
         });
 
@@ -452,6 +512,17 @@ public class MapActivity extends AppCompatActivity implements
 
     getCategories();
 
+    }
+
+    private void whiteNotificationBar(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 
     private void clearAll() {
@@ -662,9 +733,7 @@ public class MapActivity extends AppCompatActivity implements
 
     //Methode pour recuperer la position de l'utilisateur
     public void getPositionCode() {
-        if (!search.isIconified()) {
-            search.setIconified(true);
-        }
+      search.closeSearch();
         if (symbolManager != null) symbolManager.deleteAll();
         Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
@@ -1580,4 +1649,170 @@ public class MapActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+        String s = enabled ? "enabled" : "disabled";
+        Toast.makeText(MapActivity.this, "Search " + s, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+        Toast.makeText(MapActivity.this, "Search " + text, Toast.LENGTH_SHORT).show();
+        searchApi(search.getText());
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+        switch (buttonCode) {
+            case MaterialSearchBar.BUTTON_NAVIGATION:
+                drawer.openDrawer(GravityCompat.START);
+                break;
+            case MaterialSearchBar.BUTTON_SPEECH:
+                startVoiceRecognitionActivity();
+                break;
+            case MaterialSearchBar.BUTTON_BACK:
+                search.closeSearch();
+                break;
+        }
+    }
+
+    /**
+     * Fire an intent to start the voice recognition activity.
+     */
+    private void startVoiceRecognitionActivity()
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Recherche de la voix...");
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+    /**
+     * Handle the results from the voice recognition activity.
+     */
+    @
+            Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
+        {
+            // Populate the wordsList with the String values the recognition engine thought it heard
+            final ArrayList < String > matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (!matches.isEmpty())
+            {
+                String Query = matches.get(0);
+                search.setText(Query);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void startSearch(String query) {
+
+
+    }
+    
+    public void searchApi(String query) {
+search.clearSuggestions();
+searchResult.clear();
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<SearchEtablissement> call = apiService.searchetablissement(API_KEY,query);
+            call.enqueue(new Callback<SearchEtablissement>() {
+                @Override
+                public void onResponse(@NotNull Call<SearchEtablissement> call, @NotNull Response<SearchEtablissement> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+                        Toast.makeText(getApplicationContext(), "Error Search", Toast.LENGTH_LONG).show();
+                    } else {
+                         nominatimSearch(query,response.body().getData());
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<SearchEtablissement> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("etablissements").e(t.toString());
+                    Log.e("error create", t.toString());
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public List<Nominatim> nominatimSearch(String query,List<DataSearchEtablissement> dataSearchEtablissement) {
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient().create(ApiInterface.class);
+            Call<List<Nominatim>> call = apiService.nominatim(query, "json", 1, "cm");
+            call.enqueue(new Callback<List<Nominatim>>() {
+                @Override
+                public void onResponse(@NotNull Call<List<Nominatim>> call, @NotNull Response<List<Nominatim>> response) {
+                   if(response.body().size() > 0) {
+
+                       for (int i = 0; i < dataSearchEtablissement.size(); i++) {
+                           Search search1 = new Search();
+                           search1.setNom(dataSearchEtablissement.get(i).getNom());
+                           search1.setId(dataSearchEtablissement.get(i).getId());
+                           search1.setType("etablissement");
+                           search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
+
+                           searchResult.add(search1);
+
+                       }
+
+                       for (int i = 0; i < response.body().size(); i++) {
+                           Search search2 = new Search();
+                           search2.setNom(response.body().get(i).getDisplayName());
+                           search2.setId(response.body().get(i).getPlaceId());
+                           search2.setType("nominatim");
+                           search2.setDetails(response.body().get(i).getAddress().getCity());
+
+                           searchResult.add(search2);
+                       }
+
+
+                   } else {
+                       for (int i = 0; i < dataSearchEtablissement.size(); i++) {
+                           Search search1 = new Search();
+                           search1.setNom(dataSearchEtablissement.get(i).getNom());
+                           search1.setId(dataSearchEtablissement.get(i).getId());
+                           search1.setType("etablissement");
+                           search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
+
+                           searchResult.add(search1);
+
+                       }
+                   }
+
+                    searchAdapter.setSuggestions(searchResult);
+                    search.setCustomSuggestionAdapter(searchAdapter);
+                    search.showSuggestionsList();
+
+                    Toast.makeText(getApplicationContext(), String.valueOf(searchResult.size()), Toast.LENGTH_LONG).show();
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<List<Nominatim>> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("main2").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+
+        return nominatimList;
+    }
+    
 }

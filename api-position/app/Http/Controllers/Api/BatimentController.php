@@ -40,7 +40,7 @@ class BatimentController extends BaseController
 
         if ($role == 1 || $role == 2) {
             $request->validate([
-                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
@@ -97,7 +97,7 @@ class BatimentController extends BaseController
         if ($role == 1 || $role == 2) {
             $batiment = Batiment::find($id);
             $request->validate([
-                'file' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
 
             $batiment->nom = $request->nom ?? $batiment->nom;
