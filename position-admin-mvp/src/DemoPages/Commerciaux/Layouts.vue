@@ -120,6 +120,16 @@
               </b-form-invalid-feedback>
             </div>
             <br />
+            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+              <label class="mr-sm-2">Photo Commercial</label>
+              <b-form-file
+                v-model="imageProfil"
+                :state="submitted ? Boolean(imageProfil) : null"
+                placeholder="Choisissez une photo de profil..."
+                drop-placeholder="Drop file here..."
+              ></b-form-file>
+            </div>
+            <br />
             <div class="float-right">
               <b-button
                 :disabled="loading"
@@ -155,6 +165,7 @@ export default {
     email: "",
     phone: "",
     badge: "",
+    imageProfil: null,
     zone: "",
     town: "",
     message: "",
