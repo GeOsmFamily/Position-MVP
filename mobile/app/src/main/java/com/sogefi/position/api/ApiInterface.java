@@ -9,6 +9,7 @@ import com.sogefi.position.models.Horaires;
 import com.sogefi.position.models.Images;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
+import com.sogefi.position.models.SearchEtablissement;
 import com.sogefi.position.models.Telephones;
 import com.sogefi.position.models.Tracking;
 import com.sogefi.position.models.UserModel;
@@ -88,6 +89,9 @@ public interface ApiInterface {
 
     @POST("api/tracking")
     Call<Tracking> addtracking(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body DataTracking body);
+
+    @GET("api/search/etablissements")
+    Call<SearchEtablissement> searchetablissement(@Header("X-Authorization") String apiKey, @Query("q") String q);
 
 }
 

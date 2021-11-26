@@ -45,7 +45,9 @@
         <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
 
 
     </style>
