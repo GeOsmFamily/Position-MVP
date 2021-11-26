@@ -4,6 +4,8 @@ import { MatIconRegistry } from '@angular/material/icon';
 import * as $ from 'jquery';
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { DeviceDetectionService } from 'src/app/services/device-detection.service';
+import { PositionApiService } from 'src/app/services/position-api/position-api.service';
+
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
@@ -12,7 +14,9 @@ import { DeviceDetectionService } from 'src/app/services/device-detection.servic
 export class CategoriesComponent implements OnInit {
 
 
-  constructor(public deviceDetector:DeviceDetectionService, public componentHelper: ComponentHelper,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+
+
+  constructor(public positionApi:PositionApiService,public deviceDetector:DeviceDetectionService, public componentHelper: ComponentHelper,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon('achats', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-categorie/icon-categorie-achats.svg'));
     iconRegistry.addSvgIcon('administration', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-categorie/icon-categorie-administration.svg'));
     iconRegistry.addSvgIcon('agriculture', sanitizer.bypassSecurityTrustResourceUrl('assets/icon-categorie/icon-categorie-agriculture.svg'));
@@ -47,8 +51,10 @@ export class CategoriesComponent implements OnInit {
 
   }
 
- 
+
 
 
   ngOnInit(): void {}
 }
+
+

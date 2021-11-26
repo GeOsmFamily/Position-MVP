@@ -14,6 +14,7 @@ import { MapHelper } from 'src/app/helpers/mapHelper';
 import { FicheEntrepriseComponent } from './fiche-entreprise/fiche-entreprise.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { EtablissementComponent } from './etablissement/etablissement.component';
+import { PositionApiService } from 'src/app/services/position-api/position-api.service';
 
 
 
@@ -57,11 +58,13 @@ loginComponent: LoginComponent | undefined;
 
 
 
-  constructor(public componentHelper: ComponentHelper) {
+  constructor(public positionApi:PositionApiService, public componentHelper: ComponentHelper) {
 
   }
 
   ngOnInit(): void {
+    console.log("categories")
+    this.positionApi.getCategories()
 
 this.initialiazeMap()
 this.getPosition()
@@ -79,7 +82,7 @@ this.getPosition()
       console.log( event.coordinate)
 
     });*/
-    this.mapClicked()   
+    this.mapClicked()
     this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
     this.componentHelper.setComponent('EtablissementComponent',this.etablissementComponent)
 

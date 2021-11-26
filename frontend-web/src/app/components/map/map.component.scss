@@ -57,6 +57,10 @@ app-login
   z-index: 2;
 }
 */
+
+.mat-drawer{
+  overflow-y: unset;
+}
 ::ng-deep .mat-drawer-container, .mat-drawer-content  {
    background-color:none;
 
@@ -78,7 +82,7 @@ app-login
   //height: 100%;
   background-color:white;
   //z-index: 1;
- color: black;
+ //color: black;
 
 
 app-fiche-entreprise {
@@ -88,7 +92,7 @@ app-fiche-entreprise {
   bottom: 0px;
   width: 310px;
   transition: 0.5s;
-  background: #fff;
+  background-color: #fff;
   z-index: 7;
   //overflow-y: auto;
   margin-right: 0px;
@@ -147,7 +151,7 @@ app-fiche-entreprise {
     background-color:transparent;
     color: white;
     //font-size: 30px;
-    position:fixed;
+    position:relative;
       top:0;
       width:100%;
       z-index:1;
@@ -155,29 +159,12 @@ app-fiche-entreprise {
   }
 
 
-.sidenav-left {
+  .sidenav-left {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
 
-  //overflow-x: hidden;
-  color: black;
-  app-profil {
-    position: absolute;
-
-    top: 0px;
-    bottom: 0px;
-
-    transition: 0.5s;
-    background-color: #fff;
-    z-index: 2;
-
-    height: 100vh;
-    visibility: visible;
-
-
-
-  }
-
-}
-
+    }
 }
 
 @media (max-width:414)  {

@@ -1,38 +1,15 @@
 <ng-container *ngIf="form">
   <form [formGroup]="form" class="header-search-form col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+    <img  class="" src="assets/icon/icon-menu.svg" *ngIf="!form.get('searchWord')?.value"/>
+    <img   class="" src="assets/icon/icon-arrow_left.svg" *ngIf="form.get('searchWord')?.value"/>
+
     <mat-form-field appearance="fill" class="">
 
-      <table class="example-full-width" cellspacing="0">
-        <tr>
-        <td> <img  class="" src="assets/icon/icon-menu.svg" *ngIf="!form.get('searchWord')?.value"/>
-          <img   class="" src="assets/icon/icon-arrow_left.svg" *ngIf="form.get('searchWord')?.value"/>
-        </td>
-        <td >
+
           <input type="text" matInput formControlName="searchWord" [matAutocomplete]="auto" class=" white "
     placeholder="Rechercher un établissement, un lieu..." onfocus="this.placeholder = ''"
     onblur="this.placeholder = 'Search'">
-
-        </td>
-        <td>
-          <div  style="width: 24px;">
-            <img  matSuffix class="" src="assets/icon/icon-clear.svg" *ngIf="form.get('searchWord')?.value"
-          (click)="clearSearch()"/>
-          </div>
-
-          </td>
-
-        <td style="padding-left:2px;border-spacing:20px;border-left:grey solid 1px;">
-
-            <img MatPrefix class="" src="assets/icon/icon-perm_identity.svg"  style="margin-right: 5px;"/>
-
-
-
-        </td>
-      </tr></table>
-
-
-
-
 
 
 
@@ -78,6 +55,14 @@
       </div>
     </mat-autocomplete>
     </mat-form-field>
+    <img  matSuffix class="" src="assets/icon/icon-clear.svg" *ngIf="form.get('searchWord')?.value"
+    (click)="clearSearch()"/>
+
+
+
+      <img MatPrefix class="" src="assets/icon/icon-perm_identity.svg" />
+
+
   </form>
 </ng-container>
 
