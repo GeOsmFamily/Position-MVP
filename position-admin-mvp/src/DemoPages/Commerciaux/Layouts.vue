@@ -133,7 +133,7 @@
             <div class="float-right">
               <b-button
                 :disabled="loading"
-                @click="handleLogin"
+                @click="createCommercial"
                 variant="success"
               >
                 <span
@@ -196,17 +196,17 @@ export default {
     },
   },
   methods: {
-    handleLogin() {
-      this.$store.commit("category/toggleLoading", true);
+    createCommercial() {
+      this.$store.commit("commercial/toggleLoading", true);
       this.submitted = true;
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.$store.commit("category/toggleLoading", false);
+        this.$store.commit("commercial/toggleLoading", false);
       } else {
         if (this.name) {
           console.log("requête envoyée");
           this.$store
-            .dispatch("category/createCategory", {
+            .dispatch("commercial/createCommercial", {
               nom: this.name,
               logo_url: this.logo,
             })
