@@ -13,6 +13,9 @@ class CommercialService {
   updateCommercial(id, data) {
     return api.put(`commercial/${id}`, data);
   }
+  deleteCommercial(id) {
+    return api.delete(`commercial/${id}`);
+  }
 }
 
 export default new CommercialService();
