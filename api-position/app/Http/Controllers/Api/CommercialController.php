@@ -40,7 +40,7 @@ class CommercialController extends BaseController
                 $result['ville'] = $commercial->ville;
                 $result['quartier'] = $commercial->quartier;
                 $result['imageProfil'] = $commercial->imageProfil;
-                $result['zone'] = $commercial->zone;
+                $result['idZone'] = $commercial->idZone;
                 $result['actif'] = $commercial->actif;
 
                 $data[] = $result;
@@ -155,6 +155,7 @@ class CommercialController extends BaseController
                     $result['ville'] = $commercial->ville;
                     $result['quartier'] = $commercial->quartier;
                     $result['imageProfil'] = $commercial->imageProfil;
+                    $result['idZone'] = $commercial->idZone;
 
                     $result['actif'] = $commercial->actif;
 
@@ -175,6 +176,7 @@ class CommercialController extends BaseController
                 $result['ville'] = $commercial->ville;
                 $result['quartier'] = $commercial->quartier;
                 $result['imageProfil'] = $commercial->imageProfil;
+                $result['idZone'] = $commercial->idZone;
 
                 $result['actif'] = $commercial->actif;
 
@@ -228,7 +230,7 @@ class CommercialController extends BaseController
                     $commercial->numeroBadge = $request->numeroBadge ?? $commercial->numeroBadge;
                     $commercial->ville = $request->ville ?? $commercial->ville;
                     $commercial->quartier = $request->quartier ?? $commercial->quartier;
-                    $commercial->zone = $request->zone ?? $commercial->zone;
+                    $commercial->idZone = $request->idZone ?? $commercial->idZone;
                     $commercial->actif = $request->actif ?? $commercial->actif;
 
                     if ($request->file()) {
@@ -266,7 +268,7 @@ class CommercialController extends BaseController
                 $commercial->numeroBadge = $request->numeroBadge ?? $commercial->numeroBadge;
                 $commercial->ville = $request->ville ?? $commercial->ville;
                 $commercial->quartier = $request->quartier ?? $commercial->quartier;
-                $commercial->zone = $request->zone ?? $commercial->zone;
+                $commercial->idZone = $request->idZone ?? $commercial->idZone;
                 $commercial->actif = $request->actif ?? $commercial->actif;
 
                 if ($request->file()) {
