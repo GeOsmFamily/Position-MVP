@@ -1,4 +1,3 @@
-import CategoryService from "../service/category.service";
 import CommercialService from "../service/commercial.service";
 
 const initialState = {

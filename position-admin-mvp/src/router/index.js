@@ -46,12 +46,12 @@ const routes = [
   },
   {
     path: "/commercial/create",
-    name: "category-create",
+    name: "commercial-create",
     component: () => import("../DemoPages/Commerciaux/Layouts.vue"),
   },
   {
     path: "/commercial/list",
-    name: "category-list",
+    name: "commercial-list",
     component: () => import("../DemoPages/Commerciaux/RegularTables.vue"),
   },
   {

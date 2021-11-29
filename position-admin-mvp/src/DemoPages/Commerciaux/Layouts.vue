@@ -38,7 +38,7 @@
                 :state="!submitted ? null : submitted && !$v.email.$invalid"
                 id="Email22"
                 placeholder="Email du commercial"
-                type="text"
+                type="email"
                 class="form-control"
               />
               <b-form-invalid-feedback
@@ -63,6 +63,30 @@
                 id="Badge22"
                 placeholder="Numéro de badge du commercial"
                 type="number"
+                class="form-control"
+              />
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.badge.required"
+              >
+                Field is required
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.badge.numeric"
+              >
+                This field must be a number
+              </b-form-invalid-feedback>
+            </div>
+            <br />
+            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+              <label for="Badge22" class="mr-sm-2">Numéro CNI</label
+              ><b-form-input
+                name="badge"
+                v-model="numeroCni"
+                v-model.trim="$v.numeroCni.$model"
+                :state="!submitted ? null : submitted && !$v.numeroCni.$invalid"
+                id="Badge22"
+                placeholder="Numéro de CNI du commercial"
+                type="text"
                 class="form-control"
               />
               <b-form-invalid-feedback
@@ -165,6 +189,7 @@ export default {
     email: "",
     phone: "",
     badge: "",
+    numeroCni: "",
     imageProfil: null,
     zone: "",
     town: "",
@@ -194,6 +219,9 @@ export default {
       required,
       numeric,
     },
+    numeroCni: {
+      required,
+    },
   },
   methods: {
     createCommercial() {
@@ -207,8 +235,13 @@ export default {
           console.log("requête envoyée");
           this.$store
             .dispatch("commercial/createCommercial", {
-              nom: this.name,
-              logo_url: this.logo,
+              name: this.name,
+              email: this.email,
+              phone: this.phone,
+              ville: this.town,
+              zone: this.zone,
+              numeroCni: this.numeroCni,
+              numeroBadge: this.numeroBadge,
             })
             .then(
               (data) => {

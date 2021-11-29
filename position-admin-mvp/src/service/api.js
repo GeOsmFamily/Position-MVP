@@ -2,13 +2,13 @@ import axios from "axios";
 import store from "../store/index";
 import router from "@/router";
 const api = axios.create({
-  baseURL: "https://test.position.cm/api/",
+  baseURL: "https://services.position.cm/api/",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
     "X-Authorization":
-      "sssy1jcp4yAzGt6C0IpgkTqXb9zz9wpbm2QXK92ghHeSFvnqwRRxi7j2ZZf28tDg",
+      "Enkk78Zn7I0FvaAt5YyM6EOadfbbgvX9lfm3ymGcUN1BVVpaOFq6S3OSGIz0j0CE",
   },
 });
 api.interceptors.request.use(
