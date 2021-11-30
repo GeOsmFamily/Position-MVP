@@ -86,7 +86,7 @@
                 :state="!submitted ? null : submitted && !$v.numeroCni.$invalid"
                 id="Badge22"
                 placeholder="Numéro de CNI du commercial"
-                type="text"
+                type="number"
                 class="form-control"
               />
               <b-form-invalid-feedback
@@ -103,7 +103,17 @@
             <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
               <label for="Phone22" class="mr-sm-2">Telephone</label>
-              <vue-tel-input v-model="phone"></vue-tel-input>
+              <vue-tel-input
+                v-model="phone"
+                v-model.trim="$v.phone.$model"
+                :state="!submitted ? null : submitted && !$v.phone.$invalid"
+                id="Phone22"
+              ></vue-tel-input>
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.phone.required"
+              >
+                Field is required
+              </b-form-invalid-feedback>
             </div>
             <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
@@ -128,17 +138,36 @@
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
               <label for="zone22" class="mr-sm-2">Zone</label
               ><b-form-input
-                name="logo"
+                name="zone"
                 v-model="zone"
                 v-model.trim="$v.zone.$model"
                 :state="!submitted ? null : submitted && !$v.zone.$invalid"
                 id="zone22"
-                placeholder="Ville du commercial"
+                placeholder="Zone du commercial"
                 type="text"
                 class="form-control"
               />
               <b-form-invalid-feedback
                 :state="!submitted ? null : submitted && $v.zone.required"
+              >
+                Field is required
+              </b-form-invalid-feedback>
+            </div>
+            <br />
+            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+              <label for="Quartier22" class="mr-sm-2">Quartier</label
+              ><b-form-input
+                name="quartier"
+                v-model="quartier"
+                v-model.trim="$v.quartier.$model"
+                :state="!submitted ? null : submitted && !$v.quartier.$invalid"
+                id="zone22"
+                placeholder="Quartier du commercial"
+                type="text"
+                class="form-control"
+              />
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.quartier.required"
               >
                 Field is required
               </b-form-invalid-feedback>
@@ -151,7 +180,21 @@
                 :state="submitted ? Boolean(imageProfil) : null"
                 placeholder="Choisissez une photo de profil..."
                 drop-placeholder="Drop file here..."
+                @change="handleFileUpload($event)"
               ></b-form-file>
+            </div>
+            <br />
+            <div v-if="previewImage">
+              <div>
+                <b-img
+                  :src="previewImage"
+                  fluid
+                  alt="Fluid image"
+                  width="400"
+                  height="400"
+                ></b-img>
+                <!--                <img class="preview my-3" :src="previewImage" alt="" />-->
+              </div>
             </div>
             <br />
             <div class="float-right">
@@ -189,7 +232,9 @@ export default {
     email: "",
     phone: "",
     badge: "",
+    quartier: "",
     numeroCni: "",
+    previewImage: null,
     imageProfil: null,
     zone: "",
     town: "",
@@ -198,7 +243,7 @@ export default {
   }),
   computed: {
     loading() {
-      return this.$store.getters["category/loading"];
+      return this.$store.getters["commercial/loading"];
     },
   },
   validations: {
@@ -208,6 +253,9 @@ export default {
     email: {
       required,
       email,
+    },
+    phone: {
+      required,
     },
     town: {
       required,
@@ -221,9 +269,18 @@ export default {
     },
     numeroCni: {
       required,
+      numeric,
+    },
+    quartier: {
+      required,
     },
   },
   methods: {
+    handleFileUpload(event) {
+      console.log(event.target.files[0]);
+      this.imageProfil = event.target.files[0];
+      this.previewImage = URL.createObjectURL(this.imageProfil);
+    },
     createCommercial() {
       this.$store.commit("commercial/toggleLoading", true);
       this.submitted = true;
@@ -232,29 +289,28 @@ export default {
         this.$store.commit("commercial/toggleLoading", false);
       } else {
         if (this.name) {
-          console.log("requête envoyée");
-          this.$store
-            .dispatch("commercial/createCommercial", {
-              name: this.name,
-              email: this.email,
-              phone: this.phone,
-              ville: this.town,
-              zone: this.zone,
-              numeroCni: this.numeroCni,
-              numeroBadge: this.numeroBadge,
-            })
-            .then(
-              (data) => {
-                console.log(data);
-              },
-              (error) => {
-                console.log(error.response.data.detail[0]);
-                this.message =
-                  (error.response && error.response.data) ||
-                  error.response.data.detail ||
-                  error.toString();
-              }
-            );
+          let formData = new FormData();
+          formData.append("imageProfil", this.imageProfil);
+          formData.append("name", this.name);
+          formData.append("email", this.email);
+          formData.append("phone", this.phone);
+          formData.append("ville", this.ville);
+          formData.append("idZone", 1);
+          formData.append("numeroCni", this.numeroCni);
+          formData.append("numeroBadge", this.badge);
+          formData.append("quartier", this.quartier);
+          this.$store.dispatch("commercial/createCommercial", formData).then(
+            (data) => {
+              console.log(data);
+            },
+            (error) => {
+              console.log(error.response.data.detail[0]);
+              this.message =
+                (error.response && error.response.data) ||
+                error.response.data.detail ||
+                error.toString();
+            }
+          );
         }
       }
     },

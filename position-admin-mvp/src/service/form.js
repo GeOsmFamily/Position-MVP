@@ -1,18 +1,18 @@
 import axios from "axios";
-import store from "../store/index";
 import router from "@/router";
-const api = axios.create({
+import store from "@/store";
+
+const form = axios.create({
   baseURL: "https://services.position.cm/api/",
   headers: {
     Accept: "application/json",
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
     "Access-Control-Allow-Origin": "*",
     "X-Authorization":
       "Enkk78Zn7I0FvaAt5YyM6EOadfbbgvX9lfm3ymGcUN1BVVpaOFq6S3OSGIz0j0CE",
   },
 });
-
-api.interceptors.request.use(
+form.interceptors.request.use(
   (config) => {
     const token = JSON.parse(localStorage.getItem("user"));
     if (token) {
@@ -24,7 +24,7 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-api.interceptors.response.use(
+form.interceptors.response.use(
   (response) => {
     if (response.status === 200 || response.status === 201) {
       return Promise.resolve(response);
@@ -70,4 +70,4 @@ api.interceptors.response.use(
     }
   }
 );
-export default api;
+export default form;
