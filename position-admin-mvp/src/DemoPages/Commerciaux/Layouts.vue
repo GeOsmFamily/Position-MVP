@@ -290,7 +290,7 @@ export default {
       } else {
         if (this.name) {
           let formData = new FormData();
-          formData.append("imageProfil", this.imageProfil);
+          formData.append("file", this.imageProfil);
           formData.append("name", this.name);
           formData.append("email", this.email);
           formData.append("phone", this.phone);

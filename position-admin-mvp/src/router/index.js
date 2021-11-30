@@ -55,6 +55,11 @@ const routes = [
     component: () => import("../DemoPages/Commerciaux/RegularTables.vue"),
   },
   {
+    path: "/commercial/:id",
+    name: "commercial-details",
+    component: () => import("../DemoPages/Commerciaux/Details.vue"),
+  },
+  {
     path: "/pages/register-boxed",
     name: "register-boxed",
     meta: { layout: "userpages" },

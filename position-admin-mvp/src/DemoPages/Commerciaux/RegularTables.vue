@@ -50,7 +50,7 @@
               <b-button
                 class="mx-1"
                 variant="info"
-                @click="editRow(props.row.id)"
+                @click="commercialDetails(props.row)"
                 >Détails</b-button
               >
               <b-button
@@ -285,7 +285,7 @@ export default {
     },
   },
   created() {
-    if (this.commerciaux == null || this.categories.length === 0)
+    if (this.commerciaux == null || this.commerciaux.length === 0)
       this.getCommerciaux();
   },
   methods: {
@@ -313,6 +313,12 @@ export default {
           this.deleteLoading = false;
           console.log(error);
         });
+    },
+    commercialDetails(commercial) {
+      this.$store.dispatch("commercial/setCurrentCommercial", commercial);
+      this.$router.push({
+        path: `/commercial/${commercial.id}`,
+      });
     },
     editCategory() {
       console.log(this.logo);

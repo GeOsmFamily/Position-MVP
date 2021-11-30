@@ -25,6 +25,9 @@ export const commercial = {
         }
       );
     },
+    setCurrentCommercial({ commit }, commercial) {
+      commit("setCurrentCommercial", commercial);
+    },
     createCommercial({ dispatch, commit }, data) {
       commit("toggleLoading", true);
       return CommercialService.saveCommercial(data).then(
@@ -73,6 +76,9 @@ export const commercial = {
     toggleLoading(state, value) {
       state.loading = value;
     },
+    setCurrentCommercial(state, value) {
+      state.currentCommercial = value;
+    },
   },
   getters: {
     loading: ({ loading }) => {
@@ -80,6 +86,9 @@ export const commercial = {
     },
     commerciaux: ({ commerciaux }) => {
       return commerciaux;
+    },
+    commercial: ({ currentCommercial }) => {
+      return currentCommercial;
     },
   },
 };
