@@ -15,10 +15,10 @@
       <div class="text-center" v-if="loading">
         <b-spinner variant="success" label="Spinning"></b-spinner>
       </div>
-      <b-card title="Catégories" class="main-card mb-4" v-if="!loading">
+      <b-card title="Commerciaux" class="main-card mb-4" v-if="!loading">
         <vue-good-table
           :columns="fields"
-          :rows="categories"
+          :rows="commerciaux"
           :fixed-header="true"
           :search-options="{
             enabled: true,
@@ -73,7 +73,7 @@
             </span>
           </template>
           <div slot="emptystate">
-            No data yet.<b-button @click="getCategories">Réessayer</b-button>
+            No data yet.<b-button @click="getCommerciaux()">Réessayer</b-button>
           </div>
         </vue-good-table>
 
@@ -145,20 +145,20 @@
         </div>
         <b-modal
           id="my-modal"
-          title="Supprimer la catégorie"
+          title="Supprimer le commercial"
           hide-backdrop
           hide-footer
         >
           <div class="d-block text-center">
             <h5>
-              Voulez vous vraiment supprimer la catégorie
-              {{ currentRow != null ? currentRow.nom : "" }}!
+              Voulez vous vraiment supprimer le commercial
+              {{ currentRow != null ? currentRow.name : "" }}!
             </h5>
           </div>
           <b-button
             class="mt-3"
             variant="outline-danger"
-            @click="deleteCategory"
+            @click="deleteCommercial"
             block
             >Supprimer</b-button
           >
@@ -207,8 +207,8 @@ export default {
     submittedNames: [],
     editLoading: false,
     submitted: false,
-    heading: "Catégories",
-    subheading: "Liste des catégories",
+    heading: "Commerciaux",
+    subheading: "Liste des commerciaux",
     icon: "pe-7s-drawer icon-gradient bg-happy-itmeo",
     currentRow: null,
     deleteLoading: false,
@@ -217,16 +217,31 @@ export default {
     blur: "2px",
     fields: [
       {
-        label: "No",
-        field: "id",
+        label: "No Badge",
+        field: "numeroBadge",
         type: "number",
       },
       {
         label: "Nom",
-        field: "nom",
+        field: "name",
         type: "string",
       },
       {
+        label: "Email",
+        field: "email",
+        type: "string",
+      },
+      {
+        label: "Contact",
+        field: "phone",
+        type: "string",
+      },
+      {
+        label: "Ville",
+        field: "ville",
+        type: "string",
+      },
+      /*{
         label: "Crée le",
         field: "created_at",
         type: "date",
@@ -239,7 +254,7 @@ export default {
         type: "date",
         dateInputFormat: "dd/mm/yyyy",
         dateOutputFormat: "dd/mm/yyyy",
-      },
+      },*/
       {
         label: "Actions",
         field: "actions",
@@ -263,19 +278,19 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.getters["category/loading"];
+      return this.$store.getters["commercial/loading"];
     },
-    categories() {
-      return this.$store.getters["category/categories"];
+    commerciaux() {
+      return this.$store.getters["commercial/commerciaux"];
     },
   },
   created() {
-    if (this.categories == null || this.categories.length === 0)
-      this.getCategories();
+    if (this.commerciaux == null || this.categories.length === 0)
+      this.getCommerciaux();
   },
   methods: {
-    getCategories() {
-      this.$store.dispatch("category/fetchCategories");
+    getCommerciaux() {
+      this.$store.dispatch("commercial/fetchCommerciaux");
     },
     setRow(data) {
       this.currentRow = data;
@@ -285,11 +300,11 @@ export default {
     closeModal() {
       this.$bvModal.hide("my-modal");
     },
-    deleteCategory() {
+    deleteCommercial() {
       this.$bvModal.hide("my-modal");
       this.deleteLoading = true;
       this.$store
-        .dispatch("category/deleteCategory", this.currentRow.id)
+        .dispatch("commercial/deleteCommercial", this.currentRow.id)
         .then((data) => {
           this.deleteLoading = false;
           console.log(data);

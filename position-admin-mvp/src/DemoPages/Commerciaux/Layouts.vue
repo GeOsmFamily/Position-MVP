@@ -294,7 +294,7 @@ export default {
           formData.append("name", this.name);
           formData.append("email", this.email);
           formData.append("phone", this.phone);
-          formData.append("ville", this.ville);
+          formData.append("ville", this.town);
           formData.append("idZone", 1);
           formData.append("numeroCni", this.numeroCni);
           formData.append("numeroBadge", this.badge);
