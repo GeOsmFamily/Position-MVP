@@ -28,18 +28,29 @@
                 Field is required
               </b-form-invalid-feedback>
             </div>
+            <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-              <label for="logo22" class="mr-sm-2">Logo</label
-              ><b-form-input
-                name="logo"
+              <label class="mr-sm-2">Logo catégorie</label>
+              <b-form-file
                 v-model="logo"
-                v-model.trim="$v.logo.$model"
-                :state="!submitted ? null : submitted && !$v.logo.$invalid"
-                id="logo22"
-                placeholder="https://via.placeholder.com/150.png/09f/fff"
-                type="text"
-                class="form-control"
-              />
+                :state="submitted ? Boolean(logo) : null"
+                placeholder="Choisissez un logo pour la catégorie..."
+                drop-placeholder="Drop file here..."
+                @change="handleFileUpload($event)"
+              ></b-form-file>
+            </div>
+            <br />
+            <div v-if="previewImage">
+              <div>
+                <b-img
+                  :src="previewImage"
+                  fluid
+                  alt="Fluid image"
+                  width="400"
+                  height="400"
+                ></b-img>
+                <!--                <img class="preview my-3" :src="previewImage" alt="" />-->
+              </div>
             </div>
             <br />
             <div class="float-right">
@@ -52,7 +63,7 @@
                   v-show="loading"
                   class="spinner-border spinner-border-sm"
                 ></span>
-                <span>Submit</span>
+                <span>Enregistrer</span>
               </b-button>
             </div>
           </b-form>
@@ -74,7 +85,8 @@ export default {
     subheading: "Ajouter une nouvelle catégorie",
     icon: "pe-7s-graph text-success",
     name: "",
-    logo: "",
+    logo: null,
+    previewImage: null,
     message: "",
     submitted: false,
   }),
@@ -94,6 +106,11 @@ export default {
     },
   },
   methods: {
+    handleFileUpload(event) {
+      console.log(event.target.files[0]);
+      this.logo = event.target.files[0];
+      this.previewImage = URL.createObjectURL(this.logo);
+    },
     handleLogin() {
       this.$store.commit("category/toggleLoading", true);
       this.submitted = true;
@@ -103,23 +120,21 @@ export default {
       } else {
         if (this.name) {
           console.log("requête envoyée");
-          this.$store
-            .dispatch("category/createCategory", {
-              nom: this.name,
-              logo_url: this.logo,
-            })
-            .then(
-              (data) => {
-                console.log(data);
-              },
-              (error) => {
-                console.log(error.response.data.detail[0]);
-                this.message =
-                  (error.response && error.response.data) ||
-                  error.response.data.detail ||
-                  error.toString();
-              }
-            );
+          let formData = new FormData();
+          formData.append("file", this.logo);
+          formData.append("nom", this.name);
+          this.$store.dispatch("category/createCategory", formData).then(
+            (data) => {
+              console.log(data);
+            },
+            (error) => {
+              console.log(error.response.data.detail[0]);
+              this.message =
+                (error.response && error.response.data) ||
+                error.response.data.detail ||
+                error.toString();
+            }
+          );
         }
       }
     },
