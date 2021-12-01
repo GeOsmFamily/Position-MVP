@@ -43,7 +43,7 @@ import timber.log.Timber;
 public class NewBusiness4Activity extends AppCompatActivity {
     PreferenceManager pref;
     ProgressBar progressBar;
-    Button submit;
+    Button submit,back4;
     ImageView image41,image42,image43,image44,image45,add41,add42,add43,add44,add45;
     File image1 ,image2,image3,image4,image5;
 
@@ -70,6 +70,8 @@ public class NewBusiness4Activity extends AppCompatActivity {
         add44 = findViewById(R.id.add44);
         add45 = findViewById(R.id.add45);
 
+        back4 = findViewById(R.id.back4);
+
 
         progressBar.setVisibility(View.GONE);
 
@@ -80,6 +82,8 @@ public class NewBusiness4Activity extends AppCompatActivity {
         image45.setOnClickListener(v -> chooseImage(205));
 
         submit.setOnClickListener(v -> updateEtablissement(idEtablissement));
+        back4.setOnClickListener(v -> finish());
+
     }
     
     public void updateEtablissement(String idEtablissement) {
@@ -95,7 +99,8 @@ public class NewBusiness4Activity extends AppCompatActivity {
     public void chooseImage(int code) {
         ImagePicker.with(this)
                 .crop()
-                .compress(10000)
+                .compress(5096)
+                .maxResultSize(1080,1080)
                 .start(code);
 
     }
@@ -169,6 +174,8 @@ public class NewBusiness4Activity extends AppCompatActivity {
         }if(image5 != null) {
             uploadImage(image5,idEtablissement);
         }
+
+        Toast.makeText(getApplicationContext(), "Ajout de l'entreprise reussi", Toast.LENGTH_LONG).show();
     }
 
 
@@ -194,9 +201,8 @@ public class NewBusiness4Activity extends AppCompatActivity {
                 public void onResponse(@NotNull Call<Images> call, @NotNull Response<Images> response) {
                     if(response.code() == 401 || response.code() == 500) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Error upload image", Toast.LENGTH_LONG).show();
+                     //   Toast.makeText(getApplicationContext(), "Error upload image", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
 
                     }

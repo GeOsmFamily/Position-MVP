@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,19 @@ import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.plugins.places.picker.PlacePicker;
 import com.mapbox.mapboxsdk.plugins.places.picker.model.PlacePickerOptions;
 import com.sogefi.position.R;
+import com.sogefi.position.api.APIClient;
+import com.sogefi.position.api.ApiInterface;
+import com.sogefi.position.models.Nominatim;
+import com.sogefi.position.utils.Function;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Random;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
 
 
 public class PicklocationActivity extends AppCompatActivity{
@@ -49,12 +63,17 @@ public class PicklocationActivity extends AppCompatActivity{
         String longitude = getIntent().getStringExtra("longitude");
         String latitude = getIntent().getStringExtra("latitude");
 
+
         startActivityForResult(
                 new PlacePicker.IntentBuilder()
+
                         .accessToken(getString(R.string.mapbox_access_token))
                         .placeOptions(PlacePickerOptions.builder()
+
                                 .statingCameraPosition(new CameraPosition.Builder()
                                         .target(new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude))).zoom(16).build())
+                                .includeDeviceLocationButton(true)
+                                .includeReverseGeocode(true)
                                 .build())
                         .build(this), REQUEST_CODE);
     }
@@ -80,14 +99,13 @@ public class PicklocationActivity extends AppCompatActivity{
             });
         } else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
 // Retrieve the information from the selected location's CarmenFeature
-            CarmenFeature carmenFeature = PlacePicker.getPlace(data);
-            double longitude = ((Point) carmenFeature.geometry()).longitude();
-            double latitude = ((Point) carmenFeature.geometry()).latitude();
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("adresse",String.valueOf(longitude)+","+String.valueOf(latitude));
-            returnIntent.putExtra("adresseName",carmenFeature.placeName());
-            setResult(202,returnIntent);
-            finish();
+           double longitude = PlacePicker.getLastCameraPosition(data).target.getLongitude();
+           double latitude =  PlacePicker.getLastCameraPosition(data).target.getLatitude();
+            searchPoint(String.valueOf(longitude),String.valueOf(latitude));
+            CarmenFeature carmenFeature = PlacePicker. getPlace(data);
+          /*  double longitude = ((Point) carmenFeature.geometry()).longitude();
+            double latitude = ((Point) carmenFeature.geometry()).latitude();*/
+
 
           /*  Intent intent = new Intent(this, NewBusiness5Activity.class);
             intent.putExtra("adresse",String.valueOf(longitude)+","+String.valueOf(latitude));
@@ -97,10 +115,47 @@ public class PicklocationActivity extends AppCompatActivity{
 // Set the TextView text to the entire CarmenFeature. The CarmenFeature
 // also be parsed through to grab and display certain information such as
 // its placeName, text, or coordinates.
-            if (carmenFeature != null) {
+          /*  if (carmenFeature != null) {
                 selectedLocationTextView.setText(String.format(
                         "Select", carmenFeature.toJson()));
-            }
+            }*/
         }
+    }
+
+    public void searchPoint(String lon, String lat) {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient().create(ApiInterface.class);
+            Call<Nominatim> call = apiService.nominatimCoord(lat, lon, 1, "json");
+            call.enqueue(new Callback<Nominatim>() {
+                @Override
+                public void onResponse(@NotNull Call<Nominatim> call, @NotNull Response<Nominatim> response) {
+                  //  selectedLocationTextView.setText(response.body().getDisplayName());
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("adresse",String.valueOf(lon)+","+String.valueOf(lat));
+                    returnIntent.putExtra("adresseName",response.body().getDisplayName());
+                    setResult(202,returnIntent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Nominatim> call, @NotNull Throwable t) {
+
+                    // Log error here since request failed
+                    Timber.tag("main2").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    @Override
+    protected void onNewIntent(final Intent intent) {
+        super.onNewIntent(intent);
+        this.setIntent(intent);
     }
 }

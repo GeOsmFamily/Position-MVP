@@ -52,8 +52,8 @@ import timber.log.Timber;
 
 public class UpdateLocationWorker extends Worker {
     PreferenceManager pref;
-    private static final String DEFAULT_START_TIME = "08:00";
-    private static final String DEFAULT_END_TIME = "20:30";
+ /*   private static final String DEFAULT_START_TIME = "08:00";
+    private static final String DEFAULT_END_TIME = "20:30";*/
 
     private static final String TAG = "UpdateLocationWorker";
 
@@ -124,11 +124,11 @@ public class UpdateLocationWorker extends Worker {
         String formattedDate = dateFormat.format(date);
 
         try{
-            Date currentDate = dateFormat.parse(formattedDate);
+           /* Date currentDate = dateFormat.parse(formattedDate);
             Date startDate = dateFormat.parse(DEFAULT_START_TIME);
-            Date endDate = dateFormat.parse(DEFAULT_END_TIME);
+            Date endDate = dateFormat.parse(DEFAULT_END_TIME);*/
 
-            if (currentDate.after(startDate) && currentDate.before(endDate)) {
+          //  if (currentDate.after(startDate) && currentDate.before(endDate)) {
                 mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mContext);
                 mLocationCallback = new LocationCallback() {
                     @Override
@@ -172,11 +172,11 @@ public class UpdateLocationWorker extends Worker {
                     Log.e(TAG, "Lost location permission. Could not request updates. " + unlikely);
                 }
 
-           } else {
+         /*  } else {
                 Log.d(TAG, "Time up to get location. Your time is : " + DEFAULT_START_TIME + " to " + DEFAULT_END_TIME);
-            }
+            }*/
 
-        } catch (ParseException e) {
+        } catch (Exception e) {
 
         }
 

@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Nouvelle Entreprise"
+                android:text="Nouvelle Entreprise (5/5)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -93,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/camera" />
                 </RelativeLayout>
 
 
@@ -130,7 +130,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/camera" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -148,12 +148,13 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background" />
+
                     <ImageView
                         android:id="@+id/add43"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_add"/>
+                        android:src="@drawable/camera" />
                 </RelativeLayout>
 
 
@@ -185,12 +186,13 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background"/>
+
                     <ImageView
                         android:id="@+id/add44"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_add"/>
+                        android:src="@drawable/camera" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -208,36 +210,55 @@
                         android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:src="@drawable/round_edittext_background" />
+
                     <ImageView
                         android:id="@+id/add45"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_add"/>
+                        android:src="@drawable/camera" />
                 </RelativeLayout>
 
             </LinearLayout>
 
-
-
-
-
-
-            <customfonts.Button_SF_Pro_Display_Medium
-                android:id="@+id/submit"
-                android:layout_below="@id/llimage2"
-                android:layout_margin="10dp"
+            <LinearLayout
+                android:id="@+id/groupButton"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Suivant"
-                android:background="@drawable/button_round_1"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/llimage2">
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/back4"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Retour" />
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/submit"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Valider" />
+            </LinearLayout>
+
+
             <ProgressBar
                 android:id="@+id/progress4"
                 android:visibility="gone"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/submit"
+                android:layout_below="@id/groupButton"
                 android:layout_marginBottom="16dp"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>

@@ -3,6 +3,9 @@ package com.sogefi.position.api;
 import static com.sogefi.position.utils.Constants.BASEURL;
 import static com.sogefi.position.utils.Constants.NOMINATIMURL;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.security.cert.CertificateException;
 
 import javax.net.ssl.HostnameVerifier;
@@ -23,6 +26,8 @@ public class APIClient {
     private static Retrofit retrofit2 = null;
     private static Retrofit retrofit3 = null;
     private static Retrofit retrofit4 = null;
+
+
 
 
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
@@ -93,11 +98,15 @@ public class APIClient {
     }
 
     public static Retrofit getNewClient3() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         if (retrofit2 == null) {
             retrofit2 = new Retrofit.Builder()
                     .baseUrl(BASEURL)
                     .client(getUnsafeOkHttpClient().build())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retrofit2;
