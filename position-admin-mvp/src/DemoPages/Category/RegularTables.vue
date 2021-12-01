@@ -222,6 +222,9 @@
         </div>
       </template>
     </b-overlay>
+    <b-toast id="example-toast" title="BootstrapVue" static no-auto-hide>
+      Hello, world! This is a toast message.
+    </b-toast>
   </div>
 </template>
 
@@ -339,6 +342,16 @@ export default {
         .then((data) => {
           this.deleteLoading = false;
           console.log(data);
+          this.$bvToast.toast(
+            `Modification de ${this.currentRow.nom} avec succès`,
+            {
+              title: "Information",
+              variant: "success",
+              autoHideDelay: 5000,
+              appendToast: true,
+              solid: true,
+            }
+          );
         })
         .catch((error) => {
           this.deleteLoading = false;

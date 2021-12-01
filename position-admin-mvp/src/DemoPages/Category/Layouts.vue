@@ -126,6 +126,14 @@ export default {
           this.$store.dispatch("category/createCategory", formData).then(
             (data) => {
               console.log(data);
+              this.$bvToast.toast(`Modification  succès`, {
+                title: "Information",
+                variant: "success",
+                autoHideDelay: 5000,
+                noAutoHide: true,
+                appendToast: true,
+                solid: true,
+              });
             },
             (error) => {
               console.log(error.response.data.detail[0]);

@@ -2,7 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import { BootstrapVue, BootstrapVueIcons, ToastPlugin } from "bootstrap-vue";
+import {
+  BootstrapVue,
+  BootstrapVueIcons,
+  BVToastPlugin,
+  ToastPlugin,
+} from "bootstrap-vue";
 import Vuelidate from "vuelidate";
 import Default from "./Layout/Wrappers/baseLayout.vue";
 import Pages from "./Layout/Wrappers/pagesLayout.vue";
@@ -20,6 +25,7 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(ToastPlugin);
+Vue.use(BVToastPlugin);
 Vue.use(Vuelidate);
 Vue.use(VueAxios, api);
 Vue.use(VueAxios, form);
