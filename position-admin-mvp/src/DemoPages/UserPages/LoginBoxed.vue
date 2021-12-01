@@ -10,8 +10,8 @@
               <div class="modal-body">
                 <div class="h5 modal-title text-center">
                   <h4 class="mt-2">
-                    <div>Welcome back,</div>
-                    <span>Please sign in to your account below.</span>
+                    <div>Bienvenue,</div>
+                    <span>Connectez vous pour accéder au dashboard.</span>
                   </h4>
                 </div>
                 <b-form name="form" @submit.stop.prevent>
@@ -79,7 +79,7 @@
                     </b-form-invalid-feedback>
                   </b-form-group>
                   <b-form-checkbox name="check" id="exampleCheck">
-                    Keep me logged in
+                    Me garder connecter
                   </b-form-checkbox>
                   <div class="form-group">
                     <div v-if="message" class="alert alert-danger" role="alert">
@@ -89,16 +89,16 @@
                 </b-form>
                 <div class="divider" />
                 <h6 class="mb-0">
-                  No account?
+                  Pas de compte?
                   <a href="javascript:void(0);" class="text-primary"
-                    >Sign up now</a
+                    >S'enregistrer maintenant</a
                   >
                 </h6>
               </div>
               <div class="modal-footer clearfix">
                 <div class="float-left">
                   <a href="javascript:void(0);" class="btn-lg btn btn-link"
-                    >Recover Password</a
+                    >Réinitialiser le mot de passe</a
                   >
                 </div>
                 <div class="float-right">
@@ -112,14 +112,14 @@
                       v-show="loading"
                       class="spinner-border spinner-border-sm"
                     ></span>
-                    <span>Login to Dashboard</span>
+                    <span>Se connecter au dashboard</span>
                   </b-button>
                 </div>
               </div>
             </div>
           </div>
           <div class="text-center text-white opacity-8 mt-3">
-            Copyright &copy; ArchitectUI 2019
+            Copyright &copy; Position 2021
           </div>
         </b-col>
       </div>
