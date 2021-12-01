@@ -46,8 +46,8 @@
                   :src="previewImage"
                   fluid
                   alt="Fluid image"
-                  width="400"
-                  height="400"
+                  width="20"
+                  height="20"
                 ></b-img>
                 <!--                <img class="preview my-3" :src="previewImage" alt="" />-->
               </div>

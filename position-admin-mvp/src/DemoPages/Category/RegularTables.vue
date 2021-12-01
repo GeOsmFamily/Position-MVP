@@ -68,6 +68,23 @@
                 >Supprimer</b-button
               >
             </span>
+            <span v-if="props.column.field === 'logoUrl'">
+              <center>
+                <b-img
+                  :src="
+                    'https://services.position.cm' +
+                    props.formattedRow[props.column.field]
+                  "
+                  height="20"
+                  width="20"
+                  alt="Logo catégorie"
+                  v-if="
+                    props.formattedRow[props.column.field] !== '' ||
+                    props.formattedRow[props.column.field] != null
+                  "
+                ></b-img>
+              </center>
+            </span>
             <span v-else>
               {{ props.formattedRow[props.column.field] }}
             </span>
@@ -109,17 +126,35 @@
                 </b-form-invalid-feedback>
               </b-form-group>
               <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                <label for="logo22" class="mr-sm-2">Logo</label
-                ><b-form-input
-                  name="logo"
+                <label class="mr-sm-2">Logo catégorie</label>
+                <b-form-file
                   v-model="logo"
-                  :state="!submitted ? null : submitted"
-                  id="logo22"
-                  placeholder="https://via.placeholder.com/150.png/09f/fff"
-                  type="text"
-                  :value="currentRow != null ? currentRow.logo_url : ''"
-                  class="form-control"
-                />
+                  :state="submitted ? Boolean(logo) : null"
+                  placeholder="Choisissez un logo pour la catégorie..."
+                  drop-placeholder="Drop file here..."
+                  @change="handleFileUpload($event)"
+                ></b-form-file>
+              </div>
+              <br />
+              <div v-if="previewImage">
+                <div>
+                  <b-img
+                    :src="previewImage"
+                    fluid
+                    alt="Fluid image"
+                    width="400"
+                    height="400"
+                    v-if="previewImage != null"
+                  ></b-img>
+                  <b-img
+                    :src="'https://services.position.cm' + currentRow.logoUrl"
+                    fluid
+                    alt="Fluid image"
+                    width="400"
+                    height="400"
+                    v-if="previewImage == null"
+                  ></b-img>
+                </div>
               </div>
               <div class="form-group">
                 <div v-if="message" class="alert alert-danger" role="alert">
@@ -201,7 +236,8 @@ export default {
   },
   data: () => ({
     name: "",
-    logo: "",
+    logo: null,
+    previewImage: null,
     nameState: null,
     message: "",
     submittedNames: [],
@@ -220,6 +256,11 @@ export default {
         label: "No",
         field: "id",
         type: "number",
+      },
+      {
+        label: "Logo",
+        field: "logoUrl",
+        type: "string",
       },
       {
         label: "Nom",
@@ -277,10 +318,15 @@ export default {
     getCategories() {
       this.$store.dispatch("category/fetchCategories");
     },
+    handleFileUpload(event) {
+      console.log(event.target.files[0]);
+      this.logo = event.target.files[0];
+      this.previewImage = URL.createObjectURL(this.logo);
+    },
     setRow(data) {
+      console.log(data);
       this.currentRow = data;
       this.name = data.nom;
-      this.logo = data.logo_url;
     },
     closeModal() {
       this.$bvModal.hide("my-modal");
@@ -308,12 +354,15 @@ export default {
         this.editLoading = false;
       } else {
         if (this.name) {
+          let formData = new FormData();
+          console.log(this.name);
+          if (this.logo !== null) formData.append("file", this.logo);
+          formData.append("nom", this.name);
+          formData.append("_method", "put");
           this.$store
             .dispatch("category/editCategory", {
               id: this.currentRow.id,
-              category: {
-                nom: this.name,
-              },
+              category: formData,
             })
             .then((result) => {
               this.editLoading = false;
