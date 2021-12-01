@@ -693,40 +693,29 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
                             small
                           "
                         >
-                          <vue-good-table
-                            :columns="fields"
-                            :rows="entreprises"
-                            :fixed-header="true"
-                            :search-options="{
-                              enabled: true,
-                              skipDiacritics: true,
-                              placeholder: 'Rechercher une entreprise',
+                          <line-chart
+                            :chart-data="rankCollection"
+                            :options="{
+                              scales: {
+                                yAxes: [
+                                  {
+                                    ticks: {
+                                      reverse: true,
+                                      /*beginAtZero: true,*/
+                                    },
+                                  },
+                                ],
+                                /*          xAxes: [
+                                  {
+                                    ticks: {
+                                      reverse: true,
+                                      beginAtZero: true,
+                                    },
+                                  },
+                                ],*/
+                              },
                             }"
-                            :pagination-options="{
-                              enabled: true,
-                              mode: 'records',
-                              perPage: 10,
-                              position: 'bottom',
-                              dropdownAllowAll: false,
-                              jumpFirstOrLast: true,
-                              firstLabel: 'Début',
-                              lastLabel: 'Fin',
-                              nextLabel: 'suiv',
-                              prevLabel: 'prec',
-                              ofLabel: 'de',
-                              perPageDropdownEnabled: false,
-                              pageLabel: 'page', // for 'pages' mode
-                              allLabel: 'Tout',
-                            }"
-                            styleClass="vgt-table bordered striped"
-                            compactMode
-                          >
-                            <div slot="emptystate">
-                              No data yet.<b-button @click="getCommerciaux()"
-                                >Réessayer</b-button
-                              >
-                            </div>
-                          </vue-good-table>
+                          ></line-chart>
                         </div>
                       </div>
                     </div>
@@ -753,6 +742,17 @@ export default {
             label: "Semaine du 12 Decembre 2021",
             backgroundColor: "#f87979",
             data: [10, 10, 12, 8, 25, 25],
+          },
+        ],
+      },
+      rankCollection: {
+        labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+        datasets: [
+          {
+            label: "Semaine du 12 Decembre 2021",
+            backgroundColor: "#ffffff00",
+            borderColor: "#f87979",
+            data: [55, 100, 100, 100, 35, 20],
           },
         ],
       },
