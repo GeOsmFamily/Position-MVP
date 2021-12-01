@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="adresseLabel,adresseV,sharePosition,addToFavoritePosition,routePosition,clearButton"
+        app:constraint_referenced_ids="adresseLabel,adresseV,sharePosition,addToFavoritePosition,routePosition,newBussiness, clearButton"
         tools:visibility="visible" />
 
 
@@ -47,26 +47,10 @@
         tools:text="" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/sharePosition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/share_position_friend"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addToFavoritePosition"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adresseV"
-        app:layout_constraintVertical_bias="0.422"
-        app:srcCompat="@drawable/ic_partager" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addToFavoritePosition"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="10dp"
@@ -79,14 +63,15 @@
         app:layout_constraintVertical_bias="0.422"
         app:layout_constraintStart_toEndOf="@+id/sharePosition"
         app:layout_constraintTop_toBottomOf="@+id/adresseV"
-        app:srcCompat="@drawable/ic_favorite" />
+        app:srcCompat="@drawable/ic_favorite" /-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/routePosition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="10dp"
+        android:visibility="gone"
         android:layout_marginTop="20dp"
         android:text="@string/compute_route_friend"
         app:fabSize="mini"
@@ -96,7 +81,41 @@
         app:layout_constraintVertical_bias="0.422"
         app:layout_constraintStart_toEndOf="@+id/addToFavoritePosition"
         app:layout_constraintTop_toBottomOf="@+id/adresseV"
-        app:srcCompat="@drawable/ic_itineraire" />
+        app:srcCompat="@drawable/ic_itineraire" /-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sharePosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/share_position_friend"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addToFavoritePosition"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adresseV"
+        app:layout_constraintVertical_bias="0.433"
+        app:srcCompat="@drawable/ic_partager" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/newBussiness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sharePosition"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adresseV"
+        app:layout_constraintVertical_bias="0.433"
+        app:srcCompat="@drawable/ic_baseline_add_business_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/clearButton"

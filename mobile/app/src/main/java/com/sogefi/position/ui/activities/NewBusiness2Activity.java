@@ -29,6 +29,9 @@ import com.sogefi.position.utils.PreferenceManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -38,7 +41,7 @@ import timber.log.Timber;
 
 public class NewBusiness2Activity extends AppCompatActivity {
     EditText phone,whatsapp1,whatsapp2,indication, code_postal ,site_internet;
-    Button next2;
+    Button next2,back2;
     ScrollView scrollView;
     ProgressBar progress;
     PreferenceManager pref;
@@ -65,8 +68,11 @@ public class NewBusiness2Activity extends AppCompatActivity {
         scrollView = findViewById(R.id.scrollView2);
         progress = findViewById(R.id.progressBar2);
         progressBar = findViewById(R.id.progress2);
+        back2 = findViewById(R.id.back2);
 
         progressBar.setVisibility(View.GONE);
+
+        back2.setOnClickListener(v -> finish());
 
 
 
@@ -79,12 +85,25 @@ public class NewBusiness2Activity extends AppCompatActivity {
             String getsiteinternet = site_internet.getText().toString();
 
 
-            if(TextUtils.isEmpty(getphone)){
-                Toast.makeText(this, "Entrez le numéro de l'entreprise", Toast.LENGTH_SHORT).show();
+            if(TextUtils.isEmpty(getphone) || getphone.length() != 9){
+                Toast.makeText(this, "Entrez un numéro valide pour l'entreprise", Toast.LENGTH_SHORT).show();
             }
-            if(TextUtils.isEmpty(getwhatsapp1)){
-                Toast.makeText(this, "Entrez le numéro whatsapp de l'entreprise", Toast.LENGTH_SHORT).show();
+            if(TextUtils.isEmpty(getwhatsapp1)|| getwhatsapp1.length() != 9){
+                Toast.makeText(this, "Entrez le numéro whatsapp valide", Toast.LENGTH_SHORT).show();
             }
+
+            if(!TextUtils.isEmpty(getwhatsapp2) && getwhatsapp2.length() != 9){
+                Toast.makeText(this, "Entrez le numéro whatsapp valide", Toast.LENGTH_SHORT).show();
+            }
+            if(!TextUtils.isEmpty(getwhatsapp2) && getwhatsapp2.length() != 9){
+                Toast.makeText(this, "Entrez le numéro whatsapp valide", Toast.LENGTH_SHORT).show();
+            }
+          /*  if(!TextUtils.isEmpty(getsiteinternet)){
+                Pattern p = Pattern.compile("^(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$");
+                Matcher m;
+                m=p.matcher(getsiteinternet);
+            }*/
+
 
             else {
                 sendData(idEtablissement,getphone,getwhatsapp1,getwhatsapp2,getindication,getcodepostal,getsiteinternet);
@@ -115,7 +134,6 @@ public class NewBusiness2Activity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Error Create", Toast.LENGTH_LONG).show();
                     } else {
                         int idEtablissement = response.body().getData().getId();
-                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                         addTelephones(String.valueOf(idEtablissement),phone,whatsapp1,whatsapp2);
 
                         progressBar.setVisibility(View.GONE);
@@ -125,7 +143,6 @@ public class NewBusiness2Activity extends AppCompatActivity {
                         finish();
                     }
 
-                    progressBar.setVisibility(View.GONE);
 
                 }
 
@@ -186,7 +203,6 @@ public class NewBusiness2Activity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Error create Phone", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                     }
 
 

@@ -23,8 +23,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class SearchAdapter extends SuggestionsAdapter<Search, SearchAdapter.SearchViewHolder> {
-    public SearchAdapter(LayoutInflater inflater) {
+    MapActivity mapActivity;
+    public SearchAdapter(LayoutInflater inflater,MapActivity mapActivity) {
         super(inflater);
+        this.mapActivity = mapActivity;
     }
 
 
@@ -67,17 +69,30 @@ public class SearchAdapter extends SuggestionsAdapter<Search, SearchAdapter.Sear
             String[] parts = suggestion.getNom().split(",");
             holder.suggestion.setText(parts[0]);
             holder.suggestionAdress.setText(suggestion.getDetails());
-            holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
+            if(suggestion.getLogoUrl() != null) {
+                Picasso.get().load(suggestion.getLogoUrl()).into(holder.imageView);
+            } else {
+                holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
+            }
+
+            holder.constraintLayout.setOnClickListener(view -> mapActivity.resultSearch(suggestion.getLongitude(), suggestion.getLatitude(), suggestion.getType()));
+
         } else {
             holder.suggestion.setText(suggestion.getNom());
             holder.suggestionAdress.setText(suggestion.getDetails());
-            holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
+            if(suggestion.getLogoUrl() != null) {
+                Picasso.get().load(IMAGEURL + suggestion.getLogoUrl()).into(holder.imageView);
+            } else {
+                holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
+            }
         }
+
+
     }
 
     @Override
     public int getSingleViewHeight() {
-        return 60;
+        return 32;
     }
 
   /*  @Override

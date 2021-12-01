@@ -2,6 +2,30 @@ package com.sogefi.position.ui.activities;
 
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.all;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.division;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.exponential;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.gte;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.has;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.literal;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.lt;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.rgb;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.toNumber;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textSize;
+import static com.sogefi.position.R2.id.all;
+import static com.sogefi.position.R2.id.stop;
 import static com.sogefi.position.utils.Constants.API_KEY;
 import static com.sogefi.position.utils.Constants.IMAGEURL;
 
@@ -55,6 +79,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.bumptech.glide.Glide;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -66,6 +91,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -89,6 +115,11 @@ import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener;
 import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
+import com.mapbox.mapboxsdk.style.layers.CircleLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
@@ -159,14 +190,16 @@ public class MapActivity extends AppCompatActivity implements
     private static final String ROUTE_LINE_SOURCE_ID = "route-source-id";
     private static final String ICON_LAYER_ID = "icon-layer-id";
     private static final String ICON_SOURCE_ID = "icon-source-id";
+    private static final String GEOJSON_SOURCE_ID = "geojson-source-id";
+    private static final String GEOJSON_ICON_ID = "geojson-icon-id";
     private static final String TAG = "LocationUpdate";
     FloatingActionButton location;
     FloatingActionButton layer;
     FloatingActionButton zoomIn;
     FloatingActionButton zoomOut;
     FloatingActionButton findPositionDialog;
-    FloatingActionButton routePosition;
-    FloatingActionButton addToFavoritePosition;
+   // FloatingActionButton routePosition;
+  //  FloatingActionButton addToFavoritePosition;
     FloatingActionButton sharePosition;
     FloatingActionButton clearButton;
     FloatingActionButton clearRouteButton;
@@ -192,10 +225,10 @@ public class MapActivity extends AppCompatActivity implements
     MaterialButton run;
     MaterialButton saveSubmit;
     int checkItem, checkProfile = 0;
-    TopIconButton route;
-    TopIconButton save;
+   // TopIconButton route;
+   // TopIconButton save;
     TopIconButton share;
-    TopIconButton near;
+   // TopIconButton near;
     String friendPosition , latTv,lonTv;
     FavoriteRepository favoriteRepository;
     PositionDataBase mDb;
@@ -222,6 +255,8 @@ public class MapActivity extends AppCompatActivity implements
 
     List<Search> searchResult = new ArrayList<>();
     List<Nominatim> nominatimList = new ArrayList<>();
+
+    String longo,latgo;
 
 
 
@@ -266,7 +301,9 @@ public class MapActivity extends AppCompatActivity implements
         search = findViewById(R.id.search);
         search.setCardViewElevation(50);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-         searchAdapter = new SearchAdapter(inflater);
+         searchAdapter = new SearchAdapter(inflater,this);
+        searchAdapter.setSuggestions(searchResult);
+        search.setCustomSuggestionAdapter(searchAdapter);
         search.setOnSearchActionListener(this);
         search.setNavButtonEnabled(true);
 
@@ -278,7 +315,7 @@ public class MapActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-             /*   search.clearSuggestions();
+               /* search.clearSuggestions();
                 searchResult.clear();
                 if(search.getText().length() > 3) {
                     searchApi(search.getText());
@@ -313,8 +350,8 @@ public class MapActivity extends AppCompatActivity implements
         zoomIn = findViewById(R.id.zoomIn);
         zoomOut = findViewById(R.id.zoomOut);
         findPositionDialog = findViewById(R.id.findPositionDialog);
-        routePosition = findViewById(R.id.routePosition);
-        addToFavoritePosition = findViewById(R.id.addToFavoritePosition);
+        //routePosition = findViewById(R.id.routePosition);
+        //addToFavoritePosition = findViewById(R.id.addToFavoritePosition);
         sharePosition = findViewById(R.id.sharePosition);
         clearButton = findViewById(R.id.clearButton);
         clearRouteButton = findViewById(R.id.clearRouteButton);
@@ -362,10 +399,10 @@ public class MapActivity extends AppCompatActivity implements
 
         bottom_sheet = findViewById(R.id.bottomSheet);
         sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
-        route = findViewById(R.id.route);
-        save = findViewById(R.id.save);
+      //  route = findViewById(R.id.route);
+      //  save = findViewById(R.id.save);
         share = findViewById(R.id.share);
-        near = findViewById(R.id.near);
+     //   near = findViewById(R.id.near);
 
         run = findViewById(R.id.run);
         saveSubmit = findViewById(R.id.saveSubmit);
@@ -431,17 +468,17 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
 
-        route.setOnClickListener(v -> showRouteSearch());
+     //   route.setOnClickListener(v -> showRouteSearch());
 
         share.setOnClickListener(v -> sharePosition(latTv+ ","+lonTv));
 
-        save.setOnClickListener(v -> showSave(lieu.getText().toString(), latTv, lonTv));
+    //    save.setOnClickListener(v -> showSave(lieu.getText().toString(), latTv, lonTv));
 
-        near.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Bientôt disponible", Toast.LENGTH_LONG).show());
+      //  near.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Bientôt disponible", Toast.LENGTH_LONG).show());
 
-        routePosition.setOnClickListener(v -> alertDialogProfile());
+    //    routePosition.setOnClickListener(v -> alertDialogProfile());
 
-        addToFavoritePosition.setOnClickListener(view -> showSave(adresseV.getText().toString(), latTv, lonTv));
+      //  addToFavoritePosition.setOnClickListener(view -> showSave(adresseV.getText().toString(), latTv, lonTv));
 
         sharePosition.setOnClickListener(view -> sharePosition(latTv+ ","+lonTv));
 
@@ -466,6 +503,7 @@ public class MapActivity extends AppCompatActivity implements
 
         });
 
+
         clearButton.setOnClickListener(v -> clearAll());
 
         clearRouteButton.setOnClickListener(v -> clearAll());
@@ -477,8 +515,9 @@ public class MapActivity extends AppCompatActivity implements
                 String lon = String.valueOf(location != null ? location.getLongitude() : 0);
                 String lat = String.valueOf(location != null ? location.getLatitude() : 0);
                 Intent intent = new Intent(MapActivity.this, NewBusiness5Activity.class);
-                intent.putExtra("longitude",lon);
-                intent.putExtra("latitude",lat);
+                intent.putExtra("longitude",longo);
+                intent.putExtra("latitude",latgo);
+                intent.putExtra("adresseName",adresseV.getText().toString());
                 drawer.closeDrawers();
                 startActivity(intent);
             } else if(pref.getRoleid().equals("roleid")) {
@@ -747,10 +786,10 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
 
-        route.setVisibility(View.VISIBLE);
-        save.setVisibility(View.VISIBLE);
+       // route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
         share.setVisibility(View.VISIBLE);
-        near.setVisibility(View.VISIBLE);
+      //  near.setVisibility(View.VISIBLE);
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
         locationComponent.setCameraMode(CameraMode.TRACKING);
         locationComponent.setRenderMode(RenderMode.COMPASS);
@@ -758,6 +797,8 @@ public class MapActivity extends AppCompatActivity implements
         Location location = locationComponent.getLastKnownLocation();
         String lon = String.valueOf(location != null ? location.getLongitude() : 0);
         String lat = String.valueOf(location != null ? location.getLatitude() : 0);
+
+
 
         if (Function.isNetworkAvailable(getApplicationContext())) {
             nominatimCoord(lat,lon,lieu);
@@ -767,6 +808,8 @@ public class MapActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
         }
+
+
     }
 
     //Afficher ou reduire le bottomSheet
@@ -793,10 +836,10 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
 
-        route.setVisibility(View.VISIBLE);
-        save.setVisibility(View.VISIBLE);
+      //  route.setVisibility(View.VISIBLE);
+      //  save.setVisibility(View.VISIBLE);
         share.setVisibility(View.VISIBLE);
-        near.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
 
         expandBottomSheet();
     }
@@ -864,10 +907,10 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.VISIBLE);
 
-        route.setVisibility(View.VISIBLE);
-        save.setVisibility(View.VISIBLE);
+      //  route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
         share.setVisibility(View.VISIBLE);
-        near.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
     }
 
     //Masquer le clavier
@@ -893,10 +936,10 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.VISIBLE);
         groupSavePosition.setVisibility(View.GONE);
 
-        route.setVisibility(View.VISIBLE);
-        save.setVisibility(View.VISIBLE);
+       // route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
         share.setVisibility(View.VISIBLE);
-        near.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
 
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
         Point destinationPoint = Point.fromLngLat(symbol.getLatLng().getLongitude(), symbol.getLatLng().getLatitude());
@@ -1012,12 +1055,14 @@ public class MapActivity extends AppCompatActivity implements
                 Function.getBitmapFromDrawable(drawableOrigin)
         );
 
-        Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.ic_baseline_add_location_24);
+        Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.building);
         assert drawableBatiment != null;
         style.addImage(
                 "markerBatimentImage",
                 Function.getBitmapFromDrawable(drawableBatiment)
         );
+
+
 
         mapBoxUtils.initSources(style);
         mapBoxUtils.initLayers(style);
@@ -1064,12 +1109,17 @@ public class MapActivity extends AppCompatActivity implements
                         getResources().getDrawable(R.drawable.ic_finish)))), style -> {
             enableLocationComponent(style);
             initSpaceStationSymbolLayer(style);
+
             mapboxMap.addOnMapLongClickListener(MapActivity.this);
             if (friendPosition != null) {
                 getSharedPosition(friendPosition);
             }
-            if(pref.getRoleid().equals("2")) {
-                getBatiment(style);
+            if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
+                getBatiment();
+
+               // geojsonBatiment(style);
+
+
             }
         });
 
@@ -1113,10 +1163,10 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
 
-        route.setVisibility(View.GONE);
-        save.setVisibility(View.GONE);
+      //  route.setVisibility(View.GONE);
+      //  save.setVisibility(View.GONE);
         share.setVisibility(View.GONE);
-        near.setVisibility(View.GONE);
+       // near.setVisibility(View.GONE);
 
         if (symbolManager != null) symbolManager.deleteAll();
 
@@ -1193,10 +1243,10 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.VISIBLE);
         groupSavePosition.setVisibility(View.GONE);
 
-        route.setVisibility(View.VISIBLE);
-        save.setVisibility(View.VISIBLE);
+       // route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
         share.setVisibility(View.VISIBLE);
-        near.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
 
         getRoute(ori, dest,DirectionsCriteria.PROFILE_DRIVING_TRAFFIC);
     }
@@ -1265,10 +1315,10 @@ public class MapActivity extends AppCompatActivity implements
             groupRoute.setVisibility(View.GONE);
             groupSavePosition.setVisibility(View.GONE);
 
-            route.setVisibility(View.GONE);
-            save.setVisibility(View.GONE);
+          //  route.setVisibility(View.GONE);
+          //  save.setVisibility(View.GONE);
             share.setVisibility(View.GONE);
-            near.setVisibility(View.GONE);
+          //  near.setVisibility(View.GONE);
 
             symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
 
@@ -1424,8 +1474,7 @@ public class MapActivity extends AppCompatActivity implements
         mapView.onDestroy();
     }
 
-    @Override
-    public boolean onMapLongClick(@NonNull LatLng point) {
+    public void resultSearch(String lon,String lat,String type) {
         if (symbolManager != null) symbolManager.deleteAll();
         Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
@@ -1442,10 +1491,74 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
 
-        route.setVisibility(View.GONE);
-        save.setVisibility(View.GONE);
         share.setVisibility(View.GONE);
-        near.setVisibility(View.GONE);
+
+
+        if (symbolManager != null) symbolManager.deleteAll();
+
+        symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
+
+        symbolManager.setIconAllowOverlap(true);
+        symbolManager.setTextAllowOverlap(true);
+
+        LatLng point = new LatLng(Double.parseDouble(lat),Double.parseDouble(lon));
+
+        symbol = symbolManager.create(new SymbolOptions()
+                .withLatLng(point)
+                .withIconImage("markerImage")
+                .withIconSize(1.3f)
+                .withSymbolSortKey(10.0f));
+
+
+
+        if(type.equals("nominatim")) {
+            if (Function.isNetworkAvailable(getApplicationContext())) {
+                nominatimCoord(lat,lon, adresseV);
+
+                CameraPosition cam = new CameraPosition.Builder()
+                        .target(point)
+                        .zoom(15)
+                        .build();
+
+                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(cam), 5000);
+                search.closeSearch();
+                onBottomSheetLoading(0);
+
+
+            } else {
+                onBottomSheetLoading(0);
+                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+
+            }
+        } else {
+
+        }
+    }
+
+    @Override
+    public boolean onMapLongClick(@NonNull LatLng point) {
+        longo = String.valueOf(point.getLongitude());
+        latgo = String.valueOf(point.getLatitude());
+        if (symbolManager != null) symbolManager.deleteAll();
+        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
+        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
+        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
+        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+
+        arrival.setText("");
+        duration.setText("");
+        lenght.setText("");
+        onBottomSheetLoading(1);
+        groupMyPosition.setVisibility(View.GONE);
+        groupSharePosition.setVisibility(View.VISIBLE);
+        groupRouteSearch.setVisibility(View.GONE);
+        groupRoute.setVisibility(View.GONE);
+        groupSavePosition.setVisibility(View.GONE);
+
+       // route.setVisibility(View.GONE);
+       // save.setVisibility(View.GONE);
+        share.setVisibility(View.GONE);
+       // near.setVisibility(View.GONE);
 
 
         if (symbolManager != null) symbolManager.deleteAll();
@@ -1475,6 +1588,8 @@ public class MapActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
         }
+
+
         return true;
     }
 
@@ -1516,7 +1631,7 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
-    public  void getBatiment(Style style) {
+    public  void getBatiment() {
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
                     APIClient.getNewClient3().create(ApiInterface.class);
@@ -1554,8 +1669,16 @@ public class MapActivity extends AppCompatActivity implements
                             symbol = symbolManager.create(new SymbolOptions()
                                     .withLatLng(point)
                                     .withIconImage("markerBatimentImage")
-                                    .withIconSize(1.9f)
+                                    .withIconSize(0.06f)
+                                  //  .withTextField(response.body().getData().get(i).getNom())
+                                    .withTextAnchor("top")
+                                    .withTextJustify("center")
+                                    .withTextSize(15f)
+
                                     .withSymbolSortKey(10.0f));
+
+
+
 
                             int idBatiment = response.body().getData().get(i).getId();
                             String nombreNiveau = response.body().getData().get(i).getNombreNiveaux();
@@ -1619,6 +1742,153 @@ public class MapActivity extends AppCompatActivity implements
             });
         } else {
               Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    private void geojsonBatiment(@NonNull Style style) {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<BatimentsModel> call = apiService.getbatiments(API_KEY);
+            call.enqueue(new Callback<BatimentsModel>() {
+                @Override
+                public void onResponse(@NotNull Call<BatimentsModel> call, @NotNull Response<BatimentsModel> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+
+                        Toast.makeText(getApplicationContext(), "Error get batiments", Toast.LENGTH_LONG).show();
+                    } else {
+                        //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
+
+                        try {
+                            featureCollection.put("type", "FeatureCollection");
+                            JSONObject properties = new JSONObject();
+                            properties.put("name", "ESPG:4326");
+                            JSONObject crs = new JSONObject();
+                            crs.put("type", "name");
+
+                            crs.put("properties", properties);
+                            featureCollection.put("crs", crs);
+
+
+
+
+                        JSONArray features = new JSONArray();
+
+
+                        for (int i = 0; i < response.body().getData().size(); i++) {
+                            JSONObject feature = new JSONObject();
+
+                                feature.put("type", "Feature");
+                                JSONObject propertiesData = new JSONObject();
+                                propertiesData.put("nom",response.body().getData().get(i).getNom());
+                                propertiesData.put("codeBatiment",response.body().getData().get(i).getCodeBatiment());
+                                propertiesData.put("id",response.body().getData().get(i).getId());
+                                propertiesData.put("commune",response.body().getData().get(i).getCommune());
+                                propertiesData.put("indication",response.body().getData().get(i).getIndication());
+                                propertiesData.put("nombreNiveaux",response.body().getData().get(i).getNombreNiveaux());
+                                propertiesData.put("quartier",response.body().getData().get(i).getQuartier());
+                                propertiesData.put("ville",response.body().getData().get(i).getVille());
+                                feature.put("properties", propertiesData);
+                                JSONObject geometry = new JSONObject();
+                                JSONArray jsonArrayCoord = new JSONArray();
+                                jsonArrayCoord.put(0,Double.parseDouble(response.body().getData().get(i).getLongitude()) );
+                                jsonArrayCoord.put(1,Double.parseDouble(response.body().getData().get(i).getLatitude()) );
+                                geometry.put("type", "Point");
+                                geometry.put("coordinates", jsonArrayCoord);
+                                feature.put("geometry", geometry);
+
+                                features.put(feature);
+
+
+
+                            }
+
+
+                            featureCollection.put("features", features);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        //   GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source",featureCollection.toString());
+                            style.addSource(new GeoJsonSource(GEOJSON_SOURCE_ID,featureCollection.toString(),new GeoJsonOptions().withCluster(true).withClusterMaxZoom(14).withClusterRadius(10)));
+                            Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
+
+                        SymbolLayer unclustered = new SymbolLayer("unclustered-points", GEOJSON_SOURCE_ID);
+
+
+                        unclustered.setProperties(
+                                iconImage("markerBatimentImage"),
+                                iconSize(
+                                        division(
+                                                get("mag"), literal(400.0f)
+                                        )
+                                )
+                        );
+                        unclustered.setFilter(has("mag"));
+                        style.addLayer(unclustered);
+
+                        int[][] layers = new int[][] {
+                                new int[] {150, ContextCompat.getColor(MapActivity.this, R.color.green)},
+                                new int[] {20, ContextCompat.getColor(MapActivity.this, R.color.green)},
+                                new int[] {0, ContextCompat.getColor(MapActivity.this, R.color.green)}
+                        };
+
+                        for (int i = 0; i < layers.length; i++) {
+//Add clusters' circles
+                            CircleLayer circles = new CircleLayer("cluster-" + i, GEOJSON_SOURCE_ID);
+                            circles.setProperties(
+                                    circleColor(layers[i][1]),
+                                    circleRadius(18f)
+                            );
+
+
+                            Expression pointCount = toNumber(get("point_count"));
+
+// Add a filter to the cluster layer that hides the circles based on "point_count"
+                            circles.setFilter(
+                                    i == 0
+                                            ? all(has("point_count"),
+                                            gte(pointCount, literal(layers[i][0]))
+                                    ) : all(has("point_count"),
+                                            gte(pointCount, literal(layers[i][0])),
+                                            lt(pointCount, literal(layers[i - 1][0]))
+                                    )
+                            );
+                            style.addLayer(circles);
+                    }
+
+                        SymbolLayer count = new SymbolLayer("count", GEOJSON_SOURCE_ID);
+                        count.setProperties(
+                                textField(Expression.toString(get("point_count"))),
+                                textSize(12f),
+                                textColor(Color.WHITE),
+                                textIgnorePlacement(true),
+                                textAllowOverlap(true)
+                        );
+                        style.addLayer(count);
+                        Log.d("STYLE",style.getJson());
+                        Log.d("FEATURES",featureCollection.toString());
+
+
+
+
+                }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<BatimentsModel> call, @NotNull Throwable t) {
+
+                    // Log error here since request failed
+                    Timber.tag("images").e(t.toString());
+                    Log.e("error create", t.toString());
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1759,6 +2029,9 @@ searchResult.clear();
                            Search search1 = new Search();
                            search1.setNom(dataSearchEtablissement.get(i).getNom());
                            search1.setId(dataSearchEtablissement.get(i).getId());
+                           search1.setLongitude(dataSearchEtablissement.get(i).getBatiment().getLongitude());
+                           search1.setLatitude(dataSearchEtablissement.get(i).getBatiment().getLatitude());
+                           search1.setLogoUrl(dataSearchEtablissement.get(i).getLogoUrl());
                            search1.setType("etablissement");
                            search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
 
@@ -1770,6 +2043,13 @@ searchResult.clear();
                            Search search2 = new Search();
                            search2.setNom(response.body().get(i).getDisplayName());
                            search2.setId(response.body().get(i).getPlaceId());
+                           search2.setLongitude(response.body().get(i).getLon());
+                           search2.setLatitude(response.body().get(i).getLat());
+                           if (response.body().get(i).getIcon() != null) {
+                               search2.setLogoUrl(response.body().get(i).getIcon());
+                           } else {
+                               search2.setLogoUrl(null);
+                           }
                            search2.setType("nominatim");
                            search2.setDetails(response.body().get(i).getAddress().getCity());
 
@@ -1782,6 +2062,9 @@ searchResult.clear();
                            Search search1 = new Search();
                            search1.setNom(dataSearchEtablissement.get(i).getNom());
                            search1.setId(dataSearchEtablissement.get(i).getId());
+                           search1.setLongitude(dataSearchEtablissement.get(i).getBatiment().getLongitude());
+                           search1.setLatitude(dataSearchEtablissement.get(i).getBatiment().getLatitude());
+                           search1.setLogoUrl(dataSearchEtablissement.get(i).getLogoUrl());
                            search1.setType("etablissement");
                            search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
 
@@ -1794,7 +2077,9 @@ searchResult.clear();
                     search.setCustomSuggestionAdapter(searchAdapter);
                     search.showSuggestionsList();
 
-                    Toast.makeText(getApplicationContext(), String.valueOf(searchResult.size()), Toast.LENGTH_LONG).show();
+
+
+                 //   Toast.makeText(getApplicationContext(), String.valueOf(searchResult.size()), Toast.LENGTH_LONG).show();
 
                 }
 

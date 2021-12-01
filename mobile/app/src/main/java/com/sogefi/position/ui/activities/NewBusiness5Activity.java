@@ -3,6 +3,7 @@ package com.sogefi.position.ui.activities;
 import static com.sogefi.position.utils.Constants.API_KEY;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class NewBusiness5Activity extends AppCompatActivity {
     PreferenceManager pref;
     ScrollView scrollView5;
     ProgressBar progressBar5;
-    Button next;
+    Button next,back;
     TextView address,addressName;
     File image;
 
@@ -64,6 +65,7 @@ public class NewBusiness5Activity extends AppCompatActivity {
 
         String longitude = getIntent().getStringExtra("longitude");
         String latitude = getIntent().getStringExtra("latitude");
+        String adresseName = getIntent().getStringExtra("adresseName");
 
         name5 = findViewById(R.id.name5);
         niveaux5 = findViewById(R.id.niveaux5);
@@ -76,24 +78,31 @@ public class NewBusiness5Activity extends AppCompatActivity {
         scrollView5 = findViewById(R.id.scrollView5);
         progressBar5 = findViewById(R.id.progressBar5);
         backbtn5 = findViewById(R.id.back_btn5);
+        back = findViewById(R.id.back5);
         add = findViewById(R.id.add);
 
         progressBar5.setVisibility(View.GONE);
         scrollView5.setVisibility(View.VISIBLE);
 
+        address = findViewById(R.id.address);
+        addressName = findViewById(R.id.addressName);
 
+        address.setText(longitude+","+latitude);
+        addressName.setText(adresseName);
+
+        String[] coordinates = address.getText().toString().split(",");
 
         lladdress5.setOnClickListener(v -> {
             Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
-            intent.putExtra("longitude",longitude);
-            intent.putExtra("latitude",latitude);
-            startActivityForResult(intent,202);
+            intent.putExtra("longitude",coordinates[0]);
+            intent.putExtra("latitude",coordinates[1]);
+           startActivityForResult(intent,202);
         });
 
         lladdressName5.setOnClickListener(v -> {
             Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
-            intent.putExtra("longitude",longitude);
-            intent.putExtra("latitude",latitude);
+            intent.putExtra("longitude",coordinates[0]);
+            intent.putExtra("latitude",coordinates[1]);
             startActivityForResult(intent,202);
         });
 
@@ -101,28 +110,30 @@ public class NewBusiness5Activity extends AppCompatActivity {
 
         backbtn5.setOnClickListener(v -> finish());
 
+        back.setOnClickListener(v -> finish());
+
         next.setOnClickListener(v -> {
-            getCoordinatesBatiment();
+            getCoordinatesBatiment(longitude,latitude);
         });
     }
 
-    public void getCoordinatesBatiment() {
+    public void getCoordinatesBatiment(String longitude,String latitude) {
 
         if(TextUtils.isEmpty(niveaux5.getText().toString())){
             Toast.makeText(this, "Entrez le nombre de niveaux", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(address.getText().toString())){
+        else if(TextUtils.isEmpty(address.getText().toString())){
             Toast.makeText(this, "Selectionnez une adresse", Toast.LENGTH_SHORT).show();
         }
-        if(TextUtils.isEmpty(quartier5.getText().toString())){
+        else if(TextUtils.isEmpty(quartier5.getText().toString())){
             Toast.makeText(this, "Entrez le quartier du batiment", Toast.LENGTH_SHORT).show();
         } else {
             progressBar5.setVisibility(View.VISIBLE);
 
             String[] coordinates = address.getText().toString().split(",");
-            String longitude = coordinates[0];
-            String latitude = coordinates[1];
-            searchPoint(longitude,latitude);
+          /*  String longitude = coordinates[0];
+            String latitude = coordinates[1];*/
+            searchPoint(coordinates[0],coordinates[1]);
         }
     }
 
@@ -161,72 +172,80 @@ public class NewBusiness5Activity extends AppCompatActivity {
     }
 
     public void saveBatiment(String nom, String nombreNiveaux, String codeBatiment, String longitude, String latitude, String indication, String rue, String ville, String commune, String quartier) {
+RequestBody requestBody;
+        if(image != null) {
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), image);
+             requestBody = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("nom", nom)
+                    .addFormDataPart("nombreNiveaux", nombreNiveaux)
+                    .addFormDataPart("codeBatiment", codeBatiment)
+                    .addFormDataPart("longitude", longitude)
+                    .addFormDataPart("latitude", latitude)
+                    .addFormDataPart("indication", indication)
+                    .addFormDataPart("rue", rue)
+                    .addFormDataPart("ville", ville)
+                    .addFormDataPart("commune", commune)
+                    .addFormDataPart("quartier", quartier)
+                    .addFormDataPart("file", image.getName(), requestFile)
+                    .build();
 
 
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), image);
+            if (Function.isNetworkAvailable(getApplicationContext())) {
+                ApiInterface apiService =
+                        APIClient.getNewClient3().create(ApiInterface.class);
+                Call<Batiments> call = apiService.addbatiments(API_KEY,"Bearer "+pref.getToken(),requestBody);
+                call.enqueue(new Callback<Batiments>() {
+                    @Override
+                    public void onResponse(@NotNull Call<Batiments> call, @NotNull Response<Batiments> response) {
+                        if(response.code() == 401 || response.code() == 500) {
+                            progressBar5.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Error Create", Toast.LENGTH_LONG).show();
+                        } else {
+                            int idBatiment = response.body().getData().getId();
+                            String nombreNiveau = response.body().getData().getNombreNiveaux();
+                            progressBar5.setVisibility(View.GONE);
+                            Intent intent = new Intent(NewBusiness5Activity.this, NewBusinessActivity.class);
+                            intent.putExtra("idBatiment",String.valueOf(idBatiment));
+                            intent.putExtra("nombreNiveau",String.valueOf(nombreNiveau));
+                            startActivity(intent);
+                            finish();
+                        }
 
-        RequestBody requestBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("nom", nom)
-                .addFormDataPart("nombreNiveaux", nombreNiveaux)
-                .addFormDataPart("codeBatiment", codeBatiment)
-                .addFormDataPart("longitude", longitude)
-                .addFormDataPart("latitude", latitude)
-                .addFormDataPart("indication", indication)
-                .addFormDataPart("rue", rue)
-                .addFormDataPart("ville", ville)
-                .addFormDataPart("commune", commune)
-                .addFormDataPart("quartier", quartier)
-                .addFormDataPart("file", image.getName(), requestFile)
-                .build();
-
-
-        if (Function.isNetworkAvailable(getApplicationContext())) {
-            ApiInterface apiService =
-                    APIClient.getNewClient3().create(ApiInterface.class);
-            Call<Batiments> call = apiService.addbatiments(API_KEY,"Bearer "+pref.getToken(),requestBody);
-            call.enqueue(new Callback<Batiments>() {
-                @Override
-                public void onResponse(@NotNull Call<Batiments> call, @NotNull Response<Batiments> response) {
-                    if(response.code() == 401 || response.code() == 500) {
                         progressBar5.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Error Create", Toast.LENGTH_LONG).show();
-                    } else {
-                        int idBatiment = response.body().getData().getId();
-                        String nombreNiveau = response.body().getData().getNombreNiveaux();
-                        progressBar5.setVisibility(View.GONE);
-                        Intent intent = new Intent(NewBusiness5Activity.this, NewBusinessActivity.class);
-                        intent.putExtra("idBatiment",String.valueOf(idBatiment));
-                        intent.putExtra("nombreNiveau",String.valueOf(nombreNiveau));
-                        startActivity(intent);
-                        finish();
+
                     }
 
-                    progressBar5.setVisibility(View.GONE);
-
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<Batiments> call, @NotNull Throwable t) {
-                    // Log error here since request failed
-                    progressBar5.setVisibility(View.GONE);
-                    Timber.tag("batiments").e(t.toString());
-                    Log.e("error create", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
-                }
-            });
+                    @Override
+                    public void onFailure(@NotNull Call<Batiments> call, @NotNull Throwable t) {
+                        // Log error here since request failed
+                        progressBar5.setVisibility(View.GONE);
+                        Timber.tag("batiments").e(t.toString());
+                        Log.e("error create", t.toString());
+                        Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else {
+                progressBar5.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+            }
         } else {
             progressBar5.setVisibility(View.GONE);
-            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Ajouter une image", Toast.LENGTH_SHORT).show();
         }
+
+
+
     }
 
     public void chooseImage() {
         ImagePicker.with(this)
                 .crop()
-                .compress(10000)
+                .compress(5096)
+                .maxResultSize(1080,1080)
                 .start(201);
+
 
     }
 
@@ -245,8 +264,9 @@ public class NewBusiness5Activity extends AppCompatActivity {
             String adresse = data.getStringExtra("adresse");
             String adresseName = data.getStringExtra("adresseName");
 
-            address = findViewById(R.id.address);
-            addressName = findViewById(R.id.addressName);
+
+         //   Toast.makeText(this, adresse, Toast.LENGTH_SHORT).show();
+
 
             if(adresse != null) {
                 address.setText(adresse);

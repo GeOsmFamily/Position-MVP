@@ -36,8 +36,8 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class NewBusiness3Activity extends AppCompatActivity {
-    TextView openLundi,closedLundi,openMardi,closedMardi,openMercredi,closedMercredi,openJeudi,closedJeudi,openVendredi,closedVendredi,openSamedi,closedSamedi,openDimanche,closedDimanche;
-    Button next3;
+    TextView openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche;
+    Button next3,back3;
     PreferenceManager pref;
     ProgressBar progressBar;
     @Override
@@ -50,18 +50,10 @@ public class NewBusiness3Activity extends AppCompatActivity {
 
 
         openLundi = findViewById(R.id.openLundi);
-        openMardi = findViewById(R.id.openMardi);
-        openMercredi = findViewById(R.id.openMercredi);
-        openJeudi = findViewById(R.id.openJeudi);
-        openVendredi = findViewById(R.id.openVendredi);
         openSamedi = findViewById(R.id.openSamedi);
         openDimanche = findViewById(R.id.openDimanche);
 
         closedLundi = findViewById(R.id.closedLundi);
-        closedMardi = findViewById(R.id.closedMardi);
-        closedMercredi = findViewById(R.id.closedMercredi);
-        closedJeudi = findViewById(R.id.closedJeudi);
-        closedVendredi = findViewById(R.id.closedVendredi);
         closedSamedi = findViewById(R.id.closedSamedi);
         closedDimanche = findViewById(R.id.closedDimanche);
 
@@ -69,28 +61,41 @@ public class NewBusiness3Activity extends AppCompatActivity {
 
         next3 = findViewById(R.id.next3);
 
-        next3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String getopenLundi = openLundi.getText().toString();
-                String getopenMardi = openMardi.getText().toString();
-                String getopenMercredi = openMercredi.getText().toString();
-                String getopenJeudi = openJeudi.getText().toString();
-                String getopenVendredi = openVendredi.getText().toString();
-                String getopenSamedi = openSamedi.getText().toString();
-                String getopenDimanche = openDimanche.getText().toString();
+        back3 = findViewById(R.id.back3);
 
-                String getclosedLundi = closedLundi.getText().toString();
-                String getclosedMardi = closedMardi.getText().toString();
-                String getclosedMercredi = closedMercredi.getText().toString();
-                String getclosedJeudi = closedJeudi.getText().toString();
-                String getclosedVendredi = closedVendredi.getText().toString();
-                String getclosedSamedi = closedSamedi.getText().toString();
-                String getclosedDimanche = closedDimanche.getText().toString();
+        back3.setOnClickListener(v -> finish());
 
+        next3.setOnClickListener(v -> {
+            String getopenLundi = openLundi.getText().toString();
+            String getopenMardi = openLundi.getText().toString();
+            String getopenMercredi = openLundi.getText().toString();
+            String getopenJeudi = openLundi.getText().toString();
+            String getopenVendredi = openLundi.getText().toString();
+            String getopenSamedi = openSamedi.getText().toString();
+            String getopenDimanche = openDimanche.getText().toString();
+
+            String getclosedLundi = closedLundi.getText().toString();
+            String getclosedMardi = closedLundi.getText().toString();
+            String getclosedMercredi = closedLundi.getText().toString();
+            String getclosedJeudi = closedLundi.getText().toString();
+            String getclosedVendredi = closedLundi.getText().toString();
+            String getclosedSamedi = closedSamedi.getText().toString();
+            String getclosedDimanche = closedDimanche.getText().toString();
+
+            if(!TextUtils.isEmpty(getopenLundi) && TextUtils.isEmpty(getclosedLundi)) {
+                Toast.makeText(NewBusiness3Activity.this, "Entrez les heures de fermetures", Toast.LENGTH_SHORT).show();
+            }
+            else if(!TextUtils.isEmpty(getopenSamedi) && TextUtils.isEmpty(getclosedSamedi)) {
+                Toast.makeText(NewBusiness3Activity.this, "Entrez les heures de fermetures", Toast.LENGTH_SHORT).show();
+            }
+            else if(!TextUtils.isEmpty(getopenDimanche) && TextUtils.isEmpty(getclosedDimanche)) {
+                Toast.makeText(NewBusiness3Activity.this, "Entrez les heures de fermetures", Toast.LENGTH_SHORT).show();
+            } else {
 
                 sendData(idEtablissement,getopenLundi,getclosedLundi,getopenMardi,getclosedMardi,getopenMercredi,getclosedMercredi,getopenJeudi,getclosedJeudi,getopenVendredi,getclosedVendredi,getopenSamedi,getclosedSamedi,getopenDimanche,getclosedDimanche);
             }
+
+
         });
 
         openLundi.setOnClickListener(new View.OnClickListener() {
@@ -103,11 +108,11 @@ public class NewBusiness3Activity extends AppCompatActivity {
         closedLundi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closedtime(closedLundi);
+                closedtime(closedLundi,openLundi.getText().toString());
             }
         });
 
-        openMardi.setOnClickListener(new View.OnClickListener() {
+      /*  openMardi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 opentime(openMardi);
@@ -161,7 +166,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
             public void onClick(View view) {
                 closedtime(closedVendredi);
             }
-        });
+        });*/
 
         openSamedi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +178,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
         closedSamedi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closedtime(closedSamedi);
+                closedtime(closedSamedi,openSamedi.getText().toString());
             }
         });
 
@@ -187,7 +192,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
         closedDimanche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                closedtime(closedDimanche);
+                closedtime(closedDimanche,openDimanche.getText().toString());
             }
         });
 
@@ -247,9 +252,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
                 public void onResponse(@NotNull Call<Horaires> call, @NotNull Response<Horaires> response) {
                     if(response.code() == 401 || response.code() == 500) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Error create Phone", Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
 
                     }
@@ -298,7 +301,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
         datePicker.show(getFragmentManager(), "Timepickerdialog");
     }
 
-    private void closedtime(TextView closed) {
+    private void closedtime(TextView closed,String openTime) {
         Calendar cur_calender = Calendar.getInstance();
         TimePickerDialog datePicker = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -311,7 +314,13 @@ public class NewBusiness3Activity extends AppCompatActivity {
 
                     sdf = new SimpleDateFormat("HH:mm");
                     String formatedTime = sdf.format(time);
-                    closed.setText(formatedTime);
+                    Date open = sdf.parse(openTime);
+                    if(open.compareTo(time) < 0) {
+                        closed.setText(formatedTime);
+                    } else {
+                        Toast.makeText(NewBusiness3Activity.this, "Heure de fermeture non valide", Toast.LENGTH_SHORT).show();
+                    }
+
 
                 } catch (Exception e) {}
             }

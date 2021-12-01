@@ -52,7 +52,7 @@ public class DataSearchEtablissement {
     private Object description;
     @SerializedName("batiment")
     @Expose
-    private Object batiment;
+    private DataBatiments batiment;
     @SerializedName("nomSousCategorie")
     @Expose
     private String nomSousCategorie;
@@ -61,7 +61,7 @@ public class DataSearchEtablissement {
     private String nomCategorie;
     @SerializedName("logo_url")
     @Expose
-    private Object logoUrl;
+    private String logoUrl;
     @SerializedName("sous_categorie")
     @Expose
     private SousCategory sousCategorie;
@@ -186,11 +186,11 @@ public class DataSearchEtablissement {
         this.description = description;
     }
 
-    public Object getBatiment() {
+    public DataBatiments getBatiment() {
         return batiment;
     }
 
-    public void setBatiment(Object batiment) {
+    public void setBatiment(DataBatiments batiment) {
         this.batiment = batiment;
     }
 
@@ -210,11 +210,11 @@ public class DataSearchEtablissement {
         this.nomCategorie = nomCategorie;
     }
 
-    public Object getLogoUrl() {
+    public String getLogoUrl() {
         return logoUrl;
     }
 
-    public void setLogoUrl(Object logoUrl) {
+    public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
     }
 

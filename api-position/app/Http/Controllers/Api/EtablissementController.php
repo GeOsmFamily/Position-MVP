@@ -180,15 +180,22 @@ class EtablissementController extends BaseController
         foreach ($etablissements as $etablissement) {
             $batiment = $etablissement->batiment;
             $souscategorie = $etablissement->sousCategorie;
+            $images = $etablissement->images;
+            $horaires = $etablissement->horaires;
+            $telephones = $etablissement->telephones;
 
 
             $etablissement['batiment'] = $batiment;
             $etablissement['nomSousCategorie'] = $souscategorie->nom;
 
+            $etablissement['images'] = $images;
+            $etablissement['horaires'] = $horaires;
+            $etablissement['telephones'] = $telephones;
+
             $categorie = $souscategorie->categorie;
 
             $etablissement['nomCategorie'] = $categorie->nom;
-            $etablissement['logo_url'] = $categorie->logo_url;
+            $etablissement['logo_url'] = $categorie->logoUrl;
         }
 
         return $this->sendResponse($etablissements, 'Liste des Etablissements');

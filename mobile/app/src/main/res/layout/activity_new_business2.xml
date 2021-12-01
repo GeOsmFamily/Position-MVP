@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Nouvelle Entreprise"
+                android:text="Nouvelle Entreprise (3/5)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -219,6 +219,7 @@
 
             <LinearLayout
                 android:id="@+id/llindication"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/whatsapp"
@@ -240,11 +241,12 @@
                     android:id="@+id/indication_adresse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Indication Addresse"
+                    android:hint="Description de l'adresse"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -319,25 +321,44 @@
                     android:textColorHint="@android:color/darker_gray"/>
             </LinearLayout>
 
-
-            <customfonts.Button_SF_Pro_Display_Medium
-                android:id="@+id/next2"
+            <LinearLayout
+                android:id="@+id/groupButton"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/llsiteinternet"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/button_round_1"
-                android:text="Suivant" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/llsiteinternet">
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/back2"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Retour" />
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/next2"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Suivant" />
+            </LinearLayout>
+
+
             <ProgressBar
                 android:id="@+id/progress2"
                 android:visibility="gone"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/next2"
+                android:layout_below="@id/groupButton"
                 android:layout_marginBottom="16dp"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>

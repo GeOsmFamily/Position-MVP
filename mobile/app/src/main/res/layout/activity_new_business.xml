@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Nouvelle Entreprise"
+                android:text="Nouvelle Entreprise (2/5)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -151,10 +151,10 @@
                 <Spinner
                     android:id="@+id/category"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Category"
+
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -187,7 +187,6 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Tags"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -197,6 +196,7 @@
             <LinearLayout
                 android:id="@+id/lldescription"
                 android:layout_below="@+id/llamenities"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -254,23 +254,42 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/camera" />
                 </RelativeLayout>
 
 
             </LinearLayout>
 
-            <customfonts.Button_SF_Pro_Display_Medium
-                android:id="@+id/next"
+            <LinearLayout
+                android:id="@+id/groupButton"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/llcover"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/button_round_1"
-                android:text="Suivant" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/llcover">
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/back"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Retour" />
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/next"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Suivant" />
+            </LinearLayout>
+
 
             <ProgressBar
                 android:id="@+id/progressBar1"
@@ -278,7 +297,7 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/next"
+                android:layout_below="@id/groupButton"
                 android:layout_marginBottom="16dp"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>

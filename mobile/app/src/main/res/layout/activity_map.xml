@@ -84,6 +84,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_chips"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -134,16 +135,7 @@
             app:layout_anchor="@+id/bottomSheet"
             app:layout_anchorGravity="end|top">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/newBussiness"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toTopOf="@+id/location"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_baseline_add_business_24" />
+
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/location"
@@ -226,18 +218,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.sogefi.position.ui.TopIconButton
+                <!--com.sogefi.position.ui.TopIconButton
                     android:id="@+id/save"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:text="@string/save"
                     app:icon="@drawable/ic_favorite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/share"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" /-->
 
-                <com.sogefi.position.ui.TopIconButton
+                <!--com.sogefi.position.ui.TopIconButton
                     android:id="@+id/route"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:text="@string/create_route"
@@ -246,10 +240,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/guideline1"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.55" />
+                    app:layout_constraintVertical_bias="0.55" /-->
 
-                <com.sogefi.position.ui.TopIconButton
+                <!--com.sogefi.position.ui.TopIconButton
                     android:id="@+id/near"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:text="@string/near"
@@ -259,7 +254,7 @@
                     app:layout_constraintHorizontal_bias="0.81"
                     app:layout_constraintStart_toEndOf="@+id/route"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.55" />
+                    app:layout_constraintVertical_bias="0.55" /-->
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline1"

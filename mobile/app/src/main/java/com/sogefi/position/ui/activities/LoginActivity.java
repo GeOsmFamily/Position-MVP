@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Error Login", Toast.LENGTH_LONG).show();
                         } else {
                             pref.setToken(response.body().getData().getToken());
+                            Log.d("Token", pref.getToken());
                             pref.setRoleid(response.body().getData().getUser().getRole().toString());
                             getUsers(pref.getToken());
                             progressBarLogin.setVisibility(View.GONE);
@@ -111,7 +113,12 @@ public class LoginActivity extends AppCompatActivity {
                         pref.setName(response.body().getData().getUser().getName());
                         pref.setPhone(response.body().getData().getUser().getPhone().toString());
                         pref.setId(response.body().getData().getUser().toString());
-                        pref.setProfileimage(response.body().getData().getUser().getCommercial().getImageProfil());
+                        if(response.body().getData().getUser().getCommercial().getImageProfil() != null) {
+                            pref.setProfileimage(response.body().getData().getUser().getCommercial().getImageProfil());
+                        } else {
+                            pref.setProfileimage("");
+                        }
+
                         pref.setRoleid(response.body().getData().getUser().getRole().toString());
                      //   Toast.makeText(getApplicationContext(), response.body().getData().getUser().getRole().toString(), Toast.LENGTH_LONG).show();
 
