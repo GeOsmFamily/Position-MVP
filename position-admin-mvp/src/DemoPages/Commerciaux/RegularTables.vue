@@ -23,7 +23,7 @@
           :search-options="{
             enabled: true,
             skipDiacritics: true,
-            placeholder: 'Rechercher une catégorie',
+            placeholder: 'Rechercher un commercial',
           }"
           :pagination-options="{
             enabled: true,

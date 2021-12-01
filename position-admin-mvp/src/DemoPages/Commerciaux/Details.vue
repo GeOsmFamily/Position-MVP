@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-tabs content-class="mt-3" fill>
-      <b-tab title="First" active
+      <b-tab title="Profil" active
         ><div class="main-content">
           <!-- Top navbar -->
           <nav
@@ -118,15 +118,29 @@
                   <div class="row justify-content-center">
                     <div class="col-lg-3 order-lg-2">
                       <div class="card-profile-image">
-                        <a href="#">
-                          <img
-                            :src="
-                              'https://services.position.cm' +
-                              commercial.imageProfil
-                            "
-                            class="rounded-circle"
-                          />
-                        </a>
+                        <!--                        <b-img
+                          :src="
+                            'https://services.position.cm' +
+                            commercial.imageProfil
+                          "
+                          rounded="circle"
+                          alt="Circle image"
+                        ></b-img>-->
+                        <!--                        <img
+                          :src="
+                            'https://services.position.cm' +
+                            commercial.imageProfil
+                          "
+                          class="img-fluid img-circle rounded-circle"
+                          alt="Responsive Image"
+                        />-->
+                        <img
+                          :src="
+                            'https://services.position.cm' +
+                            commercial.imageProfil
+                          "
+                          class="rounded-circle"
+                        />
                       </div>
                     </div>
                   </div>
@@ -202,7 +216,9 @@
                         <h3 class="mb-0">Informations</h3>
                       </div>
                       <div class="col-4 text-right">
-                        <a href="#!" class="btn btn-sm btn-primary">Settings</a>
+                        <button class="btn btn-sm btn-danger">
+                          Supprimer le commercial
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -400,27 +416,479 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
           </div>
         </div>
       </b-tab>
-      <b-tab title="Second"><p>I'm the second tab</p></b-tab>
-      <b-tab title="Very, very long title"
-        ><p>I'm the tab with the very, very long title</p></b-tab
-      >
-      <b-tab title="Disabled" disabled><p>I'm a disabled tab!</p></b-tab>
+      <b-tab title="Statistiques commercial">
+        <div class="row">
+          <div class="col-sm-12 col-lg-6">
+            <div class="mb-3 card">
+              <div class="card-header-tab card-header">
+                <div
+                  class="
+                    card-header-title
+                    font-size-lg
+                    text-capitalize
+                    font-weight-normal
+                  "
+                >
+                  <i
+                    class="
+                      header-icon
+                      lnr-cloud-download
+                      icon-gradient
+                      bg-happy-itmeo
+                    "
+                  >
+                  </i>
+                  Entreprises enregistrées
+                </div>
+              </div>
+              <div class="p-0 card-body">
+                <div class="p-1 slick-slider-sm mx-auto">
+                  <div class="widget-chart widget-chart2 text-left p-0">
+                    <div class="widget-chat-wrapper-outer">
+                      <div
+                        class="
+                          widget-chart-content widget-chart-content-lg
+                          pb-0
+                        "
+                      >
+                        <!--                        <div class="widget-chart-flex">
+                          <div
+                            class="
+                              widget-title
+                              opacity-5
+                              text-muted text-uppercase
+                            "
+                          >
+                            Helpdesk Tickets
+                          </div>
+                        </div>-->
+                        <!--                        <div class="widget-numbers">
+                          <div class="widget-chart-flex">
+&lt;!&ndash;                            <div>
+                              <span class="text-warning">34</span>
+                            </div>&ndash;&gt;
+&lt;!&ndash;                            <div
+                              class="
+                                widget-title
+                                ml-2
+                                font-size-lg font-weight-normal
+                                text-dark
+                              "
+                            >
+                              <span class="opacity-5 text-muted pl-2 pr-1"
+                                >5%</span
+                              >
+                              increase
+                            </div>&ndash;&gt;
+                          </div>
+                        </div>-->
+                      </div>
+                      <div>
+                        <div
+                          class="
+                            widget-chart-wrapper
+                            he-auto
+                            opacity-10
+                            m-0
+                            small
+                          "
+                        >
+                          <line-chart :chart-data="datacollection"></line-chart>
+                        </div>
+                        <!--                        <div
+                          class="widget-chart-wrapper he-auto opacity-10 m-0"
+                        >
+                          <Line :width="300" :height="300"></Line>
+                        </div>-->
+                        <!--                        <chart1 :height="300" />-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <h6
+                  class="
+                    text-muted text-uppercase
+                    font-size-md
+                    opacity-5
+                    pl-3
+                    pr-3
+                    pb-1
+                    font-weight-normal
+                  "
+                >
+                  Collecte journalière
+                </h6>
+                <ul class="list-group list-group-flush">
+                  <li class="p-3 bg-transparent list-group-item">
+                    <div class="widget-content p-0">
+                      <div class="widget-content-outer">
+                        <div class="widget-content-wrapper">
+                          <div class="widget-content-left">
+                            <div class="widget-heading">Total semaine</div>
+                            <div class="widget-subheading">
+                              90 entreprises enregistrées
+                            </div>
+                          </div>
+                          <div class="widget-content-right">
+                            <div class="widget-numbers text-success">
+                              <small>FCFA</small>
+                              45000
+                            </div>
+                          </div>
+                        </div>
+                        <div class="widget-progress-wrapper">
+                          <div
+                            class="
+                              progress-bar-sm progress-bar-animated-alt progress
+                            "
+                          >
+                            <div
+                              class="progress-bar bg-primary"
+                              role="progressbar"
+                              aria-valuenow="72"
+                              aria-valuemin="0"
+                              aria-valuemax="100"
+                              style="width: 72%"
+                            ></div>
+                          </div>
+                          <div class="progress-sub-label">
+                            <div class="sub-label-left"></div>
+                            <div class="sub-label-right">100%</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-lg-6">
+            <div class="mb-3 card">
+              <div class="card-header-tab card-header">
+                <div
+                  class="
+                    card-header-title
+                    font-size-lg
+                    text-capitalize
+                    font-weight-normal
+                  "
+                >
+                  <i
+                    class="
+                      header-icon
+                      lnr-cloud-download
+                      icon-gradient
+                      bg-happy-itmeo
+                    "
+                  >
+                  </i>
+                  Liste d'entreprises de la semaine
+                </div>
+              </div>
+              <div class="p-0 card-body">
+                <div class="p-1 slick-slider-sm mx-auto">
+                  <div class="widget-chart widget-chart2 text-left p-0">
+                    <div class="widget-chat-wrapper-outer">
+                      <div
+                        class="
+                          widget-chart-content widget-chart-content-lg
+                          pb-0
+                        "
+                      ></div>
+                      <div>
+                        <div
+                          class="
+                            widget-chart-wrapper
+                            he-auto
+                            opacity-10
+                            m-0
+                            small
+                          "
+                        >
+                          <vue-good-table
+                            :columns="fields"
+                            :rows="entreprises"
+                            :fixed-header="true"
+                            :search-options="{
+                              enabled: true,
+                              skipDiacritics: true,
+                              placeholder: 'Rechercher une entreprise',
+                            }"
+                            :pagination-options="{
+                              enabled: true,
+                              mode: 'records',
+                              perPage: 10,
+                              position: 'bottom',
+                              dropdownAllowAll: false,
+                              jumpFirstOrLast: true,
+                              firstLabel: 'Début',
+                              lastLabel: 'Fin',
+                              nextLabel: 'suiv',
+                              prevLabel: 'prec',
+                              ofLabel: 'de',
+                              perPageDropdownEnabled: false,
+                              pageLabel: 'page', // for 'pages' mode
+                              allLabel: 'Tout',
+                            }"
+                            styleClass="vgt-table bordered striped"
+                            compactMode
+                          >
+                            <div slot="emptystate">
+                              No data yet.<b-button @click="getCommerciaux()"
+                                >Réessayer</b-button
+                              >
+                            </div>
+                          </vue-good-table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-lg-6">
+            <div class="mb-3 card">
+              <div class="card-header-tab card-header">
+                <div
+                  class="
+                    card-header-title
+                    font-size-lg
+                    text-capitalize
+                    font-weight-normal
+                  "
+                >
+                  <i
+                    class="
+                      header-icon
+                      lnr-cloud-download
+                      icon-gradient
+                      bg-happy-itmeo
+                    "
+                  >
+                  </i>
+                  Rang sur la semaine
+                </div>
+              </div>
+              <div class="p-0 card-body">
+                <div class="p-1 slick-slider-sm mx-auto">
+                  <div class="widget-chart widget-chart2 text-left p-0">
+                    <div class="widget-chat-wrapper-outer">
+                      <div
+                        class="
+                          widget-chart-content widget-chart-content-lg
+                          pb-0
+                        "
+                      ></div>
+                      <div>
+                        <div
+                          class="
+                            widget-chart-wrapper
+                            he-auto
+                            opacity-10
+                            m-0
+                            small
+                          "
+                        >
+                          <vue-good-table
+                            :columns="fields"
+                            :rows="entreprises"
+                            :fixed-header="true"
+                            :search-options="{
+                              enabled: true,
+                              skipDiacritics: true,
+                              placeholder: 'Rechercher une entreprise',
+                            }"
+                            :pagination-options="{
+                              enabled: true,
+                              mode: 'records',
+                              perPage: 10,
+                              position: 'bottom',
+                              dropdownAllowAll: false,
+                              jumpFirstOrLast: true,
+                              firstLabel: 'Début',
+                              lastLabel: 'Fin',
+                              nextLabel: 'suiv',
+                              prevLabel: 'prec',
+                              ofLabel: 'de',
+                              perPageDropdownEnabled: false,
+                              pageLabel: 'page', // for 'pages' mode
+                              allLabel: 'Tout',
+                            }"
+                            styleClass="vgt-table bordered striped"
+                            compactMode
+                          >
+                            <div slot="emptystate">
+                              No data yet.<b-button @click="getCommerciaux()"
+                                >Réessayer</b-button
+                              >
+                            </div>
+                          </vue-good-table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </b-tab>
     </b-tabs>
   </div>
 </template>
-
 <script>
+import LineChart from "./Analytics/LineChart";
 export default {
   name: "Details",
+  data() {
+    return {
+      datacollection: {
+        labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+        datasets: [
+          {
+            label: "Semaine du 12 Decembre 2021",
+            backgroundColor: "#f87979",
+            data: [10, 10, 12, 8, 25, 25],
+          },
+        ],
+      },
+      entreprises: [
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+        {
+          name: "Entreprise 1",
+          category: " Achat",
+          phone: "655480901",
+          created_at: "12/12/2021",
+        },
+      ],
+      fields: [
+        {
+          label: "Nom",
+          field: "name",
+          type: "string",
+        },
+        {
+          label: "Catégorie",
+          field: "category",
+          type: "string",
+        },
+        {
+          label: "Contact",
+          field: "phone",
+          type: "string",
+        },
+        {
+          label: "Crée le",
+          field: "created_at",
+          type: "date",
+          dateInputFormat: "dd/mm/yyyy",
+          dateOutputFormat: "dd/mm/yyyy",
+        },
+      ],
+    };
+  },
+  components: {
+    LineChart,
+  },
   computed: {
     commercial() {
       return this.$store.getters["commercial/commercial"];
+    },
+  },
+  methods: {
+    getRandomInt() {
+      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
   },
 };
 </script>
 
 <style scoped>
+.small {
+  max-width: 600px;
+  margin: 150px auto;
+}
 :root {
   --blue: #5e72e4;
   --indigo: #5603ad;
