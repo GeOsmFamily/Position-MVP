@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  url_backend: 'http://localhost:8000/',
-  url_image: 'http://localhost:8000',
+  url_backend: 'https://services.position.cm/',
+  url_image: 'https://services.position.cm',
   primaryColor: '#05BF95',
-  //  url_position_Api:'https://api.position.cm/',
+ url_position_Api:'https://services.position.cm/',
   avaible_language: ['fr', 'en'],
   default_language: 'fr',
 };

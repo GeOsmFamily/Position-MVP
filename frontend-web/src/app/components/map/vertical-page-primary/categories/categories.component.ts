@@ -13,7 +13,7 @@ import { PositionApiService } from 'src/app/services/position-api/position-api.s
 })
 export class CategoriesComponent implements OnInit {
 
-
+  categories=new Array()
 
 
   constructor(public positionApi:PositionApiService,public deviceDetector:DeviceDetectionService, public componentHelper: ComponentHelper,iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
@@ -46,7 +46,11 @@ export class CategoriesComponent implements OnInit {
 
 
 
-
+    console.log("categories")
+    console.log(this.categories)
+    this.categories=this.positionApi.getCategories()
+    console.log("rrrrr")
+    console.log(this.categories )
 
 
   }

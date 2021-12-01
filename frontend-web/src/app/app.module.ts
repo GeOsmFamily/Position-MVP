@@ -18,11 +18,8 @@ import { HeaderComponent } from './components/map/header/header.component';
 import { EtablissementComponent } from './components/map/etablissement/etablissement.component';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
-import { NgImageSliderModule } from 'ng-image-slider';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotifierModule } from 'angular-notifier';
-import { ArchwizardModule } from 'angular-archwizard';
 import { VerticalPagePrimaryComponent } from './components/map/vertical-page-primary/vertical-page-primary.component';
 import { CategoriesComponent } from './components/map/vertical-page-primary/categories/categories.component';
 import { SearchComponent } from './components/map/vertical-page-primary/search/search.component';
@@ -60,10 +57,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgImageSliderModule,
-    SlickCarouselModule,
     NgbModule,
-    ArchwizardModule,
+
+
     NotifierModule.withConfig({
       position: {
         horizontal: {
@@ -86,7 +82,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       },
     }),
   ],
-  providers: [authInterceptorProviders],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

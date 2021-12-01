@@ -63,8 +63,6 @@ loginComponent: LoginComponent | undefined;
   }
 
   ngOnInit(): void {
-    console.log("categories")
-    this.positionApi.getCategories()
 
 this.initialiazeMap()
 this.getPosition()
@@ -165,10 +163,29 @@ geolocation.on('change:position', function () {
    * Event if mapClicked
    */
  mapClicked() {
+
+  let mapHelper = new MapHelper();
   map.on('singleclick', (event) => {
+     var pixel=map?.getEventPixel(event.originalEvent)
+     var feature=map?.forEachFeatureAtPixel(
+       pixel,function(feature,layer){
+         return feature
+       }
+     )
 
 
-    this.componentHelper.openFicheEntreprise()
+
+      console.log("feature1")
+      console.log(feature)
+      if(feature?.get('type')=="position"){
+        console.log("position")
+          this.componentHelper.openFicheEntreprise(feature)
+      }
+
+
+
+
+
    // console.log( this.componentHelper.openEtablissement())
   console.log("map has been clicked")
 });

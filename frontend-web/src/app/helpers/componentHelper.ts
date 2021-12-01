@@ -14,9 +14,9 @@ export class ComponentHelper{
  loginComponent: LoginComponent | undefined
 
  //display and close profilComponent
-  openFicheEntreprise(){
+  openFicheEntreprise(featurePoint:any){
     console.log("openFicheEntreprise")
-    this.ficheEntrepriseComponent?.open()
+    this.ficheEntrepriseComponent?.open(featurePoint)
   }
   closeFicheEntreprise(){
     this.ficheEntrepriseComponent?.close()

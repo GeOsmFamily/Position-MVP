@@ -1,6 +1,6 @@
 
 
-<div style="background-color: #fff;color:black">
+<div style="background-color: #fff;color:black;height: 100vh;">
   <!-- Photo de l'entreprise-->
   <div class="parent " style="width: 100%; overflow: hidden;">
    <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
@@ -8,29 +8,18 @@
    <ngb-carousel >
     <ng-template ngbSlide>
       <div class="picsum-img-wrapper">
-        <img src="assets/resto.jpg" alt="Angular Carousel 1" style="width: 100%;" class="img-fluid">
+        <img src="{{url_image+featurePoint?.get('cover')}}" alt="Angular Carousel 1" style="width: 100%;" class="img-fluid">
       </div>
-      <div class="carousel-caption">
-        <h3>Title Goes Here</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
+
     </ng-template>
-    <ng-template ngbSlide>
-      <div class="picsum-img-wrapper">
-        <img src="assets/resto.jpg" alt="Angular Carousel 2" style="width: 100%;" class="img-fluid">
-      </div>
-      <div class="carousel-caption">
-        <h3>Title Goes Here</h3>
-        <p>Consxectetur tortor volutpat pretium.</p>
-      </div>
-    </ng-template>
+
   </ngb-carousel>
 
     <button style=" display: flex;
     justify-content: center;
     align-items: center; z-index:20;color: white;
         " class="closeb"  (click)="close()">
-      <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" />
+      <img class="img-fluid clear-logo"  src="assets/icon/icon-clear.svg" alt="fermer" />
 
     </button>
   </div>
@@ -40,8 +29,8 @@
 
     <!-- Nom et catégorie de l'entreprise-->
     <div class=" clearfix">
-      <div class="pull-left" style="font-weight: normal;">Nom établissment</div>
-      <div class="pull-right" style="font-family:OpenSans light ;">catégorie</div>
+      <div class="pull-left" style="font-weight: normal;">{{featurePoint?.get("textLabel")}} </div>
+      <div class="pull-right" style="font-family:OpenSans light ;">{{featurePoint?.get("nomCategorie")}}</div>
     </div>
 
     <!-- Moyen de contacter et de partager les infos sur l'entreprise-->
@@ -110,7 +99,7 @@
         <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""  style="    margin-top: -3px; width:20px;float:left;"/>
 
 
-        <p >Rue de Melen, face Polytech et à côté l'hôtel "le Résidence" </p>
+        <p >{{featurePoint?.get('indication')}}</p>
 
       </div>
 
@@ -119,7 +108,7 @@
         <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style="    margin-top: -3px;width: 20px; float:left;"/>
 
 
-        <p>www.position.cm </p>
+        <p>{{featurePoint?.get('siteInternet')}}</p>
 
       </div>
 
@@ -135,7 +124,7 @@
      <span>Présentation</span>
      <p style=" text-align: justify;
      text-justify: inter-word;margin-right: 15px;">
-      Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée.
+     {{featurePoint?.get('description')}}
      </p>
 
   </div>
@@ -144,7 +133,7 @@
   </div>
 
 
- 
+
 
 
 

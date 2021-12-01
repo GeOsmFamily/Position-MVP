@@ -86,6 +86,7 @@ app-login
 
 
 app-fiche-entreprise {
+
   position: absolute;
   left: -310px;
   top: 0px;
@@ -128,7 +129,7 @@ app-fiche-entreprise {
 
   }
   app-vertical-toolbar{
-    z-index: 2;
+    z-index: 1;
    /* position: absolute;
      margin-left: 10px;
      */
@@ -178,10 +179,10 @@ app-fiche-entreprise {
     background-color:white;
     color: white;
     //font-size: 30px;
-    position:fixed;
+    position:absolute;
       top:0;
       width:100%;
-      z-index:100;
+      z-index:1;
   }
 
 }
@@ -194,10 +195,10 @@ app-fiche-entreprise {
     background-color:transparent;
     color: white;
     //font-size: 30px;
-    position:fixed;
+    position:absolute;
       top:0;
       width:100%;
-      z-index:100;
+      z-index:1;
   }
 
   .sidenav-left {
@@ -217,10 +218,10 @@ app-fiche-entreprise {
       background-color:transparent;
       color: white;
       //font-size: 30px;
-      position:fixed;
+      position:absolute;
         top:0;
         width:100%;
-        z-index:100;
+        z-index:1;
     }
 
     .sidenav-left {
@@ -244,7 +245,7 @@ app-fiche-entreprise {
     position:fixed;
       top:0;
       width:100%;
-      z-index:100;
+      z-index:1;
   }
 
   .sidenav-left {

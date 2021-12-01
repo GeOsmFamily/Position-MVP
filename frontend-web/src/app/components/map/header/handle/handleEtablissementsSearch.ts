@@ -7,7 +7,8 @@ import { MapHelper } from 'src/app/helpers/mapHelper';
 export class HandleEtablissementsSearch {
   formatDataForTheList(responseData: any): Array<FilterOptionInterface> {
     var responses = Array();
-
+    console.log("response Data")
+    console.log(responseData)
     responseData.forEach((element: any) => {
       var geometry = {
         type: 'Point',
@@ -43,6 +44,7 @@ export class HandleEtablissementsSearch {
         response.push({
           name: features[0].get('nom'),
           id: features[0].get('id'),
+          adresse: features[0].get('description'),
           geometry: features[0].getGeometry(),
           details: details.join(', '),
           logo_url: features[0].get('logo_url'),
@@ -78,6 +80,7 @@ export class HandleEtablissementsSearch {
 
   _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
     if (emprise.geometry) {
+      console.log(emprise)
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
         var searchResultLayer = new VectorLayer();
@@ -85,9 +88,16 @@ export class HandleEtablissementsSearch {
 
         var feature = new Feature();
         var textLabel = emprise.name;
-
+        var description=emprise.description
+        console.log("description"+description)
         feature.set('textLabel', textLabel);
         feature.set('logo_url', environment.url_image + emprise.logo_url);
+        feature.set('description',description);
+        feature.set('type',"position");
+        feature.set('nomCategorie',emprise.nomCategorie);
+        feature.set('cover',emprise.cover);
+        feature.set('siteInternet',emprise.siteInternet);
+        feature.set('indication',emprise.batiment.indication);
 
         feature.setGeometry(emprise.geometry);
 
@@ -99,6 +109,6 @@ export class HandleEtablissementsSearch {
 
         mapHelper.fit_view(extent, 16);
       }
-    }
+   }
   }
 }
