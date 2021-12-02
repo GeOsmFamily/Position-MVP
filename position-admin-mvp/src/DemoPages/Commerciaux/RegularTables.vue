@@ -15,15 +15,15 @@
       <div class="text-center" v-if="loading">
         <b-spinner variant="success" label="Spinning"></b-spinner>
       </div>
-      <b-card title="Catégories" class="main-card mb-4" v-if="!loading">
+      <b-card title="Commerciaux" class="main-card mb-4" v-if="!loading">
         <vue-good-table
           :columns="fields"
-          :rows="categories"
+          :rows="commerciaux"
           :fixed-header="true"
           :search-options="{
             enabled: true,
             skipDiacritics: true,
-            placeholder: 'Rechercher une catégorie',
+            placeholder: 'Rechercher un commercial',
           }"
           :pagination-options="{
             enabled: true,
@@ -50,7 +50,7 @@
               <b-button
                 class="mx-1"
                 variant="info"
-                @click="editRow(props.row.id)"
+                @click="commercialDetails(props.row)"
                 >Détails</b-button
               >
               <b-button
@@ -68,29 +68,12 @@
                 >Supprimer</b-button
               >
             </span>
-            <span v-if="props.column.field === 'logoUrl'">
-              <center>
-                <b-img
-                  :src="
-                    'https://services.position.cm' +
-                    props.formattedRow[props.column.field]
-                  "
-                  height="20"
-                  width="20"
-                  alt="Logo catégorie"
-                  v-if="
-                    props.formattedRow[props.column.field] !== '' ||
-                    props.formattedRow[props.column.field] != null
-                  "
-                ></b-img>
-              </center>
-            </span>
             <span v-else>
               {{ props.formattedRow[props.column.field] }}
             </span>
           </template>
           <div slot="emptystate">
-            No data yet.<b-button @click="getCategories">Réessayer</b-button>
+            No data yet.<b-button @click="getCommerciaux()">Réessayer</b-button>
           </div>
         </vue-good-table>
 
@@ -126,35 +109,17 @@
                 </b-form-invalid-feedback>
               </b-form-group>
               <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                <label class="mr-sm-2">Logo catégorie</label>
-                <b-form-file
+                <label for="logo22" class="mr-sm-2">Logo</label
+                ><b-form-input
+                  name="logo"
                   v-model="logo"
-                  :state="submitted ? Boolean(logo) : null"
-                  placeholder="Choisissez un logo pour la catégorie..."
-                  drop-placeholder="Drop file here..."
-                  @change="handleFileUpload($event)"
-                ></b-form-file>
-              </div>
-              <br />
-              <div v-if="previewImage">
-                <div>
-                  <b-img
-                    :src="previewImage"
-                    fluid
-                    alt="Fluid image"
-                    width="400"
-                    height="400"
-                    v-if="previewImage != null"
-                  ></b-img>
-                  <b-img
-                    :src="'https://services.position.cm' + currentRow.logoUrl"
-                    fluid
-                    alt="Fluid image"
-                    width="400"
-                    height="400"
-                    v-if="previewImage == null"
-                  ></b-img>
-                </div>
+                  :state="!submitted ? null : submitted"
+                  id="logo22"
+                  placeholder="https://via.placeholder.com/150.png/09f/fff"
+                  type="text"
+                  :value="currentRow != null ? currentRow.logo_url : ''"
+                  class="form-control"
+                />
               </div>
               <div class="form-group">
                 <div v-if="message" class="alert alert-danger" role="alert">
@@ -180,20 +145,20 @@
         </div>
         <b-modal
           id="my-modal"
-          title="Supprimer la catégorie"
+          title="Supprimer le commercial"
           hide-backdrop
           hide-footer
         >
           <div class="d-block text-center">
             <h5>
-              Voulez vous vraiment supprimer la catégorie
-              {{ currentRow != null ? currentRow.nom : "" }}!
+              Voulez vous vraiment supprimer le commercial
+              {{ currentRow != null ? currentRow.name : "" }}!
             </h5>
           </div>
           <b-button
             class="mt-3"
             variant="outline-danger"
-            @click="deleteCategory"
+            @click="deleteCommercial"
             block
             >Supprimer</b-button
           >
@@ -222,9 +187,6 @@
         </div>
       </template>
     </b-overlay>
-    <b-toast id="example-toast" title="BootstrapVue" static no-auto-hide>
-      Hello, world! This is a toast message.
-    </b-toast>
   </div>
 </template>
 
@@ -239,15 +201,14 @@ export default {
   },
   data: () => ({
     name: "",
-    logo: null,
-    previewImage: null,
+    logo: "",
     nameState: null,
     message: "",
     submittedNames: [],
     editLoading: false,
     submitted: false,
-    heading: "Catégories",
-    subheading: "Liste des catégories",
+    heading: "Commerciaux",
+    subheading: "Liste des commerciaux",
     icon: "pe-7s-drawer icon-gradient bg-happy-itmeo",
     currentRow: null,
     deleteLoading: false,
@@ -256,21 +217,31 @@ export default {
     blur: "2px",
     fields: [
       {
-        label: "No",
-        field: "id",
+        label: "No Badge",
+        field: "numeroBadge",
         type: "number",
       },
       {
-        label: "Logo",
-        field: "logoUrl",
-        type: "string",
-      },
-      {
         label: "Nom",
-        field: "nom",
+        field: "name",
         type: "string",
       },
       {
+        label: "Email",
+        field: "email",
+        type: "string",
+      },
+      {
+        label: "Contact",
+        field: "phone",
+        type: "string",
+      },
+      {
+        label: "Ville",
+        field: "ville",
+        type: "string",
+      },
+      /*{
         label: "Crée le",
         field: "created_at",
         type: "date",
@@ -283,7 +254,7 @@ export default {
         type: "date",
         dateInputFormat: "dd/mm/yyyy",
         dateOutputFormat: "dd/mm/yyyy",
-      },
+      },*/
       {
         label: "Actions",
         field: "actions",
@@ -307,56 +278,47 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.getters["category/loading"];
+      return this.$store.getters["commercial/loading"];
     },
-    categories() {
-      return this.$store.getters["category/categories"];
+    commerciaux() {
+      return this.$store.getters["commercial/commerciaux"];
     },
   },
   created() {
-    if (this.categories == null || this.categories.length === 0)
-      this.getCategories();
+    if (this.commerciaux == null || this.commerciaux.length === 0)
+      this.getCommerciaux();
   },
   methods: {
-    getCategories() {
-      this.$store.dispatch("category/fetchCategories");
-    },
-    handleFileUpload(event) {
-      console.log(event.target.files[0]);
-      this.logo = event.target.files[0];
-      this.previewImage = URL.createObjectURL(this.logo);
+    getCommerciaux() {
+      this.$store.dispatch("commercial/fetchCommerciaux");
     },
     setRow(data) {
-      console.log(data);
       this.currentRow = data;
       this.name = data.nom;
+      this.logo = data.logo_url;
     },
     closeModal() {
       this.$bvModal.hide("my-modal");
     },
-    deleteCategory() {
+    deleteCommercial() {
       this.$bvModal.hide("my-modal");
       this.deleteLoading = true;
       this.$store
-        .dispatch("category/deleteCategory", this.currentRow.id)
+        .dispatch("commercial/deleteCommercial", this.currentRow.id)
         .then((data) => {
           this.deleteLoading = false;
           console.log(data);
-          this.$bvToast.toast(
-            `Modification de ${this.currentRow.nom} avec succès`,
-            {
-              title: "Information",
-              variant: "success",
-              autoHideDelay: 5000,
-              appendToast: true,
-              solid: true,
-            }
-          );
         })
         .catch((error) => {
           this.deleteLoading = false;
           console.log(error);
         });
+    },
+    commercialDetails(commercial) {
+      this.$store.dispatch("commercial/setCurrentCommercial", commercial);
+      this.$router.push({
+        path: `/commercial/${commercial.id}`,
+      });
     },
     editCategory() {
       console.log(this.logo);
@@ -367,15 +329,12 @@ export default {
         this.editLoading = false;
       } else {
         if (this.name) {
-          let formData = new FormData();
-          console.log(this.name);
-          if (this.logo !== null) formData.append("file", this.logo);
-          formData.append("nom", this.name);
-          formData.append("_method", "put");
           this.$store
             .dispatch("category/editCategory", {
               id: this.currentRow.id,
-              category: formData,
+              category: {
+                nom: this.name,
+              },
             })
             .then((result) => {
               this.editLoading = false;

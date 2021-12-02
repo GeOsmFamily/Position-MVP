@@ -90,6 +90,20 @@ export default {
         },
         {
           header: true,
+          title: "Commerciaux",
+        },
+        {
+          title: "Créer un commercial",
+          icon: "pe-7s-rocket",
+          href: "/commercial/create",
+        },
+        {
+          title: "Lister les commerciaux",
+          icon: "pe-7s-rocket",
+          href: "/commercial/list",
+        },
+        {
+          header: true,
           title: "UI Components",
         },
         {

@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import { auth } from "./auth.module";
 import { user } from "./user.module";
 import { category } from "./category.module";
+import { commercial } from "@/store/commercial.module";
 
 Vue.use(Vuex);
 
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     auth,
     user,
     category,
+    commercial,
   },
 });
