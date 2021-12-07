@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.sogefi.position.R;
 import com.sogefi.position.models.Search;
+import com.sogefi.position.models.data.DataEtablissements;
+import com.sogefi.position.models.data.DataSearchEtablissement;
 import com.sogefi.position.ui.activities.MapActivity;
 import com.squareup.picasso.Picasso;
 
@@ -22,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class SearchAdapter extends SuggestionsAdapter<Search, SearchAdapter.SearchViewHolder> {
+public class SearchAdapter extends SuggestionsAdapter<DataSearchEtablissement, SearchAdapter.SearchViewHolder> {
     MapActivity mapActivity;
     public SearchAdapter(LayoutInflater inflater,MapActivity mapActivity) {
         super(inflater);
@@ -63,29 +65,39 @@ public class SearchAdapter extends SuggestionsAdapter<Search, SearchAdapter.Sear
     }*/
 
     @Override
-    public void onBindSuggestionHolder(Search suggestion, SearchViewHolder holder, int position) {
-        if(suggestion.getType().equals("nominatim")) {
+    public void onBindSuggestionHolder(DataSearchEtablissement suggestion, SearchViewHolder holder, int position) {
 
-            String[] parts = suggestion.getNom().split(",");
-            holder.suggestion.setText(parts[0]);
-            holder.suggestionAdress.setText(suggestion.getDetails());
-            if(suggestion.getLogoUrl() != null) {
-                Picasso.get().load(suggestion.getLogoUrl()).into(holder.imageView);
-            } else {
-                holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
-            }
-
-            holder.constraintLayout.setOnClickListener(view -> mapActivity.resultSearch(suggestion.getLongitude(), suggestion.getLatitude(), suggestion.getType()));
-
-        } else {
             holder.suggestion.setText(suggestion.getNom());
-            holder.suggestionAdress.setText(suggestion.getDetails());
+            holder.suggestionAdress.setText(suggestion.getNomSousCategorie()+","+suggestion.getNomCategorie());
             if(suggestion.getLogoUrl() != null) {
                 Picasso.get().load(IMAGEURL + suggestion.getLogoUrl()).into(holder.imageView);
             } else {
                 holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
             }
-        }
+
+        DataEtablissements dataEtablissements = new DataEtablissements();
+            dataEtablissements.setId(suggestion.getId());
+            dataEtablissements.setSiteInternet(suggestion.getSiteInternet());
+            dataEtablissements.setEtage(suggestion.getEtage());
+            dataEtablissements.setCover(suggestion.getCover());
+            dataEtablissements.setCodePostal(suggestion.getCodePostal());
+            dataEtablissements.setAutres(suggestion.getAutres);
+            dataEtablissements.setCreatedAt(suggestion.getCreatedAt());
+            dataEtablissements.setDescription(suggestion.getDescription());
+            dataEtablissements.setHoraires(suggestion.getHoraires);
+            dataEtablissements.setImages(suggestion.getImages);
+            dataEtablissements.setIdBatiment(suggestion.getIdBatiment());
+            dataEtablissements.setIdCommercial(suggestion.getIdCommercial());
+            dataEtablissements.setIdManager(suggestion.getIdManager());
+            dataEtablissements.setIndicationAdresse(suggestion.getIndicationAdresse());
+            dataEtablissements.setNom(suggestion.getNom());
+            dataEtablissements.setNomCommercial(suggestion.getNomCommercial());
+            dataEtablissements.setTelephones(suggestion.getTelephones());
+            dataEtablissements.setSousCategories(suggestion.getSousCategorie());
+
+
+        holder.constraintLayout.setOnClickListener(view -> mapActivity.clickDialog(dataEtablissements));
+
 
 
     }
