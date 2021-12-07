@@ -93,6 +93,11 @@ export default {
           title: "Commerciaux",
         },
         {
+          title: "Créer une zone",
+          icon: "pe-7s-rocket",
+          href: "/zone/create",
+        },
+        {
           title: "Créer un commercial",
           icon: "pe-7s-rocket",
           href: "/commercial/create",
