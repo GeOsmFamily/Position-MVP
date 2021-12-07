@@ -277,7 +277,7 @@ public class MapActivity extends AppCompatActivity implements
 
     RecyclerView chipsLayout;
 
-    List<Search> searchResult = new ArrayList<>();
+    List<DataSearchEtablissement> searchResult = new ArrayList<>();
     List<Nominatim> nominatimList = new ArrayList<>();
 
     String longo,latgo;
@@ -345,11 +345,11 @@ public class MapActivity extends AppCompatActivity implements
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-               /* search.clearSuggestions();
+                search.clearSuggestions();
                 searchResult.clear();
                 if(search.getText().length() > 3) {
                     searchApi(search.getText());
-                }*/
+                }
 
             }
 
@@ -603,6 +603,7 @@ public class MapActivity extends AppCompatActivity implements
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
         BottomSheetBehavior.from(bottom_sheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+        getBatiment();
     }
 
     @Override
@@ -810,6 +811,7 @@ public class MapActivity extends AppCompatActivity implements
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+        getBatiment();
 
         onBottomSheetLoading(1);
         groupMyPosition.setVisibility(View.VISIBLE);
@@ -1225,6 +1227,8 @@ if(pref.getRoleid().equals("2")) {
 
         symbolManager = new SymbolManager(mapView, mapboxMap, Objects.requireNonNull(mapboxMap.getStyle()));
 
+        getBatiment();
+
         symbolManager.setIconAllowOverlap(true);
         symbolManager.setTextAllowOverlap(true);
 
@@ -1357,6 +1361,7 @@ if(pref.getRoleid().equals("2")) {
             mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
             mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
             mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+            getBatiment();
 
             arrival.setText("");
             duration.setText("");
@@ -1533,6 +1538,7 @@ if(pref.getRoleid().equals("2")) {
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+        getBatiment();
 
         arrival.setText("");
         duration.setText("");
@@ -1597,6 +1603,8 @@ if(pref.getRoleid().equals("2")) {
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+
+        getBatiment();
 
         arrival.setText("");
         duration.setText("");
@@ -2160,8 +2168,10 @@ searchResult.clear();
                     if(response.code() == 401 || response.code() == 500) {
                         Toast.makeText(getApplicationContext(), "Error Search", Toast.LENGTH_LONG).show();
                     } else {
-                         nominatimSearch(query,response.body().getData());
 
+                        searchAdapter.setSuggestions(response.body().getData());
+                        search.setCustomSuggestionAdapter(searchAdapter);
+                        search.showSuggestionsList();
                     }
 
 
@@ -2181,88 +2191,6 @@ searchResult.clear();
 
     }
 
-    public List<Nominatim> nominatimSearch(String query,List<DataSearchEtablissement> dataSearchEtablissement) {
-
-        if (Function.isNetworkAvailable(getApplicationContext())) {
-            ApiInterface apiService =
-                    APIClient.getNewClient().create(ApiInterface.class);
-            Call<List<Nominatim>> call = apiService.nominatim(query, "json", 1, "cm");
-            call.enqueue(new Callback<List<Nominatim>>() {
-                @Override
-                public void onResponse(@NotNull Call<List<Nominatim>> call, @NotNull Response<List<Nominatim>> response) {
-                   if(response.body().size() > 0) {
-
-                       for (int i = 0; i < dataSearchEtablissement.size(); i++) {
-                           Search search1 = new Search();
-                           search1.setNom(dataSearchEtablissement.get(i).getNom());
-                           search1.setId(dataSearchEtablissement.get(i).getId());
-                           search1.setLongitude(dataSearchEtablissement.get(i).getBatiment().getLongitude());
-                           search1.setLatitude(dataSearchEtablissement.get(i).getBatiment().getLatitude());
-                           search1.setLogoUrl(dataSearchEtablissement.get(i).getLogoUrl());
-                           search1.setType("etablissement");
-                           search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
-
-                           searchResult.add(search1);
-
-                       }
-
-                       for (int i = 0; i < response.body().size(); i++) {
-                           Search search2 = new Search();
-                           search2.setNom(response.body().get(i).getDisplayName());
-                           search2.setId(response.body().get(i).getPlaceId());
-                           search2.setLongitude(response.body().get(i).getLon());
-                           search2.setLatitude(response.body().get(i).getLat());
-                           if (response.body().get(i).getIcon() != null) {
-                               search2.setLogoUrl(response.body().get(i).getIcon());
-                           } else {
-                               search2.setLogoUrl(null);
-                           }
-                           search2.setType("nominatim");
-                           search2.setDetails(response.body().get(i).getAddress().getCity());
-
-                           searchResult.add(search2);
-                       }
-
-
-                   } else {
-                       for (int i = 0; i < dataSearchEtablissement.size(); i++) {
-                           Search search1 = new Search();
-                           search1.setNom(dataSearchEtablissement.get(i).getNom());
-                           search1.setId(dataSearchEtablissement.get(i).getId());
-                           search1.setLongitude(dataSearchEtablissement.get(i).getBatiment().getLongitude());
-                           search1.setLatitude(dataSearchEtablissement.get(i).getBatiment().getLatitude());
-                           search1.setLogoUrl(dataSearchEtablissement.get(i).getLogoUrl());
-                           search1.setType("etablissement");
-                           search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
-
-                           searchResult.add(search1);
-
-                       }
-                   }
-
-                    searchAdapter.setSuggestions(searchResult);
-                    search.setCustomSuggestionAdapter(searchAdapter);
-                    search.showSuggestionsList();
-
-
-
-                 //   Toast.makeText(getApplicationContext(), String.valueOf(searchResult.size()), Toast.LENGTH_LONG).show();
-
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<List<Nominatim>> call, @NotNull Throwable t) {
-                    // Log error here since request failed
-                    Timber.tag("main2").e(t.toString());
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
-                }
-            });
-        } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
-        }
-
-        return nominatimList;
-    }
 
     private void sendLocation(Location location) {
         String lon = String.valueOf(location != null ? location.getLongitude() : 0);

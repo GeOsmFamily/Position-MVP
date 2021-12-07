@@ -442,8 +442,8 @@ RequestBody requestBody;
                 .addFormDataPart("etage", getIntent().getStringExtra("etage"))
                 .addFormDataPart("description", getIntent().getStringExtra("description"))
                 .addFormDataPart("indicationAdresse", getIntent().getStringExtra("indicationAdresse"))
-                .addFormDataPart("codepostal", getIntent().getStringExtra("codepostal"))
-                .addFormDataPart("siteinternet", getIntent().getStringExtra("siteinternet"))
+                .addFormDataPart("codePostal", getIntent().getStringExtra("codepostal"))
+                .addFormDataPart("siteInternet", getIntent().getStringExtra("siteinternet"))
                 .addFormDataPart("file", coverEtablissement.getName(), requestFile)
                 .build();
 

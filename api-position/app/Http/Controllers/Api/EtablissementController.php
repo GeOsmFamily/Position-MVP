@@ -26,7 +26,7 @@ class EtablissementController extends BaseController
             $horaires = $etablissement->horaires;
             $telephones = $etablissement->telephones;
 
-            $commercial = Commercial::find(2);
+            $commercial = Commercial::find($etablissement->commercial->id);
 
             $etablissement["nomCommercial"] = $commercial->user->name;
 
@@ -130,7 +130,7 @@ class EtablissementController extends BaseController
         $horaires = $etablissement->horaires;
         $telephones = $etablissement->telephones;
 
-        $commercial = Commercial::find(2);
+        $commercial = Commercial::find($etablissement->commercial->id);
 
         $etablissement["nomCommercial"] = $commercial->user->name;
 
@@ -253,18 +253,27 @@ class EtablissementController extends BaseController
             $horaires = $etablissement->horaires;
             $telephones = $etablissement->telephones;
 
+            foreach ($etablissement->sousCategories as $souscategorie) {
 
-            /*  $etablissement['batiment'] = $batiment;
+                $categorie = $souscategorie->categorie;
+                $etablissement['nomCategorie'] = $categorie->nom;
+            }
+
+
+
+            $etablissement['batiment'] = $batiment;
             $etablissement['nomSousCategorie'] = $souscategorie->nom;
 
             $etablissement['images'] = $images;
             $etablissement['horaires'] = $horaires;
             $etablissement['telephones'] = $telephones;
 
-            $categorie = $souscategorie->categorie;
 
-            $etablissement['nomCategorie'] = $categorie->nom;
-            $etablissement['logo_url'] = $categorie->logoUrl;*/
+
+
+            $etablissement['logo_url'] = $categorie->logoUrl;
+            $commercial = Commercial::find($etablissement->commercial->id);
+            $etablissement["nomCommercial"] = $commercial->user->name;
         }
 
         return $this->sendResponse($etablissements, 'Liste des Etablissements');

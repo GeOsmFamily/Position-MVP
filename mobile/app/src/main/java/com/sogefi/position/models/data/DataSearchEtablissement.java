@@ -19,10 +19,10 @@ public class DataSearchEtablissement {
     private Object indicationAdresse;
     @SerializedName("codePostal")
     @Expose
-    private Object codePostal;
+    private String codePostal;
     @SerializedName("siteInternet")
     @Expose
-    private Object siteInternet;
+    private String siteInternet;
     @SerializedName("idSousCategorie")
     @Expose
     private Integer idSousCategorie;
@@ -98,19 +98,19 @@ public class DataSearchEtablissement {
         this.indicationAdresse = indicationAdresse;
     }
 
-    public Object getCodePostal() {
+    public String getCodePostal() {
         return codePostal;
     }
 
-    public void setCodePostal(Object codePostal) {
+    public void setCodePostal(String codePostal) {
         this.codePostal = codePostal;
     }
 
-    public Object getSiteInternet() {
+    public String getSiteInternet() {
         return siteInternet;
     }
 
-    public void setSiteInternet(Object siteInternet) {
+    public void setSiteInternet(String siteInternet) {
         this.siteInternet = siteInternet;
     }
 

@@ -99,7 +99,7 @@ class BatimentController extends BaseController
             $images = $etablissement->images;
             $horaires = $etablissement->horaires;
             $telephones = $etablissement->telephones;
-            $commercial = Commercial::find(2);
+            $commercial = Commercial::find($etablissement->commercial->id);
 
             $etablissement["nomCommercial"] = $commercial->user->name;
 
