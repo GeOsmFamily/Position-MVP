@@ -84,7 +84,6 @@ class CommercialsInfoInfoAlreadyExistError(CommercialsInfoException):
         self.detail = "Commercials Info Already Exists"
 
 
-
 #### Horaires ####
 class HorairesInfoException(Exception):
     ...
@@ -143,3 +142,83 @@ class FTPImagesAlreadyExistError(FTPImagesException):
     def __init__(self):
         self.status_code = 409
         self.detail = "Image Already Exists"
+
+
+
+#### Batiments ####
+class BatimentsInfoException(Exception):
+    ...
+
+class BatimentsInfoNotFoundError(BatimentsInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Batiments Info Not Found"
+
+class BatimentsInfoInfoAlreadyExistError(BatimentsInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Batiments Info Already Exists"
+
+
+#### FailedJobs ####
+class FailedJobsInfoException(Exception):
+    ...
+
+class FailedJobsInfoNotFoundError(FailedJobsInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "FailedJobs Info Not Found"
+
+class FailedJobsInfoInfoAlreadyExistError(FailedJobsInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "FailedJobs Info Already Exists"
+
+
+#### Users ####
+class UsersInfoException(Exception):
+    ...
+
+class UsersInfoNotFoundError(UsersInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Users Info Not Found"
+
+class UsersInfoInfoAlreadyExistError(UsersInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Users Info Already Exists"
+
+
+#### Trackings ####
+class TrackingsInfoException(Exception):
+    ...
+
+class TrackingsInfoNotFoundError(TrackingsInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Trackings Info Not Found"
+
+class TrackingsInfoInfoAlreadyExistError(TrackingsInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Trackings Info Already Exists"
+
+
+#### Zones ####
+class ZonesInfoException(Exception):
+    ...
+
+class ZonesInfoNotFoundError(ZonesInfoException):
+    def __init__(self):
+        self.status_code = 404
+        self.detail = "Zones Info Not Found"
+
+class ZonesInfoInfoAlreadyExistError(ZonesInfoException):
+    def __init__(self):
+        self.status_code = 409
+        self.detail = "Zones Info Already Exists"
+
+
+
+

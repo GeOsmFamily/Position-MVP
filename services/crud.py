@@ -1,27 +1,77 @@
 # crud.py
+from pydantic.errors import DataclassTypeError
 from exceptions import (  
-    CategoriesInfoInfoAlreadyExistError, CategoriesInfoNotFoundError,
+    BatimentsInfoInfoAlreadyExistError, BatimentsInfoNotFoundError, CategoriesInfoInfoAlreadyExistError, CategoriesInfoNotFoundError,
     CommercialsInfoInfoAlreadyExistError, CommercialsInfoNotFoundError,
-    EtablissementInfoInfoAlreadyExistError, EtablissementInfoNotFoundError, HorairesInfoInfoAlreadyExistError, HorairesInfoNotFoundError, ImagesInfoInfoAlreadyExistError, ImagesInfoNotFoundError,
+    EtablissementInfoInfoAlreadyExistError, EtablissementInfoNotFoundError, FailedJobsInfoInfoAlreadyExistError, FailedJobsInfoNotFoundError, HorairesInfoInfoAlreadyExistError, HorairesInfoNotFoundError, ImagesInfoInfoAlreadyExistError, ImagesInfoNotFoundError,
     ManagersInfoInfoAlreadyExistError, ManagersInfoNotFoundError,
-    SousCategoriesInfoInfoAlreadyExistError, SousCategoriesInfoNotFoundError, TelephonesInfoInfoAlreadyExistError, TelephonesInfoNotFoundError)
+    SousCategoriesInfoInfoAlreadyExistError, SousCategoriesInfoNotFoundError, TelephonesInfoInfoAlreadyExistError, TelephonesInfoNotFoundError, TrackingsInfoInfoAlreadyExistError, TrackingsInfoNotFoundError, UsersInfoInfoAlreadyExistError, UsersInfoNotFoundError, ZonesInfoInfoAlreadyExistError, ZonesInfoNotFoundError)
 #     return 
 from os import SCHED_IDLE
 from typing import List
 
 from sqlalchemy.orm import Session
 
-from models import (Categories, Commercials,  
-                    Etablissements, Horaires, Images, Managers, SousCategories, Telephones)
-from schemas import (CreateAndUpdateCategories, 
-                     CreateAndUpdateCommercials, CreateAndUpdateEtablissements, CreateAndUpdateHoraires, CreateAndUpdateImages,
-                     CreateAndUpdateManagers, CreateAndUpdateSousCategories, CreateAndUpdateTelephones)
+from models import (Batiments, Categories, Commercials,  Users,
+                    Etablissements, FailedJobs, Horaires, Images, Managers, SousCategories, Telephones)
+from schemas import (CreateAndUpdateBatiments, CreateAndUpdateCategories, CreateAndUpdateCommercials, 
+                      CreateAndUpdateEtablissements, CreateAndUpdateFailedJobs, CreateAndUpdateHoraires, CreateAndUpdateImages,
+                     CreateAndUpdateManagers, CreateAndUpdateSousCategories, CreateAndUpdateTelephones, CreateAndUpdateTrackings, CreateAndUpdateUsers, CreateAndUpdateZones, Trackings, Zones)
 
 from datetime import datetime
 
 from fastapi import UploadFile, File
 from os import getcwd, remove
 from fastapi.responses import FileResponse, JSONResponse
+
+
+import os
+POSITION_FEE = float(os.getenv('POSITION_FEE'))
+AVG_SALARY = float(os.getenv('AVG_SALARY'))
+AVG_POINTS = float(os.getenv('AVG_POINTS'))
+SALARY_PERCENT = float(os.getenv('SALARY_PERCENT'))
+
+
+#### Position Admin ####
+def chiffre_affaire(session: Session) -> float:
+    return len(session.query(Etablissements).all()) * POSITION_FEE #in XAf
+
+#get all etablissement by day
+def position_get_by_day(session: Session, day: datetime):
+    etablissemnts = session.query(Etablissements).all()
+    journey_result = [ets for ets in etablissemnts if (ets.created_at.day == day.day and ets.created_at.month == day.month and ets.created_at.year == day.year)]
+    countAndEts = {"count": len(journey_result), "cash": POSITION_FEE *len(journey_result),"etablissements": journey_result}
+    if etablissemnts is None:
+        raise EtablissementInfoNotFoundError
+    return countAndEts
+
+#get all etablissement by week
+def position_get_by_week(session: Session, day: datetime):
+    etablissements = session.query(Etablissements).all()
+    week_result = [ets for ets in etablissements if ets.created_at.isocalendar()[1] == day.isocalendar()[1]]
+    countAndEts = {"count": len(week_result),"cash": POSITION_FEE*len(week_result), "etablissements": week_result}
+    if etablissements is None:
+        raise EtablissementInfoNotFoundError
+    return countAndEts
+
+#get all etablissement by month
+def position_get_by_month(session: Session, day: datetime):
+    etablissements = session.query(Etablissements).all()
+    month_result = [ets for ets in etablissements if (ets.created_at.month == day.month) and (ets.created_at.year == day.year)]
+    countAndEts = {"count": len(month_result), "cash": POSITION_FEE *len(month_result), "etablissements": month_result}
+    if etablissements is None:
+        raise EtablissementInfoNotFoundError
+    return countAndEts
+
+#get all etablissement by year
+def position_get_by_year(session: Session, year: int):
+    etablissements = session.query(Etablissements).all()
+    year_result = [ets for ets in etablissements if ets.created_at.year == year]
+    countAndEts = {"count": len(year_result), "cash": POSITION_FEE *len(year_result), "etablissements": year_result}
+    if etablissements is None:
+        raise EtablissementInfoNotFoundError
+    return countAndEts
+
 
 #### etablissements ####
 # Function to get list of etablissements info
@@ -43,21 +93,19 @@ def get_etablissement_info_by_id(session: Session, _id: int) -> Etablissements:
 
 # Function to add a new etablissement info to the database
 def create_ets(session: Session, ets_info: CreateAndUpdateEtablissements) -> Etablissements:
+    print(">>>>>>>>>>>", ets_info)
     ets_details = session.query(Etablissements).filter(
+            Etablissements.idBatiment==ets_info.idBatiment,
             Etablissements.nom==ets_info.nom,
-            Etablissements.rue==ets_info.rue,
-            Etablissements.indication_adresse==ets_info.indication_adresse,
-            Etablissements.ville==ets_info.ville,
-            Etablissements.adresse==ets_info.adresse,
-            Etablissements.lon==ets_info.lon,
-            Etablissements.lat==ets_info.lat,
-            Etablissements.description==ets_info.description,
-            Etablissements.code_postal==ets_info.code_postal,
-            Etablissements.site_internet==ets_info.site_internet,
-            Etablissements.id_sous_categorie==ets_info.id_sous_categorie,
-            Etablissements.id_commercial==ets_info.id_commercial,
-            Etablissements.id_manager==ets_info.id_manager,
-            Etablissements.paid==ets_info.paid,
+            Etablissements.indicationAdresse==ets_info.indicationAdresse,
+            Etablissements.codePostal==ets_info.codePostal,
+            Etablissements.siteInternet==ets_info.siteInternet,
+            Etablissements.idSousCategorie==ets_info.idSousCategorie,
+            Etablissements.idCommercial==ets_info.idCommercial,
+            Etablissements.idManager==ets_info.idManager,
+            Etablissements.etage==ets_info.etage,
+            Etablissements.cover==ets_info.cover,
+            Etablissements.vues==ets_info.vues,
             Etablissements.created_at==ets_info.created_at,
             Etablissements.updated_at==ets_info.updated_at
         ).first()
@@ -79,20 +127,17 @@ def update_ets_info(session: Session, _id: int, info_update: CreateAndUpdateEtab
     if ets_info is None:
         raise EtablissementInfoNotFoundError
 
+    ets_info.idBatiment = info_update.idBatiment
     ets_info.nom = info_update.nom
-    ets_info.rue = info_update.rue
-    ets_info.indication_adresse = info_update.indication_adresse
-    ets_info.ville = info_update.ville
-    ets_info.adresse = info_update.adresse
-    ets_info.lon = info_update.lon
-    ets_info.lat = info_update.lat
-    ets_info.description=info_update.description
-    ets_info.code_postal=info_update.code_postal
-    ets_info.ets_site_internet=info_update.site_internet
-    ets_info.id_sous_categorie=info_update.id_sous_categorie
-    ets_info.id_commercial=info_update.id_commercial
-    ets_info.id_manager=info_update.id_manager
-    ets_info.paid=info_update.paid
+    ets_info.indicationAdresse = info_update.indicationAdresse
+    ets_info.codePostal = info_update.codePostal
+    ets_info.siteInternet = info_update.siteInternet
+    ets_info.idSousCategorie = info_update.idSousCategorie
+    ets_info.idCommercial = info_update.idCommercial
+    ets_info.idManager=info_update.idManager
+    ets_info.etage=info_update.etage
+    ets_info.cover=info_update.cover
+    ets_info.vues=info_update.vues
     ets_info.updated_at=datetime.now()
 
     session.commit()
@@ -113,7 +158,6 @@ def delete_ets_info(session: Session, _id: int):
     return
 
 
-
 #### souscategories ####
 # Function to get list of souscategories info
 def get_all_souscategories(session: Session, limit: int, offset: int) -> List[SousCategories]:
@@ -132,7 +176,7 @@ def get_souscategories_info_by_id(session: Session, _id: int) -> SousCategories:
 def create_souscategories(session: Session, ets_info: CreateAndUpdateSousCategories) -> SousCategories:
     souscategories_details = session.query(SousCategories).filter(
             SousCategories.nom==ets_info.nom,
-            SousCategories.id_categorie==ets_info.id_categorie,
+            SousCategories.logoUrl == ets_info.logoUrl,
             SousCategories.created_at==ets_info.created_at,
             SousCategories.updated_at==ets_info.updated_at
         ).first()
@@ -154,8 +198,9 @@ def update_souscategories_info(session: Session, _id: int, info_update: CreateAn
     if souscategories_info is None:
         raise SousCategoriesInfoNotFoundError
 
+
     souscategories_info.nom = info_update.nom
-    souscategories_info.id_categorie = info_update.id_categorie
+    souscategories_info.logoUrl = info_update.logoUrl
     souscategories_info.updated_at=datetime.now()
 
     session.commit()
@@ -176,9 +221,8 @@ def delete_souscategories_info(session: Session, _id: int):
     return
 
 
-
 #### categories ####
-# Function to get list of categories info
+# Function to get list of categories infoets_info
 def get_all_categories(session: Session, limit: int, offset: int) -> List[Categories]:
     return session.query(Categories).offset(offset).limit(limit).all()
 
@@ -193,8 +237,8 @@ def get_categories_info_by_id(session: Session, _id: int) -> Categories:
 # Function to add a new categories info to the database
 def create_categories(session: Session, ets_info: CreateAndUpdateCategories) -> Categories:
     categories_details = session.query(Categories).filter(
-            Categories.nom==ets_info.nom,
-            Categories.logo_url==ets_info.logo_url,
+            Categories.nom==ets_info.Nom,
+            Categories.logoUrl==ets_info.logoUrl,
             Categories.created_at==ets_info.created_at,
             Categories.updated_at==ets_info.updated_at
         ).first()
@@ -217,7 +261,7 @@ def update_categories_info(session: Session, _id: int, info_update: CreateAndUpd
         raise CategoriesInfoNotFoundError
 
     categories_info.nom = info_update.nom
-    categories_info.logo_url = info_update.logo_url
+    categories_info.logoUrl = info_update.logoUrl
     categories_info.updated_at=datetime.now()
 
     session.commit()
@@ -256,15 +300,15 @@ def get_managers_info_by_id(session: Session, _id: int) -> Managers:
 # Function to add a new managers info to the database
 def create_managers(session: Session, info: CreateAndUpdateManagers) -> Managers:
     managers_details = session.query(Managers).filter(
-            Managers.id_user==info.id_user,
+            Managers.idUser==info.idUser,
             Managers.created_at==info.created_at,
             Managers.updated_at==info.updated_at
         ).first()
     if managers_details is not None:
         raise ManagersInfoInfoAlreadyExistError
 
-    ets_info.created_at=datetime.now()
-    ets_info.updated_at=datetime.now()
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
     new_categories_info = Managers(**info.dict())
     session.add(new_categories_info)
     session.commit()
@@ -278,7 +322,7 @@ def update_managers_info(session: Session, _id: int, info_update: CreateAndUpdat
     if managers_info is None:
         raise ManagersInfoNotFoundError
 
-    managers_info.nom = info_update.id_user
+    managers_info.IdUser = info_update.idUser
     managers_info.updated_at=datetime.now()
 
     session.commit()
@@ -312,9 +356,58 @@ def get_commercials_info_by_id(session: Session, _id: int) -> Commercials:
 
     return commercials_info
 
+# Function to  get count of number of etablishments
+def count_number_of_ets(session: Session, _id: int):
+    commercials_info = session.query(Commercials).get(_id).etablissement
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+    return len(commercials_info)
+
+# Function to  get count and etablissemnt of a journey of a commercial
+def get_ets_by_day(session: Session, _id: int, day: datetime):
+    commercials_info = session.query(Commercials).get(_id).etablissement
+    journey_result = [ets for ets in commercials_info if (ets.created_at.day == day.day and ets.created_at.month == day.month and ets.created_at.year == day.year)]
+    countAndEts = {"count": len(journey_result), "cash": POSITION_FEE *len(journey_result),"etablissements": journey_result}
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+    return countAndEts
+
+# Function to  get count and etablissemnt of a particular week of a commercial
+def get_ets_by_week(session: Session, _id: int, day: datetime):
+    commercials_info = session.query(Commercials).get(_id).etablissement
+    week_result = [ets for ets in commercials_info if ets.created_at.isocalendar()[1] == day.isocalendar()[1]]
+    countAndEts = {"count": len(week_result),"cash": POSITION_FEE *len(week_result), "etablissements": week_result}
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+    return countAndEts
+
+# Function to  get count and etablissemnt of a month of a commercial
+def get_ets_by_month(session: Session, _id: int, day: datetime):
+    commercials_info = session.query(Commercials).get(_id).etablissement
+    month_result = [ets for ets in commercials_info if (ets.created_at.month == day.month) and (ets.created_at.year == day.year)]
+    countAndEts = {"count": len(month_result), "cash": POSITION_FEE *len(month_result), "etablissements": month_result}
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+    return countAndEts
+
+# Function to  get count and etablissemnt of a year of a commercial
+def get_ets_by_year(session: Session, _id: int, year: int):
+    commercials_info = session.query(Commercials).get(_id).etablissement
+    year_result = [ets for ets in commercials_info if ets.created_at.year == year]
+    countAndEts = {"count": len(year_result), "cash": POSITION_FEE *len(year_result), "etablissements": year_result}
+    if commercials_info is None:
+        raise CommercialsInfoNotFoundError
+    return countAndEts
+
+# Function to  get salary of a commercial
+def get_comm_salary(session: Session, _id: int, day: datetime):
+    commercials_info = session.query(Commercials).get(_id).etablissement
+    month_result = [ets for ets in commercials_info if (ets.created_at.month == day.month) and (ets.created_at.year == day.year)]
+    return len(month_result) * SALARY_PERCENT
+
 # Function to get list of commercials info by town
-def get_all_commercials_by_town(session: Session, limit: int, offset: int, town: str) -> List[Commercials]:
-    return session.query(Commercials).filter(Commercials.ville==town).offset(offset).limit(limit).all()
+def get_all_commercials_by_ville(session: Session, limit: int, offset: int, ville: str) -> List[Commercials]:
+    return session.query(Commercials).filter(Commercials.ville==ville).offset(offset).limit(limit).all()
 
 # Function to get list of commercials info by quartier
 def get_all_commercials_by_quartier(session: Session, limit: int, offset: int, quartier: str) -> List[Commercials]:
@@ -323,22 +416,21 @@ def get_all_commercials_by_quartier(session: Session, limit: int, offset: int, q
 # Function to add a new commercials info to the database
 def create_commercials(session: Session, info: CreateAndUpdateCommercials) -> Commercials:
     commercials_details = session.query(Commercials).filter(
-            Commercials.revenu_total==info.revenu_total,
-            Commercials.id_user==info.id_user,
-            Commercials.nombre_etablissement==info.nombre_etablissement,
-            Commercials.numero_cni==info.numero_cni,
+            Commercials.idUser==info.idUser,
+            Commercials.numeroCni==info.numeroCni,
             Commercials.ville==info.ville,
             Commercials.quartier==info.quartier,
-            Commercials.image_profil==info.image_profil,
+            Commercials.imageProfil==info.imageProfil,
+            Commercials.idZone==info.idZone,
+            Commercials.actif==info.actif,
             Commercials.created_at==info.created_at,
             Commercials.updated_at==info.updated_at
-            
         ).first()
     if commercials_details is not None:
         raise CommercialsInfoInfoAlreadyExistError
 
-    ets_info.created_at=datetime.now()
-    ets_info.updated_at=datetime.now()
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
     new_commercials_info = Commercials(**info.dict())
     session.add(new_commercials_info)
     session.commit()
@@ -352,13 +444,14 @@ def update_commercials_info(session: Session, _id: int, info_update: CreateAndUp
     if commercials_info is None:
         raise CommercialsInfoNotFoundError
 
-    commercials_info.revenu_total = info_update.revenu_total
-    commercials_info.id_user=info_update.id_user
-    commercials_info.nombre_etablissement=info_update.nombre_etablissement
-    commercials_info.numero_cni=info_update.numero_cni
+    commercials_info.idUser = info_update.idUser
+    commercials_info.numeroCni=info_update.numeroCni
+    commercials_info.numeroBadge=info_update.numeroBadge
     commercials_info.ville=info_update.ville
     commercials_info.quartier=info_update.quartier
-    commercials_info.image_profil=info_update.image_profil
+    commercials_info.imageProfil=info_update.imageProfil
+    commercials_info.idZone=info_update.idZone
+    commercials_info.actif=info_update.actif
     commercials_info.updated_at=datetime.now()
 
     session.commit()
@@ -379,6 +472,7 @@ def delete_commercials_info(session: Session, _id: int):
     return 
 
 
+
 #### Horaires ####
 # Function to get list of Horaires info
 def get_all_horaires(session: Session, limit: int, offset: int) -> List[Horaires]:
@@ -396,7 +490,7 @@ def get_horaires_info_by_id(session: Session, _id: int) -> Horaires:
 # Function to add a new Horaires info to the database
 def create_horaires(session: Session, info: CreateAndUpdateHoraires) -> Horaires:
     horaires_details = session.query(Horaires).filter(
-            Horaires.id_etablissement==info.id_etablissement,
+            Horaires.idEtablissement==info.idEtablissement,
             Horaires.jour==info.jour,
             Horaires.ouvert==info.ouvert,
             Horaires.heureOuverture==info.heureOuverture,
@@ -407,8 +501,8 @@ def create_horaires(session: Session, info: CreateAndUpdateHoraires) -> Horaires
     if horaires_details is not None:
         raise HorairesInfoInfoAlreadyExistError
 
-    ets_info.created_at=datetime.now()
-    ets_info.updated_at=datetime.now()
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
     new_horaires_info = Horaires(**info.dict())
     session.add(new_horaires_info)
     session.commit()
@@ -422,7 +516,7 @@ def update_horaires_info(session: Session, _id: int, info_update: CreateAndUpdat
     if horaires_info is None:
         raise HorairesInfoNotFoundError
 
-    horaires_info.id_etablissement = info_update.id_etablissement
+    horaires_info.idEtablissement = info_update.idEtablissement
     horaires_info.jour=info_update.jour
     horaires_info.ouvert=info_update.ouvert
     horaires_info.heureOuverture=info_update.heureOuverture
@@ -462,16 +556,16 @@ def get_images_info_by_id(session: Session, _id: int) -> Images:
 # Function to add a new Images info to the database
 def create_Images(session: Session, info: CreateAndUpdateImages) -> Images:
     images_details = session.query(Images).filter(
-            Images.id_etablissement==info.id_etablissement,
-            Images.images_url==info.image_url,
+            Images.idEtablissement==info.idEtablissement,
+            Images.imageUrl==info.imageUrl,
             Images.created_at==info.created_at,
             Images.updated_at==info.updated_at
         ).first()
     if images_details is not None:
         raise ImagesInfoInfoAlreadyExistError
 
-    ets_info.created_at=datetime.now()
-    ets_info.updated_at=datetime.now()
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
     new_images_info = Images(**info.dict())
     session.add(new_images_info)
     session.commit()
@@ -485,8 +579,8 @@ def update_images_info(session: Session, _id: int, info_update: CreateAndUpdateI
     if images_info is None:
         raise ImagesInfoNotFoundError
 
-    images_info.id_etablissement = info_update.id_etablissement
-    images_info.image_url=info_update.image_url
+    images_info.idEtablissement = info_update.idEtablissement
+    images_info.imageUrl=info_update.imageUrl
     images_info.updated_at=datetime.now()
 
     session.commit()
@@ -523,7 +617,7 @@ def get_telephones_info_by_id(session: Session, _id: int) -> Telephones:
 # Function to add a new Telephones info to the database
 def create_Telephones(session: Session, info: CreateAndUpdateTelephones) -> Telephones:
     telephones_details = session.query(Telephones).filter(
-            Telephones.id_etablissement==info.id_etablissement,
+            Telephones.idEtablissement==info.idEtablissement,
             Telephones.numero==info.numero,
             Telephones.whatsapp==info.whatsapp,
             Telephones.created_at==info.created_at,
@@ -532,8 +626,8 @@ def create_Telephones(session: Session, info: CreateAndUpdateTelephones) -> Tele
     if telephones_details is not None:
         raise TelephonesInfoInfoAlreadyExistError
 
-    ets_info.created_at=datetime.now()
-    ets_info.updated_at=datetime.now()
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
     new_telephones_info = Telephones(**info.dict())
     session.add(new_telephones_info)
     session.commit()
@@ -547,8 +641,8 @@ def update_telephones_info(session: Session, _id: int, info_update: CreateAndUpd
     if telephones_info is None:
         raise TelephonesInfoNotFoundError
 
-    telephones_info.id_etablissement = info_update.id_etablissement
-    telephones_info.numer=info_update.numero
+    telephones_info.idEtablissement = info_update.idEtablissement
+    telephones_info.numero=info_update.numero
     telephones_info.whatsapp=info_update.whatsapp
     telephones_info.updated_at=datetime.now()
 
@@ -565,5 +659,343 @@ def delete_telephones_info(session: Session, _id: int):
         raise TelephonesInfoNotFoundError
 
     session.delete(telephones_info)
+    session.commit()
+
+
+#### Batiments ####
+# Function to get list of Batiments info
+def get_all_batiments(session: Session, limit: int, offset: int) -> List[Batiments]:
+    return session.query(Batiments).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular Batiments
+def get_batiments_info_by_id(session: Session, _id: int) -> Batiments:
+    batiments_info = session.query(Batiments).get(_id)
+
+    if batiments_info is None:
+        raise BatimentsInfoNotFoundError
+
+    return batiments_info
+
+# Function to add a new Batiments info to the database
+def create_Batiments(session: Session, info: CreateAndUpdateBatiments) -> Batiments:
+    batiments_details = session.query(Batiments).filter(
+            Batiments.nom == info.nom,
+            Batiments.nombreNiveaux == info.nombreNiveaux,
+            Batiments.codeBatiment == info.codeBatiment,
+            Batiments.longitude == info.longitude,
+            Batiments.latitude == info.latitude,
+            Batiments.image == info.image,
+            Batiments.indication == info.indication,
+            Batiments.rue == info.rue,
+            Batiments.ville == info.ville,
+            Batiments.commune == info.commune,
+            Batiments.quartier == info.quartier,
+            Batiments.created_at == info.created_at,
+            Batiments.updated_at == info.updated_at,
+        ).first()
+    if batiments_details is not None:
+        raise BatimentsInfoInfoAlreadyExistError
+
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
+    new_batiments_info = Batiments(**info.dict())
+    session.add(new_batiments_info)
+    session.commit()
+    session.refresh(new_batiments_info)
+    return new_batiments_info
+
+# Function to update details of the Batiments
+def update_batiments_info(session: Session, _id: int, info_update: CreateAndUpdateBatiments) -> Batiments:
+    batiments_info = get_batiments_info_by_id(session, _id)
+
+    if batiments_info is None:
+        raise BatimentsInfoNotFoundError
+
+    batiments_info.nom = info_update.nom
+    batiments_info.nombreNiveaux=info_update.nombreNiveaux
+    batiments_info.codeBatiment=info_update.codeBatiment
+    batiments_info.longitude=info_update.longitude
+    batiments_info.latitude=info_update.latitude
+    batiments_info.image=info_update.image
+    batiments_info.codeBatiment=info_update.codeBatiment
+    batiments_info.indication=info_update.indication
+    batiments_info.rue=info_update.rue
+    batiments_info.ville=info_update.ville
+    batiments_info.commune=info_update.commune
+    batiments_info.quartier=info_update.quartier
+    batiments_info.updated_at=datetime.now()
+
+    session.commit()
+    session.refresh(batiments_info)
+
+    return batiments_info
+
+# Function to delete an Batiments info from the db
+def delete_batiments_info(session: Session, _id: int):
+    batiments_info = get_batiments_info_by_id(session, _id)
+
+    if batiments_info is None:
+        raise BatimentsInfoNotFoundError
+
+    session.delete(batiments_info)
+    session.commit()
+
+
+#### FailedJobs ####
+# Function to get list of FailedJobs info
+def get_all_failedJobs(session: Session, limit: int, offset: int) -> List[FailedJobs]:
+    return session.query(FailedJobs).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular FailedJobs
+def get_failedJobs_info_by_id(session: Session, _id: int) -> FailedJobs:
+    failedJobs_info = session.query(FailedJobs).get(_id)
+
+    if failedJobs_info is None:
+        raise FailedJobsInfoNotFoundError
+
+    return failedJobs_info
+
+# Function to add a new FailedJobs info to the database
+def create_FailedJobs(session: Session, info: CreateAndUpdateFailedJobs) -> FailedJobs:
+    failedJobs_details = session.query(FailedJobs).filter(
+            FailedJobs.uuid == info.uuid,
+            FailedJobs.connection == info.connection,
+            FailedJobs.queue == info.queue,
+            FailedJobs.payload == info.payload,
+            FailedJobs.exception == info.exception,
+            FailedJobs.failed_at == info.failed_at,
+        ).first()
+    if failedJobs_details is not None:
+        raise FailedJobsInfoInfoAlreadyExistError
+
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
+    new_failedJobs_info = FailedJobs(**info.dict())
+    session.add(new_failedJobs_info)
+    session.commit()
+    session.refresh(new_failedJobs_info)
+    return new_failedJobs_info
+
+# Function to update details of the FailedJobs
+def update_failedJobs_info(session: Session, _id: int, info_update: CreateAndUpdateFailedJobs) -> FailedJobs:
+    failedJobs_info = get_failedJobs_info_by_id(session, _id)
+
+    if failedJobs_info is None:
+        raise FailedJobsInfoNotFoundError
+
+    failedJobs_info.uuid = info_update.uuid
+    failedJobs_info.connection=info_update.connection
+    failedJobs_info.queue=info_update.queue
+    failedJobs_info.payload=info_update.payload
+    failedJobs_info.exception=info_update.exception
+    failedJobs_info.failed_at=info_update.failed_at
+
+    session.commit()
+    session.refresh(failedJobs_info)
+
+    return failedJobs_info
+
+# Function to delete an FailedJobs info from the db
+def delete_failedJobs_info(session: Session, _id: int):
+    failedJobs_info = get_failedJobs_info_by_id(session, _id)
+
+    if failedJobs_info is None:
+        raise FailedJobsInfoNotFoundError
+
+    session.delete(failedJobs_info)
+    session.commit()
+
+
+
+
+#### Users ####
+# Function to get list of Users info
+def get_all_users(session: Session, limit: int, offset: int) -> List[Users]:
+    return session.query(Users).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular FailedJobs
+def get_users_info_by_id(session: Session, _id: int) -> Users:
+    users_info = session.query(Users).get(_id)
+
+    if users_info is None:
+        raise UsersInfoNotFoundError
+
+    return users_info
+
+# Function to add a new Users info to the database
+def create_Users(session: Session, info: CreateAndUpdateUsers) -> Users:
+    users_details = session.query(Users).filter(
+            Users.name == info.name,
+            Users.email == info.email,
+            Users.email_verified_at == info.email_verified_at,
+            Users.password == info.password,
+            Users.phone == info.phone,
+            Users.role == info.role,
+            Users.remember_token == info.remember_token,
+            Users.created_at == info.created_at,
+            Users.role == info.role,
+            Users.created_at == info.created_at,
+            Users.updated_at == info.updated_at,
+        ).first()
+    if users_details is not None:
+        raise UsersInfoInfoAlreadyExistError
+
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
+    new_users_info = Users(**info.dict())
+    session.add(new_users_info)
+    session.commit()
+    session.refresh(new_users_info)
+    return new_users_info
+
+# Function to update details of the Users
+def update_users_info(session: Session, _id: int, info_update: CreateAndUpdateUsers) -> Users:
+    users_info = get_users_info_by_id(session, _id)
+
+    if users_info is None:
+        raise UsersInfoNotFoundError
+
+    users_info.name = info_update.name
+    users_info.email=info_update.email
+    users_info.email_verified_at=info_update.email_verified_at
+    users_info.password=info_update.password
+    users_info.phone=info_update.phone
+    users_info.role=info_update.role
+    users_info.remember_token=info_update.remember_token
+
+    session.commit()
+    session.refresh(users_info)
+
+    return users_info
+
+# Function to delete an Users info from the db
+def delete_users_info(session: Session, _id: int):
+    users_info = get_users_info_by_id(session, _id)
+
+    if users_info is None:
+        raise UsersInfoNotFoundError
+
+    session.delete(users_info)
+    session.commit()
+
+
+
+#### Trackings ####
+# Function to get list of Trackings info
+def get_all_trackings(session: Session, limit: int, offset: int) -> List[Trackings]:
+    return session.query(Trackings).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular FailedJobs
+def get_trackings_info_by_id(session: Session, _id: int) -> Trackings:
+    trackings_info = session.query(Trackings).get(_id)
+
+    if trackings_info is None:
+        raise TrackingsInfoNotFoundError
+
+    return trackings_info
+
+# Function to add a new Trackings info to the database
+def create_Trackings(session: Session, info: CreateAndUpdateTrackings) -> Trackings:
+    trackings_details = session.query(Trackings).filter(
+            Trackings.idUser == info.idUser,
+            Trackings.longitude == info.longitude,
+            Trackings.latitude == info.latitude,
+            Trackings.created_at == info.created_at,
+            Trackings.updated_at == info.updated_at,
+        ).first()
+    if trackings_details is not None:
+        raise TrackingsInfoInfoAlreadyExistError
+
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
+    new_trackings_info = Trackings(**info.dict())
+    session.add(new_trackings_info)
+    session.commit()
+    session.refresh(new_trackings_info)
+    return new_trackings_info
+
+# Function to update details of the Trackings
+def update_trackings_info(session: Session, _id: int, info_update: CreateAndUpdateTrackings) -> Trackings:
+    trackings_info = get_trackings_info_by_id(session, _id)
+
+    if trackings_info is None:
+        raise TrackingsInfoNotFoundError
+
+    trackings_info.idUser = info_update.idUser
+    trackings_info.longitude=info_update.longitude
+    trackings_info.latitude=info_update.latitude
+
+    session.commit()
+    session.refresh(trackings_info)
+
+    return trackings_info
+
+# Function to delete an Trackings info from the db
+def delete_trackings_info(session: Session, _id: int):
+    trackings_info = get_trackings_info_by_id(session, _id)
+
+    if trackings_info is None:
+        raise TrackingsInfoNotFoundError
+
+    session.delete(trackings_info)
+    session.commit()
+
+
+#### Zones ####
+# Function to get list of Zones info
+def get_all_zones(session: Session, limit: int, offset: int) -> List[Zones]:
+    return session.query(Zones).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular FailedJobs
+def get_zones_info_by_id(session: Session, _id: int) -> Zones:
+    zones_info = session.query(Zones).get(_id)
+
+    if zones_info is None:
+        raise ZonesInfoNotFoundError
+
+    return zones_info
+
+# Function to add a new Zones info to the database
+def create_Zones(session: Session, info: CreateAndUpdateZones) -> Zones:
+    zones_details = session.query(Zones).filter(
+            Zones.nom == info.nom,
+            Zones.ville == info.ville,
+            Zones.created_at == info.created_at,
+            Zones.updated_at == info.updated_at,
+        ).first()
+    if zones_details is not None:
+        raise ZonesInfoInfoAlreadyExistError
+
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
+    new_zones_info = Zones(**info.dict())
+    session.add(new_zones_info)
+    session.commit()
+    session.refresh(new_zones_info)
+    return new_zones_info
+
+# Function to update details of the Zones
+def update_zones_info(session: Session, _id: int, info_update: CreateAndUpdateZones) -> Zones:
+    zones_info = get_zones_info_by_id(session, _id)
+
+    if zones_info is None:
+        raise ZonesInfoNotFoundError
+
+    zones_info.nom = info_update.nom
+    zones_info.ville=info_update.ville
+
+    session.commit()
+    session.refresh(zones_info)
+
+    return zones_info
+
+# Function to delete an Zones info from the db
+def delete_zones_info(session: Session, _id: int):
+    zones_info = get_zones_info_by_id(session, _id)
+
+    if zones_info is None:
+        raise ZonesInfoNotFoundError
+
+    session.delete(zones_info)
     session.commit()
 
