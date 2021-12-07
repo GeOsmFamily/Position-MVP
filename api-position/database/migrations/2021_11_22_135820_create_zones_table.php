@@ -17,6 +17,7 @@ class CreateZonesTable extends Migration
             $table->id();
             $table->string("nom");
             $table->string("ville");
+            $table->string("limite")->nullable();
             $table->timestamps();
         });
     }

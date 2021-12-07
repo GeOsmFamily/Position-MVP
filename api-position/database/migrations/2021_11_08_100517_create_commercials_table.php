@@ -23,6 +23,11 @@ class CreateCommercialsTable extends Migration
             $table->string('imageProfil')->nullable();
             $table->integer('idZone');
             $table->boolean('actif')->default(true);
+            $table->string('sexe');
+            $table->string('whatsapp');
+            $table->string('diplome');
+            $table->string('tailleTshirt');
+            $table->integer('age');
             $table->timestamps();
         });
     }

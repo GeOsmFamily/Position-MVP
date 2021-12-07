@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SousCategorie[] $sousCategories
  * @property-read int|null $sous_categories_count
+ * @property string|null $logoUrl
  */
 class Categorie extends Model
 {

@@ -34,24 +34,57 @@
             android:layout_marginEnd="16dp"
             android:textStyle="bold"
             android:textAllCaps="true"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/etablissement_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/etablissement_etage"
+            app:layout_constraintBottom_toTopOf="@id/etablissement_categorie"
             tools:text="SOGEFI" />
+        <TextView
+            android:id="@+id/etablissement_categorie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/etablissement_image"
+            app:layout_constraintTop_toBottomOf="@id/etablissement_name"
+            app:layout_constraintBottom_toTopOf="@id/etablissement_etage"
+            tools:text="Achats,Boutique" />
         <TextView
             android:id="@+id/etablissement_etage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:textSize="10dp"
+            android:textColor="@color/bright_yellow"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/etablissement_image"
             app:layout_constraintTop_toBottomOf="@id/etablissement_name"
             tools:text="etage 1" />
 
+        <TextView
+            android:id="@+id/etablissement_create"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:gravity="right"
+            android:layout_marginTop="10dp"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/etablissement_image"
+            app:layout_constraintTop_toBottomOf="@id/etablissement_etage"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Crée le 12/01/2021 Par Gautier" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

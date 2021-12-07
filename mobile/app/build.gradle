@@ -17,8 +17,8 @@ android {
         applicationId "com.sogefi.position"
         minSdk 21
         targetSdk 30
-        versionCode 6
-        versionName "0.1.5 build01"
+        versionCode 7
+        versionName "0.2.0 Stable"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -123,6 +123,9 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:3.2.0'
 
     implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
+
+    implementation 'com.mapbox.mapboxsdk:mapbox-sdk-turf:5.8.0'
+
 
 
 

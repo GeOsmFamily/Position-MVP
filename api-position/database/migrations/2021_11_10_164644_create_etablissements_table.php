@@ -20,10 +20,10 @@ class CreateEtablissementsTable extends Migration
             $table->string('indicationAdresse')->nullable();
             $table->string('codePostal')->nullable();
             $table->string('siteInternet')->nullable();
-            $table->integer('idSousCategorie');
             $table->integer('idCommercial');
             $table->integer('idManager')->nullable();
             $table->integer('etage');
+            $table->text('autres')->nullable();
             $table->string('cover')->nullable();
             $table->integer('vues')->default(0);
             $table->timestamps();

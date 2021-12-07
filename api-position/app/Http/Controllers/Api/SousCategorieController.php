@@ -151,16 +151,16 @@ class SousCategorieController extends BaseController
         foreach ($souscategories as $souscategorie) {
             $etablissements = $souscategorie->etablissements;
 
-            $souscategorie['etablissements'] = $etablissements;
+            //  $souscategorie['etablissements'] = $etablissements;
             $categorie = $souscategorie->categorie;
 
-            $souscategorie['nomCategorie'] = $categorie->nom;
-            $souscategorie['logo_url'] = $categorie->logo_url;
+            /*  $souscategorie['nomCategorie'] = $categorie->nom;
+            $souscategorie['logo_url'] = $categorie->logo_url;*/
 
             foreach ($etablissements as $etablissement) {
                 $batiment = $etablissement->batiment;
 
-                $etablissement['batiment'] = $batiment;
+                // $etablissement['batiment'] = $batiment;
             }
         }
 

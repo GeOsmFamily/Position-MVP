@@ -92,7 +92,7 @@ public class SearchAdapter extends SuggestionsAdapter<Search, SearchAdapter.Sear
 
     @Override
     public int getSingleViewHeight() {
-        return 32;
+        return 60;
     }
 
   /*  @Override

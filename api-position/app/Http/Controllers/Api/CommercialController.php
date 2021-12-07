@@ -43,6 +43,12 @@ class CommercialController extends BaseController
                 $result['idZone'] = $commercial->idZone;
                 $result['actif'] = $commercial->actif;
 
+                $result['sexe'] = $commercial->sexe;
+                $result['whatsapp'] = $commercial->whatsapp;
+                $result['diplome'] = $commercial->diplome;
+                $result['tailleTshirt'] = $commercial->tailleTshirt;
+                $result['age'] = $commercial->age;
+
                 $data[] = $result;
             }
 
@@ -100,6 +106,11 @@ class CommercialController extends BaseController
                 $inputCommercial['ville'] = $request->ville;
                 $inputCommercial['quartier'] = $request->quartier;
                 $inputCommercial['idZone'] = $request->idZone;
+                $inputCommercial['sexe'] = $request->sexe;
+                $inputCommercial['whatsapp'] = $request->whatsapp;
+                $inputCommercial['diplome'] = $request->diplome;
+                $inputCommercial['tailleTshirt'] = $request->tailleTshirt;
+                $inputCommercial['age'] = $request->age;
 
 
                 $commercial = $userNew->commercial()->create($inputCommercial);
@@ -156,8 +167,13 @@ class CommercialController extends BaseController
                     $result['quartier'] = $commercial->quartier;
                     $result['imageProfil'] = $commercial->imageProfil;
                     $result['idZone'] = $commercial->idZone;
-
                     $result['actif'] = $commercial->actif;
+
+                    $result['sexe'] = $commercial->sexe;
+                    $result['whatsapp'] = $commercial->whatsapp;
+                    $result['diplome'] = $commercial->diplome;
+                    $result['tailleTshirt'] = $commercial->tailleTshirt;
+                    $result['age'] = $commercial->age;
 
                     return $this->sendResponse($result, "Commercial");
                 } else {
@@ -177,8 +193,13 @@ class CommercialController extends BaseController
                 $result['quartier'] = $commercial->quartier;
                 $result['imageProfil'] = $commercial->imageProfil;
                 $result['idZone'] = $commercial->idZone;
-
                 $result['actif'] = $commercial->actif;
+
+                $result['sexe'] = $commercial->sexe;
+                $result['whatsapp'] = $commercial->whatsapp;
+                $result['diplome'] = $commercial->diplome;
+                $result['tailleTshirt'] = $commercial->tailleTshirt;
+                $result['age'] = $commercial->age;
 
                 return $this->sendResponse($result, "Commercial");
             }
@@ -233,6 +254,14 @@ class CommercialController extends BaseController
                     $commercial->idZone = $request->idZone ?? $commercial->idZone;
                     $commercial->actif = $request->actif ?? $commercial->actif;
 
+                    $commercial->sexe = $request->sexe ?? $commercial->sexe;
+                    $commercial->whatsapp = $request->whatsapp ?? $commercial->whatsapp;
+                    $commercial->diplome = $request->diplome ?? $commercial->diplome;
+                    $commercial->tailleTshirt = $request->tailleTshirt ?? $commercial->tailleTshirt;
+                    $commercial->age = $request->age ?? $commercial->age;
+
+
+
                     if ($request->file()) {
                         $fileName = time() . '_' . $request->file->getClientOriginalName();
                         $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
@@ -270,6 +299,12 @@ class CommercialController extends BaseController
                 $commercial->quartier = $request->quartier ?? $commercial->quartier;
                 $commercial->idZone = $request->idZone ?? $commercial->idZone;
                 $commercial->actif = $request->actif ?? $commercial->actif;
+
+                $commercial->sexe = $request->sexe ?? $commercial->sexe;
+                $commercial->whatsapp = $request->whatsapp ?? $commercial->whatsapp;
+                $commercial->diplome = $request->diplome ?? $commercial->diplome;
+                $commercial->tailleTshirt = $request->tailleTshirt ?? $commercial->tailleTshirt;
+                $commercial->age = $request->age ?? $commercial->age;
 
                 if ($request->file()) {
                     $fileName = time() . '_' . $request->file->getClientOriginalName();

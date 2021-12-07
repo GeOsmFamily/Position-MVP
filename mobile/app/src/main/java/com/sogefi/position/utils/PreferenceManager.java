@@ -28,6 +28,7 @@ public class PreferenceManager {
     private static final String ID = "id";
 
     private static final String ROLEID = "roleid";
+    private static final String ZONEID = "zoneid";
 
     private static final String PROFILEIMAGE = "profileimage";
 
@@ -197,6 +198,16 @@ public class PreferenceManager {
 
     public void setRoleid(String roleid) {
         editor.putString(ROLEID, roleid);
+        editor.apply();
+    }
+
+
+    public String getZoneid() {
+        return pref.getString(ZONEID, "zoneid");
+    }
+
+    public void setZoneid(String zoneid) {
+        editor.putString(ZONEID, zoneid);
         editor.apply();
     }
 

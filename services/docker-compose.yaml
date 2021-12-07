@@ -6,7 +6,7 @@ services:
     ports:
       - "6003:15500"
     volumes:
-      - ./prod/images:/usr/src/app/images
+      - /var/www/position-volumes/images:/usr/src/app/images
 
 
 # version: "3"

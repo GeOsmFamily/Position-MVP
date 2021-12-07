@@ -28,6 +28,7 @@
 
             <ImageView
                 android:id="@+id/back_btn3"
+                android:visibility="gone"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical|left"
@@ -39,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Nouvelle Entreprise (4/5)"
+                android:text="Nouvelle Entreprise (4/4)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -64,15 +65,14 @@
             android:layout_height="wrap_content">
 
 
-
             <LinearLayout
                 android:id="@+id/llbed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="100dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -85,8 +85,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="horizontal"
                     android:background="@drawable/round_edittext_background"
+                    android:orientation="horizontal"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
 
@@ -94,30 +94,31 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_access_time_24"/>
+                        android:src="@drawable/ic_baseline_access_time_24" />
 
                     <customfonts.TextViewSFProDisplayRegular
                         android:id="@+id/openLundi"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/round_edittext_background"
-                        android:hint="Ouverture"
-                        android:singleLine="true"
-                        android:inputType="number"
-                        android:textSize="15dp"
                         android:layout_marginLeft="10dp"
+                        android:background="@drawable/round_edittext_background"
+                        android:gravity="center_vertical"
+                        android:hint="Ouverture"
+                        android:inputType="number"
+                        android:singleLine="true"
                         android:textColor="@android:color/black"
-                        android:textColorHint="@android:color/darker_gray"/>
+                        android:textColorHint="@android:color/darker_gray"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:background="@drawable/round_edittext_background"
-                    android:paddingLeft="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_edittext_background"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
                     android:paddingRight="10dp">
 
                     <ImageView
@@ -130,29 +131,74 @@
                         android:id="@+id/closedLundi"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/round_edittext_background"
-                        android:hint="Fermeture"
-                        android:singleLine="true"
-                        android:textSize="15dp"
-                        android:inputType="number"
                         android:layout_marginLeft="10dp"
+                        android:background="@drawable/round_edittext_background"
+                        android:gravity="center_vertical"
+                        android:hint="Fermeture"
+                        android:inputType="number"
+                        android:singleLine="true"
                         android:textColor="@android:color/black"
-                        android:textColorHint="@android:color/darker_gray"/>
+                        android:textColorHint="@android:color/darker_gray"
+                        android:textSize="15dp" />
                 </LinearLayout>
 
             </LinearLayout>
 
 
 
-
             <LinearLayout
-                android:id="@+id/llbedSamedi"
+                android:id="@+id/llbedCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llbed"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <CheckBox
+                        android:id="@+id/checkBoxSamedi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="SAMEDI" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:paddingRight="10dp">
+                    <CheckBox
+                        android:id="@+id/checkBoxDimanche"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DIMANCHE" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llbedSamedi"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llbedCheckbox"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
@@ -228,11 +274,12 @@
 
             <LinearLayout
                 android:id="@+id/llbedDimanche"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/llbedSamedi"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:orientation="horizontal">
@@ -309,8 +356,8 @@
                 android:id="@+id/groupButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_below="@id/llbedDimanche">
+                android:layout_below="@id/llbedDimanche"
+                android:layout_marginTop="260dp">
 
                 <customfonts.Button_SF_Pro_Display_Medium
                     android:id="@+id/back3"
@@ -332,7 +379,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/button_round_1"
-                    android:text="Suivant" />
+                    android:text="sauvegerder" />
             </LinearLayout>
 
 
@@ -346,6 +393,8 @@
                 android:layout_below="@id/groupButton"
                 android:layout_marginBottom="16dp"
                 android:layout_centerHorizontal="true" />
+
+
 
 
         </RelativeLayout>
