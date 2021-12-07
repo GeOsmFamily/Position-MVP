@@ -44,3 +44,4 @@ uvicorn==0.15.0
 wsproto==1.0.0
 pillow
 qrcode
+jinja2
