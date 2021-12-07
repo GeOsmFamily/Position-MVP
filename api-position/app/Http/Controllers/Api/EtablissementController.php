@@ -19,6 +19,48 @@ class EtablissementController extends BaseController
     {
         $etablissements = Etablissement::all();
 
+        foreach ($etablissements as $etablissement) {
+            $batiment = $etablissement->batiment;
+            $souscategorie = $etablissement->sousCategories;
+            $images = $etablissement->images;
+            $horaires = $etablissement->horaires;
+            $telephones = $etablissement->telephones;
+
+            $commercial = Commercial::find(2);
+
+            $etablissement["nomCommercial"] = $commercial->user->name;
+
+
+            $etablissement['batiment'] = $batiment;
+
+            foreach ($etablissement->sousCategories as $souscategorie) {
+
+                $souscategorie["logoUrl"] = $souscategorie->categorie->logoUrl;
+            }
+
+
+            /*   $data = array();
+            foreach ($etablissement->sousCategories as $souscategorie) {
+
+                $data["nomSousCategorie"] = $souscategorie->nom;
+                $data["categorie"] = $souscategorie->categorie->nom;
+                $data["logoUrl"] = $souscategorie->categorie->logoUrl;
+                $result[] = $data;
+            }
+
+            $etablissement['SousCategorie'] = $result;
+
+
+            $etablissement['images'] = $images;
+            $etablissement['horaires'] = $horaires;
+            $etablissement['telephones'] = $telephones;*/
+
+
+
+            //  $etablissement['nomCategorie'] = $categorie->nom;
+            //  $etablissement['logo_url'] = $categorie->logoUrl;
+        }
+
         return $this->sendResponse($etablissements, 'Liste des Etablissements');
     }
 
@@ -48,6 +90,12 @@ class EtablissementController extends BaseController
 
             $etablissement = $batiment->etablissements()->create($input);
 
+            if ($request->idSousCategorie != null) {
+                $etablissement->sousCategories()->attach([$input['idSousCategorie']]);
+            }
+
+
+
             if ($request->file()) {
                 $fileName = time() . '_' . $request->file->getClientOriginalName();
                 $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
@@ -76,13 +124,33 @@ class EtablissementController extends BaseController
     {
         $etablissement = Etablissement::find($id);
 
+        $batiment = $etablissement->batiment;
+        $souscategorie = $etablissement->sousCategories;
         $images = $etablissement->images;
-        $telephones = $etablissement->telephones;
         $horaires = $etablissement->horaires;
+        $telephones = $etablissement->telephones;
 
-        $etablissement["images"] = $images;
-        $etablissement["telephones"] = $telephones;
-        $etablissement["horaires"] = $horaires;
+        $commercial = Commercial::find(2);
+
+        $etablissement["nomCommercial"] = $commercial->user->name;
+
+        foreach ($etablissement->sousCategories as $souscategorie) {
+
+            $souscategorie["logoUrl"] = $souscategorie->categorie->logoUrl;
+        }
+
+
+        /*  $etablissement['batiment'] = $batiment;
+        $etablissement['nomSousCategorie'] = $souscategorie->nom;
+
+        $etablissement['images'] = $images;
+        $etablissement['horaires'] = $horaires;
+        $etablissement['telephones'] = $telephones;
+
+        $categorie = $souscategorie->categorie;
+
+        $etablissement['nomCategorie'] = $categorie->nom;
+        $etablissement['logo_url'] = $categorie->logoUrl;*/
 
         return $this->sendResponse($etablissement, 'Etablissement');
     }
@@ -113,6 +181,7 @@ class EtablissementController extends BaseController
             $etablissement->siteInternet = $request->siteInternet ?? $etablissement->siteInternet;
             $etablissement->description = $request->description ?? $etablissement->description;
             $etablissement->etage = $request->etage ?? $etablissement->etage;
+            $etablissement->autres = $request->autres ?? $etablissement->autres;
             $etablissement->idManager = $request->idManager ?? $etablissement->idManager;
             $etablissement->vues = $request->vues ?? $etablissement->vues;
 
@@ -179,13 +248,13 @@ class EtablissementController extends BaseController
 
         foreach ($etablissements as $etablissement) {
             $batiment = $etablissement->batiment;
-            $souscategorie = $etablissement->sousCategorie;
+            $souscategorie = $etablissement->sousCategories;
             $images = $etablissement->images;
             $horaires = $etablissement->horaires;
             $telephones = $etablissement->telephones;
 
 
-            $etablissement['batiment'] = $batiment;
+            /*  $etablissement['batiment'] = $batiment;
             $etablissement['nomSousCategorie'] = $souscategorie->nom;
 
             $etablissement['images'] = $images;
@@ -195,7 +264,7 @@ class EtablissementController extends BaseController
             $categorie = $souscategorie->categorie;
 
             $etablissement['nomCategorie'] = $categorie->nom;
-            $etablissement['logo_url'] = $categorie->logoUrl;
+            $etablissement['logo_url'] = $categorie->logoUrl;*/
         }
 
         return $this->sendResponse($etablissements, 'Liste des Etablissements');

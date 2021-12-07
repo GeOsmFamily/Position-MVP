@@ -81,9 +81,37 @@ class ImageController extends BaseController
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Image $image)
+    public function update(Request $request, $id)
     {
-        //
+        $user = Auth::user();
+
+        $role = $user->role;
+
+        $image = Image::find($id);
+
+        $idUserCommercial = $image->etablissement->commercial->idUser;
+
+        if ($role == 1 || $user->id = $idUserCommercial) {
+
+            $batiment = $image->etablissement->batiment;
+            $etablissement = $image->etablissement;
+
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $etablissement->nom, $fileName, 'public');
+                $image->imageUrl = '/storage/' . $filePath;
+            }
+
+            $save = $image->save();
+
+            if ($save) {
+                return $this->sendResponse($image, "Update Success", 201);
+            } else {
+                return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+            }
+        } else {
+            return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+        }
     }
 
     /**

@@ -70,8 +70,12 @@ class TelephoneController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1 || $role == 3) {
-            $telephone = Telephone::find($id);
+        $telephone = Telephone::find($id);
+
+        $idUserCommercial = $telephone->etablissement->commercial->idUser;
+
+        if ($role == 1 || $user->id = $idUserCommercial) {
+
 
             $telephone->numero = $request->numero ?? $telephone->numero;
             $telephone->whatsapp = $request->whatsapp ?? $telephone->whatsapp;

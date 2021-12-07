@@ -83,6 +83,7 @@ Route::middleware('auth.apikey')->group(
             Route::delete('etablissements/{id}', [App\Http\Controllers\Api\EtablissementController::class, 'destroy']);
 
             Route::post('images', [App\Http\Controllers\Api\ImageController::class, 'store']);
+            Route::put('images/{id}', [App\Http\Controllers\Api\ImageController::class, 'update']);
             Route::delete('images/{id}', [App\Http\Controllers\Api\ImageController::class, 'destroy']);
 
             Route::post('telephones', [App\Http\Controllers\Api\TelephoneController::class, 'store']);

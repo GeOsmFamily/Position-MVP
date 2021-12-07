@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Batiment;
+use App\Models\Commercial;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,21 @@ class BatimentController extends BaseController
             $etablissements = $batiment->etablissements;
 
             $batiment["etablissements"] = $etablissements;
+
+            foreach ($etablissements as $etablissement) {
+                $souscategorie = $etablissement->sousCategories;
+                $images = $etablissement->images;
+                $horaires = $etablissement->horaires;
+                $telephones = $etablissement->telephones;
+                $commercial = Commercial::find(2);
+
+                $etablissement["nomCommercial"] = $commercial->user->name;
+
+                foreach ($etablissement->sousCategories as $souscategorie) {
+
+                    $souscategorie["logoUrl"] = $souscategorie->categorie->logoUrl;
+                }
+            }
         }
 
         return $this->sendResponse($batiments, 'Liste des Batiments');
@@ -77,6 +93,22 @@ class BatimentController extends BaseController
         $etablissements = $batiment->etablissements;
 
         $batiment["etablissements"] = $etablissements;
+
+        foreach ($etablissements as $etablissement) {
+            $souscategorie = $etablissement->sousCategories;
+            $images = $etablissement->images;
+            $horaires = $etablissement->horaires;
+            $telephones = $etablissement->telephones;
+            $commercial = Commercial::find(2);
+
+            $etablissement["nomCommercial"] = $commercial->user->name;
+
+
+            foreach ($etablissement->sousCategories as $souscategorie) {
+
+                $souscategorie["logoUrl"] = $souscategorie->categorie->logoUrl;
+            };
+        }
 
         return $this->sendResponse($batiment, 'Batiment');
     }

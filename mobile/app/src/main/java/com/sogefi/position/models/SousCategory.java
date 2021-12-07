@@ -2,13 +2,13 @@ package com.sogefi.position.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sogefi.position.models.data.DataCategories;
 
 import java.util.List;
 
 
 
 public class SousCategory {
-
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -20,13 +20,16 @@ public class SousCategory {
     private Integer idCategorie;
     @SerializedName("logoUrl")
     @Expose
-    private Object logoUrl;
+    private String logoUrl;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("categorie")
+    @Expose
+    private DataCategories categorie;
 
     public Integer getId() {
         return id;
@@ -52,11 +55,11 @@ public class SousCategory {
         this.idCategorie = idCategorie;
     }
 
-    public Object getLogoUrl() {
+    public String getLogoUrl() {
         return logoUrl;
     }
 
-    public void setLogoUrl(Object logoUrl) {
+    public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
     }
 
@@ -74,6 +77,15 @@ public class SousCategory {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    public DataCategories getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(DataCategories categorie) {
+        this.categorie = categorie;
     }
 
 }

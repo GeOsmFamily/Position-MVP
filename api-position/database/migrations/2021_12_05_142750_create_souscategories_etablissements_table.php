@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateZonesTable extends Migration
+class CreateSouscategoriesEtablissementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateZonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('zones', function (Blueprint $table) {
+        Schema::create('souscategories_etablissements', function (Blueprint $table) {
             $table->id();
-            $table->string("nom");
-            $table->string("ville");
-            $table->string("limite")->nullable();
+            $table->integer("idEtablissement");
+            $table->integer("idSousCategorie");
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateZonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zones');
+        Schema::dropIfExists('souscategories_etablissements');
     }
 }

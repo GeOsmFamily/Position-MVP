@@ -43,6 +43,6 @@ class SousCategorie extends Model
 
     public function etablissements()
     {
-        return $this->hasMany(Etablissement::class, "idSousCategorie");
+        return $this->belongsToMany(Etablissement::class, "souscategories_etablissements", "idSousCategorie", "idEtablissement");
     }
 }

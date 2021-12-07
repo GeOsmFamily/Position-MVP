@@ -50,10 +50,22 @@ class ZoneController extends BaseController
         if ($role == 1) {
             $input = $request->all();
 
+            $request->validate([
+                'file' => 'mimes:geojson,json|max:100000'
+            ]);
+
             $zone = Zone::create($input);
 
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/zones/' . $zone->nom, $fileName, 'public');
+                $zone->limite = '/storage/' . $filePath;
+            }
 
-            if ($zone) {
+            $save = $zone->save();
+
+
+            if ($save) {
                 return $this->sendResponse($zone, "Création de la zone reussie", 201);
             } else {
                 return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
@@ -111,7 +123,11 @@ class ZoneController extends BaseController
             $zone->nom = $request->nom ?? $zone->nom;
             $zone->ville = $request->ville ?? $zone->ville;
 
-
+            if ($request->file()) {
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/zones/' . $zone->nom, $fileName, 'public');
+                $zone->limite = '/storage/' . $filePath;
+            }
 
             $save = $zone->save();
 

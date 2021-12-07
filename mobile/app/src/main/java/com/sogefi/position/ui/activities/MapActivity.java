@@ -2,20 +2,29 @@ package com.sogefi.position.ui.activities;
 
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.accumulated;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.all;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.concat;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.division;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.exponential;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.gt;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.gte;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.has;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.literal;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.lt;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.max;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.neq;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.rgb;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.toNumber;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.zoom;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOutlineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
@@ -43,6 +52,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -58,6 +68,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,6 +101,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.gson.Gson;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -97,8 +109,10 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
+import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -117,12 +131,15 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
 import com.mapbox.mapboxsdk.style.expressions.Expression;
 import com.mapbox.mapboxsdk.style.layers.CircleLayer;
+import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.layers.TransitionOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.mapbox.turf.TurfJoins;
 import com.nguyenhoanglam.imagepicker.view.GridSpacingItemDecoration;
 import com.sogefi.position.BuildConfig;
 import com.sogefi.position.R;
@@ -140,10 +157,13 @@ import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.Search;
 import com.sogefi.position.models.SearchEtablissement;
 import com.sogefi.position.models.Tracking;
+import com.sogefi.position.models.Zones;
 import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.models.data.DataEtablissements;
 import com.sogefi.position.models.data.DataSearchEtablissement;
+import com.sogefi.position.models.data.DataTracking;
 import com.sogefi.position.repositories.FavoriteRepository;
+import com.sogefi.position.repositories.TrackingRepository;
 import com.sogefi.position.ui.TopIconButton;
 import com.sogefi.position.ui.activities.adapters.CategoriesAdapter;
 import com.sogefi.position.ui.activities.adapters.EtablissementAdapter;
@@ -164,6 +184,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -191,6 +213,7 @@ public class MapActivity extends AppCompatActivity implements
     private static final String ICON_LAYER_ID = "icon-layer-id";
     private static final String ICON_SOURCE_ID = "icon-source-id";
     private static final String GEOJSON_SOURCE_ID = "geojson-source-id";
+    private static final String UNCLUSTERED_POINTS = "unclustered-points";
     private static final String GEOJSON_ICON_ID = "geojson-icon-id";
     private static final String TAG = "LocationUpdate";
     FloatingActionButton location;
@@ -231,6 +254,7 @@ public class MapActivity extends AppCompatActivity implements
    // TopIconButton near;
     String friendPosition , latTv,lonTv;
     FavoriteRepository favoriteRepository;
+    TrackingRepository trackingRepository;
     PositionDataBase mDb;
     MaterialToolbar toolbar;
     NavigationView nav;
@@ -257,6 +281,12 @@ public class MapActivity extends AppCompatActivity implements
     List<Nominatim> nominatimList = new ArrayList<>();
 
     String longo,latgo;
+
+    AlertDialog mat;
+
+    private GeoJsonSource clusterSource;
+    private int clickOptionCounter;
+    private static final double CAMERA_ZOOM_DELTA = 0.01;
 
 
 
@@ -551,6 +581,8 @@ public class MapActivity extends AppCompatActivity implements
 
     getCategories();
 
+
+
     }
 
     private void whiteNotificationBar(View view) {
@@ -797,6 +829,7 @@ public class MapActivity extends AppCompatActivity implements
         Location location = locationComponent.getLastKnownLocation();
         String lon = String.valueOf(location != null ? location.getLongitude() : 0);
         String lat = String.valueOf(location != null ? location.getLatitude() : 0);
+        sendLocation(location);
 
 
 
@@ -808,6 +841,12 @@ public class MapActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
         }
+
+
+if(pref.getRoleid().equals("2")) {
+    addZone(mapboxMap.getStyle(),Integer.parseInt(pref.getZoneid()));
+}
+
 
 
     }
@@ -1041,6 +1080,7 @@ public class MapActivity extends AppCompatActivity implements
 
     //Convertir les drawable en bitmap pour les symboles
     private void initSpaceStationSymbolLayer(@NonNull Style style) {
+
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_destination);
         assert drawable != null;
         style.addImage(
@@ -1055,7 +1095,7 @@ public class MapActivity extends AppCompatActivity implements
                 Function.getBitmapFromDrawable(drawableOrigin)
         );
 
-        Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.building);
+       Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.building);
         assert drawableBatiment != null;
         style.addImage(
                 "markerBatimentImage",
@@ -1094,6 +1134,9 @@ public class MapActivity extends AppCompatActivity implements
         MapActivity.this.mapboxMap = mapboxMap;
         mapBoxUtils= new MapBoxUtils(mapboxMap);
 
+
+
+
         String styleLaunch = Style.MAPBOX_STREETS;
 
         if(!pref.getStyle().equals("style")) {
@@ -1103,12 +1146,20 @@ public class MapActivity extends AppCompatActivity implements
 
 
         mapboxMap.setStyle(new Style.Builder().fromUri(styleLaunch)
+             /*  .withSource(clusterSource = createClusterSource())
+                .withLayer(createSymbolLayer())
+                .withLayer(createClusterLevelLayer(0, clusterLayers))
+                .withLayer(createClusterLevelLayer(1, clusterLayers))
+                .withLayer(createClusterLevelLayer(2, clusterLayers))
+                .withLayer(createClusterTextLayer())*/
                 .withImage(ORIGIN_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
                         getResources().getDrawable(R.drawable.ic_origin))))
                 .withImage(DESTINATION_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
                         getResources().getDrawable(R.drawable.ic_finish)))), style -> {
             enableLocationComponent(style);
             initSpaceStationSymbolLayer(style);
+
+         //   style.setTransition(new TransitionOptions(0, 0, false));
 
             mapboxMap.addOnMapLongClickListener(MapActivity.this);
             if (friendPosition != null) {
@@ -1117,14 +1168,15 @@ public class MapActivity extends AppCompatActivity implements
             if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
                 getBatiment();
 
-               // geojsonBatiment(style);
+              //  geojsonBatiment(style);
 
 
             }
+
         });
 
 
-       mapBoxUtils.setMapSetting();
+        mapBoxUtils.setMapSetting();
     }
 
     //Methode pour zoomer sur la position de l'utilisateur après l'avoir recuperée
@@ -1137,6 +1189,7 @@ public class MapActivity extends AppCompatActivity implements
             locationComponent.setCameraMode(CameraMode.TRACKING);
             locationComponent.setRenderMode(RenderMode.COMPASS);
             locationComponent.zoomWhileTracking(15);
+
         } else {
             PermissionsManager permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
@@ -1681,16 +1734,24 @@ public class MapActivity extends AppCompatActivity implements
 
 
                             int idBatiment = response.body().getData().get(i).getId();
-                            String nombreNiveau = response.body().getData().get(i).getNombreNiveaux();
+                            String nombreNiveau = response.body().getData().get(i).getNombreNiveaux().toString();
+                            String nomBatiment = response.body().getData().get(i).getNom();
+
 
                             List<DataEtablissements> listetablissements = response.body().getData().get(i).getEtablissements();
 
                             symbolManager.addClickListener(symbol -> {
+
                                 View dialogEtablissement = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_etablissement, null, false);
 
                                 RecyclerView etablissements = dialogEtablissement.findViewById(R.id.etablissements);
 
                                 Button addEtablissement = dialogEtablissement.findViewById(R.id.add_etablissement);
+                                ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
+                                ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
+                                TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
+                                textView9.setText(nomBatiment+" ("+nombreNiveau+" étages)");
+                                closeButton.setOnClickListener(v -> mat.dismiss());
 
                                 addEtablissement.setOnClickListener(v -> {
                                     Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
@@ -1699,9 +1760,11 @@ public class MapActivity extends AppCompatActivity implements
                                     startActivity(intent);
                                 });
 
+
+
                                 etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
 
-                                new MaterialAlertDialogBuilder(MapActivity.this)
+                              mat =  new MaterialAlertDialogBuilder(MapActivity.this)
                                         .setView(dialogEtablissement)
                                         .show();
                             });
@@ -1747,6 +1810,13 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
+    public void clickDialog(DataEtablissements dataEtablissements) {
+
+        Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+        intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
+        startActivity(intent);
+    }
+
     private void geojsonBatiment(@NonNull Style style) {
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
@@ -1756,7 +1826,6 @@ public class MapActivity extends AppCompatActivity implements
                 @Override
                 public void onResponse(@NotNull Call<BatimentsModel> call, @NotNull Response<BatimentsModel> response) {
                     if(response.code() == 401 || response.code() == 500) {
-
                         Toast.makeText(getApplicationContext(), "Error get batiments", Toast.LENGTH_LONG).show();
                     } else {
                         //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
@@ -1764,14 +1833,12 @@ public class MapActivity extends AppCompatActivity implements
                         try {
                             featureCollection.put("type", "FeatureCollection");
                             JSONObject properties = new JSONObject();
-                            properties.put("name", "ESPG:4326");
+                            properties.put("name", "urn:ogc:def:crs:OGC:1.3:CRS84");
                             JSONObject crs = new JSONObject();
                             crs.put("type", "name");
 
                             crs.put("properties", properties);
                             featureCollection.put("crs", crs);
-
-
 
 
                         JSONArray features = new JSONArray();
@@ -1801,20 +1868,40 @@ public class MapActivity extends AppCompatActivity implements
 
                                 features.put(feature);
 
-
-
                             }
-
 
                             featureCollection.put("features", features);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
+                        int[][] clusterLayers = new int[][] {
+                                new int[] {150, ContextCompat.getColor(MapActivity.this, R.color.green)},
+                                new int[] {20, ContextCompat.getColor(MapActivity.this, R.color.green)},
+                                new int[] {0, ContextCompat.getColor(MapActivity.this, R.color.green)}
+                        };
+
+                       // FeatureCollection featureCollectionFromJson = FeatureCollection.fromJson(featureCollection.toString());
+
+                        try {
+                            style.setTransition(new TransitionOptions(0, 0, false));
+                            style.addSource(createClusterSource(featureCollection.toString()));
+                            style.addLayer(createSymbolLayer());
+                            style.addLayer(createClusterLevelLayer(0, clusterLayers));
+                            style.addLayer(createClusterLevelLayer(1, clusterLayers));
+                            style.addLayer(createClusterLevelLayer(2, clusterLayers));
+                            style.addLayer(createClusterTextLayer());
+                          //  Log.d("SOURCES", featureCollection.toString());
+                          //  Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+
 
                         //   GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source",featureCollection.toString());
-                            style.addSource(new GeoJsonSource(GEOJSON_SOURCE_ID,featureCollection.toString(),new GeoJsonOptions().withCluster(true).withClusterMaxZoom(14).withClusterRadius(10)));
-                            Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
+
+                      /*      style.addSource(new GeoJsonSource(GEOJSON_SOURCE_ID,featureCollection.toString(),new GeoJsonOptions().withCluster(true).withClusterMaxZoom(14).withClusterRadius(10)));
+                         //   Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
 
                         SymbolLayer unclustered = new SymbolLayer("unclustered-points", GEOJSON_SOURCE_ID);
 
@@ -1870,7 +1957,7 @@ public class MapActivity extends AppCompatActivity implements
                         );
                         style.addLayer(count);
                         Log.d("STYLE",style.getJson());
-                        Log.d("FEATURES",featureCollection.toString());
+                        Log.d("FEATURES",featureCollection.toString());*/
 
 
 
@@ -1892,6 +1979,86 @@ public class MapActivity extends AppCompatActivity implements
         }
     }
 
+
+    private void onClusterClick(Feature cluster, android.graphics.Point clickPoint) {
+        if (clickOptionCounter == 0) {
+            double nextZoomLevel = clusterSource.getClusterExpansionZoom(cluster);
+            double zoomDelta = nextZoomLevel - mapboxMap.getCameraPosition().zoom;
+            mapboxMap.animateCamera(CameraUpdateFactory.zoomBy(zoomDelta + CAMERA_ZOOM_DELTA, clickPoint));
+            Toast.makeText(this, "Zooming to " + nextZoomLevel, Toast.LENGTH_SHORT).show();
+        } else if (clickOptionCounter == 1) {
+            FeatureCollection collection = clusterSource.getClusterChildren(cluster);
+            Toast.makeText(this, "Children: " + collection.toJson(), Toast.LENGTH_SHORT).show();
+        } else {
+            FeatureCollection collection = clusterSource.getClusterLeaves(cluster, 2, 1);
+            Toast.makeText(this, "Leaves: " + collection.toJson(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private GeoJsonSource createClusterSource(String features) throws URISyntaxException {
+        return new GeoJsonSource(GEOJSON_SOURCE_ID,features, new GeoJsonOptions()
+                .withCluster(true)
+                .withClusterMaxZoom(14)
+                .withClusterRadius(10)
+
+        );
+    }
+
+    private SymbolLayer createSymbolLayer() {
+        return new SymbolLayer(UNCLUSTERED_POINTS, GEOJSON_SOURCE_ID)
+                .withProperties(
+                        iconImage("markerBatimentImage"),
+                        iconSize(
+                                division(
+                                        get("mag"), literal(80.0f)
+                                )
+                        )
+
+                )
+                .withFilter(has("mag"));
+    }
+
+    private SymbolLayer createClusterLevelLayer(int level, int[][] layerColors) {
+     /*   CircleLayer circles = new CircleLayer("cluster-" + level, GEOJSON_SOURCE_ID);
+        circles.setProperties(
+                circleColor(layerColors[level][1]),
+                circleRadius(18f)
+        );*/
+
+        SymbolLayer symbolLayer = new SymbolLayer("cluster-" + level, GEOJSON_SOURCE_ID);
+        symbolLayer.setProperties(iconImage("markerBatimentImage"), iconSize(
+                division(
+                        get("mag"), literal(80.0f)
+                )
+        ));
+
+        Expression pointCount = toNumber(get("point_count"));
+        symbolLayer.setFilter(
+                level == 0
+                        ? all(has("point_count"),
+                        gte(pointCount, literal(layerColors[level][0]))
+                ) : all(has("point_count"),
+                        gte(pointCount, literal(layerColors[level][0])),
+                        lt(pointCount, literal(layerColors[level - 1][0]))
+                )
+        );
+        return symbolLayer;
+    }
+
+    private SymbolLayer createClusterTextLayer() {
+        return new SymbolLayer("property", GEOJSON_SOURCE_ID)
+                .withProperties(
+                        textField(concat(get("point_count"))),
+                        textSize(12f),
+                        textColor(Color.WHITE),
+                        textIgnorePlacement(true),
+                        textAllowOverlap(true)
+                );
+    }
+
+
+
+
     public void getCategories() {
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
@@ -1902,7 +2069,7 @@ public class MapActivity extends AppCompatActivity implements
                 public void onResponse(@NotNull Call<Categories> call, @NotNull Response<Categories> response) {
                     Timber.tag("categories").e(response.toString());
 
-                    chipsLayout.setAdapter(new CategoriesAdapter(R.layout.item_chip,MapActivity.this,response.body().getData()));
+//                    chipsLayout.setAdapter(new CategoriesAdapter(R.layout.item_chip,MapActivity.this,response.body().getData()));
 
 
                 }
@@ -2095,6 +2262,113 @@ searchResult.clear();
         }
 
         return nominatimList;
+    }
+
+    private void sendLocation(Location location) {
+        String lon = String.valueOf(location != null ? location.getLongitude() : 0);
+        String lat = String.valueOf(location != null ? location.getLatitude() : 0);
+        trackingRepository = new TrackingRepository(mDb);
+
+        DataTracking dataTracking = new DataTracking(lon,lat);
+
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Tracking> call = apiService.addtracking(API_KEY,"Bearer "+pref.getToken(),dataTracking);
+            call.enqueue(new Callback<Tracking>() {
+                @Override
+                public void onResponse(@NotNull Call<Tracking> call, @NotNull Response<Tracking> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+                        trackingRepository.onSave(dataTracking);
+                        //  Toast.makeText(getApplicationContext(), "Error add tracking", Toast.LENGTH_LONG).show();
+                    } else {
+                        //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
+                    }
+
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Tracking> call, @NotNull Throwable t) {
+                    trackingRepository.onSave(dataTracking);
+                    // Log error here since request failed
+                    Timber.tag("images").e(t.toString());
+                    Log.e("error create", t.toString());
+                    // Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            trackingRepository.onSave(dataTracking);
+            //  Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void addZone( @NotNull Style style,int idZone) {
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Zones> call = apiService.getzone(API_KEY,"Bearer "+pref.getToken(),idZone);
+            call.enqueue(new Callback<Zones>() {
+                @Override
+                public void onResponse(@NotNull Call<Zones> call, @NotNull Response<Zones> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+                          Toast.makeText(getApplicationContext(), "Error get zone", Toast.LENGTH_LONG).show();
+                    } else {
+                        try {
+                            GeoJsonSource geoJsonSource = new GeoJsonSource("zone-geojson",new URI(IMAGEURL+response.body().getData().getLimite()));
+
+                            if(style.getSource("zone-geojson") != null) {
+                                style.removeSource("zone-geojson");
+                                style.removeLayer("fill-layer");
+                            } else {
+                                style.addSource(geoJsonSource);
+
+                                FillLayer fillLayer = new FillLayer("fill-layer","zone-geojson");
+                                fillLayer.setProperties(
+                                        fillColor(ContextCompat.getColor(getApplicationContext(), R.color.green)),
+                                        fillOpacity(0.5f)
+                                );
+
+
+                                style.addLayer(fillLayer);
+
+                                CameraPosition cam = mapboxMap.getCameraPosition();
+                                mapboxMap.animateCamera(
+                                        CameraUpdateFactory.newCameraPosition(
+                                                new CameraPosition.Builder()
+                                                        .zoom(15)
+                                                        .target(new LatLng(cam.target))
+                                                        .build()
+
+                                        )
+                                );
+
+                            }
+
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Zones> call, @NotNull Throwable t) {
+                    Log.e("error create", t.toString());
+                    // Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+             Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
     }
     
 }

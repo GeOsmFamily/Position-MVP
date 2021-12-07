@@ -52,13 +52,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereVues($value)
  * @property string|null $description
  * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereDescription($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SousCategorie[] $sousCategories
+ * @property-read int|null $sous_categories_count
  */
 class Etablissement extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idSousCategorie", "idCommercial", "idManager", "etage", "cover", "vues"
+        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idCommercial", "idManager", "etage", "cover", "vues", "autres"
     ];
 
     public function batiment()
@@ -66,9 +68,9 @@ class Etablissement extends Model
         return $this->belongsTo(Batiment::class, "idBatiment");
     }
 
-    public function sousCategorie()
+    public function sousCategories()
     {
-        return $this->belongsTo(SousCategorie::class, "idSousCategorie");
+        return $this->belongsToMany(SousCategorie::class, "souscategories_etablissements",  "idEtablissement", "idSousCategorie");
     }
 
     public function commercial()

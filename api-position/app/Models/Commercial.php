@@ -37,13 +37,25 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Etablissement[] $etablissements
  * @property-read int|null $etablissements_count
+ * @property int|null $idZone
+ * @property string $sexe
+ * @property int $age
+ * @property string $tailleTshirt
+ * @property string $diplome
+ * @property string $whatsapp
+ * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereAge($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereDiplome($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereIdZone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereSexe($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereTailleTshirt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Commercial whereWhatsapp($value)
  */
 class Commercial extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "idUser", "numeroCni", "numeroBadge", "ville", "quartier", "imageProfil", "idZone", "actif"
+        "idUser", "numeroCni", "numeroBadge", "ville", "quartier", "imageProfil", "idZone", "actif", "sexe", "whatsapp", "diplome", "tailleTshirt", "age"
     ];
 
     public function user()
