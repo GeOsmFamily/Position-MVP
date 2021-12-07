@@ -98,7 +98,7 @@ export default {
   }),
   computed: {
     loading() {
-      return this.$store.getters["category/loading"];
+      return this.$store.getters["zone/loading"];
     },
   },
   validations: {
