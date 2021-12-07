@@ -1196,9 +1196,8 @@ export default {
     chart3,
   },
   data: () => ({
-    heading: "Analytics Dashboard",
-    subheading:
-      "This is an example dashboard created using build-in elements and components.",
+    heading: "Dashboard Analytique",
+    subheading: "Statistiques globales sur les chiffres de position",
     icon: "pe-7s-plane icon-gradient bg-tempting-azure",
   }),
 
