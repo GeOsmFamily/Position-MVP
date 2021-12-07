@@ -3,16 +3,16 @@ import form from "./form";
 
 class ZoneService {
   getListZones() {
-    return api.get("categories?limit=50");
+    return api.get("zones");
   }
   createZone(data) {
-    return form.post("categories", data);
+    return form.post("zones", data);
   }
   deleteZone(id) {
-    return api.delete(`categories/${id}`);
+    return api.delete(`zones/${id}`);
   }
   editZone(id, data) {
-    return form.post(`categories/${id}`, data);
+    return form.post(`zones/${id}`, data);
   }
 }
 
