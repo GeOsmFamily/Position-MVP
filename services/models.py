@@ -182,7 +182,7 @@ class Users(Base):
     
 
 ### Tracking ####
-class Users(Base):
+class Trackings(Base):
     __tablename__ = "trackings"
     id = Column(Integer, primary_key=True, index=True)
     idUser = Column(String(191), ForeignKey('users.id'))
@@ -192,7 +192,7 @@ class Users(Base):
     updated_at = Column(Date)
     
 #### Zones ###
-class Users(Base):
+class Zones(Base):
     __tablename__ = "zones"
     id = Column(Integer, primary_key=True, index=True)
     nom = Column(String(191), ForeignKey('users.id'))
