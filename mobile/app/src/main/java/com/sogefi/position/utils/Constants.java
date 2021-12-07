@@ -6,10 +6,10 @@ import java.util.Locale;
 
 public class Constants {
 
-    public static String BASEURL = "http://192.168.197.8:8080/"; //10.0.2.2
-    public static String IMAGEURL = "http://192.168.197.8:8080";
+    public static String BASEURL = "https://services.position.cm/"; //10.0.2.2
+    public static String IMAGEURL = "https://services.position.cm";
     public static String NOMINATIMURL = "https://nominatim.openstreetmap.org/";
-    public static String API_KEY = "dEeeqWdIr5AaXAKFREAG5Pu33QkR25uOASgFxIkxFDz2wkp13BSP5xGSQGcARf1M";
+    public static String API_KEY = "HXEmpcwLkkFYfXUNFnwrX8RP4UxIIndpEuyTAs2Pn1J6LU6N00EWV6tcvhDyaAXA";
 
     public static SimpleDateFormat df =
             new SimpleDateFormat("dd-MM-yyyy HH:mm:ssZZ", Locale.ENGLISH);
