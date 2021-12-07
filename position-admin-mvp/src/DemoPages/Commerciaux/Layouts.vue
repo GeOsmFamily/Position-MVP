@@ -137,18 +137,22 @@
             <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
               <label for="zone22" class="mr-sm-2">Zone</label
-              ><b-form-input
+              ><b-form-select
                 name="zone"
-                v-model="zone"
-                v-model.trim="$v.zone.$model"
-                :state="!submitted ? null : submitted && !$v.zone.$invalid"
+                v-model="selectedZone"
+                :options="selectedZone"
+                v-model.trim="$v.selectedZone.$model"
+                :state="
+                  !submitted ? null : submitted && !$v.selectedZone.$invalid
+                "
                 id="zone22"
                 placeholder="Zone du commercial"
-                type="text"
                 class="form-control"
               />
               <b-form-invalid-feedback
-                :state="!submitted ? null : submitted && $v.zone.required"
+                :state="
+                  !submitted ? null : submitted && $v.selectedZone.required
+                "
               >
                 Field is required
               </b-form-invalid-feedback>
@@ -236,7 +240,7 @@ export default {
     numeroCni: "",
     previewImage: null,
     imageProfil: null,
-    zone: "",
+    selectedZone: "",
     town: "",
     message: "",
     submitted: false,
@@ -244,6 +248,9 @@ export default {
   computed: {
     loading() {
       return this.$store.getters["commercial/loading"];
+    },
+    zones() {
+      return this.$store.getters["zone/zones"];
     },
   },
   validations: {
@@ -260,7 +267,7 @@ export default {
     town: {
       required,
     },
-    zone: {
+    selectedZone: {
       required,
     },
     badge: {
