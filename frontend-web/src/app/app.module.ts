@@ -21,6 +21,12 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotifierModule } from 'angular-notifier';
+import { ArchwizardModule } from 'angular-archwizard';
+import { VerticalPagePrimaryComponent } from './components/map/vertical-page-primary/vertical-page-primary.component';
+import { CategoriesComponent } from './components/map/vertical-page-primary/categories/categories.component';
+import { SearchComponent } from './components/map/vertical-page-primary/search/search.component';
+
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -40,6 +46,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ResetPasswordComponent,
     HeaderComponent,
     EtablissementComponent,
+    VerticalPagePrimaryComponent,
+    CategoriesComponent,
+    SearchComponent,
+
 
   ],
   imports: [
@@ -53,6 +63,21 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     NgImageSliderModule,
     SlickCarouselModule,
     NgbModule,
+    ArchwizardModule,
+    NotifierModule.withConfig({
+      position: {
+        horizontal: {
+          position: 'right',
+          distance: 12,
+        },
+
+        vertical: {
+          position: 'top',
+          distance: 12,
+          gap: 10,
+        },
+      },
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

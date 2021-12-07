@@ -4,6 +4,7 @@
     <group>
         <item
             android:id="@+id/myBussiness"
+            android:visible="false"
             android:icon="@drawable/ic_baseline_business_24"
             android:title="@string/myBussiness"/>
 
@@ -14,6 +15,7 @@
         android:checkableBehavior="none">
         <item
             android:id="@+id/favoritesFragment"
+            android:visible="false"
             android:icon="@drawable/ic_favoris"
             android:title="@string/menu_favorites" />
         <item
@@ -23,6 +25,7 @@
 
         <item
             android:id="@+id/settings"
+            android:visible="false"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="@string/settings" />
         <item

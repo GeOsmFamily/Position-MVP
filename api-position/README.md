@@ -51,6 +51,7 @@ $ php artisan key:generate
 $ php artisan migrate
 $ php artisan passport:install
 $ php artisan db:seed
+$ php artisan apikey:generate app1
 $ php artisan storage:link
 $ exit
 ```
@@ -76,6 +77,7 @@ $ chown -R mysql:mysql mysql
 ```
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 ```
 
 ### Required hash in the Header of all requisitions that need to be authorized
@@ -84,6 +86,7 @@ Insert your generated hash
 
 ```
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 ```
 
 ## Authentication
@@ -95,6 +98,7 @@ Request
 ```
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
     "email": "admin@position.cm",
     "password": "secret"
@@ -130,6 +134,7 @@ Request
 ```
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
     "email": "admin@position.cm",
     "password": "secret",
@@ -169,6 +174,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -181,14 +187,28 @@ Response
     "success": true,
     "data": {
         "user": {
-            "id": 1,
-            "name": "Admin",
-            "email": "admin@position.cm",
-            "email_verified_at": "2021-10-19T11:18:29.000000Z",
-            "phone": 699999999,
-            "role": 1,
-            "created_at": "2021-10-19T11:17:48.000000Z",
-            "updated_at": "2021-10-19T11:18:29.000000Z"
+            "id": 5,
+            "name": "Commercial",
+            "email": "bt@geo.sm",
+            "email_verified_at": "2021-11-18T23:55:27.000000Z",
+            "phone": "699999999",
+            "role": 2,
+            "created_at": "2021-11-18T23:55:02.000000Z",
+            "updated_at": "2021-11-18T23:55:27.000000Z",
+            "commercial": {
+                "id": 2,
+                "idUser": 5,
+                "numeroCni": 12345678,
+                "numeroBadge": 52,
+                "ville": "Yaounde",
+                "quartier": "Melen",
+                "imageProfil": "/storage/uploads/commerciaux/profils/1637279707_Image1.jpg",
+                "zone": "Zone 1",
+                "actif": 1,
+                "created_at": "2021-11-18T23:55:07.000000Z",
+                "updated_at": "2021-11-18T23:55:07.000000Z"
+            },
+            "manager": null
         }
     },
     "message": "Utilisateur"
@@ -204,6 +224,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -227,6 +248,7 @@ Request
 ```
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
     "email" : "admin@position.cm"
 }
@@ -253,6 +275,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -266,20 +289,20 @@ Response
 {
 "success":true,
 "data":[
-{
-"name":"Commercial",
-"email":"bt@geo.sm",
-"phone":"699999998",
-"role":2,
-"id":1,
-"idUser":5,
-"numeroCni":12345678,
-"numeroBadge":12,
-"ville":"Douala",
-"quartier":"Yassa",
-"imageProfil":null,
-"zone":"Akwa"
-}
+    {
+        "name":"Commercial",
+        "email":"bt@geo.sm",
+        "phone":"699999998",
+        "role":2,
+        "id":1,
+        "idUser":5,
+        "numeroCni":12345678,
+        "numeroBadge":12,
+        "ville":"Douala",
+        "quartier":"Yassa",
+        "imageProfil":null,
+        "zone":"Akwa"
+    }
 ],
 "message":"Liste des Commerciaux"
 }
@@ -295,17 +318,18 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
-"name":"Commercial",
-"email":"bt@geo.sm",
-"phone":"699999998",
-"password":"secret",
-"numeroCni":12345678,
-"numeroBadge":12,
-"ville":"Douala",
-"quartier":"Yassa",
-"imageProfil":null,
-"zone":"Akwa"
+    "name":"Commercial",
+    "email":"bt@geo.sm",
+    "phone":"699999998",
+    "password":"secret",
+    "numeroCni":12345678,
+    "numeroBadge":12,
+    "ville":"Douala",
+    "quartier":"Yassa",
+    "file":null,
+    "zone":"Akwa"
 }
 
 ```
@@ -317,15 +341,15 @@ Response
 {
 "success": true,
 "data": {
-"numeroCni": "12345678",
-"numeroBadge": "12",
-"ville": "Douala",
-"quartier": "Yassa",
-"zone": "Akwa",
-"idUser": 6,
-"updated_at": "2021-11-08T16:23:21.000000Z",
-"created_at": "2021-11-08T16:23:21.000000Z",
-"id": 2
+    "numeroCni": "12345678",
+    "numeroBadge": "12",
+    "ville": "Douala",
+    "quartier": "Yassa",
+    "zone": "Akwa",
+    "idUser": 6,
+    "updated_at": "2021-11-08T16:23:21.000000Z",
+    "created_at": "2021-11-08T16:23:21.000000Z",
+    "id": 2
 },
 "message": "Création du commercial reussie"
 }
@@ -341,6 +365,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -354,21 +379,21 @@ Response
 {
 "success":true,
 "data":[
-{
-"name":"Commercial",
-"email":"bt@geo.sm",
-"phone":"699999998",
-"role":2,
-"id":1,
-"idUser":5,
-"numeroCni":12345678,
-"numeroBadge":12,
-"ville":"Douala",
-"quartier":"Yassa",
-"imageProfil":null,
-"zone":"Akwa",
-"actif":"1"
-}
+    {
+        "name":"Commercial",
+        "email":"bt@geo.sm",
+        "phone":"699999998",
+        "role":2,
+        "id":1,
+        "idUser":5,
+        "numeroCni":12345678,
+        "numeroBadge":12,
+        "ville":"Douala",
+        "quartier":"Yassa",
+        "imageProfil":null,
+        "zone":"Akwa",
+        "actif":"1"
+    }
 ],
 "message":"Commercial"
 }
@@ -384,16 +409,17 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
-"name":"Commercial",
-"phone":"699999998",
-"numeroCni":12345678,
-"numeroBadge":12,
-"ville":"Douala",
-"quartier":"Yassa",
-"imageProfil":null,
-"zone":"Akwa",
-"actif" : "0"
+    "name":"Commercial",
+    "phone":"699999998",
+    "numeroCni":12345678,
+    "numeroBadge":12,
+    "ville":"Douala",
+    "quartier":"Yassa",
+    "file":null,
+    "zone":"Akwa",
+    "actif" : "0"
 }
 
 ```
@@ -405,17 +431,17 @@ Response
 {
 "success": true,
 "data": {
-"id": 2,
-"idUser": 6,
-"numeroCni": 12345678,
-"numeroBadge": 12,
-"ville": "Douala",
-"quartier": "Yassa",
-"imageProfil": null,
-"zone": "Akwa",
-"actif": 1,
-"created_at": "2021-11-08T16:23:21.000000Z",
-"updated_at": "2021-11-08T16:23:21.000000Z"
+    "id": 2,
+    "idUser": 6,
+    "numeroCni": 12345678,
+    "numeroBadge": 12,
+    "ville": "Douala",
+    "quartier": "Yassa",
+    "imageProfil": null,
+    "zone": "Akwa",
+    "actif": 1,
+    "created_at": "2021-11-08T16:23:21.000000Z",
+    "updated_at": "2021-11-08T16:23:21.000000Z"
 },
 "message": "Update success"
 }
@@ -431,6 +457,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -442,9 +469,9 @@ Response
 ```
 
 {
-"success": true,
-"data": "",
-"message": "Suppression réussie"
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
 }
 
 ```
@@ -460,6 +487,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -495,6 +523,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
     "name":"Manager",
     "email":"bt@geo.sm",
@@ -511,10 +540,10 @@ Response
 {
 "success": true,
 "data": {
-"idUser": 6,
-"updated_at": "2021-11-08T16:23:21.000000Z",
-"created_at": "2021-11-08T16:23:21.000000Z",
-"id": 2
+    "idUser": 6,
+    "updated_at": "2021-11-08T16:23:21.000000Z",
+    "created_at": "2021-11-08T16:23:21.000000Z",
+    "id": 2
 },
 "message": "Création du Manager reussie"
 }
@@ -530,6 +559,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -543,14 +573,14 @@ Response
 {
 "success":true,
 "data":[
-{
-"name":"Manager",
-"email":"bt@geo.sm",
-"phone":"699999998",
-"role":3,
-"id":1,
-"idUser":5
-}
+    {
+        "name":"Manager",
+        "email":"bt@geo.sm",
+        "phone":"699999998",
+        "role":3,
+        "id":1,
+        "idUser":5
+    }
 ],
 "message":"Manager"
 }
@@ -566,6 +596,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 "name":"Manager",
 "phone":"699999998",
@@ -580,10 +611,10 @@ Response
 {
 "success": true,
 "data": {
-"id": 2,
-"idUser": 6,
-"created_at": "2021-11-08T16:23:21.000000Z",
-"updated_at": "2021-11-08T16:23:21.000000Z"
+    "id": 2,
+    "idUser": 6,
+    "created_at": "2021-11-08T16:23:21.000000Z",
+    "updated_at": "2021-11-08T16:23:21.000000Z"
 },
 "message": "Update success"
 }
@@ -599,6 +630,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -610,9 +642,9 @@ Response
 ```
 
 {
-"success": true,
-"data": "",
-"message": "Suppression réussie"
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
 }
 
 ```
@@ -627,6 +659,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -642,9 +675,20 @@ Response
         {
             "id":1,
             "nom":"Achats",
-            "logo_url":null,
+            "logoUrl":null,
             "created_at":"2021-11-09T17:54:43.000000Z",
-            "updated_at":"2021-11-09T17:54:43.000000Z"
+            "updated_at":"2021-11-09T17:54:43.000000Z",
+            "sous_categories":[
+            {
+                "id":33,
+                "nom":"Mat\u00e9riels et Produits agricoles",
+                "idCategorie":3,
+                "logoUrl":null,
+                "created_at":"2021-11-10T11:55:55.000000Z",
+                "updated_at":"2021-11-10T11:55:55.000000Z"
+            },
+            ....
+        ]
         },
             ...
     ],
@@ -662,9 +706,10 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
     "nom":"Categorie",
-    "logo_url":"file",
+    "file":file,
 }
 
 ```
@@ -678,7 +723,7 @@ Response
 "data": {
             "id":1,
             "nom":"Achats",
-            "logo_url":null,
+            "logoUrl":null,
             "created_at":"2021-11-09T17:54:43.000000Z",
             "updated_at":"2021-11-09T17:54:43.000000Z"
 },
@@ -695,6 +740,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -710,7 +756,7 @@ Response
     "data":{
         "id":3,
         "nom":"Agriculture",
-        "logo_url":null,
+        "logoUrl":null,
         "created_at":"2021-11-09T17:54:43.000000Z",
         "updated_at":"2021-11-09T17:54:43.000000Z",
         "sous_categories":[
@@ -739,9 +785,10 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 "nom":"Categorie",
-"logo_url":"file",
+"file":file,
 }
 
 ```
@@ -755,7 +802,7 @@ Response
 "data": {
             "id":1,
             "nom":"Achats",
-            "logo_url":null,
+            "logoUrl":null,
             "created_at":"2021-11-09T17:54:43.000000Z",
             "updated_at":"2021-11-09T17:54:43.000000Z"
 },
@@ -773,6 +820,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -801,6 +849,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -837,9 +886,10 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
     "nom":"Categorie",
-    "logoUrl":"file",
+    "file":file,
     "idCategorie" : "1"
 }
 
@@ -872,6 +922,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -906,9 +957,10 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 "nom":"SousCategorie",
-"logoUrl":"file",
+"file":file,
 }
 
 ```
@@ -941,6 +993,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -969,6 +1022,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -995,7 +1049,8 @@ Response
             "image": "url",
             "updated_at": "2021-11-11T12:42:23.000000Z",
             "created_at": "2021-11-11T12:42:23.000000Z",
-            "id": 1
+            "id": 1,
+            "etablissements": []
         },
             ...
     ],
@@ -1013,6 +1068,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
             "nom": "Rocks",
             "nombreNiveaux": "3",
@@ -1024,7 +1080,7 @@ Authorization: Bearer YourAccessToken
             "ville": "Yaounde",
             "commune": "Yaounde IV",
             "quartier": "Melen",
-            "image": "file"
+            "file": file
 }
 
 ```
@@ -1064,6 +1120,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -1124,13 +1181,14 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
         "nom": "Rocks",
         "nombreNiveaux": 3,
         "codeBatiment": "BATIMENT_YDE_1",
         "longitude": 13,
         "latitude": 7,
-        "image": "file",
+        "file": file,
         "indication": "face polytech",
         "rue": "542 rue de melen",
         "ville": "Yaounde",
@@ -1176,6 +1234,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -1204,6 +1263,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -1223,6 +1283,7 @@ Response
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
@@ -1247,6 +1308,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
             "id": 1,
             "idBatiment": 1,
@@ -1254,11 +1316,12 @@ Authorization: Bearer YourAccessToken
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
             "etage": 1,
-            "cover": file,
+            "file": file,
             "created_at": "2021-11-11T13:06:17.000000Z",
             "updated_at": "2021-11-11T13:06:17.000000Z"
 }
@@ -1278,6 +1341,7 @@ Response
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
@@ -1299,6 +1363,7 @@ Request
 
 Content-Type: application/json
 Accept: application/json
+X-Authorization : yourApiKey
 {
 
 }
@@ -1318,6 +1383,7 @@ Response
         "indicationAdresse": "porte gauche",
         "codePostal": "14440",
         "siteInternet": "sogefi.cm",
+        "description" : "description",
         "idSousCategorie": 12,
         "idCommercial": 1,
         "idManager": null,
@@ -1390,17 +1456,19 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
         "idBatiment": 1,
         "nom": "SOGEFI",
         "indicationAdresse": "porte gauche",
         "codePostal": "14440",
         "siteInternet": "sogefi.cm",
+        "description" : "description",
         "idSousCategorie": 12,
         "idCommercial": 1,
         "idManager": 1,
         "etage": 1,
-        "cover": file
+        "file": file
 }
 
 ```
@@ -1418,6 +1486,7 @@ Response
             "indicationAdresse": "porte gauche",
             "codePostal": "14440",
             "siteInternet": "sogefi.cm",
+            "description" : "description",
             "idSousCategorie": 12,
             "idCommercial": 1,
             "idManager": null,
@@ -1440,6 +1509,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -1469,9 +1539,10 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
-            "imageUrl": file,
+            "file": file,
 
 }
 
@@ -1504,6 +1575,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -1533,9 +1605,11 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
             "numero": "699999998",
+            "principal": "1",
             "whatsapp": "1"
 
 }
@@ -1552,6 +1626,7 @@ Response
             "idEtablissement": 1,
             "numero": "699999998",
             "whatsapp": "1",
+            "principal": "1",
             "updated_at": "2021-11-11T14:03:23.000000Z",
             "created_at": "2021-11-11T14:03:23.000000Z",
             "id": 2
@@ -1570,9 +1645,11 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
             "numero": "699999998",
+            "principal": "1",
             "whatsapp": "1"
 
 }
@@ -1589,6 +1666,7 @@ Response
             "idEtablissement": 1,
             "numero": "699999998",
             "whatsapp": "1",
+            "principal": "1",
             "updated_at": "2021-11-11T14:03:23.000000Z",
             "created_at": "2021-11-11T14:03:23.000000Z",
             "id": 2
@@ -1607,6 +1685,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }
@@ -1636,6 +1715,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
             "jour": "lundi",
@@ -1677,6 +1757,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
             "idEtablissement": 1,
             "jour": "lundi",
@@ -1718,6 +1799,7 @@ Request
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
 {
 
 }

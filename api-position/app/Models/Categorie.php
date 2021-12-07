@@ -30,7 +30,7 @@ class Categorie extends Model
     use HasFactory;
 
     protected $fillable = [
-        "nom", "logo_url"
+        "nom", "logoUrl"
     ];
 
     public function sousCategories()

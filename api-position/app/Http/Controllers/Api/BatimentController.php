@@ -17,6 +17,12 @@ class BatimentController extends BaseController
     {
         $batiments = Batiment::all();
 
+        foreach ($batiments as $batiment) {
+            $etablissements = $batiment->etablissements;
+
+            $batiment["etablissements"] = $etablissements;
+        }
+
         return $this->sendResponse($batiments, 'Liste des Batiments');
     }
 
@@ -34,15 +40,15 @@ class BatimentController extends BaseController
 
         if ($role == 1 || $role == 2) {
             $request->validate([
-                'image' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
             $batiment = Batiment::create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->image->getClientOriginalName();
-                $filePath = $request->file('image')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->codeBatiment, $fileName, 'public');
                 $batiment->image = '/storage/' . $filePath;
             }
 
@@ -91,18 +97,24 @@ class BatimentController extends BaseController
         if ($role == 1 || $role == 2) {
             $batiment = Batiment::find($id);
             $request->validate([
-                'image' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
 
-            $input = $request->all();
+            $batiment->nom = $request->nom ?? $batiment->nom;
+            $batiment->nombreNiveaux = $request->nombreNiveaux ?? $batiment->nombreNiveaux;
+            $batiment->indication = $request->indication ?? $batiment->indication;
+            $batiment->rue = $request->rue ?? $batiment->rue;
+            $batiment->ville = $request->ville ?? $batiment->ville;
+            $batiment->commune = $request->commune ?? $batiment->commune;
+            $batiment->quartier = $request->quartier ?? $batiment->quartier;
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->image->getClientOriginalName();
-                $filePath = $request->file('image')->storeAs('uploads/batiments/images/' . $request->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment, $fileName, 'public');
                 $batiment->image = '/storage/' . $filePath;
             }
 
-            $save = $batiment->save($input);
+            $save = $batiment->save();
 
 
 

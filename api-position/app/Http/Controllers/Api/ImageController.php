@@ -33,7 +33,7 @@ class ImageController extends BaseController
 
         if ($role == 1 || $role == 2) {
             $request->validate([
-                'imageUrl' => 'mimes:png,svg,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
             $input = $request->all();
 
@@ -44,8 +44,8 @@ class ImageController extends BaseController
             $image = $etablissement->images()->create($input);
 
             if ($request->file()) {
-                $fileName = time() . '_' . $request->imageUrl->getClientOriginalName();
-                $filePath = $request->file('imageUrl')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $etablissement->nom, $fileName, 'public');
+                $fileName = time() . '_' . $request->file->getClientOriginalName();
+                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $etablissement->nom, $fileName, 'public');
                 $image->imageUrl = '/storage/' . $filePath;
             }
 

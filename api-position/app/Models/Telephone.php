@@ -25,13 +25,15 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Telephone whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Telephone whereWhatsapp($value)
  * @mixin \Eloquent
+ * @property int $principal
+ * @method static \Illuminate\Database\Eloquent\Builder|Telephone wherePrincipal($value)
  */
 class Telephone extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "idEtablissement", "numero", "whatsapp"
+        "idEtablissement", "numero", "whatsapp", "principal"
     ];
 
     public function etablissement()

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $idBatiment
  * @property string $nom
- * @property string $indicationAdresse
+ * @property string|null $indicationAdresse
  * @property string|null $codePostal
  * @property string|null $siteInternet
  * @property int $idSousCategorie
@@ -50,13 +50,15 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property int $vues
  * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereVues($value)
+ * @property string|null $description
+ * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereDescription($value)
  */
 class Etablissement extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "idSousCategorie", "idCommercial", "idManager", "etage", "cover", "vues"
+        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idSousCategorie", "idCommercial", "idManager", "etage", "cover", "vues"
     ];
 
     public function batiment()

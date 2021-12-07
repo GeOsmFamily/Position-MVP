@@ -3,7 +3,7 @@ package com.sogefi.position.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Users {
+public class User {
 
     @SerializedName("id")
     @Expose
@@ -14,18 +14,27 @@ public class Users {
     @SerializedName("email")
     @Expose
     private String email;
-    @SerializedName("phone")
-    @Expose
-    private String phone;
     @SerializedName("email_verified_at")
     @Expose
     private String emailVerifiedAt;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
+    @SerializedName("role")
+    @Expose
+    private Integer role;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("commercial")
+    @Expose
+    private Commercial commercial;
+    @SerializedName("manager")
+    @Expose
+    private Object manager;
 
     public Integer getId() {
         return id;
@@ -51,6 +60,14 @@ public class Users {
         this.email = email;
     }
 
+    public String getEmailVerifiedAt() {
+        return emailVerifiedAt;
+    }
+
+    public void setEmailVerifiedAt(String emailVerifiedAt) {
+        this.emailVerifiedAt = emailVerifiedAt;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -59,12 +76,12 @@ public class Users {
         this.phone = phone;
     }
 
-    public String getEmailVerifiedAt() {
-        return emailVerifiedAt;
+    public Integer getRole() {
+        return role;
     }
 
-    public void setEmailVerifiedAt(String emailVerifiedAt) {
-        this.emailVerifiedAt = emailVerifiedAt;
+    public void setRole(Integer role) {
+        this.role = role;
     }
 
     public String getCreatedAt() {
@@ -81,6 +98,22 @@ public class Users {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Commercial getCommercial() {
+        return commercial;
+    }
+
+    public void setCommercial(Commercial commercial) {
+        this.commercial = commercial;
+    }
+
+    public Object getManager() {
+        return manager;
+    }
+
+    public void setManager(Object manager) {
+        this.manager = manager;
     }
 
 }

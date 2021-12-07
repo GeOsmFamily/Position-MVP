@@ -1,26 +1,28 @@
-package com.sogefi.position.models;
+package com.sogefi.position.models.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.sogefi.position.models.SousCategory;
 
 import java.util.List;
 
-public class Datum {
+public class DataCategories {
+
     @SerializedName("id")
     @Expose
     private Integer id;
     @SerializedName("nom")
     @Expose
     private String nom;
-    @SerializedName("logo_url")
+    @SerializedName("logoUrl")
     @Expose
     private Object logoUrl;
     @SerializedName("created_at")
     @Expose
-    private Object createdAt;
+    private String createdAt;
     @SerializedName("updated_at")
     @Expose
-    private Object updatedAt;
+    private String updatedAt;
     @SerializedName("sous_categories")
     @Expose
     private List<SousCategory> sousCategories = null;
@@ -49,19 +51,19 @@ public class Datum {
         this.logoUrl = logoUrl;
     }
 
-    public Object getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Object createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Object getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Object updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -72,4 +74,5 @@ public class Datum {
     public void setSousCategories(List<SousCategory> sousCategories) {
         this.sousCategories = sousCategories;
     }
+
 }

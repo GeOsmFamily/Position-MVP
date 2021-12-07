@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Gautier/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/simple_spinner_dropdown_item.xml" value="0.1" />
         <entry key="..\:/Users/Gautier/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/simple_spinner_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable-v24/ic_header.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2203125" />
@@ -38,6 +39,7 @@
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_layers_black_24dp.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_localisation_ami.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_location.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_logo_carr_.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_logo_position.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_logo_position_min.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/ic_mode_edit_black_24dp.xml" value="0.2203125" />
@@ -60,6 +62,7 @@
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/iphone_xxs04_activity_group89_button_ripple.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/iphone_xxs12_activity_rectangle13_button_ripple.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/round_edittext_background.xml" value="0.2203125" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/drawable/rounded.xml" value="0.2203125" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/font/font_alegreyasans_bold.xml" value="0.234375" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_about.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_business.xml" value="0.20416666666666666" />
@@ -68,13 +71,14 @@
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_main.xml" value="0.16757246376811594" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_map.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_navigation.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business.xml" value="0.25" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business.xml" value="0.2" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business2.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business3.xml" value="0.2" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business4.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_new_business5.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_place_selection.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_profile.xml" value="0.19010416666666666" />
-        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_search.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_search.xml" value="0.15" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_settings.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/activity_tutoriel.xml" value="0.1" />
@@ -86,11 +90,15 @@
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/content_save_position.xml" value="0.22" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/dialog_about.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/dialog_edit_favorite.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/dialog_etablissement.xml" value="0.1802536231884058" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/dialog_language.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/fragment_map.xml" value="0.1671195652173913" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/fragment_splash.xml" value="0.1671195652173913" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_chip.xml" value="0.1802536231884058" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_etablissement.xml" value="0.18" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_favorite.xml" value="0.1" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_language.xml" value="0.1" />
+        <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_spinner.xml" value="0.22" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_suggestion.xml" value="0.15" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/item_tutoriel.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Gautier/Documents/Projet/Android studio/Position-MVP/mobile/app/src/main/res/layout/nav_header.xml" value="0.22" />

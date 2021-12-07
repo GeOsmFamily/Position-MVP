@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Add Business - Business"
+                android:text="Nouvelle Entreprise (2/5)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -72,7 +72,7 @@
                 android:background="@drawable/round_edittext_background"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="90dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -88,7 +88,7 @@
                     android:layout_height="40dp"
                     android:singleLine="true"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Business Name"
+                    android:hint="Nom de l'entreprise"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -96,7 +96,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/llphone"
+                android:id="@+id/lletage"
                 android:layout_below="@+id/llname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,14 +112,14 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_local_phone_24"/>
+                    android:src="@drawable/ic_baseline_sort_24"/>
 
                 <customfonts.EditTextSFProDisplayRegular
-                    android:id="@+id/phone"
+                    android:id="@+id/etage"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Phone"
+                    android:hint="Numéro étage"
                     android:textSize="15dp"
                     android:singleLine="true"
                     android:inputType="number"
@@ -128,84 +128,10 @@
                     android:textColorHint="@android:color/darker_gray"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/whatsapp"
-                android:layout_below="@+id/llphone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:background="@drawable/round_edittext_background"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_local_phone_24"/>
-
-                    <customfonts.EditTextSFProDisplayRegular
-                        android:id="@+id/whatsapp1"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/round_edittext_background"
-                        android:hint="Whatsapp 1"
-                        android:singleLine="true"
-                        android:inputType="number"
-                        android:textSize="15dp"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="@android:color/darker_gray"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:background="@drawable/round_edittext_background"
-                    android:paddingLeft="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:paddingRight="10dp">
-
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_baseline_local_phone_24" />
-
-                    <customfonts.EditTextSFProDisplayRegular
-                        android:id="@+id/whatsapp2"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/round_edittext_background"
-                        android:hint="Whatsapp 2"
-                        android:singleLine="true"
-                        android:textSize="15dp"
-                        android:inputType="number"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="@android:color/darker_gray"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-
 
             <LinearLayout
                 android:id="@+id/llcategory"
-                android:layout_below="@+id/whatsapp"
+                android:layout_below="@+id/lletage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -225,10 +151,10 @@
                 <Spinner
                     android:id="@+id/category"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Category"
+
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -261,7 +187,6 @@
                     android:layout_height="40dp"
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
-                    android:hint="Tags"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
@@ -271,6 +196,7 @@
             <LinearLayout
                 android:id="@+id/lldescription"
                 android:layout_below="@+id/llamenities"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -290,22 +216,92 @@
                     android:hint="Description"
                     android:textSize="15dp"
                     android:maxLines="12"
-                    android:minLines="7"
+                    android:minLines="5"
                     android:layout_marginLeft="10dp"
                     android:layout_marginBottom="10dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"/>
             </LinearLayout>
 
-            <customfonts.Button_SF_Pro_Display_Medium
-                android:id="@+id/next"
+            <LinearLayout
+                android:id="@+id/llcover"
                 android:layout_below="@id/lldescription"
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text="Next"
-                android:background="@drawable/button_round_1"/>
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/round_edittext_background" />
+
+                    <ImageView
+                        android:id="@+id/add1"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/camera" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/groupButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/llcover">
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/back"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Retour" />
+
+                <customfonts.Button_SF_Pro_Display_Medium
+                    android:id="@+id/next"
+                    android:layout_width="140dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_round_1"
+                    android:text="Suivant" />
+            </LinearLayout>
+
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/groupButton"
+                android:layout_marginBottom="16dp"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
+
     </ScrollView>
 
 </RelativeLayout>

@@ -1,11 +1,10 @@
 
-<div class="container" >
-
-  <div class="d-flex justify-content-center" *ngIf="loading">
-    <div class="spinner-border" role="status" >
-      <span class="sr-only" id="loading">Loading...</span>
-    </div>
+<div class="cover-spinner d-flex justify-content-center" *ngIf="loading" >
+  <div class="spinner-border" role="status" >
+    <span class="sr-only" id="loading">Loading...</span>
   </div>
+</div>
+<div class="container">
   <mat-card >
     <div class="conatiner">
       <img id="logo-position" class="img-fluid" mat-card-image src="assets/logo-nom.svg" alt="logo position">
@@ -34,7 +33,23 @@
 
 
 
+        <div class="champ form-group" fxLayout="column" >
+          <div>
+            <mat-label>Mot de passe</mat-label>
+          </div>
+          <div>
+            <input type="password"   formControlName="password" name="password" id="password" class="form-control" required>
 
+          </div>
+        </div>
+        <div class="container-forget-password" fxLayout="row" >
+          <a id="forgotten-password" type="button"  (click)='resetPwdPage()'>
+            mot de passe oublié?
+          </a>
+
+      </div>
+
+<!--
           <div class="champ form-group"  >
             <div>
               <mat-label>Mot de passe</mat-label>
@@ -43,7 +58,7 @@
             <mat-form-field>
               <input  matInput   class="form-control" type="password"  formControlName="password" name="password" id="password"  [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
 
-            </mat-form-field>
+            </mat-form-field>-->
            <!-- <div *ngIf="submitted && f.password.errors" class="invalid-feedback" style="margin-top:-30px;margin-bottom: 15px;color: red;">
               <div *ngIf="f.password.errors.required">Mot de passe obligatoire</div>
               <div *ngIf="f.password.errors.minlength">
@@ -53,14 +68,15 @@
                 le mot de passe doit contenir au plus 40 caractères
               </div>
             </div>-->
-            </div>
+    <!--        </div>
           </div>
-          <div class="container-forget-password" fxLayout="row" >
-            <a id="forgotten-password" type="button"  (click)='resetPwdPage()'>
+
+          <div class="container-forget-password">
+            <a id="forgotten-password" type="button" style="cursor: pointer;"  (click)='resetPwdPage()'>
               mot de passe oublié?
             </a>
 
-        </div>
+        </div>-->
 
         <div class="container-btn">
            <!--   <button class="btn-sm" mat-raised-button id="btn-creer-compte" (click)="registerPage()">Créer un compte</button>

@@ -6,6 +6,7 @@ use App\Models\Commercial;
 use App\Models\User;
 use App\Notifications\SendEmailParams;
 use Auth;
+use Carbon\Carbon;
 use Hash;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,8 @@ class CommercialController extends BaseController
 
         $role = $user->role;
 
+        $data = array();
+
         if ($role == 1) {
             $commercials = Commercial::all();
             foreach ($commercials as $commercial) {
@@ -37,7 +40,7 @@ class CommercialController extends BaseController
                 $result['ville'] = $commercial->ville;
                 $result['quartier'] = $commercial->quartier;
                 $result['imageProfil'] = $commercial->imageProfil;
-                $result['zone'] = $commercial->zone;
+                $result['idZone'] = $commercial->idZone;
                 $result['actif'] = $commercial->actif;
 
                 $data[] = $result;
@@ -74,7 +77,7 @@ class CommercialController extends BaseController
         if ($role == 1) {
 
             $request->validate([
-                'imageProfil' => 'mimes:png,jpg,jpeg|max:10000'
+                'file' => 'mimes:png,jpg,jpeg|max:10000'
             ]);
 
             try {
@@ -96,14 +99,14 @@ class CommercialController extends BaseController
                 $inputCommercial['numeroBadge'] = $request->numeroBadge;
                 $inputCommercial['ville'] = $request->ville;
                 $inputCommercial['quartier'] = $request->quartier;
-                $inputCommercial['zone'] = $request->zone;
+                $inputCommercial['idZone'] = $request->idZone;
 
 
                 $commercial = $userNew->commercial()->create($inputCommercial);
 
                 if ($request->file()) {
-                    $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
-                    $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                    $fileName = time() . '_' . $request->file->getClientOriginalName();
+                    $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
                     $commercial->imageProfil = '/storage/' . $filePath;
                 }
 
@@ -152,6 +155,7 @@ class CommercialController extends BaseController
                     $result['ville'] = $commercial->ville;
                     $result['quartier'] = $commercial->quartier;
                     $result['imageProfil'] = $commercial->imageProfil;
+                    $result['idZone'] = $commercial->idZone;
 
                     $result['actif'] = $commercial->actif;
 
@@ -172,6 +176,7 @@ class CommercialController extends BaseController
                 $result['ville'] = $commercial->ville;
                 $result['quartier'] = $commercial->quartier;
                 $result['imageProfil'] = $commercial->imageProfil;
+                $result['idZone'] = $commercial->idZone;
 
                 $result['actif'] = $commercial->actif;
 
@@ -212,12 +217,8 @@ class CommercialController extends BaseController
             if ($role == 2) {
                 if ($user->id == $commercial->idUser) {
                     $request->validate([
-                        'imageProfil' => 'mimes:png,jpg,jpeg|max:10000'
+                        'file' => 'mimes:png,jpg,jpeg|max:10000'
                     ]);
-
-
-
-
 
 
                     $userUpdate = User::find($commercial->idUser);
@@ -229,12 +230,12 @@ class CommercialController extends BaseController
                     $commercial->numeroBadge = $request->numeroBadge ?? $commercial->numeroBadge;
                     $commercial->ville = $request->ville ?? $commercial->ville;
                     $commercial->quartier = $request->quartier ?? $commercial->quartier;
-                    $commercial->zone = $request->zone ?? $commercial->zone;
+                    $commercial->idZone = $request->idZone ?? $commercial->idZone;
                     $commercial->actif = $request->actif ?? $commercial->actif;
 
                     if ($request->file()) {
-                        $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
-                        $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                        $fileName = time() . '_' . $request->file->getClientOriginalName();
+                        $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
                         $commercial->imageProfil = '/storage/' . $filePath;
                     }
 
@@ -250,7 +251,7 @@ class CommercialController extends BaseController
                 }
             } else {
                 $request->validate([
-                    'imageProfil' => 'mimes:png|max:10000'
+                    'file' => 'mimes:png|max:10000'
                 ]);
 
 
@@ -267,12 +268,12 @@ class CommercialController extends BaseController
                 $commercial->numeroBadge = $request->numeroBadge ?? $commercial->numeroBadge;
                 $commercial->ville = $request->ville ?? $commercial->ville;
                 $commercial->quartier = $request->quartier ?? $commercial->quartier;
-                $commercial->zone = $request->zone ?? $commercial->zone;
+                $commercial->idZone = $request->idZone ?? $commercial->idZone;
                 $commercial->actif = $request->actif ?? $commercial->actif;
 
                 if ($request->file()) {
-                    $fileName = time() . '_' . $request->imageProfil->getClientOriginalName();
-                    $filePath = $request->file('imageProfil')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                    $fileName = time() . '_' . $request->file->getClientOriginalName();
+                    $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
                     $commercial->imageProfil = '/storage/' . $filePath;
                 }
 
@@ -331,5 +332,9 @@ class CommercialController extends BaseController
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    public function statHebdo()
+    {
     }
 }

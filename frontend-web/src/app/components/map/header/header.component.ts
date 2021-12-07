@@ -12,6 +12,7 @@ import {
   map,
   catchError,
 } from 'rxjs/operators';
+import { merge as observerMerge } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 
 
@@ -22,10 +23,9 @@ import { ApiService } from 'src/app/services/api/api.service';
 })
 export class HeaderComponent implements OnInit {
 
-  form: FormGroup= this.fb.group({
-    searchWord: [''] });
+  form: FormGroup | undefined;
 
-    isLoading:boolean=false;
+    isLoading: boolean | undefined;
     objectsIn = Object.keys;
     filterOptions: { [key: string]: Array<FilterOptionInterface> } = {
 
@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading=false;
     this.initialiseForm();
   }
 
@@ -51,6 +52,12 @@ export class HeaderComponent implements OnInit {
         tap(() => {
           this.isLoading = true;
           console.log('loading');
+        }),
+        switchMap((value) => {
+          return observerMerge(...this.getQuerryForSerach(value)).pipe(
+            map((value) => value),
+            catchError((_err) => of({ error: true }))
+          );
         })
       )
       .subscribe((value: any) => {
@@ -77,7 +84,7 @@ export class HeaderComponent implements OnInit {
 
     ];
 
- /*     querryObs.push(
+     querryObs.push(
         from(
           this.apiService.getRequestFromOtherHost(
             'https://nominatim.openstreetmap.org/search?q=' +
@@ -93,7 +100,7 @@ export class HeaderComponent implements OnInit {
             of({ error: true, type: 'nominatim', value: { features: [] } })
           )
         )
-      );*/
+      );
 
 
 
@@ -121,7 +128,7 @@ ngAfterViewInit(): void {
 
 }
 login(){
-  console.log(this.form.value.searchWord)
+  console.log(this.form?.value.searchWord)
 }
 
   clearSearch() {

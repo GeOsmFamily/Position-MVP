@@ -30,32 +30,43 @@
                 android:id="@+id/toolbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:contentInsetLeft="0dp"
                 app:contentInsetStart="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:navigationIcon="@drawable/ic_baseline_menu_24">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/searchbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/bg_search_bar"
                     android:elevation="4dp">
 
 
-                    <androidx.appcompat.widget.SearchView
+                    <com.mancj.materialsearchbar.MaterialSearchBar
                         android:id="@+id/search"
+                        style="@style/MaterialSearchBarLight"
+                        app:mt_speechMode="true"
+                        app:mt_placeholder="@string/search"
+                        app:mt_navIconEnabled="true"
+                        app:mt_hint="@string/search"
+                        app:mt_maxSuggestionsCount="10"
+
+
+
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        app:searchIcon="@drawable/ic_logo_carr_"
+
                         android:background="@null"
                         android:ellipsize="end"
                         android:inputType="text"
@@ -67,8 +78,21 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             </com.google.android.material.appbar.MaterialToolbar>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_chips"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="7dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                tools:listitem="@layout/item_chip"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/zoomIn"
@@ -111,16 +135,7 @@
             app:layout_anchor="@+id/bottomSheet"
             app:layout_anchorGravity="end|top">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/newBussiness"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toTopOf="@+id/location"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_baseline_add_business_24" />
+
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/location"
@@ -138,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="120dp"
+                android:layout_marginBottom="160dp"
                 app:fabSize="mini"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -203,18 +218,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.sogefi.position.ui.TopIconButton
+                <!--com.sogefi.position.ui.TopIconButton
                     android:id="@+id/save"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:text="@string/save"
                     app:icon="@drawable/ic_favorite"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/share"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" /-->
 
-                <com.sogefi.position.ui.TopIconButton
+                <!--com.sogefi.position.ui.TopIconButton
                     android:id="@+id/route"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:text="@string/create_route"
@@ -223,10 +240,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/guideline1"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.55" />
+                    app:layout_constraintVertical_bias="0.55" /-->
 
-                <com.sogefi.position.ui.TopIconButton
+                <!--com.sogefi.position.ui.TopIconButton
                     android:id="@+id/near"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:text="@string/near"
@@ -236,7 +254,7 @@
                     app:layout_constraintHorizontal_bias="0.81"
                     app:layout_constraintStart_toEndOf="@+id/route"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.55" />
+                    app:layout_constraintVertical_bias="0.55" /-->
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline1"

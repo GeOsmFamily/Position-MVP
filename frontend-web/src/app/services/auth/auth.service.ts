@@ -21,6 +21,7 @@ export class AuthService {
     this.headers.append('Access-Control-Allow-Origin', '*');
     this.headers.append('No-Auth', 'True');
     this.headers.append('Accept', 'application/json');
+    this.headers.append('mode', 'cors');
 
   }
 
@@ -87,18 +88,23 @@ export class AuthService {
               error: true,
               msg: '',
             });
+            if (err.status != 200)
+            {
+              console.log("paramètres incorrects= "+err.msg)
+            }
             // return ''
             throw new Error(err);
           })
         )
         .subscribe(
-          (userInterface: any) => {
-            console.log(userInterface.access_token!)
-            this.storeToken(userInterface.access_token!);
+          (data) => {
+            console.log("login= "+data)
+            console.log(data.access_token)
+            this.storeToken(data.access_token);
            // localStorage.setItem('access_token',userInterface.access_token!)
             //console.log(localStorage.getItem('access_token'))
           // var decoded = jwt_decode(userInterface.access_token!);
-         var decodedToken: any = jwtDecode(userInterface.access_token!);
+         var decodedToken: any = jwtDecode(data.access_token);
             this.storeRole(decodedToken.roles_id[0])
           // let jsonObj = JSON.parse(decodedHeader)
              console.log(decodedToken.roles_id[0]);

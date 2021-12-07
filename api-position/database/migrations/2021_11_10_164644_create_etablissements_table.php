@@ -17,7 +17,7 @@ class CreateEtablissementsTable extends Migration
             $table->id();
             $table->integer("idBatiment");
             $table->string('nom');
-            $table->string('indicationAdresse');
+            $table->string('indicationAdresse')->nullable();
             $table->string('codePostal')->nullable();
             $table->string('siteInternet')->nullable();
             $table->integer('idSousCategorie');

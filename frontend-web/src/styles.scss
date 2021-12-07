@@ -2,17 +2,16 @@
 
 @import './app/styles/ol.scss';
 @import 'assets/font/open_sans/style.scss';
-html,
-body {
-  height: 100%;
+@import '../node_modules/angular-archwizard/styles/archwizard.scss';
 
-}
-
-body {
+html,body {
   margin: 0;
-  font-family: 'OpenSans semibold';
+  padding: 0;
+  font-family: 'normal';
   font-size:13px;
   height: 100vh;
+  font-size: 10px;
+  overflow: hidden;
 
 }
 @media (max-width: 767px) {

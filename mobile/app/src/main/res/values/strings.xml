@@ -37,7 +37,7 @@
     <string name="arrival_hour">Arrival</string>
     <string name="total_time">Time</string>
     <string name="length">Length</string>
-    <string name="search">Search</string>
+    <string name="search">Search for an establishment, a location or a category</string>
     <string name="origin_placeholder">My position</string>
     <string name="destination_placeholder">To</string>
     <string name="search_placeholder">Search for a position</string>

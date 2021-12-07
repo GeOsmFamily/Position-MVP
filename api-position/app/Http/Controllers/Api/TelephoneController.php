@@ -72,8 +72,12 @@ class TelephoneController extends BaseController
 
         if ($role == 1 || $role == 3) {
             $telephone = Telephone::find($id);
-            $input = $request->all();
-            $save = $telephone->save($input);
+
+            $telephone->numero = $request->numero ?? $telephone->numero;
+            $telephone->whatsapp = $request->whatsapp ?? $telephone->whatsapp;
+            $telephone->principal = $request->principal ?? $telephone->principal;
+
+            $save = $telephone->save();
 
             if ($save) {
                 return $this->sendResponse($telephone, "Update Success", 201);

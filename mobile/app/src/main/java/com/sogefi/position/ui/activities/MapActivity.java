@@ -2,6 +2,32 @@ package com.sogefi.position.ui.activities;
 
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.all;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.division;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.exponential;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.gte;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.has;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.literal;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.lt;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.rgb;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.toNumber;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textSize;
+import static com.sogefi.position.R2.id.all;
+import static com.sogefi.position.R2.id.stop;
+import static com.sogefi.position.utils.Constants.API_KEY;
+import static com.sogefi.position.utils.Constants.IMAGEURL;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
@@ -9,17 +35,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,8 +71,15 @@ import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
+import com.bumptech.glide.Glide;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -46,6 +90,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
@@ -65,46 +111,77 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.annotation.OnSymbolClickListener;
 import com.mapbox.mapboxsdk.plugins.annotation.Symbol;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager;
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
+import com.mapbox.mapboxsdk.style.layers.CircleLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.nguyenhoanglam.imagepicker.view.GridSpacingItemDecoration;
 import com.sogefi.position.BuildConfig;
 import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
 import com.sogefi.position.database.PositionDataBase;
+import com.sogefi.position.models.Batiments;
+import com.sogefi.position.models.BatimentsModel;
+import com.sogefi.position.models.Categories;
+import com.sogefi.position.models.Etablissements;
 import com.sogefi.position.models.Favorite;
 import com.sogefi.position.models.Language;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
+import com.sogefi.position.models.Search;
+import com.sogefi.position.models.SearchEtablissement;
+import com.sogefi.position.models.Tracking;
+import com.sogefi.position.models.data.DataCategories;
+import com.sogefi.position.models.data.DataEtablissements;
+import com.sogefi.position.models.data.DataSearchEtablissement;
 import com.sogefi.position.repositories.FavoriteRepository;
 import com.sogefi.position.ui.TopIconButton;
+import com.sogefi.position.ui.activities.adapters.CategoriesAdapter;
+import com.sogefi.position.ui.activities.adapters.EtablissementAdapter;
 import com.sogefi.position.ui.activities.adapters.LanguagesAdapter;
+import com.sogefi.position.ui.activities.adapters.SearchAdapter;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.MapBoxUtils;
 import com.sogefi.position.utils.PreferenceManager;
+import com.sogefi.position.workers.UpdateLocationWorker;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
 public class MapActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener, MapboxMap.OnMapClickListener {
+        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener, MaterialSearchBar.OnSearchActionListener {
 
     private static final String DEEPLINK_QUERY_FRIEND_POSITION = "friend_position";
     private static final String ORIGIN_ICON_ID = "origin-icon-id";
@@ -113,13 +190,16 @@ public class MapActivity extends AppCompatActivity implements
     private static final String ROUTE_LINE_SOURCE_ID = "route-source-id";
     private static final String ICON_LAYER_ID = "icon-layer-id";
     private static final String ICON_SOURCE_ID = "icon-source-id";
+    private static final String GEOJSON_SOURCE_ID = "geojson-source-id";
+    private static final String GEOJSON_ICON_ID = "geojson-icon-id";
+    private static final String TAG = "LocationUpdate";
     FloatingActionButton location;
     FloatingActionButton layer;
     FloatingActionButton zoomIn;
     FloatingActionButton zoomOut;
     FloatingActionButton findPositionDialog;
-    FloatingActionButton routePosition;
-    FloatingActionButton addToFavoritePosition;
+   // FloatingActionButton routePosition;
+  //  FloatingActionButton addToFavoritePosition;
     FloatingActionButton sharePosition;
     FloatingActionButton clearButton;
     FloatingActionButton clearRouteButton;
@@ -145,10 +225,10 @@ public class MapActivity extends AppCompatActivity implements
     MaterialButton run;
     MaterialButton saveSubmit;
     int checkItem, checkProfile = 0;
-    TopIconButton route;
-    TopIconButton save;
+   // TopIconButton route;
+   // TopIconButton save;
     TopIconButton share;
-    TopIconButton near;
+   // TopIconButton near;
     String friendPosition , latTv,lonTv;
     FavoriteRepository favoriteRepository;
     PositionDataBase mDb;
@@ -156,7 +236,7 @@ public class MapActivity extends AppCompatActivity implements
     NavigationView nav;
     DrawerLayout drawer;
     PreferenceManager pref;
-    SearchView search;
+    MaterialSearchBar search;
     MaterialButton searchB;
     CircularImageView user_image;
     private MapboxMap mapboxMap;
@@ -165,9 +245,21 @@ public class MapActivity extends AppCompatActivity implements
     private ConstraintLayout bottom_sheet;
     private SymbolManager symbolManager;
     private Symbol symbol;
+    private static final int REQUEST_CODE = 1234;
+    private SearchAdapter searchAdapter;
 
-
+    JSONObject featureCollection = new JSONObject();
     MapBoxUtils mapBoxUtils;
+
+    RecyclerView chipsLayout;
+
+    List<Search> searchResult = new ArrayList<>();
+    List<Nominatim> nominatimList = new ArrayList<>();
+
+    String longo,latgo;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +268,11 @@ public class MapActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_map);
 
 
-      //  mapBoxUtils= new MapBoxUtils(mapboxMap);
+
+
+
+
+        //  mapBoxUtils= new MapBoxUtils(mapboxMap);
         pref = new PreferenceManager(this);
 
 
@@ -198,20 +294,55 @@ public class MapActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(view -> drawer.openDrawer(GravityCompat.START));
         setNavigationDrawer();
+        whiteNotificationBar(toolbar);
 
         favoriteRepository = new FavoriteRepository(mDb);
 
         search = findViewById(R.id.search);
-        SearchManager searchManager =
+        search.setCardViewElevation(50);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+         searchAdapter = new SearchAdapter(inflater,this);
+        searchAdapter.setSuggestions(searchResult);
+        search.setCustomSuggestionAdapter(searchAdapter);
+        search.setOnSearchActionListener(this);
+        search.setNavButtonEnabled(true);
+
+
+        search.addTextChangeListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+               /* search.clearSuggestions();
+                searchResult.clear();
+                if(search.getText().length() > 3) {
+                    searchApi(search.getText());
+                }*/
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+        });
+
+
+       /* SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         search.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+
+
 
         search.setIconifiedByDefault(false);
         search.setSubmitButtonEnabled(true);
 
 
-        search.setQueryHint(getString(R.string.search));
+        search.setQueryHint(getString(R.string.search));*/
 
 
         location = findViewById(R.id.location);
@@ -219,14 +350,18 @@ public class MapActivity extends AppCompatActivity implements
         zoomIn = findViewById(R.id.zoomIn);
         zoomOut = findViewById(R.id.zoomOut);
         findPositionDialog = findViewById(R.id.findPositionDialog);
-        routePosition = findViewById(R.id.routePosition);
-        addToFavoritePosition = findViewById(R.id.addToFavoritePosition);
+        //routePosition = findViewById(R.id.routePosition);
+        //addToFavoritePosition = findViewById(R.id.addToFavoritePosition);
         sharePosition = findViewById(R.id.sharePosition);
         clearButton = findViewById(R.id.clearButton);
         clearRouteButton = findViewById(R.id.clearRouteButton);
         newBusiness = findViewById(R.id.newBussiness);
+        chipsLayout = findViewById(R.id.recycler_chips);
 
 
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        chipsLayout.setLayoutManager(layoutManager);
 
 
 
@@ -264,10 +399,10 @@ public class MapActivity extends AppCompatActivity implements
 
         bottom_sheet = findViewById(R.id.bottomSheet);
         sheetBehavior = BottomSheetBehavior.from(bottom_sheet);
-        route = findViewById(R.id.route);
-        save = findViewById(R.id.save);
+      //  route = findViewById(R.id.route);
+      //  save = findViewById(R.id.save);
         share = findViewById(R.id.share);
-        near = findViewById(R.id.near);
+     //   near = findViewById(R.id.near);
 
         run = findViewById(R.id.run);
         saveSubmit = findViewById(R.id.saveSubmit);
@@ -276,6 +411,8 @@ public class MapActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        launchWorker();
 
 
 
@@ -331,17 +468,17 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
 
-        route.setOnClickListener(v -> showRouteSearch());
+     //   route.setOnClickListener(v -> showRouteSearch());
 
         share.setOnClickListener(v -> sharePosition(latTv+ ","+lonTv));
 
-        save.setOnClickListener(v -> showSave(lieu.getText().toString(), latTv, lonTv));
+    //    save.setOnClickListener(v -> showSave(lieu.getText().toString(), latTv, lonTv));
 
-        near.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Bientôt disponible", Toast.LENGTH_LONG).show());
+      //  near.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Bientôt disponible", Toast.LENGTH_LONG).show());
 
-        routePosition.setOnClickListener(v -> alertDialogProfile());
+    //    routePosition.setOnClickListener(v -> alertDialogProfile());
 
-        addToFavoritePosition.setOnClickListener(view -> showSave(adresseV.getText().toString(), latTv, lonTv));
+      //  addToFavoritePosition.setOnClickListener(view -> showSave(adresseV.getText().toString(), latTv, lonTv));
 
         sharePosition.setOnClickListener(view -> sharePosition(latTv+ ","+lonTv));
 
@@ -355,16 +492,17 @@ public class MapActivity extends AppCompatActivity implements
         origin.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.origin), Toast.LENGTH_LONG).show();
             pref.setNameORI("oui");
-            searchManager.startSearch(" ", true, getComponentName(), null, false);
+          //  searchManager.startSearch(" ", true, getComponentName(), null, false);
 
         });
 
         destination.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), getString(R.string.destination), Toast.LENGTH_LONG).show();
             pref.setNameDest("oui");
-            searchManager.startSearch(" ", true, getComponentName(), null, false);
+          //  searchManager.startSearch(" ", true, getComponentName(), null, false);
 
         });
+
 
         clearButton.setOnClickListener(v -> clearAll());
 
@@ -372,7 +510,14 @@ public class MapActivity extends AppCompatActivity implements
 
         newBusiness.setOnClickListener(v -> {
             if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
-                Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+                LocationComponent locationComponent = mapboxMap.getLocationComponent();
+                Location location = locationComponent.getLastKnownLocation();
+                String lon = String.valueOf(location != null ? location.getLongitude() : 0);
+                String lat = String.valueOf(location != null ? location.getLatitude() : 0);
+                Intent intent = new Intent(MapActivity.this, NewBusiness5Activity.class);
+                intent.putExtra("longitude",longo);
+                intent.putExtra("latitude",latgo);
+                intent.putExtra("adresseName",adresseV.getText().toString());
                 drawer.closeDrawers();
                 startActivity(intent);
             } else if(pref.getRoleid().equals("roleid")) {
@@ -391,6 +536,11 @@ public class MapActivity extends AppCompatActivity implements
            user_label.setText(pref.getName());
            user_sub_label.setVisibility(View.VISIBLE);
            user_sub_label.setText(pref.getEmail());
+
+           if(pref.getProfileimage() != "profileimage") {
+               Picasso.get().load(IMAGEURL+pref.getProfileimage()).into(user_image);
+           }
+
            user_image.setOnClickListener(v -> {
                Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
                startActivity(intent);
@@ -399,8 +549,19 @@ public class MapActivity extends AppCompatActivity implements
             user_label.setText("Position");
         }
 
+    getCategories();
 
+    }
 
+    private void whiteNotificationBar(View view) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
     }
 
     private void clearAll() {
@@ -535,7 +696,7 @@ public class MapActivity extends AppCompatActivity implements
     public void newStyle(String style) {
         mapboxMap.setStyle(style, style1 -> {
             initSpaceStationSymbolLayer(style1);
-            mapboxMap.addOnMapClickListener(MapActivity.this);
+            mapboxMap.addOnMapLongClickListener(MapActivity.this);
         });
         mapBoxUtils.setMapSetting();
 
@@ -611,9 +772,7 @@ public class MapActivity extends AppCompatActivity implements
 
     //Methode pour recuperer la position de l'utilisateur
     public void getPositionCode() {
-        if (!search.isIconified()) {
-            search.setIconified(true);
-        }
+      search.closeSearch();
         if (symbolManager != null) symbolManager.deleteAll();
         Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
@@ -626,6 +785,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
+
+       // route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+      //  near.setVisibility(View.VISIBLE);
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
         locationComponent.setCameraMode(CameraMode.TRACKING);
         locationComponent.setRenderMode(RenderMode.COMPASS);
@@ -633,6 +797,8 @@ public class MapActivity extends AppCompatActivity implements
         Location location = locationComponent.getLastKnownLocation();
         String lon = String.valueOf(location != null ? location.getLongitude() : 0);
         String lat = String.valueOf(location != null ? location.getLatitude() : 0);
+
+
 
         if (Function.isNetworkAvailable(getApplicationContext())) {
             nominatimCoord(lat,lon,lieu);
@@ -642,6 +808,8 @@ public class MapActivity extends AppCompatActivity implements
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
         }
+
+
     }
 
     //Afficher ou reduire le bottomSheet
@@ -667,6 +835,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.VISIBLE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
+
+      //  route.setVisibility(View.VISIBLE);
+      //  save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
 
         expandBottomSheet();
     }
@@ -733,6 +906,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.VISIBLE);
+
+      //  route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
     }
 
     //Masquer le clavier
@@ -757,6 +935,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.VISIBLE);
         groupSavePosition.setVisibility(View.GONE);
+
+       // route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
 
         LocationComponent locationComponent = mapboxMap.getLocationComponent();
         Point destinationPoint = Point.fromLngLat(symbol.getLatLng().getLongitude(), symbol.getLatLng().getLatitude());
@@ -872,6 +1055,15 @@ public class MapActivity extends AppCompatActivity implements
                 Function.getBitmapFromDrawable(drawableOrigin)
         );
 
+        Drawable drawableBatiment = ContextCompat.getDrawable(this, R.drawable.building);
+        assert drawableBatiment != null;
+        style.addImage(
+                "markerBatimentImage",
+                Function.getBitmapFromDrawable(drawableBatiment)
+        );
+
+
+
         mapBoxUtils.initSources(style);
         mapBoxUtils.initLayers(style);
 
@@ -893,53 +1085,9 @@ public class MapActivity extends AppCompatActivity implements
         finish();
     }
 
-    @Override
-    public boolean onMapClick(@NonNull LatLng point) {
-        if (symbolManager != null) symbolManager.deleteAll();
-        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
-        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
-        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
-        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
-
-        arrival.setText("");
-        duration.setText("");
-        lenght.setText("");
-        onBottomSheetLoading(1);
-        groupMyPosition.setVisibility(View.GONE);
-        groupSharePosition.setVisibility(View.VISIBLE);
-        groupRouteSearch.setVisibility(View.GONE);
-        groupRoute.setVisibility(View.GONE);
-        groupSavePosition.setVisibility(View.GONE);
-
-        if (symbolManager != null) symbolManager.deleteAll();
-
-        symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
-
-        symbolManager.setIconAllowOverlap(true);
-        symbolManager.setTextAllowOverlap(true);
-
-        symbol = symbolManager.create(new SymbolOptions()
-                .withLatLng(point)
-                .withIconImage("markerImage")
-                .withIconSize(1.3f)
-                .withSymbolSortKey(10.0f));
-
-        String lon = String.valueOf(point.getLongitude());
-        String lat = String.valueOf(point.getLatitude());
-
-        //On interroge les apis pour recuperer la position
-        if (Function.isNetworkAvailable(getApplicationContext())) {
-            nominatimCoord(lat,lon, adresseV);
-            onBottomSheetLoading(0);
 
 
-        } else {
-            onBottomSheetLoading(0);
-            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
 
-        }
-        return false;
-    }
 
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
@@ -952,6 +1100,8 @@ public class MapActivity extends AppCompatActivity implements
             styleLaunch = pref.getStyle();
         }
 
+
+
         mapboxMap.setStyle(new Style.Builder().fromUri(styleLaunch)
                 .withImage(ORIGIN_ICON_ID, Objects.requireNonNull(BitmapUtils.getBitmapFromDrawable(
                         getResources().getDrawable(R.drawable.ic_origin))))
@@ -959,11 +1109,21 @@ public class MapActivity extends AppCompatActivity implements
                         getResources().getDrawable(R.drawable.ic_finish)))), style -> {
             enableLocationComponent(style);
             initSpaceStationSymbolLayer(style);
-            mapboxMap.addOnMapClickListener(MapActivity.this);
+
+            mapboxMap.addOnMapLongClickListener(MapActivity.this);
             if (friendPosition != null) {
                 getSharedPosition(friendPosition);
             }
+            if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
+                getBatiment();
+
+               // geojsonBatiment(style);
+
+
+            }
         });
+
+
        mapBoxUtils.setMapSetting();
     }
 
@@ -1002,6 +1162,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRouteSearch.setVisibility(View.GONE);
         groupRoute.setVisibility(View.GONE);
         groupSavePosition.setVisibility(View.GONE);
+
+      //  route.setVisibility(View.GONE);
+      //  save.setVisibility(View.GONE);
+        share.setVisibility(View.GONE);
+       // near.setVisibility(View.GONE);
 
         if (symbolManager != null) symbolManager.deleteAll();
 
@@ -1078,6 +1243,11 @@ public class MapActivity extends AppCompatActivity implements
         groupRoute.setVisibility(View.VISIBLE);
         groupSavePosition.setVisibility(View.GONE);
 
+       // route.setVisibility(View.VISIBLE);
+       // save.setVisibility(View.VISIBLE);
+        share.setVisibility(View.VISIBLE);
+       // near.setVisibility(View.VISIBLE);
+
         getRoute(ori, dest,DirectionsCriteria.PROFILE_DRIVING_TRAFFIC);
     }
 
@@ -1144,6 +1314,11 @@ public class MapActivity extends AppCompatActivity implements
             groupRouteSearch.setVisibility(View.GONE);
             groupRoute.setVisibility(View.GONE);
             groupSavePosition.setVisibility(View.GONE);
+
+          //  route.setVisibility(View.GONE);
+          //  save.setVisibility(View.GONE);
+            share.setVisibility(View.GONE);
+          //  near.setVisibility(View.GONE);
 
             symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
 
@@ -1213,7 +1388,8 @@ public class MapActivity extends AppCompatActivity implements
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
                     APIClient.getNewClient3().create(ApiInterface.class);
-            Call<ResponseApi> call = apiService.logout();
+            Call<ResponseApi> call = apiService.logout(API_KEY,pref.getToken());
+
             call.enqueue(new Callback<ResponseApi>() {
                 @Override
                 public void onResponse(@NotNull Call<ResponseApi> call, @NotNull Response<ResponseApi> response) {
@@ -1226,7 +1402,6 @@ public class MapActivity extends AppCompatActivity implements
                     Intent intent = new Intent(MapActivity.this, SplashActivity.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_LONG).show();
 
                 }
 
@@ -1298,4 +1473,628 @@ public class MapActivity extends AppCompatActivity implements
         if (symbolManager != null) symbolManager.onDestroy();
         mapView.onDestroy();
     }
+
+    public void resultSearch(String lon,String lat,String type) {
+        if (symbolManager != null) symbolManager.deleteAll();
+        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
+        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
+        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
+        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+
+        arrival.setText("");
+        duration.setText("");
+        lenght.setText("");
+        onBottomSheetLoading(1);
+        groupMyPosition.setVisibility(View.GONE);
+        groupSharePosition.setVisibility(View.VISIBLE);
+        groupRouteSearch.setVisibility(View.GONE);
+        groupRoute.setVisibility(View.GONE);
+        groupSavePosition.setVisibility(View.GONE);
+
+        share.setVisibility(View.GONE);
+
+
+        if (symbolManager != null) symbolManager.deleteAll();
+
+        symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
+
+        symbolManager.setIconAllowOverlap(true);
+        symbolManager.setTextAllowOverlap(true);
+
+        LatLng point = new LatLng(Double.parseDouble(lat),Double.parseDouble(lon));
+
+        symbol = symbolManager.create(new SymbolOptions()
+                .withLatLng(point)
+                .withIconImage("markerImage")
+                .withIconSize(1.3f)
+                .withSymbolSortKey(10.0f));
+
+
+
+        if(type.equals("nominatim")) {
+            if (Function.isNetworkAvailable(getApplicationContext())) {
+                nominatimCoord(lat,lon, adresseV);
+
+                CameraPosition cam = new CameraPosition.Builder()
+                        .target(point)
+                        .zoom(15)
+                        .build();
+
+                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(cam), 5000);
+                search.closeSearch();
+                onBottomSheetLoading(0);
+
+
+            } else {
+                onBottomSheetLoading(0);
+                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+
+            }
+        } else {
+
+        }
+    }
+
+    @Override
+    public boolean onMapLongClick(@NonNull LatLng point) {
+        longo = String.valueOf(point.getLongitude());
+        latgo = String.valueOf(point.getLatitude());
+        if (symbolManager != null) symbolManager.deleteAll();
+        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
+        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
+        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
+        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+
+        arrival.setText("");
+        duration.setText("");
+        lenght.setText("");
+        onBottomSheetLoading(1);
+        groupMyPosition.setVisibility(View.GONE);
+        groupSharePosition.setVisibility(View.VISIBLE);
+        groupRouteSearch.setVisibility(View.GONE);
+        groupRoute.setVisibility(View.GONE);
+        groupSavePosition.setVisibility(View.GONE);
+
+       // route.setVisibility(View.GONE);
+       // save.setVisibility(View.GONE);
+        share.setVisibility(View.GONE);
+       // near.setVisibility(View.GONE);
+
+
+        if (symbolManager != null) symbolManager.deleteAll();
+
+        symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
+
+        symbolManager.setIconAllowOverlap(true);
+        symbolManager.setTextAllowOverlap(true);
+
+        symbol = symbolManager.create(new SymbolOptions()
+                .withLatLng(point)
+                .withIconImage("markerImage")
+                .withIconSize(1.3f)
+                .withSymbolSortKey(10.0f));
+
+        String lon = String.valueOf(point.getLongitude());
+        String lat = String.valueOf(point.getLatitude());
+
+        //On interroge les apis pour recuperer la position
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            nominatimCoord(lat,lon, adresseV);
+            onBottomSheetLoading(0);
+
+
+        } else {
+            onBottomSheetLoading(0);
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+
+        }
+
+
+        return true;
+    }
+
+    public void launchWorker() {
+        try {
+            if (isWorkScheduled(WorkManager.getInstance().getWorkInfosByTag(TAG).get())) {
+                // worker en cours
+               // WorkManager.getInstance().cancelAllWorkByTag(TAG);
+                Log.d(TAG, "WORKER : " + "En cours");
+            } else {
+                // worker stoppé
+                Log.d(TAG, "WORKER : " + "Arreté");
+                startWorker();
+
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private boolean isWorkScheduled(List<WorkInfo> workInfos) {
+        boolean running = false;
+        if (workInfos == null || workInfos.size() == 0) return false;
+        for (WorkInfo workStatus : workInfos) {
+            running = workStatus.getState() == WorkInfo.State.RUNNING | workStatus.getState() == WorkInfo.State.ENQUEUED;
+        }
+        return running;
+    }
+   //Start My Worker
+    public void startWorker() {
+        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(UpdateLocationWorker.class, 15, TimeUnit.MINUTES)
+                .addTag(TAG)
+                .build();
+        WorkManager.getInstance().enqueueUniquePeriodicWork(TAG, ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
+
+    }
+
+    public  void getBatiment() {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<BatimentsModel> call = apiService.getbatiments(API_KEY);
+            call.enqueue(new Callback<BatimentsModel>() {
+                @Override
+                public void onResponse(@NotNull Call<BatimentsModel> call, @NotNull Response<BatimentsModel> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+
+                          Toast.makeText(getApplicationContext(), "Error get batiments", Toast.LENGTH_LONG).show();
+                    } else {
+                        //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
+
+                        /*  featureCollection.put("type", "FeatureCollection");
+                          JSONObject properties = new JSONObject();
+                          properties.put("name", "ESPG:4326");
+                          JSONObject crs = new JSONObject();
+                          crs.put("type", "name");
+                          crs.put("properties", properties);
+                          featureCollection.put("crs", crs);
+
+                          JSONArray features = new JSONArray();
+                          JSONObject feature = new JSONObject();
+                          feature.put("type", "Feature");*/
+
+                        for (int i = 0; i < response.body().getData().size(); i++) {
+
+                            symbolManager = new SymbolManager(mapView, mapboxMap, mapboxMap.getStyle());
+
+                            symbolManager.setIconAllowOverlap(true);
+                            symbolManager.setTextAllowOverlap(true);
+
+                            LatLng point = new LatLng(Double.parseDouble(response.body().getData().get(i).getLatitude()),Double.parseDouble(response.body().getData().get(i).getLongitude()));
+
+                            symbol = symbolManager.create(new SymbolOptions()
+                                    .withLatLng(point)
+                                    .withIconImage("markerBatimentImage")
+                                    .withIconSize(0.06f)
+                                  //  .withTextField(response.body().getData().get(i).getNom())
+                                    .withTextAnchor("top")
+                                    .withTextJustify("center")
+                                    .withTextSize(15f)
+
+                                    .withSymbolSortKey(10.0f));
+
+
+
+
+                            int idBatiment = response.body().getData().get(i).getId();
+                            String nombreNiveau = response.body().getData().get(i).getNombreNiveaux();
+
+                            List<DataEtablissements> listetablissements = response.body().getData().get(i).getEtablissements();
+
+                            symbolManager.addClickListener(symbol -> {
+                                View dialogEtablissement = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_etablissement, null, false);
+
+                                RecyclerView etablissements = dialogEtablissement.findViewById(R.id.etablissements);
+
+                                Button addEtablissement = dialogEtablissement.findViewById(R.id.add_etablissement);
+
+                                addEtablissement.setOnClickListener(v -> {
+                                    Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+                                    intent.putExtra("idBatiment",String.valueOf(idBatiment));
+                                    intent.putExtra("nombreNiveau",String.valueOf(nombreNiveau));
+                                    startActivity(intent);
+                                });
+
+                                etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
+
+                                new MaterialAlertDialogBuilder(MapActivity.this)
+                                        .setView(dialogEtablissement)
+                                        .show();
+                            });
+
+                           /* feature.put("properties", response.body().getData().get(i));
+                            JSONObject geometry = new JSONObject();
+
+                            JSONArray jsonArrayCoord = new JSONArray();
+
+                            jsonArrayCoord.put(0,response.body().getData().get(i).getLongitude());
+                            jsonArrayCoord.put(1,response.body().getData().get(i).getLatitude());
+                            geometry.put("type", "Point");
+                            geometry.put("coordinates", jsonArrayCoord);
+                            feature.put("geometry", geometry);
+
+                            features.put(feature);*/
+                        }
+                          /*  featureCollection.put("features", features);
+
+                            GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source",featureCollection.toString());
+                            style.addSource(geoJsonSource);
+                            Toast.makeText(getApplicationContext(), geoJsonSource.toString(), Toast.LENGTH_LONG).show();*/
+
+                    }
+
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<BatimentsModel> call, @NotNull Throwable t) {
+
+                    // Log error here since request failed
+                    Timber.tag("images").e(t.toString());
+                    Log.e("error create", t.toString());
+                     Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+              Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    private void geojsonBatiment(@NonNull Style style) {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<BatimentsModel> call = apiService.getbatiments(API_KEY);
+            call.enqueue(new Callback<BatimentsModel>() {
+                @Override
+                public void onResponse(@NotNull Call<BatimentsModel> call, @NotNull Response<BatimentsModel> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+
+                        Toast.makeText(getApplicationContext(), "Error get batiments", Toast.LENGTH_LONG).show();
+                    } else {
+                        //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
+
+                        try {
+                            featureCollection.put("type", "FeatureCollection");
+                            JSONObject properties = new JSONObject();
+                            properties.put("name", "ESPG:4326");
+                            JSONObject crs = new JSONObject();
+                            crs.put("type", "name");
+
+                            crs.put("properties", properties);
+                            featureCollection.put("crs", crs);
+
+
+
+
+                        JSONArray features = new JSONArray();
+
+
+                        for (int i = 0; i < response.body().getData().size(); i++) {
+                            JSONObject feature = new JSONObject();
+
+                                feature.put("type", "Feature");
+                                JSONObject propertiesData = new JSONObject();
+                                propertiesData.put("nom",response.body().getData().get(i).getNom());
+                                propertiesData.put("codeBatiment",response.body().getData().get(i).getCodeBatiment());
+                                propertiesData.put("id",response.body().getData().get(i).getId());
+                                propertiesData.put("commune",response.body().getData().get(i).getCommune());
+                                propertiesData.put("indication",response.body().getData().get(i).getIndication());
+                                propertiesData.put("nombreNiveaux",response.body().getData().get(i).getNombreNiveaux());
+                                propertiesData.put("quartier",response.body().getData().get(i).getQuartier());
+                                propertiesData.put("ville",response.body().getData().get(i).getVille());
+                                feature.put("properties", propertiesData);
+                                JSONObject geometry = new JSONObject();
+                                JSONArray jsonArrayCoord = new JSONArray();
+                                jsonArrayCoord.put(0,Double.parseDouble(response.body().getData().get(i).getLongitude()) );
+                                jsonArrayCoord.put(1,Double.parseDouble(response.body().getData().get(i).getLatitude()) );
+                                geometry.put("type", "Point");
+                                geometry.put("coordinates", jsonArrayCoord);
+                                feature.put("geometry", geometry);
+
+                                features.put(feature);
+
+
+
+                            }
+
+
+                            featureCollection.put("features", features);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        //   GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source",featureCollection.toString());
+                            style.addSource(new GeoJsonSource(GEOJSON_SOURCE_ID,featureCollection.toString(),new GeoJsonOptions().withCluster(true).withClusterMaxZoom(14).withClusterRadius(10)));
+                            Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
+
+                        SymbolLayer unclustered = new SymbolLayer("unclustered-points", GEOJSON_SOURCE_ID);
+
+
+                        unclustered.setProperties(
+                                iconImage("markerBatimentImage"),
+                                iconSize(
+                                        division(
+                                                get("mag"), literal(400.0f)
+                                        )
+                                )
+                        );
+                        unclustered.setFilter(has("mag"));
+                        style.addLayer(unclustered);
+
+                        int[][] layers = new int[][] {
+                                new int[] {150, ContextCompat.getColor(MapActivity.this, R.color.green)},
+                                new int[] {20, ContextCompat.getColor(MapActivity.this, R.color.green)},
+                                new int[] {0, ContextCompat.getColor(MapActivity.this, R.color.green)}
+                        };
+
+                        for (int i = 0; i < layers.length; i++) {
+//Add clusters' circles
+                            CircleLayer circles = new CircleLayer("cluster-" + i, GEOJSON_SOURCE_ID);
+                            circles.setProperties(
+                                    circleColor(layers[i][1]),
+                                    circleRadius(18f)
+                            );
+
+
+                            Expression pointCount = toNumber(get("point_count"));
+
+// Add a filter to the cluster layer that hides the circles based on "point_count"
+                            circles.setFilter(
+                                    i == 0
+                                            ? all(has("point_count"),
+                                            gte(pointCount, literal(layers[i][0]))
+                                    ) : all(has("point_count"),
+                                            gte(pointCount, literal(layers[i][0])),
+                                            lt(pointCount, literal(layers[i - 1][0]))
+                                    )
+                            );
+                            style.addLayer(circles);
+                    }
+
+                        SymbolLayer count = new SymbolLayer("count", GEOJSON_SOURCE_ID);
+                        count.setProperties(
+                                textField(Expression.toString(get("point_count"))),
+                                textSize(12f),
+                                textColor(Color.WHITE),
+                                textIgnorePlacement(true),
+                                textAllowOverlap(true)
+                        );
+                        style.addLayer(count);
+                        Log.d("STYLE",style.getJson());
+                        Log.d("FEATURES",featureCollection.toString());
+
+
+
+
+                }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<BatimentsModel> call, @NotNull Throwable t) {
+
+                    // Log error here since request failed
+                    Timber.tag("images").e(t.toString());
+                    Log.e("error create", t.toString());
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void getCategories() {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Categories> call = apiService.getCategories(API_KEY);
+            call.enqueue(new Callback<Categories>() {
+                @Override
+                public void onResponse(@NotNull Call<Categories> call, @NotNull Response<Categories> response) {
+                    Timber.tag("categories").e(response.toString());
+
+                    chipsLayout.setAdapter(new CategoriesAdapter(R.layout.item_chip,MapActivity.this,response.body().getData()));
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Categories> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("logout").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+        searchApi(search.getText());
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+        switch (buttonCode) {
+            case MaterialSearchBar.BUTTON_NAVIGATION:
+                drawer.openDrawer(GravityCompat.START);
+                break;
+            case MaterialSearchBar.BUTTON_SPEECH:
+                startVoiceRecognitionActivity();
+                break;
+            case MaterialSearchBar.BUTTON_BACK:
+                search.closeSearch();
+                break;
+        }
+    }
+
+    /**
+     * Fire an intent to start the voice recognition activity.
+     */
+    private void startVoiceRecognitionActivity()
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Recherche de la voix...");
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+    /**
+     * Handle the results from the voice recognition activity.
+     */
+    @
+            Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
+        {
+            // Populate the wordsList with the String values the recognition engine thought it heard
+            final ArrayList < String > matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (!matches.isEmpty())
+            {
+                String Query = matches.get(0);
+                search.openSearch();
+                search.setText(Query);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void startSearch(String query) {
+
+
+    }
+    
+    public void searchApi(String query) {
+search.clearSuggestions();
+searchResult.clear();
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<SearchEtablissement> call = apiService.searchetablissement(API_KEY,query);
+            call.enqueue(new Callback<SearchEtablissement>() {
+                @Override
+                public void onResponse(@NotNull Call<SearchEtablissement> call, @NotNull Response<SearchEtablissement> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+                        Toast.makeText(getApplicationContext(), "Error Search", Toast.LENGTH_LONG).show();
+                    } else {
+                         nominatimSearch(query,response.body().getData());
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<SearchEtablissement> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("etablissements").e(t.toString());
+                    Log.e("error create", t.toString());
+                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public List<Nominatim> nominatimSearch(String query,List<DataSearchEtablissement> dataSearchEtablissement) {
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient().create(ApiInterface.class);
+            Call<List<Nominatim>> call = apiService.nominatim(query, "json", 1, "cm");
+            call.enqueue(new Callback<List<Nominatim>>() {
+                @Override
+                public void onResponse(@NotNull Call<List<Nominatim>> call, @NotNull Response<List<Nominatim>> response) {
+                   if(response.body().size() > 0) {
+
+                       for (int i = 0; i < dataSearchEtablissement.size(); i++) {
+                           Search search1 = new Search();
+                           search1.setNom(dataSearchEtablissement.get(i).getNom());
+                           search1.setId(dataSearchEtablissement.get(i).getId());
+                           search1.setLongitude(dataSearchEtablissement.get(i).getBatiment().getLongitude());
+                           search1.setLatitude(dataSearchEtablissement.get(i).getBatiment().getLatitude());
+                           search1.setLogoUrl(dataSearchEtablissement.get(i).getLogoUrl());
+                           search1.setType("etablissement");
+                           search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
+
+                           searchResult.add(search1);
+
+                       }
+
+                       for (int i = 0; i < response.body().size(); i++) {
+                           Search search2 = new Search();
+                           search2.setNom(response.body().get(i).getDisplayName());
+                           search2.setId(response.body().get(i).getPlaceId());
+                           search2.setLongitude(response.body().get(i).getLon());
+                           search2.setLatitude(response.body().get(i).getLat());
+                           if (response.body().get(i).getIcon() != null) {
+                               search2.setLogoUrl(response.body().get(i).getIcon());
+                           } else {
+                               search2.setLogoUrl(null);
+                           }
+                           search2.setType("nominatim");
+                           search2.setDetails(response.body().get(i).getAddress().getCity());
+
+                           searchResult.add(search2);
+                       }
+
+
+                   } else {
+                       for (int i = 0; i < dataSearchEtablissement.size(); i++) {
+                           Search search1 = new Search();
+                           search1.setNom(dataSearchEtablissement.get(i).getNom());
+                           search1.setId(dataSearchEtablissement.get(i).getId());
+                           search1.setLongitude(dataSearchEtablissement.get(i).getBatiment().getLongitude());
+                           search1.setLatitude(dataSearchEtablissement.get(i).getBatiment().getLatitude());
+                           search1.setLogoUrl(dataSearchEtablissement.get(i).getLogoUrl());
+                           search1.setType("etablissement");
+                           search1.setDetails(dataSearchEtablissement.get(i).getSousCategorie().getNom());
+
+                           searchResult.add(search1);
+
+                       }
+                   }
+
+                    searchAdapter.setSuggestions(searchResult);
+                    search.setCustomSuggestionAdapter(searchAdapter);
+                    search.showSuggestionsList();
+
+
+
+                 //   Toast.makeText(getApplicationContext(), String.valueOf(searchResult.size()), Toast.LENGTH_LONG).show();
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<List<Nominatim>> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("main2").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+
+        return nominatimList;
+    }
+    
 }

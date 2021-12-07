@@ -1,18 +1,39 @@
-<app-header style="width:200px"></app-header>
+<!--<app-header style="width:200px"></app-header>
 
   <div id="map" class=" map" (click)="mapClicked()">
 
   </div>
-  <div class="alert alert-success" *ngIf="role=='2'" style="position: absolute;z-index: 4;">
-    Vous êtes connectés en tant que commercial
-    </div>
-    <div class="alert alert-danger" *ngIf="role!= '2'" style="position: absolute;z-index: 4;">
-      Vous n'avez aucun droit d'ajout d'entreprises
-      </div>
-
+<app-fiche-entreprise></app-fiche-entreprise>
 
   <app-vertical-toolbar [map]="getMap()"></app-vertical-toolbar>
 
 
 <app-fiche-entreprise></app-fiche-entreprise>
 <app-etablissement></app-etablissement>
+-->
+
+
+<mat-sidenav-container class="sidenav-container" #sidenavContainer >
+  <mat-sidenav class="sidenav-left" opened mode="side" position="start">
+      <app-vertical-page-primary class="header"></app-vertical-page-primary>
+
+      <app-fiche-entreprise></app-fiche-entreprise>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content inner">
+
+    <app-vertical-toolbar [map]="getMap()">
+
+    </app-vertical-toolbar>
+
+    <div id="map" class="map">
+
+    </div>
+
+  </mat-sidenav-content>
+
+
+
+</mat-sidenav-container>
+
+
