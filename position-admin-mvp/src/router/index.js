@@ -50,6 +50,11 @@ const routes = [
     component: () => import("../DemoPages/Commerciaux/Layouts.vue"),
   },
   {
+    path: "/zone/create",
+    name: "zone-create",
+    component: () => import("../DemoPages/Zone/Layouts.vue"),
+  },
+  {
     path: "/commercial/list",
     name: "commercial-list",
     component: () => import("../DemoPages/Commerciaux/RegularTables.vue"),

@@ -17,7 +17,7 @@
                   text-white text-uppercase
                   d-none d-lg-inline-block
                 "
-                href="https://www.creative-tim.com/product/argon-dashboard"
+                href="#"
                 target="_blank"
                 >Profil Commercial</a
               >
@@ -88,7 +88,7 @@
             class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
             style="
               min-height: 600px;
-              background-image: url(https://raw.githack.com/creativetimofficial/argon-dashboard/master/assets/img/theme/profile-cover.jpg);
+              background-image: url('../assets/images/position-motif.jpg');
               background-size: cover;
               background-position: center top;
             "
