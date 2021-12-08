@@ -110,6 +110,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
             back3.setText("Accueil");
             back3.setOnClickListener(v -> {
                 Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             });
@@ -668,6 +669,7 @@ RequestBody requestBody;
         else{
             Toast.makeText(getApplicationContext(), "Mise à jour de l'etablissement reussie", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }
@@ -700,6 +702,7 @@ RequestBody requestBody;
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Ajout de l'etablissement reussi", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
 
@@ -753,6 +756,7 @@ RequestBody requestBody;
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Mise à jour de l'etablissement reussie", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
 

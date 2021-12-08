@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             pref.setProfileimage("");
                         }
-
+                        pref.setActive(response.body().getData().getUser().getCommercial().getActif().toString());
                         pref.setRoleid(response.body().getData().getUser().getRole().toString());
                         pref.setZoneid(response.body().getData().getUser().getCommercial().getIdZone().toString());
                      //   Toast.makeText(getApplicationContext(), response.body().getData().getUser().getRole().toString(), Toast.LENGTH_LONG).show();

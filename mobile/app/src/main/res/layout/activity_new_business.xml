@@ -92,6 +92,7 @@
                     android:hint="Nom de l'entreprise"
                     android:textSize="15dp"
                     android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"/>
@@ -276,6 +277,7 @@
                     android:gravity="center_vertical"
                     android:hint="Mots clés"
                     android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"
                     android:textSize="15dp" />

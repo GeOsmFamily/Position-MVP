@@ -157,6 +157,7 @@ import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.Search;
 import com.sogefi.position.models.SearchEtablissement;
 import com.sogefi.position.models.Tracking;
+import com.sogefi.position.models.UserModel;
 import com.sogefi.position.models.Zones;
 import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.models.data.DataEtablissements;
@@ -444,6 +445,10 @@ public class MapActivity extends AppCompatActivity implements
 
         launchWorker();
 
+        if(!pref.getToken().equals("token")) {
+            getUsers();
+        }
+
 
 
         location.setOnClickListener(v -> {
@@ -572,8 +577,8 @@ public class MapActivity extends AppCompatActivity implements
            }
 
            user_image.setOnClickListener(v -> {
-               Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
-               startActivity(intent);
+             /*  Intent intent = new Intent(MapActivity.this, ProfileActivity.class);
+               startActivity(intent);*/
            });
         } else {
             user_label.setText("Position");
@@ -1458,6 +1463,7 @@ if(pref.getRoleid().equals("2")) {
                     pref.setId("id");
                     pref.setRoleid("roleid");
                     Intent intent = new Intent(MapActivity.this, SplashActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
 
@@ -1824,6 +1830,8 @@ if(pref.getRoleid().equals("2")) {
         intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
         startActivity(intent);
     }
+
+
 
     private void geojsonBatiment(@NonNull Style style) {
         if (Function.isNetworkAvailable(getApplicationContext())) {
@@ -2296,6 +2304,53 @@ searchResult.clear();
             });
         } else {
              Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void getUsers() {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<UserModel> call = apiService.getUser( API_KEY,"Bearer "+pref.getToken());
+            call.enqueue(new Callback<UserModel>() {
+                @Override
+                public void onResponse(@NotNull Call<UserModel> call, @NotNull Response<UserModel> response) {
+                    if(response.code() == 401) {
+                        Toast.makeText(getApplicationContext(), "Reconnectez Vous", Toast.LENGTH_LONG).show();
+                        logout();
+                    } else {
+                        pref.setEmail(response.body().getData().getUser(). getEmail());
+                        pref.setName(response.body().getData().getUser().getName());
+                        pref.setPhone(response.body().getData().getUser().getPhone().toString());
+                        pref.setId(response.body().getData().getUser().toString());
+                        if(response.body().getData().getUser().getCommercial().getImageProfil() != null) {
+                            pref.setProfileimage(response.body().getData().getUser().getCommercial().getImageProfil());
+                        } else {
+                            pref.setProfileimage("");
+                        }
+                        pref.setActive(response.body().getData().getUser().getCommercial().getActif().toString());
+                        pref.setRoleid(response.body().getData().getUser().getRole().toString());
+                        pref.setZoneid(response.body().getData().getUser().getCommercial().getIdZone().toString());
+
+                        if(!response.body().getData().getUser().getCommercial().getActif().toString().equals("1")) {
+                            Toast.makeText(getApplicationContext(), "Votre compte à été désactivé", Toast.LENGTH_LONG).show();
+                            logout();
+                        }
+                        //   Toast.makeText(getApplicationContext(), response.body().getData().getUser().getRole().toString(), Toast.LENGTH_LONG).show();
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<UserModel> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("users").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
         }
     }
     

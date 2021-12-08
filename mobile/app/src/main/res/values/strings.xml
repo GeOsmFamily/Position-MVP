@@ -103,7 +103,7 @@
     <string name="connectToSaveBusiness">Login to register an establishment</string>
     <string name="noCommercial">You are not a salesman</string>
     <string name="connectToViewBusiness">Log in with your manager account to see your establishment</string>
-    <string name="app_version" translatable="false">v0.1.5+Build01</string>
+    <string name="app_version" translatable="false">v0.2.0 Stable</string>
     <string name="description">Description</string>
     <string name="About_us">A propos de nous</string>
     <string name="mail">Email</string>
