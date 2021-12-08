@@ -220,19 +220,19 @@ class ZonesInfoInfoAlreadyExistError(ZonesInfoException):
         self.detail = "Zones Info Already Exists"
 
 
-#### SousCategorieEtablissements ####
-class SousCategorieEtablissementsInfoException(Exception):
+#### sousCategoriesEtablissements ####
+class sousCategoriesEtablissementsInfoException(Exception):
     ...
 
-class SousCategorieEtablissementsInfoNotFoundError(SousCategorieEtablissementsInfoException):
+class sousCategoriesEtablissementsInfoNotFoundError(sousCategoriesEtablissementsInfoException):
     def __init__(self):
         self.status_code = 404
-        self.detail = "SousCategorieEtablissements Info Not Found"
+        self.detail = "sousCategoriesEtablissements Info Not Found"
 
-class SousCategorieEtablissementsInfoInfoAlreadyExistError(SousCategorieEtablissementsInfoException):
+class sousCategoriesEtablissementsInfoInfoAlreadyExistError(sousCategoriesEtablissementsInfoException):
     def __init__(self):
         self.status_code = 409
-        self.detail = "SousCategorieEtablissements Info Already Exists"
+        self.detail = "sousCategoriesEtablissements Info Already Exists"
 
 
 
