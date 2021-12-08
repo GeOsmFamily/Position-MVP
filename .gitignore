@@ -6,6 +6,7 @@
 /services/.env
 /services/.cmd
 /services/_pycache__
+/services/prod/_pycache__
 /services/__init__.py
 /services/api.py
 /services/main.py

@@ -4,7 +4,7 @@ import datetime as datetime2
 
 from exceptions import (BatimentsInfoException, CategoriesInfoException, CommercialsInfoException,
                         EtablissementInfoException, FTPImagesException, FailedJobsInfoException, HorairesInfoException,
-                        ImagesInfoException, ManagersInfoException,
+                        ImagesInfoException, ManagersInfoException, SousCategorieEtablissementsInfoException,
                         SousCategoriesInfoException, TelephonesInfoException, TrackingsInfoException, UsersInfoException, ZonesInfoException)
 
 from fastapi import APIRouter, Depends, Header, HTTPException
@@ -12,36 +12,36 @@ from fastapi_utils.cbv import cbv
 from sqlalchemy.orm import Session
 
 from auth import has_authority, verify_token
-from crud import (chiffre_affaire, count_number_of_ets, create_Batiments, create_FailedJobs, create_Trackings, create_Users, create_Zones, create_categories, create_commercials, create_ets,
+from crud import (chiffre_affaire, count_number_of_ets, create_Batiments, create_FailedJobs, create_SousCategorieEtablissements, create_Trackings, create_Users, create_Zones, create_categories, create_commercials, create_ets,
                   create_horaires, create_Images, create_managers,
                   create_souscategories, create_Telephones, delete_batiments_info,
                   delete_categories_info, delete_commercials_info,
                   delete_ets_info, delete_failedJobs_info, delete_horaires_info, delete_images_info,
-                  delete_managers_info, delete_souscategories_info,
+                  delete_managers_info, delete_sousCategorieEtablissements_info, delete_souscategories_info,
                   delete_telephones_info, delete_trackings_info, delete_users_info, delete_zones_info, get_all_batiments, get_all_categories,
                   get_all_commercials, get_all_commercials_by_quartier,
                   get_all_commercials_by_ville, get_all_ets,
                   get_all_ets_by_payment, get_all_failedJobs, get_all_horaires, get_all_images,
-                  get_all_managers, get_all_souscategories, get_all_telephones, get_all_trackings, get_all_users, get_all_zones, get_batiments_info_by_id,
+                  get_all_managers, get_all_sousCategorieEtablissements, get_all_souscategories, get_all_telephones, get_all_trackings, get_all_users, get_all_zones, get_batiments_info_by_id,
                   get_categories_info_by_id, get_comm_salary, get_commercials_info_by_id,
                   get_etablissement_info_by_id, get_ets_by_day, get_ets_by_month, get_ets_by_week, get_ets_by_year, get_failedJobs_info_by_id, get_images_info_by_id,
-                  get_managers_info_by_id, get_souscategories_info_by_id,
+                  get_managers_info_by_id, get_sousCategorieEtablissements_info_by_id, get_souscategories_info_by_id,
                   get_telephones_info_by_id, get_trackings_info_by_id, get_users_info_by_id, get_zones_info_by_id, position_get_by_day, position_get_by_month, position_get_by_week, position_get_by_year, update_batiments_info, update_categories_info,
                   update_commercials_info, update_ets_info, update_failedJobs_info,
                   update_horaires_info, update_images_info,
-                  update_managers_info, update_souscategories_info,
+                  update_managers_info, update_sousCategorieEtablissements_info, update_souscategories_info,
                   update_telephones_info, update_trackings_info, update_users_info, update_zones_info)
 from database import get_db
 from schemas import (Batiments, Categories, Commercials, CreateAndUpdateBatiments, CreateAndUpdateCategories,
                      CreateAndUpdateCommercials, CreateAndUpdateEtablissements, CreateAndUpdateFailedJobs,
                      CreateAndUpdateHoraires, CreateAndUpdateImages,
-                     CreateAndUpdateManagers, CreateAndUpdateSousCategories,
+                     CreateAndUpdateManagers, CreateAndUpdateSousCategorieEtablissements, CreateAndUpdateSousCategories,
                      CreateAndUpdateTelephones, CreateAndUpdateTrackings, CreateAndUpdateUsers, CreateAndUpdateZones, Etablissements, FailedJobs, Horaires,
-                     Images, Managers, PaginateZonesInfo, PaginatedBatimentsInfo, PaginatedCategoriesInfo,
+                     Images, Managers, PaginateSousCategorieEtablissementsInfo, PaginateZonesInfo, PaginatedBatimentsInfo, PaginatedCategoriesInfo,
                      PaginatedCommercialsInfo, PaginatedEtablissementInfo, PaginatedFailedJobsInfo,
                      PaginatedHorairesInfo, PaginatedImagesInfo,
                      PaginatedManagersInfo, PaginatedSousCategoriesInfo,
-                     PaginatedTelephonesInfo, PaginatedTrackingsInfo, PaginatedUsersInfo, SousCategories, Telephones, Trackings, Users, Zones)
+                     PaginatedTelephonesInfo, PaginatedTrackingsInfo, PaginatedUsersInfo, SousCategorieEtablissements, SousCategories, Telephones, Trackings, Users, Zones)
 
 from fastapi import UploadFile, File
 from os import getcwd, remove
@@ -1142,6 +1142,7 @@ class Batiment:
         response = {"limit": limit, "offset": offset, "data": batiments_list}
 
         return response
+    
 
     # API endpoint to add a batiments info to the database
     @router.post("/batiments")
@@ -1545,6 +1546,91 @@ def delete_zones(zones_id: int, session: Session = Depends(get_db), authorizatio
         raise HTTPException(status_code=401, detail=auth_response['message'])
     try:
         return delete_zones_info(session, zones_id)
+    except TelephonesInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+
+#### SousCategorieEtablissements ####
+@cbv(router)
+class FailedJob:
+    session: Session = Depends(get_db)
+
+    # API to get the list of d info
+    @router.get("/sousCategorieEtablissements", response_model=PaginateSousCategorieEtablissementsInfo)
+    def list_sousCategorieEtablissements(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+
+        sousCategorieEtablissements_list = get_all_sousCategorieEtablissements(self.session, limit, offset)
+        response = {"limit": limit, "offset": offset, "data": sousCategorieEtablissements_list}
+
+        return response
+
+    # API endpoint to add a sousCategorieEtablissements info to the database
+    @router.post("/sousCategorieEtablissements")
+    def add_sousCategorieEtablissements(self, sousCategorieEtablissements_info: CreateAndUpdateSousCategorieEtablissements, authorization:str = Header(None)):
+        if authorization is None:
+            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+        auth_response = verify_token(authorization.split(' ')[1])
+        if ('user_id' not in auth_response):
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+            raise HTTPException(status_code=401, detail=auth_response['message'])
+        try:
+            sousCategorieEtablissements_info = create_SousCategorieEtablissements(self.session, sousCategorieEtablissements_info)
+            return sousCategorieEtablissements_info
+        except SousCategorieEtablissementsInfoException as cie:
+            raise HTTPException(**cie.__dict__)
+
+# API endpoint to get info of a particular sousCategorieEtablissements
+@router.get("/sousCategorieEtablissements/", response_model=SousCategorieEtablissements)
+def get_sousCategorieEtablissements_info(sousCategorieEtablissements_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        sousCategorieEtablissements_info = get_sousCategorieEtablissements_info_by_id(session, sousCategorieEtablissements_id)
+        return sousCategorieEtablissements_info
+    except SousCategorieEtablissementsInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+# API to update a existing sousCategorieEtablissements info
+@router.put("/sousCategorieEtablissements/", response_model=SousCategorieEtablissements)
+def update_sousCategorieEtablissements(sousCategorieEtablissements_id: int, new_info: CreateAndUpdateSousCategorieEtablissements, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        sousCategorieEtablissements_info = update_sousCategorieEtablissements_info(session, sousCategorieEtablissements_id, new_info)
+        return sousCategorieEtablissements_info
+    except SousCategorieEtablissementsInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+                                                                                                                                   
+# API to delete a sousCategorieEtablissements info from the data base
+@router.delete("/sousCategorieEtablissements/")
+def delete_sousCategorieEtablissements(sousCategorieEtablissements_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
+    if authorization is None:
+        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
+    auth_response = verify_token(authorization.split(' ')[1])
+    if ('user_id' not in auth_response):
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
+        raise HTTPException(status_code=401, detail=auth_response['message'])
+    try:
+        return delete_sousCategorieEtablissements_info(session, sousCategorieEtablissements_id)
     except TelephonesInfoException as cie:
         raise HTTPException(**cie.__dict__)
 

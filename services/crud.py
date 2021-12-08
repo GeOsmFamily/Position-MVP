@@ -4,7 +4,7 @@ from exceptions import (
     BatimentsInfoInfoAlreadyExistError, BatimentsInfoNotFoundError, CategoriesInfoInfoAlreadyExistError, CategoriesInfoNotFoundError,
     CommercialsInfoInfoAlreadyExistError, CommercialsInfoNotFoundError,
     EtablissementInfoInfoAlreadyExistError, EtablissementInfoNotFoundError, FailedJobsInfoInfoAlreadyExistError, FailedJobsInfoNotFoundError, HorairesInfoInfoAlreadyExistError, HorairesInfoNotFoundError, ImagesInfoInfoAlreadyExistError, ImagesInfoNotFoundError,
-    ManagersInfoInfoAlreadyExistError, ManagersInfoNotFoundError,
+    ManagersInfoInfoAlreadyExistError, ManagersInfoNotFoundError, SousCategorieEtablissementsInfoInfoAlreadyExistError, SousCategorieEtablissementsInfoNotFoundError,
     SousCategoriesInfoInfoAlreadyExistError, SousCategoriesInfoNotFoundError, TelephonesInfoInfoAlreadyExistError, TelephonesInfoNotFoundError, TrackingsInfoInfoAlreadyExistError, TrackingsInfoNotFoundError, UsersInfoInfoAlreadyExistError, UsersInfoNotFoundError, ZonesInfoInfoAlreadyExistError, ZonesInfoNotFoundError)
 #     return 
 from os import SCHED_IDLE
@@ -16,7 +16,7 @@ from models import (Batiments, Categories, Commercials,  Users,
                     Etablissements, FailedJobs, Horaires, Images, Managers, SousCategories, Telephones)
 from schemas import (CreateAndUpdateBatiments, CreateAndUpdateCategories, CreateAndUpdateCommercials, 
                       CreateAndUpdateEtablissements, CreateAndUpdateFailedJobs, CreateAndUpdateHoraires, CreateAndUpdateImages,
-                     CreateAndUpdateManagers, CreateAndUpdateSousCategories, CreateAndUpdateTelephones, CreateAndUpdateTrackings, CreateAndUpdateUsers, CreateAndUpdateZones, Trackings, Zones)
+                     CreateAndUpdateManagers, CreateAndUpdateSousCategorieEtablissements, CreateAndUpdateSousCategories, CreateAndUpdateTelephones, CreateAndUpdateTrackings, CreateAndUpdateUsers, CreateAndUpdateZones, SousCategorieEtablissements, Trackings, Zones)
 
 from datetime import datetime
 
@@ -104,6 +104,7 @@ def create_ets(session: Session, ets_info: CreateAndUpdateEtablissements) -> Eta
             Etablissements.idCommercial==ets_info.idCommercial,
             Etablissements.idManager==ets_info.idManager,
             Etablissements.etage==ets_info.etage,
+            Etablissements.autres==ets_info.autres,
             Etablissements.cover==ets_info.cover,
             Etablissements.vues==ets_info.vues,
             Etablissements.created_at==ets_info.created_at,
@@ -136,6 +137,7 @@ def update_ets_info(session: Session, _id: int, info_update: CreateAndUpdateEtab
     ets_info.idCommercial = info_update.idCommercial
     ets_info.idManager=info_update.idManager
     ets_info.etage=info_update.etage
+    ets_info.autres=info_update.autres
     ets_info.cover=info_update.cover
     ets_info.vues=info_update.vues
     ets_info.updated_at=datetime.now()
@@ -423,6 +425,11 @@ def create_commercials(session: Session, info: CreateAndUpdateCommercials) -> Co
             Commercials.imageProfil==info.imageProfil,
             Commercials.idZone==info.idZone,
             Commercials.actif==info.actif,
+            Commercials.sexe==info.sexe,
+            Commercials.whatsapp==info.whatsapp,
+            Commercials.diplome==info.diplome,
+            Commercials.tailleTshirt==info.tailleTshirt,
+            Commercials.age==info.age,
             Commercials.created_at==info.created_at,
             Commercials.updated_at==info.updated_at
         ).first()
@@ -452,6 +459,11 @@ def update_commercials_info(session: Session, _id: int, info_update: CreateAndUp
     commercials_info.imageProfil=info_update.imageProfil
     commercials_info.idZone=info_update.idZone
     commercials_info.actif=info_update.actif
+    commercials_info.sexe=info_update.sexe
+    commercials_info.whatsapp=info_update.whatsapp
+    commercials_info.diplome=info_update.diplome
+    commercials_info.tailleTshirt=info_update.tailleTshirt
+    commercials_info.age=info_update.age
     commercials_info.updated_at=datetime.now()
 
     session.commit()
@@ -997,5 +1009,65 @@ def delete_zones_info(session: Session, _id: int):
         raise ZonesInfoNotFoundError
 
     session.delete(zones_info)
+    session.commit()
+
+
+
+#### SousCategorieEtablissements ####
+# Function to get list of Zones info
+def get_all_sousCategorieEtablissements(session: Session, limit: int, offset: int) -> List[SousCategorieEtablissements]:
+    return session.query(SousCategorieEtablissements).offset(offset).limit(limit).all()
+
+# Function to  get info of a particular FailedJobs
+def get_sousCategorieEtablissements_info_by_id(session: Session, _id: int) -> SousCategorieEtablissements:
+    sousCategorieEtablissements_info = session.query(SousCategorieEtablissements).get(_id)
+
+    if sousCategorieEtablissements_info is None:
+        raise SousCategorieEtablissementsInfoNotFoundError
+
+    return sousCategorieEtablissements_info
+
+# Function to add a new SousCategorieEtablissements info to the database
+def create_SousCategorieEtablissements(session: Session, info: CreateAndUpdateSousCategorieEtablissements) -> SousCategorieEtablissements:
+    sousCategorieEtablissements_details = session.query(SousCategorieEtablissements).filter(
+            SousCategorieEtablissements.idEtablissement == info.idEtablissement,
+            SousCategorieEtablissements.idSousCategorie == info.idSousCategorie,
+            SousCategorieEtablissements.created_at == info.created_at,
+            SousCategorieEtablissements.updated_at == info.updated_at,
+        ).first()
+    if sousCategorieEtablissements_details is not None:
+        raise SousCategorieEtablissementsInfoInfoAlreadyExistError
+
+    info.created_at=datetime.now()
+    info.updated_at=datetime.now()
+    new_sousCategorieEtablissements_info = SousCategorieEtablissements(**info.dict())
+    session.add(new_sousCategorieEtablissements_info)
+    session.commit()
+    session.refresh(new_sousCategorieEtablissements_info)
+    return new_sousCategorieEtablissements_info
+
+# Function to update details of the SousCategorieEtablissements
+def update_sousCategorieEtablissements_info(session: Session, _id: int, info_update: CreateAndUpdateSousCategorieEtablissements) -> SousCategorieEtablissements:
+    sousCategorieEtablissements_info = get_sousCategorieEtablissements_info_by_id(session, _id)
+
+    if sousCategorieEtablissements_info is None:
+        raise SousCategorieEtablissementsInfoNotFoundError
+
+    sousCategorieEtablissements_info.idEtablissement = info_update.idEtablissement
+    sousCategorieEtablissements_info.idSousCategorie=info_update.idSousCategorie
+
+    session.commit()
+    session.refresh(sousCategorieEtablissements_info)
+
+    return sousCategorieEtablissements_info
+
+# Function to delete an SousCategorieEtablissements info from the db
+def delete_sousCategorieEtablissements_info(session: Session, _id: int):
+    sousCategorieEtablissements_info = get_sousCategorieEtablissements_info_by_id(session, _id)
+
+    if sousCategorieEtablissements_info is None:
+        raise SousCategorieEtablissementsInfoNotFoundError
+
+    session.delete(sousCategorieEtablissements_info)
     session.commit()
 
