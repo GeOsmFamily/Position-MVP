@@ -608,7 +608,13 @@ public class MapActivity extends AppCompatActivity implements
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
         BottomSheetBehavior.from(bottom_sheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
-        getBatiment();
+        if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
+            getBatiment();
+
+            //  geojsonBatiment(style);
+
+
+        }
     }
 
     @Override
@@ -816,7 +822,13 @@ public class MapActivity extends AppCompatActivity implements
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
-        getBatiment();
+        if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
+            getBatiment();
+
+            //  geojsonBatiment(style);
+
+
+        }
 
         onBottomSheetLoading(1);
         groupMyPosition.setVisibility(View.VISIBLE);
@@ -1212,6 +1224,13 @@ if(pref.getRoleid().equals("2")) {
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
+        if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
+            getBatiment();
+
+            //  geojsonBatiment(style);
+
+
+        }
 
         arrival.setText("");
         duration.setText("");
@@ -1232,7 +1251,7 @@ if(pref.getRoleid().equals("2")) {
 
         symbolManager = new SymbolManager(mapView, mapboxMap, Objects.requireNonNull(mapboxMap.getStyle()));
 
-        getBatiment();
+
 
         symbolManager.setIconAllowOverlap(true);
         symbolManager.setTextAllowOverlap(true);
@@ -1366,7 +1385,7 @@ if(pref.getRoleid().equals("2")) {
             mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
             mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
             mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
-            getBatiment();
+           // getBatiment();
 
             arrival.setText("");
             duration.setText("");
@@ -1544,7 +1563,7 @@ if(pref.getRoleid().equals("2")) {
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
-        getBatiment();
+       // getBatiment();
 
         arrival.setText("");
         duration.setText("");
@@ -1604,13 +1623,8 @@ if(pref.getRoleid().equals("2")) {
     public boolean onMapLongClick(@NonNull LatLng point) {
         longo = String.valueOf(point.getLongitude());
         latgo = String.valueOf(point.getLatitude());
-        if (symbolManager != null) symbolManager.deleteAll();
-        Objects.requireNonNull(mapboxMap.getStyle()).removeLayer(ROUTE_LAYER_ID);
-        mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
-        mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
-        mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
 
-        getBatiment();
+
 
         arrival.setText("");
         duration.setText("");
@@ -1641,6 +1655,8 @@ if(pref.getRoleid().equals("2")) {
                 .withIconSize(1.3f)
                 .withSymbolSortKey(10.0f));
 
+
+
         String lon = String.valueOf(point.getLongitude());
         String lat = String.valueOf(point.getLatitude());
 
@@ -1648,7 +1664,6 @@ if(pref.getRoleid().equals("2")) {
         if (Function.isNetworkAvailable(getApplicationContext())) {
             nominatimCoord(lat,lon, adresseV);
             onBottomSheetLoading(0);
-
 
         } else {
             onBottomSheetLoading(0);
