@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.sogefi.position.R;
 import com.sogefi.position.models.Search;
@@ -77,23 +78,28 @@ public class SearchAdapter extends SuggestionsAdapter<DataSearchEtablissement, S
 
         DataEtablissements dataEtablissements = new DataEtablissements();
             dataEtablissements.setId(suggestion.getId());
+        dataEtablissements.setIdBatiment(suggestion.getIdBatiment());
+        dataEtablissements.setNom(suggestion.getNom());
+        dataEtablissements.setIndicationAdresse(suggestion.getIndicationAdresse());
+        dataEtablissements.setCodePostal(suggestion.getCodePostal());
             dataEtablissements.setSiteInternet(suggestion.getSiteInternet());
+        dataEtablissements.setIdCommercial(suggestion.getIdCommercial());
+        dataEtablissements.setIdManager(suggestion.getIdManager());
             dataEtablissements.setEtage(suggestion.getEtage());
+        dataEtablissements.setAutres(suggestion.getAutres());
             dataEtablissements.setCover(suggestion.getCover());
-            dataEtablissements.setCodePostal(suggestion.getCodePostal());
-            dataEtablissements.setAutres(suggestion.getAutres);
+            dataEtablissements.setVues(suggestion.getVues());
             dataEtablissements.setCreatedAt(suggestion.getCreatedAt());
+            dataEtablissements.setUpdatedAt(suggestion.getUpdatedAt());
             dataEtablissements.setDescription(suggestion.getDescription());
-            dataEtablissements.setHoraires(suggestion.getHoraires);
-            dataEtablissements.setImages(suggestion.getImages);
-            dataEtablissements.setIdBatiment(suggestion.getIdBatiment());
-            dataEtablissements.setIdCommercial(suggestion.getIdCommercial());
-            dataEtablissements.setIdManager(suggestion.getIdManager());
-            dataEtablissements.setIndicationAdresse(suggestion.getIndicationAdresse());
-            dataEtablissements.setNom(suggestion.getNom());
-            dataEtablissements.setNomCommercial(suggestion.getNomCommercial());
+        dataEtablissements.setNomCommercial(suggestion.getNomCommercial());
+        dataEtablissements.setBatiment(suggestion.getBatiment());
+        dataEtablissements.setSousCategories(suggestion.getSousCategories());
+        dataEtablissements.setImages(suggestion.getImages());
+            dataEtablissements.setHoraires(suggestion.getHoraires());
             dataEtablissements.setTelephones(suggestion.getTelephones());
-            dataEtablissements.setSousCategories(suggestion.getSousCategorie());
+            dataEtablissements.setCommercial(suggestion.getCommercial());
+
 
 
         holder.constraintLayout.setOnClickListener(view -> mapActivity.clickDialog(dataEtablissements));

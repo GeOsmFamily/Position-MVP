@@ -32,6 +32,8 @@ public class PreferenceManager {
 
     private static final String PROFILEIMAGE = "profileimage";
 
+    private static final String ACTIVE = "active";
+
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -217,6 +219,15 @@ public class PreferenceManager {
 
     public void setProfileimage(String profileimage) {
         editor.putString(PROFILEIMAGE, profileimage);
+        editor.apply();
+    }
+
+    public String getActive() {
+        return pref.getString(ACTIVE, "active");
+    }
+
+    public void setActive(String active) {
+        editor.putString(ACTIVE, active);
         editor.apply();
     }
 

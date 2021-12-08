@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "269614845547-jcgv9p9ftbj12p0k17ps3u7cf68p8923.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sogefi.position",
+            "certificate_hash": "3166ae2cb7147b42453c803d0b20ade5119730a4"
+          }
+        },
+        {
           "client_id": "269614845547-34n0995osh8tcsmbvh1b6sfnknsdj9ac.apps.googleusercontent.com",
           "client_type": 3
         }
