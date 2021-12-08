@@ -140,7 +140,7 @@
               ><b-form-select
                 name="zone"
                 v-model="selectedZone"
-                :options="selectedZone"
+                :options="zones"
                 v-model.trim="$v.selectedZone.$model"
                 :state="
                   !submitted ? null : submitted && !$v.selectedZone.$invalid
@@ -250,7 +250,7 @@ export default {
       return this.$store.getters["commercial/loading"];
     },
     zones() {
-      return this.$store.getters["zone/zones"];
+      return this.$store.getters["zone/zonesOPtions"];
     },
   },
   validations: {

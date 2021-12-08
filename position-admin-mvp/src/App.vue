@@ -29,6 +29,14 @@ export default {
           this.$router.push("/pages/login-boxed");
         });
       });
+    this.$store
+      .dispatch("zone/fetchZones")
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((onerror) => {
+        console.error(onerror);
+      });
   },
 };
 </script>
