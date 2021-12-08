@@ -518,19 +518,9 @@ class Commercial:
     
     
     @router.post("/commercial/generateQrCode")
-    async def generate_qr_code(self, commercial_id: int, authorization:str=Header(None), session: Session = Depends(get_db)):
-        if authorization is None:
-                raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-        auth_response = verify_token(authorization.split(' ')[1])
-        if ('user_id' not in auth_response):
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        try:
-            create_qr(commercial_id)
-            return {'message': 'Qr code  - Generated Succesfully!'}
-        except Exception as cie:
-            raise HTTPException(**cie.__dict__)
+    async def generate_qr_code(self, commercial_id: int, session: Session = Depends(get_db)):
+        create_qr(commercial_id)
+        return {'message': 'Qr code  - Generated Succesfully!'}
     
     
     # API to get the list of d info
