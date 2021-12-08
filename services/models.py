@@ -36,7 +36,7 @@ class SousCategories(Base):
     
 
 #### sous-catégories etablissement ####
-class SousCategories(Base):
+class SousCategoriesEtablissements(Base):
     __tablename__ = "souscategories_etablissements"
 
     id = Column(Integer, primary_key=True, index=True)
