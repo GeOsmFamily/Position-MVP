@@ -304,14 +304,14 @@ class PaginateZonesInfo(BaseModel):
 
 
 #### souscategories_etablissements schemas ####
-class CreateAndUpdateSousCategorieEtablissements(BaseModel):
+class CreateAndUpdateSousCategoriesEtablissements(BaseModel):
     id : Optional[int]    
     idEtablissement : int
     idSousCategorie : int
     created_at : Optional[datetime]
     updated_at : Optional[datetime]
 # TO support list and get APIs
-class SousCategorieEtablissements(CreateAndUpdateSousCategorieEtablissements):
+class SousCategoriesEtablissements(CreateAndUpdateSousCategoriesEtablissements):
     id : int
     class Config():
         orm_mode = True
@@ -319,5 +319,5 @@ class SousCategorieEtablissements(CreateAndUpdateSousCategorieEtablissements):
 class PaginateSousCategorieEtablissementsInfo(BaseModel):
     limit: int
     offset: int
-    data: List[SousCategorieEtablissements]
+    data: List[SousCategoriesEtablissements]
     
