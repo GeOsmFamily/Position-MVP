@@ -514,7 +514,7 @@ class Commercial:
         commercials_info = get_commercials_info_by_id(session, commercials_id)
         user_info = get_users_info_by_id(session, commercials_info.idUser)
         image_link = "https://services.position.cm" + commercials_info.imageProfil
-        return self.templates.TemplateResponse("item.html", {"request": request, "id": commercials_id, "name": user_info.name, "image": image_link})
+        return self.templates.TemplateResponse("item.html", {"request": request, "numeroBadge": commercials_info.numeroBadge, "numeroCni": commercials_info.numeroCni, "name": user_info.name, "image": image_link})
     
     
     @router.post("/commercial/generateQrCode")
