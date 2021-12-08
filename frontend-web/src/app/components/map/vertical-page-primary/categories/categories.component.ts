@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import * as $ from 'jquery';
@@ -13,6 +13,7 @@ import { PositionApiService } from 'src/app/services/position-api/position-api.s
 })
 export class CategoriesComponent implements OnInit {
 
+  @Input() isloading:boolean|undefined
   categories=new Array()
 
 
@@ -58,7 +59,10 @@ export class CategoriesComponent implements OnInit {
 
 
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("categories boolean")
+    console.log(this.isloading)
+  }
 }
 
 

@@ -210,7 +210,7 @@ this.map?.addInteraction(translate1);
       new Style({
         image: new Icon({
         scale: 0.1,
-          src: '/assets/location-marker.svg',
+          src: '/assets/icon-place.svg',
           anchor:[0.5,0.95]
         }),
         // text: new Text({

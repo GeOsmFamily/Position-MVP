@@ -22,7 +22,7 @@ export class ApiService {
     .set('Accept', 'application/json')
     .set(
       'X-Authorization',
-      'o4JA4jlzCWCGs6eoxRPp43QBoF2plQbiHulPgIbizd9tGu0NcFPdj2RskOmYpfy6'
+      'HXEmpcwLkkFYfXUNFnwrX8RP4UxIIndpEuyTAs2Pn1J6LU6N00EWV6tcvhDyaAXA'
     );
 
   constructor(private http: HttpClient) {
@@ -31,7 +31,7 @@ export class ApiService {
     this.headers.append('Access-Control-Allow-Origin', '*');
     this.headers.append(
       'X-Authorization',
-      'o4JA4jlzCWCGs6eoxRPp43QBoF2plQbiHulPgIbizd9tGu0NcFPdj2RskOmYpfy6'
+      'HXEmpcwLkkFYfXUNFnwrX8RP4UxIIndpEuyTAs2Pn1J6LU6N00EWV6tcvhDyaAXA'
     );
     this.headers_nodejs.append('Content-Type', 'application/json');
   }

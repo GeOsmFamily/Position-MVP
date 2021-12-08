@@ -23,7 +23,19 @@ import { NotifierModule } from 'angular-notifier';
 import { VerticalPagePrimaryComponent } from './components/map/vertical-page-primary/vertical-page-primary.component';
 import { CategoriesComponent } from './components/map/vertical-page-primary/categories/categories.component';
 import { SearchComponent } from './components/map/vertical-page-primary/search/search.component';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { SocialShareComponent } from './components/social-share/social-share/social-share.component';
+import { ShareButtonsConfig } from 'ngx-sharebuttons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+const customConfig: ShareButtonsConfig = {
+  include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
+  exclude: ['tumblr', 'stumble', 'vk'],
+  theme: 'circles-dark',
+  gaTracking: true,
+  twitterAccount: 'twitterUsername',
+};
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -46,11 +58,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     VerticalPagePrimaryComponent,
     CategoriesComponent,
     SearchComponent,
+    SocialShareComponent,
+
+
 
 
   ],
   imports: [
-    BrowserModule,
+    ShareButtonsModule.withConfig(customConfig),
+    ShareIconsModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     MaterialModule,
     FormsModule,
@@ -58,7 +75,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BrowserAnimationsModule,
     HttpClientModule,
     NgbModule,
-
+    FontAwesomeModule,
 
     NotifierModule.withConfig({
       position: {
@@ -81,8 +98,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         deps: [HttpClient],
       },
     }),
+
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+ 

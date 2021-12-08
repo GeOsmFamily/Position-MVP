@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { LoginComponent } from "../components/auth/login/login.component";
 import { EtablissementComponent } from "../components/map/etablissement/etablissement.component";
+import { SocialShareComponent } from "../components/social-share/social-share/social-share.component";
 import { FicheEntrepriseComponent } from './../components/map/fiche-entreprise/fiche-entreprise.component';
-
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +13,18 @@ export class ComponentHelper{
  etablissementComponent: EtablissementComponent | undefined
 
  loginComponent: LoginComponent | undefined
+
+ constructor(
+
+  private _snackBar: MatSnackBar,
+
+) {}
+ openSocialShare(url: string, durationInSeconds: number = 5) {
+  this._snackBar.openFromComponent(SocialShareComponent, {
+    duration: durationInSeconds * 1000,
+    data: { url: url },
+  });
+}
 
  //display and close profilComponent
   openFicheEntreprise(featurePoint:any){

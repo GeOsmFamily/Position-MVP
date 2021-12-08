@@ -6,9 +6,9 @@
    <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
    -->
    <ngb-carousel >
-    <ng-template ngbSlide>
+    <ng-template ngbSlide *ngFor="let image of featurePoint?.get('imagesCarousel')">
       <div class="picsum-img-wrapper">
-        <img src="{{url_image+featurePoint?.get('cover')}}" alt="Angular Carousel 1" style="width: 100%;" class="img-fluid">
+        <img src="{{image}}" alt="Angular Carousel 1" style="width: 100%;" class="img-fluid">
       </div>
 
     </ng-template>
@@ -37,16 +37,24 @@
     <div class="container" style="margin-top: 10px;margin-bottom: 10px;margin-left: -20px;">
 
 
-      <div class="item">
-        <button style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-          <img src="assets/button/icon-tel.svg" style="width: 75%; cursor:pointer"/>
+      <div class="item" >
+        <a href="{{'tel:'+featurePoint?.get('telephonePrincipal')}}">
+          <button  type="button" style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+            <img src="assets/button/icon-tel.svg" style="width: 75%; cursor:pointer"/>
 
 
-      </button>
+        </button>
+      </a>
+
         <span class="caption">Contacter</span>
+
+
     </div>
 
+
     <div class="item">
+
       <button style=" padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
         <img src="assets/button/icon-action-vignette-itinéraire.svg" style="color:black;width: 75%;cursor:pointer;"/>
 
@@ -57,13 +65,17 @@
     </div>
 
   <div class="item">
-    <button style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-      <img matPrefix src="assets/button/icon-action-vignette-partager.svg"style="width: 75%; cursor:pointer">
 
-      </button>
+      <button (click)="shareLink()" style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
+        <img matPrefix src="assets/button/icon-action-vignette-partager.svg"style="width: 75%; cursor:pointer">
+
+        </button>
+        <span class="caption">Partager</span>
 
 
-    <span class="caption">Partager</span>
+
+
+
 </div>
 
 
@@ -81,7 +93,7 @@
 
     </div>
 
-<hr align="left" style="margin-left: -10px;margin-right: -20px;"/>
+<hr align="left" style="margin-left: -10px;margin-right: -6px;width: 100%;"/>
 
 
 <!-- Informations d'ouverture et adresse de l'entreprise-->
@@ -90,12 +102,17 @@
 
         <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style="    margin-top: -3px;width: 20px; float:left;"/>
 
-      <div style="display: inline-block;">
-        <p> ouvert maintenant:  08:30 - 19:30</p>
-        <p >ouvert maintenant:  08:30 - 19:30</p>
+      <div style="display: inline-block;" *ngIf="featurePoint?.get('horaires')">
+        <ng-container *ngFor="let h of featurePoint?.get('horaires')">
+          <p *ngIf="h.tous_les_jours"> Tous les jours: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p *ngIf="h.Samedi">Samedi: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p *ngIf="h.Dimanche">Dimanche: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+
+        </ng-container>
+
       </div>
 
-      <div>
+      <div *ngIf="featurePoint?.get('indication')">
         <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""  style="    margin-top: -3px; width:20px;float:left;"/>
 
 
@@ -104,7 +121,7 @@
       </div>
 
 
-      <div>
+         <div *ngIf="featurePoint?.get('siteInternet')">
         <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style="    margin-top: -3px;width: 20px; float:left;"/>
 
 
@@ -116,7 +133,7 @@
 
   </div>
 
-<hr align="left" style="margin-left: -10px;margin-right: -20px;"/>
+<hr align="left" style="margin-left: -10px;margin-right: -6px;width: 100%;"/>
   <!-- Présentation de l'entreprise-->
 
   <div class="container" style="margin-left:-10px;margin-top: 10px;margin-bottom: 20px;font-family:OpenSans light ;">
