@@ -32,15 +32,15 @@ class SousCategories(Base):
     updated_at = Column(Date)
     
     categorie = relationship("Categories", back_populates="souscategories")
-    sousCategoriesEtablissements = relationship("SousCategoriesEtablissements", back_populates="sousCategorie")
+    sousCategoriesEtablissements = relationship("SousCategoriesEtablissements", back_populates="souscategorie")
     
 
-#### sous-catégories etablissement ####
+#### SousCategoriesEtablissements ####
 class SousCategoriesEtablissements(Base):
     __tablename__ = "souscategories_etablissements"
 
     id = Column(Integer, primary_key=True, index=True)
-    idEtablissement = Column(String(191),  ForeignKey("etablissements.id"))
+    idEtablissement = Column(Integer,  ForeignKey("etablissements.id"))
     idSousCategorie = Column(Integer, ForeignKey("sous_categories.id"))
     created_at = Column(Date)
     updated_at = Column(Date)

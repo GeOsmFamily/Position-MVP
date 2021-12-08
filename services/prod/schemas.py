@@ -232,12 +232,11 @@ class Batiments(CreateAndUpdateBatiments):
     id : int
     class Config():
         orm_mode = True
-# To support list Batiment APISousBatiment
+# To support list Batiment APISousBatimsousCategorie
 class PaginatedBatimentsInfo(BaseModel):
     limit: int
     offset: int
     data: List[Batiments]
-    
     
     
 ####  users schemas ####
@@ -303,21 +302,26 @@ class PaginateZonesInfo(BaseModel):
     data: List[Zones]
 
 
-#### souscategories_etablissements schemas ####
+
+#### SousCategoriesEtablissements schemas ####
 class CreateAndUpdateSousCategoriesEtablissements(BaseModel):
     id : Optional[int]    
     idEtablissement : int
     idSousCategorie : int
     created_at : Optional[datetime]
     updated_at : Optional[datetime]
+    
+    souscategorie : List[SousCategories] = [] 
+    etablissement: List[Etablissements] = [] 
+
 # TO support list and get APIs
 class SousCategoriesEtablissements(CreateAndUpdateSousCategoriesEtablissements):
     id : int
     class Config():
         orm_mode = True
 # To support list Batiment APISousBatiment
-class PaginateSousCategorieEtablissementsInfo(BaseModel):
+class PaginateSousCategoriesEtablissementsInfo(BaseModel):
     limit: int
     offset: int
     data: List[SousCategoriesEtablissements]
-    
+
