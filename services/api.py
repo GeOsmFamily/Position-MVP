@@ -4,8 +4,8 @@ import datetime as datetime2
 
 from exceptions import (BatimentsInfoException, CategoriesInfoException, CommercialsInfoException,
                         EtablissementInfoException, FTPImagesException, FailedJobsInfoException, HorairesInfoException,
-                        ImagesInfoException, ManagersInfoException,
-                        SousCategoriesInfoException, TelephonesInfoException, TrackingsInfoException, UsersInfoException, ZonesInfoException, sousCategoriesEtablissementsInfoException, sousCategoriesEtablissementsInfoInfoAlreadyExistError)
+                        ImagesInfoException, ManagersInfoException, SousCategoriesEtablissementsInfoException,
+                        SousCategoriesInfoException, TelephonesInfoException, TrackingsInfoException, UsersInfoException, ZonesInfoException)
 
 from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi_utils.cbv import cbv
@@ -25,7 +25,7 @@ from crud import (chiffre_affaire, count_number_of_ets, create_Batiments, create
                   get_all_managers, get_all_sousCategoriesEtablissements, get_all_souscategories, get_all_telephones, get_all_trackings, get_all_users, get_all_zones, get_batiments_info_by_id,
                   get_categories_info_by_id, get_comm_salary, get_commercials_info_by_id,
                   get_etablissement_info_by_id, get_ets_by_day, get_ets_by_month, get_ets_by_week, get_ets_by_year, get_failedJobs_info_by_id, get_images_info_by_id,
-                  get_managers_info_by_id, get_sousCategoriesEtablissements_info_by_id, get_souscategories_info_by_id,
+                  get_managers_info_by_id, get_sousCategoriesEtablissements_info_by_id,
                   get_telephones_info_by_id, get_trackings_info_by_id, get_users_info_by_id, get_zones_info_by_id, position_get_by_day, position_get_by_month, position_get_by_week, position_get_by_year, update_batiments_info, update_categories_info,
                   update_commercials_info, update_ets_info, update_failedJobs_info,
                   update_horaires_info, update_images_info,
@@ -37,7 +37,7 @@ from schemas import (Batiments, Categories, Commercials, CreateAndUpdateBatiment
                      CreateAndUpdateHoraires, CreateAndUpdateImages,
                      CreateAndUpdateManagers, CreateAndUpdateSousCategories, CreateAndUpdateSousCategoriesEtablissements,
                      CreateAndUpdateTelephones, CreateAndUpdateTrackings, CreateAndUpdateUsers, CreateAndUpdateZones, Etablissements, FailedJobs, Horaires,
-                     Images, Managers, PaginateSousCategorieEtablissementsInfo, PaginateZonesInfo, PaginatedBatimentsInfo, PaginatedCategoriesInfo,
+                     Images, Managers, PaginateSousCategoriesEtablissementsInfo, PaginateZonesInfo, PaginatedBatimentsInfo, PaginatedCategoriesInfo,
                      PaginatedCommercialsInfo, PaginatedEtablissementInfo, PaginatedFailedJobsInfo,
                      PaginatedHorairesInfo, PaginatedImagesInfo,
                      PaginatedManagersInfo, PaginatedSousCategoriesInfo,
@@ -1295,7 +1295,7 @@ def delete_failedJobs(failedJobs_id: int, session: Session = Depends(get_db), au
 
 #### Users ####
 @cbv(router)
-class FailedJob:
+class User:
     session: Session = Depends(get_db)
 
     # API to get the list of d info
@@ -1382,7 +1382,7 @@ def delete_users(users_id: int, session: Session = Depends(get_db), authorizatio
 
 #### Trackings ####
 @cbv(router)
-class FailedJob:
+class Tracking:
     session: Session = Depends(get_db)
 
     # API to get the list of d info
@@ -1467,7 +1467,7 @@ def delete_trackings(trackings_id: int, session: Session = Depends(get_db), auth
 
 #### Zones ####
 @cbv(router)
-class FailedJob:
+class Zone:
     session: Session = Depends(get_db)
 
     # API to get the list of d info
@@ -1550,13 +1550,14 @@ def delete_zones(zones_id: int, session: Session = Depends(get_db), authorizatio
         raise HTTPException(**cie.__dict__)
 
 
+
 #### SousCategoriesEtablissements ####
 @cbv(router)
-class FailedJob:
+class SousCategoriesEtablissement:
     session: Session = Depends(get_db)
 
     # API to get the list of d info
-    @router.get("/sousCategoriesEtablissements", response_model=PaginateSousCategorieEtablissementsInfo)
+    @router.get("/sousCategoriesEtablissements", response_model=PaginateSousCategoriesEtablissementsInfo)
     def list_sousCategoriesEtablissements(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
         if authorization is None:
             raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
@@ -1584,7 +1585,7 @@ class FailedJob:
         try:
             sousCategoriesEtablissements_info = create_SousCategoriesEtablissements(self.session, sousCategoriesEtablissements_info)
             return sousCategoriesEtablissements_info
-        except sousCategoriesEtablissementsInfoInfoAlreadyExistError as cie:
+        except SousCategoriesEtablissementsInfoException as cie:
             raise HTTPException(**cie.__dict__)
 
 # API endpoint to get info of a particular sousCategoriesEtablissements
@@ -1600,7 +1601,7 @@ def get_sousCategoriesEtablissements_info(sousCategoriesEtablissements_id: int, 
     try:
         sousCategoriesEtablissements_info = get_sousCategoriesEtablissements_info_by_id(session, sousCategoriesEtablissements_id)
         return sousCategoriesEtablissements_info
-    except sousCategoriesEtablissementsInfoException as cie:
+    except SousCategoriesEtablissementsInfoException as cie:
         raise HTTPException(**cie.__dict__)
 
 # API to update a existing sousCategoriesEtablissements info
@@ -1616,7 +1617,7 @@ def update_sousCategoriesEtablissements(sousCategoriesEtablissements_id: int, ne
     try:
         sousCategoriesEtablissements_info = update_sousCategoriesEtablissements_info(session, sousCategoriesEtablissements_id, new_info)
         return sousCategoriesEtablissements_info
-    except sousCategoriesEtablissementsInfoInfoAlreadyExistError as cie:
+    except SousCategoriesEtablissementsInfoException as cie:
         raise HTTPException(**cie.__dict__)
                                                                                                                                    
 # API to delete a sousCategoriesEtablissements info from the data base
@@ -1633,5 +1634,4 @@ def delete_sousCategoriesEtablissements(sousCategoriesEtablissements_id: int, se
         return delete_sousCategoriesEtablissements_info(session, sousCategoriesEtablissements_id)
     except TelephonesInfoException as cie:
         raise HTTPException(**cie.__dict__)
-
 

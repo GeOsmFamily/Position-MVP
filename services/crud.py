@@ -4,9 +4,9 @@ from exceptions import (
     BatimentsInfoInfoAlreadyExistError, BatimentsInfoNotFoundError, CategoriesInfoInfoAlreadyExistError, CategoriesInfoNotFoundError,
     CommercialsInfoInfoAlreadyExistError, CommercialsInfoNotFoundError,
     EtablissementInfoInfoAlreadyExistError, EtablissementInfoNotFoundError, FailedJobsInfoInfoAlreadyExistError, FailedJobsInfoNotFoundError, HorairesInfoInfoAlreadyExistError, HorairesInfoNotFoundError, ImagesInfoInfoAlreadyExistError, ImagesInfoNotFoundError,
-    ManagersInfoInfoAlreadyExistError, ManagersInfoNotFoundError,
+    ManagersInfoInfoAlreadyExistError, ManagersInfoNotFoundError, SousCategoriesEtablissementsInfoInfoAlreadyExistError, SousCategoriesEtablissementsInfoNotFoundError,
     SousCategoriesInfoInfoAlreadyExistError, SousCategoriesInfoNotFoundError, TelephonesInfoInfoAlreadyExistError, TelephonesInfoNotFoundError, TrackingsInfoInfoAlreadyExistError, TrackingsInfoNotFoundError, UsersInfoInfoAlreadyExistError, UsersInfoNotFoundError, 
-    ZonesInfoInfoAlreadyExistError, ZonesInfoNotFoundError, sousCategoriesEtablissementsInfoInfoAlreadyExistError, sousCategoriesEtablissementsInfoNotFoundError)
+    ZonesInfoInfoAlreadyExistError, ZonesInfoNotFoundError)
 #     return 
 from os import SCHED_IDLE
 from typing import List
@@ -1015,7 +1015,7 @@ def delete_zones_info(session: Session, _id: int):
 
 
 #### SousCategoriesEtablissements ####
-# Function to get list of Zones info
+# Function to get list of SousCategoriesEtablissements info
 def get_all_sousCategoriesEtablissements(session: Session, limit: int, offset: int) -> List[SousCategoriesEtablissements]:
     return session.query(SousCategoriesEtablissements).offset(offset).limit(limit).all()
 
@@ -1024,7 +1024,7 @@ def get_sousCategoriesEtablissements_info_by_id(session: Session, _id: int) -> S
     sousCategoriesEtablissements_info = session.query(SousCategoriesEtablissements).get(_id)
 
     if sousCategoriesEtablissements_info is None:
-        raise sousCategoriesEtablissementsInfoNotFoundError
+        raise SousCategoriesEtablissementsInfoNotFoundError
 
     return sousCategoriesEtablissements_info
 
@@ -1037,7 +1037,7 @@ def create_SousCategoriesEtablissements(session: Session, info: CreateAndUpdateS
             SousCategoriesEtablissements.updated_at == info.updated_at,
         ).first()
     if sousCategoriesEtablissements_details is not None:
-        raise sousCategoriesEtablissementsInfoInfoAlreadyExistError
+        raise SousCategoriesEtablissementsInfoInfoAlreadyExistError
 
     info.created_at=datetime.now()
     info.updated_at=datetime.now()
@@ -1052,7 +1052,7 @@ def update_sousCategoriesEtablissements_info(session: Session, _id: int, info_up
     sousCategoriesEtablissements_info = get_sousCategoriesEtablissements_info_by_id(session, _id)
 
     if sousCategoriesEtablissements_info is None:
-        raise sousCategoriesEtablissementsInfoNotFoundError
+        raise SousCategoriesEtablissementsInfoNotFoundError
 
     sousCategoriesEtablissements_info.idEtablissement = info_update.idEtablissement
     sousCategoriesEtablissements_info.idSousCategorie=info_update.idSousCategorie
@@ -1067,8 +1067,9 @@ def delete_sousCategoriesEtablissements_info(session: Session, _id: int):
     sousCategoriesEtablissements_info = get_sousCategoriesEtablissements_info_by_id(session, _id)
 
     if sousCategoriesEtablissements_info is None:
-        raise sousCategoriesEtablissementsInfoNotFoundError
+        raise SousCategoriesEtablissementsInfoNotFoundError
 
     session.delete(sousCategoriesEtablissements_info)
     session.commit()
+
 
