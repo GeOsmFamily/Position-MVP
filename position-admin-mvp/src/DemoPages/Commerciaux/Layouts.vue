@@ -53,6 +53,41 @@
               </b-form-invalid-feedback>
             </div>
             <br />
+            <b-form-group label="Sexe" v-slot="{ ariaDescribedby }">
+              <b-form-radio-group
+                id="radio-slots"
+                v-model="sexe"
+                :options="options"
+                :aria-describedby="ariaDescribedby"
+                name="radio-options-slots"
+              >
+              </b-form-radio-group>
+            </b-form-group>
+            <br />
+            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+              <label for="Age22" class="mr-sm-2">Age</label
+              ><b-form-input
+                name="badge"
+                v-model="age"
+                v-model.trim="$v.age.$model"
+                :state="!submitted ? null : submitted && !$v.age.$invalid"
+                id="Age22"
+                placeholder="Age du commercial"
+                type="number"
+                class="form-control"
+              />
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.age.required"
+              >
+                Field is required
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.age.numeric"
+              >
+                This field must be a number
+              </b-form-invalid-feedback>
+            </div>
+            <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
               <label for="Badge22" class="mr-sm-2">Numéro Badge</label
               ><b-form-input
@@ -90,12 +125,12 @@
                 class="form-control"
               />
               <b-form-invalid-feedback
-                :state="!submitted ? null : submitted && $v.badge.required"
+                :state="!submitted ? null : submitted && $v.numeroCni.required"
               >
                 Field is required
               </b-form-invalid-feedback>
               <b-form-invalid-feedback
-                :state="!submitted ? null : submitted && $v.badge.numeric"
+                :state="!submitted ? null : submitted && $v.numeroCni.numeric"
               >
                 This field must be a number
               </b-form-invalid-feedback>
@@ -117,9 +152,42 @@
             </div>
             <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+              <label for="town22" class="mr-sm-2">Diplome</label
+              ><b-form-input
+                name="diplome"
+                v-model="diplome"
+                v-model.trim="$v.diplome.$model"
+                :state="!submitted ? null : submitted && !$v.diplome.$invalid"
+                id="town22"
+                placeholder="Diplome du commercial"
+                type="text"
+                class="form-control"
+              />
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.diplome.required"
+              >
+                Field is required
+              </b-form-invalid-feedback>
+            </div>
+            <br />
+            <b-form-group
+              label="Taille T-shirt"
+              v-slot="{ ariaDescribedbySizes }"
+            >
+              <b-form-radio-group
+                id="taille-slots"
+                v-model="tailleTshirt"
+                :options="sizes"
+                :aria-describedby="ariaDescribedbySizes"
+                name="taille-options-slots"
+              >
+              </b-form-radio-group>
+            </b-form-group>
+            <br />
+            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
               <label for="town22" class="mr-sm-2">Ville</label
               ><b-form-input
-                name="logo"
+                name="town"
                 v-model="town"
                 v-model.trim="$v.town.$model"
                 :state="!submitted ? null : submitted && !$v.town.$invalid"
@@ -140,7 +208,7 @@
               ><b-form-select
                 name="zone"
                 v-model="selectedZone"
-                :options="zones"
+                :options="zones === null ? [] : zones"
                 v-model.trim="$v.selectedZone.$model"
                 :state="
                   !submitted ? null : submitted && !$v.selectedZone.$invalid
@@ -234,13 +302,27 @@ export default {
     icon: "pe-7s-graph text-success",
     name: "",
     email: "",
+    diplome: "",
     phone: "",
+    options: [
+      { text: "Masculin", value: "M" },
+      { text: "Feminin", value: "F" },
+    ],
+    sizes: [
+      { text: "S", value: "S" },
+      { text: "M", value: "M" },
+      { text: "L", value: "L" },
+      { text: "XL", value: "XL" },
+    ],
     badge: "",
     quartier: "",
     numeroCni: "",
     previewImage: null,
     imageProfil: null,
     selectedZone: "",
+    age: "",
+    sexe: "",
+    tailleTshirt: "",
     town: "",
     message: "",
     submitted: false,
@@ -278,6 +360,16 @@ export default {
       required,
       numeric,
     },
+    diplome: {
+      required,
+    },
+    tailleTshirt: {
+      required,
+    },
+    age: {
+      required,
+      numeric,
+    },
     quartier: {
       required,
     },
@@ -300,12 +392,18 @@ export default {
           formData.append("file", this.imageProfil);
           formData.append("name", this.name);
           formData.append("email", this.email);
+          formData.append("whatsapp", this.phone);
           formData.append("phone", this.phone);
           formData.append("ville", this.town);
           formData.append("idZone", 1);
           formData.append("numeroCni", this.numeroCni);
           formData.append("numeroBadge", this.badge);
           formData.append("quartier", this.quartier);
+          formData.append("sexe", this.sexe);
+          formData.append("age", this.age);
+          formData.append("diplome", this.diplome);
+          formData.append("tailleTshirt", this.tailleTshirt);
+
           this.$store.dispatch("commercial/createCommercial", formData).then(
             (data) => {
               console.log(data);
