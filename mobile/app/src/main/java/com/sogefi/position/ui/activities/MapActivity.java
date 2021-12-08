@@ -552,7 +552,7 @@ public class MapActivity extends AppCompatActivity implements
                 Intent intent = new Intent(MapActivity.this, NewBusiness5Activity.class);
                 intent.putExtra("longitude",longo);
                 intent.putExtra("latitude",latgo);
-                intent.putExtra("adresseName",adresseV.getText().toString());
+                intent.putExtra("adresseName",longo+","+latgo);
                 drawer.closeDrawers();
                 startActivity(intent);
             } else if(pref.getRoleid().equals("roleid")) {
