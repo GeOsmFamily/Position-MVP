@@ -41,14 +41,14 @@ import { HandleEtablissementsSearch } from '../../header/handle/handleEtablissem
 })
 export class SearchComponent implements OnInit {
   form: FormGroup | undefined;
-  @Output() countChanged: EventEmitter<boolean> =   new EventEmitter();
-  @Output() countSelection: EventEmitter<boolean> =   new EventEmitter();
-  @Input() isLoading=false
-  @Input() isSelected=false
+  @Output() countChanged: EventEmitter<boolean> = new EventEmitter();
+  @Output() countSelection: EventEmitter<boolean> = new EventEmitter();
+  @Input() isLoading = false;
+  @Input() isSelected = false;
   objectsIn = Object.keys;
   filterOptions: { [key: string]: Array<FilterOptionInterface> } = {
-  //  nominatim: [],
-  //  souscategories: [],
+    //  nominatim: [],
+    //  souscategories: [],
     etablissements: [],
   };
 
@@ -92,7 +92,7 @@ export class SearchComponent implements OnInit {
         }),
         image: new Icon({
           scale: 1.5,
-          src: '/assets/icon-categorie/icon-categorie-achats.svg',
+          src: feature.get('logo_url'),
         }),
         //@ts-ignore
         text: new Text(textStyle),
@@ -102,7 +102,6 @@ export class SearchComponent implements OnInit {
     type_layer: 'searchResultLayer',
     nom: 'searchResultLayer',
   });
-
 
   constructor(public fb: FormBuilder, public apiService: ApiService) {}
 
@@ -146,7 +145,7 @@ export class SearchComponent implements OnInit {
         })
       )
       .subscribe((value: any) => {
-      /*  if (value.type == 'nominatim') {
+        /*  if (value.type == 'nominatim') {
           this.filterOptions['nominatim'] =
             new HandleNominatimSearch().formatDataForTheList(value.value);
         } else if (value.type == 'souscategories') {
@@ -155,7 +154,7 @@ export class SearchComponent implements OnInit {
             new HandleSousCategoriesSearch().formatDataForTheList(
               value.value.data
             );
-        } else */if (value.type == 'etablissements') {
+        } else */ if (value.type == 'etablissements') {
           this.filterOptions['etablissements'] =
             new HandleEtablissementsSearch().formatDataForTheList(
               value.value.data
@@ -181,7 +180,7 @@ export class SearchComponent implements OnInit {
       error: boolean;
       value: { [key: string]: any };
     }>[] = [
-     /* from(
+      /* from(
         this.apiService.getRequest(
           'api/search/souscategories?q=' + value.toString()
         )
@@ -193,9 +192,10 @@ export class SearchComponent implements OnInit {
           of({ error: _err, type: 'souscategories', value: { features: [] } })
         )
       ),
-      */];
+      */
+    ];
 
-   /* querryObs.push(
+    /* querryObs.push(
       from(
         this.apiService.getRequestFromOtherHost(
           'https://nominatim.openstreetmap.org/search?q=' +
@@ -261,11 +261,11 @@ export class SearchComponent implements OnInit {
   }
 
   displayAutocompleFn(option: FilterOptionInterface) {
-  /*  if (option.typeOption == 'nominatim') {
+    /*  if (option.typeOption == 'nominatim') {
       return new HandleNominatimSearch().displayWith(option);
     } else if (option.typeOption == 'souscategories') {
       return new HandleSousCategoriesSearch().displayWith(option);
-    } else */if (option.typeOption == 'etablissements') {
+    } else */ if (option.typeOption == 'etablissements') {
       return new HandleEtablissementsSearch().displayWith(option);
     }
     return '';
@@ -276,10 +276,10 @@ export class SearchComponent implements OnInit {
       ? selected.option.value
       : undefined;
     if (option) {
-        this.isLoading=false
-        this.countChanged.emit(this.isLoading)
-        console.log("selection "+this.isLoading)
-     /* if (option.typeOption == 'nominatim') {
+      this.isLoading = false;
+      this.countChanged.emit(this.isLoading);
+      console.log('selection ' + this.isLoading);
+      /* if (option.typeOption == 'nominatim') {
         new HandleNominatimSearch().optionSelected(option);
       } else if (option.typeOption == 'souscategories') {
         new HandleSousCategoriesSearch().optionSelected(option);

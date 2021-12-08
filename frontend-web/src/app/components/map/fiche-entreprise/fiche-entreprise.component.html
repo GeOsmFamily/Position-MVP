@@ -1,31 +1,29 @@
-
-
 <div style="background-color: #fff;color:black;height: 100vh;">
   <!-- Photo de l'entreprise-->
   <div class="parent " style="width: 100%; overflow: hidden;">
-   <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
+    <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
    -->
-   <ngb-carousel >
-    <ng-template ngbSlide *ngFor="let image of featurePoint?.get('imagesCarousel')">
-      <div class="picsum-img-wrapper">
-        <img src="{{image}}" alt="Angular Carousel 1" style="width: 100%;" class="img-fluid">
-      </div>
+    <ngb-carousel>
+      <ng-template ngbSlide *ngFor="let image of images">
+        <div class="picsum-img-wrapper">
+          <img src="{{ image }}" alt="{{ image }}" style="width: 100%;" class="img-fluid">
+        </div>
 
-    </ng-template>
+      </ng-template>
 
-  </ngb-carousel>
+    </ngb-carousel>
 
     <button style=" display: flex;
     justify-content: center;
     align-items: center; z-index:20;color: white;
-        " class="closeb"  (click)="close()">
-      <img class="img-fluid clear-logo"  src="assets/icon/icon-clear.svg" alt="fermer" />
+        " class="closeb" (click)="close()">
+      <img class="img-fluid clear-logo" src="assets/icon/icon-clear.svg" alt="fermer" />
 
     </button>
   </div>
 
   <!-- Bloc contenant les informations de l'entreprise-->
-   <div class="container" style="margin-top: 20px;margin-left: 20px;">
+  <div class="container" style="margin-top: 20px;margin-left: 20px;">
 
     <!-- Nom et catégorie de l'entreprise-->
     <div class=" clearfix">
@@ -37,37 +35,40 @@
     <div class="container" style="margin-top: 10px;margin-bottom: 10px;margin-left: -20px;">
 
 
-      <div class="item" >
+      <div class="item">
         <a href="{{'tel:'+featurePoint?.get('telephonePrincipal')}}">
-          <button  type="button" style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <button type="button"
+            style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;"
+            data-bs-toggle="modal" data-bs-target="#exampleModal">
 
-            <img src="assets/button/icon-tel.svg" style="width: 75%; cursor:pointer"/>
+            <img src="assets/button/icon-tel.svg" style="width: 75%; cursor:pointer" />
 
 
-        </button>
-      </a>
+          </button>
+        </a>
 
         <span class="caption">Contacter</span>
 
 
-    </div>
+      </div>
 
 
-    <div class="item">
+      <div class="item">
 
-      <button style=" padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-        <img src="assets/button/icon-action-vignette-itinéraire.svg" style="color:black;width: 75%;cursor:pointer;"/>
+        <button style=" padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
+          <img src="assets/button/icon-action-vignette-itinéraire.svg" style="color:black;width: 75%;cursor:pointer;" />
 
         </button>
 
 
         <span class="caption">Itinéraire</span>
-    </div>
+      </div>
 
-  <div class="item">
+      <div class="item">
 
-      <button (click)="shareLink()" style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-        <img matPrefix src="assets/button/icon-action-vignette-partager.svg"style="width: 75%; cursor:pointer">
+        <button (click)="shareLink()"
+          style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
+          <img matPrefix src="assets/button/icon-action-vignette-partager.svg" style="width: 75%; cursor:pointer">
 
         </button>
         <span class="caption">Partager</span>
@@ -76,31 +77,34 @@
 
 
 
-</div>
+      </div>
 
 
-<div class="item">
-  <button style="  padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-    <img (click)=" alert1()" src="assets/button/icon-action-vignette-enregistrer.svg" style="width:75%;cursor: pointer;">
+      <div class="item">
+        <button
+          style="  padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
+          <img (click)=" alert1()" src="assets/button/icon-action-vignette-enregistrer.svg"
+            style="width:75%;cursor: pointer;">
 
-  </button>
+        </button>
 
 
-  <span class="caption">Enregistrer</span>
-</div>
+        <span class="caption">Enregistrer</span>
+      </div>
 
 
 
     </div>
 
-<hr align="left" style="margin-left: -10px;margin-right: -6px;width: 100%;"/>
+    <hr align="left" style="margin-left: -10px;margin-right: -6px;width: 100%;" />
 
 
-<!-- Informations d'ouverture et adresse de l'entreprise-->
+    <!-- Informations d'ouverture et adresse de l'entreprise-->
     <div class="container" style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
 
 
-        <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style="    margin-top: -3px;width: 20px; float:left;"/>
+      <img class="img-fluid" src="assets/button/icon-time.svg" alt=""
+        style="    margin-top: -3px;width: 20px; float:left;" />
 
       <div style="display: inline-block;" *ngIf="featurePoint?.get('horaires')">
         <ng-container *ngFor="let h of featurePoint?.get('horaires')">
@@ -113,16 +117,18 @@
       </div>
 
       <div *ngIf="featurePoint?.get('indication')">
-        <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""  style="    margin-top: -3px; width:20px;float:left;"/>
+        <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""
+          style="    margin-top: -3px; width:20px;float:left;" />
 
 
-        <p >{{featurePoint?.get('indication')}}</p>
+        <p>{{featurePoint?.get('indication')}}</p>
 
       </div>
 
 
-         <div *ngIf="featurePoint?.get('siteInternet')">
-        <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style="    margin-top: -3px;width: 20px; float:left;"/>
+      <div *ngIf="featurePoint?.get('siteInternet')">
+        <img class="img-fluid" src="assets/button/icon-time.svg" alt=""
+          style="    margin-top: -3px;width: 20px; float:left;" />
 
 
         <p>{{featurePoint?.get('siteInternet')}}</p>
@@ -131,27 +137,20 @@
 
 
 
-  </div>
+    </div>
 
-<hr align="left" style="margin-left: -10px;margin-right: -6px;width: 100%;"/>
-  <!-- Présentation de l'entreprise-->
+    <hr align="left" style="margin-left: -10px;margin-right: -6px;width: 100%;" />
+    <!-- Présentation de l'entreprise-->
 
-  <div class="container" style="margin-left:-10px;margin-top: 10px;margin-bottom: 20px;font-family:OpenSans light ;">
+    <div class="container" style="margin-left:-10px;margin-top: 10px;margin-bottom: 20px;font-family:OpenSans light ;">
 
-     <span>Présentation</span>
-     <p style=" text-align: justify;
+      <span>Présentation</span>
+      <p style=" text-align: justify;
      text-justify: inter-word;margin-right: 15px;">
-     {{featurePoint?.get('description')}}
-     </p>
-
-  </div>
+        {{featurePoint?.get('description')}}
+      </p>
 
     </div>
+
   </div>
-
-
-
-
-
-
-
+</div>
