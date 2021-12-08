@@ -19,7 +19,7 @@ android {
         applicationId "com.sogefi.position"
         minSdk 21
         targetSdk 30
-        versionCode 7
+        versionCode 8
         versionName "0.2.0 Stable"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
