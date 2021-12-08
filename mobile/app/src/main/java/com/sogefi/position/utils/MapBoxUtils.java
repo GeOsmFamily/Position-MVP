@@ -1,17 +1,35 @@
 package com.sogefi.position.utils;
 
+import static com.mapbox.mapboxsdk.style.expressions.Expression.accumulated;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.concat;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.division;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.exponential;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.has;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.literal;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.match;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.max;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.neq;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.rgb;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineGradient;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textSize;
+
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 
@@ -30,6 +48,8 @@ import com.mapbox.mapboxsdk.style.layers.Property;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.utils.BitmapUtils;
+import com.sogefi.position.R;
 
 public class MapBoxUtils {
 
@@ -42,6 +62,8 @@ public class MapBoxUtils {
     private static final String ROUTE_LINE_SOURCE_ID = "route-source-id";
     private static final String ICON_LAYER_ID = "icon-layer-id";
     private static final String ICON_SOURCE_ID = "icon-source-id";
+    private static final String GEOJSON_SOURCE_ID = "geojson-source-id";
+    private static final String UNCLUSTERED_POINTS = "unclustered-points";
 
     public MapBoxUtils(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
@@ -78,6 +100,14 @@ public class MapBoxUtils {
     //Initialiser les sources pour tracer une route
     public void initSources(@NonNull Style loadedMapStyle) {
         loadedMapStyle.addSource(new GeoJsonSource(ROUTE_LINE_SOURCE_ID, new GeoJsonOptions().withLineMetrics(true)));
+      /*  loadedMapStyle.addSource(new GeoJsonSource(GEOJSON_SOURCE_ID, new GeoJsonOptions()
+                .withCluster(true)
+                .withClusterMaxZoom(14)
+                .withClusterRadius(10)
+                .withClusterProperty("max", max(accumulated(), get("max")), get("mag"))
+                .withClusterProperty("sum", literal("+"), get("mag"))
+                .withClusterProperty("felt", literal("any"), neq(get("felt"), literal("null")))
+        ));*/
     }
 
     //Initialiser les layers pour tracer une route
@@ -104,6 +134,33 @@ public class MapBoxUtils {
                 iconIgnorePlacement(true),
                 iconAllowOverlap(true),
                 iconOffset(new Float[]{0f, -4f})));
+
+      /* loadedMapStyle.addLayer( new SymbolLayer("unclustered-points", GEOJSON_SOURCE_ID)
+                .withProperties(
+                        iconImage("markerBatimentImage"),
+                        iconSize(
+                                division(
+                                        get("mag"), literal(4.0f)
+                                )
+                        ),
+                        iconColor(
+                                interpolate(exponential(1), get("mag"),
+                                        stop(2.0, rgb(0, 255, 0)),
+                                        stop(4.5, rgb(0, 0, 255)),
+                                        stop(7.0, rgb(255, 0, 0))
+                                )
+                        )
+                )
+                .withFilter(has("mag")));
+
+        loadedMapStyle.addLayer(new SymbolLayer("property", GEOJSON_SOURCE_ID)
+                .withProperties(
+                        textField(concat(get("point_count"), literal(", "), get("max"))),
+                        textSize(12f),
+                        textColor(Color.WHITE),
+                        textIgnorePlacement(true),
+                        textAllowOverlap(true)
+                ));*/
 
     }
 

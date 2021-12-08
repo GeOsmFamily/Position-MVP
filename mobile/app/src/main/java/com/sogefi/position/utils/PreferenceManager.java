@@ -28,8 +28,11 @@ public class PreferenceManager {
     private static final String ID = "id";
 
     private static final String ROLEID = "roleid";
+    private static final String ZONEID = "zoneid";
 
     private static final String PROFILEIMAGE = "profileimage";
+
+    private static final String ACTIVE = "active";
 
 
     SharedPreferences pref;
@@ -200,12 +203,31 @@ public class PreferenceManager {
         editor.apply();
     }
 
+
+    public String getZoneid() {
+        return pref.getString(ZONEID, "zoneid");
+    }
+
+    public void setZoneid(String zoneid) {
+        editor.putString(ZONEID, zoneid);
+        editor.apply();
+    }
+
     public String getProfileimage() {
         return pref.getString(PROFILEIMAGE, "profileimage");
     }
 
     public void setProfileimage(String profileimage) {
         editor.putString(PROFILEIMAGE, profileimage);
+        editor.apply();
+    }
+
+    public String getActive() {
+        return pref.getString(ACTIVE, "active");
+    }
+
+    public void setActive(String active) {
+        editor.putString(ACTIVE, active);
         editor.apply();
     }
 

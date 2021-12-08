@@ -28,6 +28,7 @@
 
             <ImageView
                 android:id="@+id/back_btn"
+                android:visibility="gone"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical|left"
@@ -39,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Nouvelle Entreprise (2/5)"
+                android:text="Nouvelle Entreprise (2/4)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -72,7 +73,7 @@
                 android:background="@drawable/round_edittext_background"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="90dp"
+                android:layout_marginTop="50dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -85,11 +86,13 @@
                 <customfonts.EditTextSFProDisplayRegular
                     android:id="@+id/name"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="80dp"
                     android:singleLine="true"
                     android:background="@drawable/round_edittext_background"
                     android:hint="Nom de l'entreprise"
                     android:textSize="15dp"
+                    android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"/>
@@ -117,7 +120,7 @@
                 <customfonts.EditTextSFProDisplayRegular
                     android:id="@+id/etage"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="80dp"
                     android:background="@drawable/round_edittext_background"
                     android:hint="Numéro étage"
                     android:textSize="15dp"
@@ -130,7 +133,7 @@
 
 
             <LinearLayout
-                android:id="@+id/llcategory"
+                android:id="@+id/llsearchcategorie"
                 android:layout_below="@+id/lletage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,27 +149,181 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_sort_24"/>
+                    android:src="@drawable/ic_search_black_24dp"/>
 
-                <Spinner
+                <customfonts.EditTextSFProDisplayRegular
+                    android:id="@+id/searchcategorie"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/round_edittext_background"
+                    android:hint="Rechercher une sous catégorie"
+                    android:textSize="15dp"
+                    android:singleLine="true"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"/>
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/llsearchcategorie"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+
+
+                android:background="@drawable/round_edittext_background"
+                android:padding="4dp"
+                android:scrollbars="vertical" />
+
+
+            <LinearLayout
+                android:id="@+id/llcategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recyclerViewSearch"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/round_edittext_background"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_sort_24" />
+
+                <customfonts.TextViewSFProDisplayRegular
                     android:id="@+id/category"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Catégorie"
+                    android:background="@drawable/round_edittext_background"
+
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llamenities"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/llcategory"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/round_edittext_background"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_sort_24" />
+
+                <customfonts.TextViewSFProDisplayRegular
+                    android:id="@+id/sous_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Sous Catégorie"
+                    android:background="@drawable/round_edittext_background"
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llautres"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/llamenities"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/round_edittext_background"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_sort_24" />
+
+                <customfonts.EditTextSFProDisplayRegular
+                    android:id="@+id/autres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/round_edittext_background"
+                    android:gravity="center_vertical"
+                    android:hint="Mots clés"
+                    android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/llbuttonadd"
+                android:layout_below="@+id/llamenities"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_add"/>
+
+                <TextView
+                    android:id="@+id/addSousCategorie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:background="@drawable/round_edittext_background"
-
+                    android:layout_marginTop="6dp"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
+                    android:text="Ajouter une sous catégorie"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"/>
             </LinearLayout>
 
 
             <LinearLayout
-                android:id="@+id/llamenities"
-                android:layout_below="@+id/llcategory"
+                android:id="@+id/llamenities2"
+                android:layout_below="@+id/llbuttonadd"
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:orientation="horizontal"
                 android:background="@drawable/round_edittext_background"
                 android:layout_marginRight="10dp"
@@ -182,9 +339,9 @@
                     android:src="@drawable/ic_baseline_sort_24"/>
 
                 <Spinner
-                    android:id="@+id/sous_categories"
+                    android:id="@+id/sous_categories2"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
                     android:textSize="15dp"
@@ -195,7 +352,7 @@
 
             <LinearLayout
                 android:id="@+id/lldescription"
-                android:layout_below="@+id/llamenities"
+                android:layout_below="@+id/llbuttonadd"
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -225,9 +382,9 @@
 
             <LinearLayout
                 android:id="@+id/llcover"
-                android:layout_below="@id/lldescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/llautres"
                 android:gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
@@ -257,8 +414,33 @@
                         android:src="@drawable/camera" />
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/cover2"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/round_edittext_background" />
+
+                    <ImageView
+                        android:id="@+id/add2"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/camera" />
+                </RelativeLayout>
+
 
             </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/groupButton"

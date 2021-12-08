@@ -71,8 +71,12 @@ class HoraireController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1 || $role == 3) {
-            $horaire = Horaire::find($id);
+        $horaire = Horaire::find($id);
+
+        $idUserCommercial = $horaire->etablissement->commercial->idUser;
+
+        if ($role == 1 || $user->id = $idUserCommercial) {
+
 
             $horaire->heureOuverture = $request->heureOuverture ?? $horaire->heureOuverture;
             $horaire->heureFermeture = $request->heureFermeture ?? $horaire->heureFermeture;

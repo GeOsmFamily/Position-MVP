@@ -28,6 +28,7 @@
 
             <ImageView
                 android:id="@+id/back_btn5"
+                android:visibility="gone"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical|left"
@@ -39,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Nouveau Batiment (1/5)"
+                android:text="Nouveau Batiment (1/4)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
         </FrameLayout>
@@ -64,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="60dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/round_edittext_background"
                 android:orientation="horizontal"
@@ -80,11 +81,12 @@
                 <customfonts.EditTextSFProDisplayRegular
                     android:id="@+id/name5"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/round_edittext_background"
                     android:hint="Nom du Batiment"
-                    android:singleLine="true"
+                    android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"
                     android:textSize="15dp" />
@@ -112,7 +114,7 @@
                 <customfonts.EditTextSFProDisplayRegular
                     android:id="@+id/niveaux5"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/round_edittext_background"
                     android:hint="Nombre Niveaux"
@@ -180,7 +182,7 @@
                 <customfonts.TextViewSFProDisplayRegular
                     android:id="@+id/addressName"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/round_edittext_background"
                     android:gravity="center_vertical"
@@ -249,11 +251,12 @@
                 <customfonts.EditTextSFProDisplayRegular
                     android:id="@+id/quartier5"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/round_edittext_background"
                     android:hint="Quartier"
-                    android:inputType="text"
+                    android:textAllCaps="true"
+                    android:inputType="textCapCharacters"
                     android:singleLine="true"
                     android:textColor="@android:color/black"
                     android:textColorHint="@android:color/darker_gray"
@@ -315,7 +318,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/button_round_1"
-                    android:text="Retour" />
+                    android:text="Accueil" />
 
                 <customfonts.Button_SF_Pro_Display_Medium
                     android:id="@+id/next5"

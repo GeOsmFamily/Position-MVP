@@ -8,163 +8,163 @@ import java.util.List;
 
 public class DataBatiments {
 
-        @SerializedName("nom")
-        @Expose
-        private String nom;
-        @SerializedName("nombreNiveaux")
-        @Expose
-        private String nombreNiveaux;
-        @SerializedName("codeBatiment")
-        @Expose
-        private String codeBatiment;
-        @SerializedName("longitude")
-        @Expose
-        private String longitude;
-        @SerializedName("latitude")
-        @Expose
-        private String latitude;
-        @SerializedName("indication")
-        @Expose
-        private String indication;
-        @SerializedName("rue")
-        @Expose
-        private String rue;
-        @SerializedName("ville")
-        @Expose
-        private String ville;
-        @SerializedName("commune")
-        @Expose
-        private String commune;
-        @SerializedName("quartier")
-        @Expose
-        private String quartier;
-        @SerializedName("image")
-        @Expose
-        private String image;
-        @SerializedName("updated_at")
-        @Expose
-        private String updatedAt;
-        @SerializedName("created_at")
-        @Expose
-        private String createdAt;
-        @SerializedName("id")
-        @Expose
-        private Integer id;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("nom")
+    @Expose
+    private String nom;
+    @SerializedName("nombreNiveaux")
+    @Expose
+    private Integer nombreNiveaux;
+    @SerializedName("codeBatiment")
+    @Expose
+    private String codeBatiment;
+    @SerializedName("longitude")
+    @Expose
+    private String longitude;
+    @SerializedName("latitude")
+    @Expose
+    private String latitude;
+    @SerializedName("image")
+    @Expose
+    private String image;
+    @SerializedName("indication")
+    @Expose
+    private String indication;
+    @SerializedName("rue")
+    @Expose
+    private String rue;
+    @SerializedName("ville")
+    @Expose
+    private String ville;
+    @SerializedName("commune")
+    @Expose
+    private String commune;
+    @SerializedName("quartier")
+    @Expose
+    private String quartier;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
     @SerializedName("etablissements")
     @Expose
     private List<DataEtablissements> etablissements = null;
 
-        public String getNom() {
-            return nom;
-        }
+    public Integer getId() {
+        return id;
+    }
 
-        public void setNom(String nom) {
-            this.nom = nom;
-        }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-        public String getNombreNiveaux() {
-            return nombreNiveaux;
-        }
+    public String getNom() {
+        return nom;
+    }
 
-        public void setNombreNiveaux(String nombreNiveaux) {
-            this.nombreNiveaux = nombreNiveaux;
-        }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
-        public String getCodeBatiment() {
-            return codeBatiment;
-        }
+    public Integer getNombreNiveaux() {
+        return nombreNiveaux;
+    }
 
-        public void setCodeBatiment(String codeBatiment) {
-            this.codeBatiment = codeBatiment;
-        }
+    public void setNombreNiveaux(Integer nombreNiveaux) {
+        this.nombreNiveaux = nombreNiveaux;
+    }
 
-        public String getLongitude() {
-            return longitude;
-        }
+    public String getCodeBatiment() {
+        return codeBatiment;
+    }
 
-        public void setLongitude(String longitude) {
-            this.longitude = longitude;
-        }
+    public void setCodeBatiment(String codeBatiment) {
+        this.codeBatiment = codeBatiment;
+    }
 
-        public String getLatitude() {
-            return latitude;
-        }
+    public String getLongitude() {
+        return longitude;
+    }
 
-        public void setLatitude(String latitude) {
-            this.latitude = latitude;
-        }
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
 
-        public String getIndication() {
-            return indication;
-        }
+    public String getLatitude() {
+        return latitude;
+    }
 
-        public void setIndication(String indication) {
-            this.indication = indication;
-        }
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
 
-        public String getRue() {
-            return rue;
-        }
+    public String getImage() {
+        return image;
+    }
 
-        public void setRue(String rue) {
-            this.rue = rue;
-        }
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-        public String getVille() {
-            return ville;
-        }
+    public String getIndication() {
+        return indication;
+    }
 
-        public void setVille(String ville) {
-            this.ville = ville;
-        }
+    public void setIndication(String indication) {
+        this.indication = indication;
+    }
 
-        public String getCommune() {
-            return commune;
-        }
+    public String getRue() {
+        return rue;
+    }
 
-        public void setCommune(String commune) {
-            this.commune = commune;
-        }
+    public void setRue(String rue) {
+        this.rue = rue;
+    }
 
-        public String getQuartier() {
-            return quartier;
-        }
+    public String getVille() {
+        return ville;
+    }
 
-        public void setQuartier(String quartier) {
-            this.quartier = quartier;
-        }
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
 
-        public String getImage() {
-            return image;
-        }
+    public String getCommune() {
+        return commune;
+    }
 
-        public void setImage(String image) {
-            this.image = image;
-        }
+    public void setCommune(String commune) {
+        this.commune = commune;
+    }
 
-        public String getUpdatedAt() {
-            return updatedAt;
-        }
+    public String getQuartier() {
+        return quartier;
+    }
 
-        public void setUpdatedAt(String updatedAt) {
-            this.updatedAt = updatedAt;
-        }
+    public void setQuartier(String quartier) {
+        this.quartier = quartier;
+    }
 
-        public String getCreatedAt() {
-            return createdAt;
-        }
+    public String getCreatedAt() {
+        return createdAt;
+    }
 
-        public void setCreatedAt(String createdAt) {
-            this.createdAt = createdAt;
-        }
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
 
-        public Integer getId() {
-            return id;
-        }
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
 
-        public void setId(Integer id) {
-            this.id = id;
-        }
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public List<DataEtablissements> getEtablissements() {
         return etablissements;

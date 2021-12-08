@@ -1,6 +1,7 @@
 package com.sogefi.position.ui.activities;
 
 import static com.sogefi.position.utils.Constants.API_KEY;
+import static com.sogefi.position.utils.Constants.IMAGEURL;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
@@ -26,9 +28,11 @@ import com.sogefi.position.models.Telephones;
 import com.sogefi.position.models.data.DataEtablissements;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.PreferenceManager;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,6 +50,7 @@ public class NewBusiness2Activity extends AppCompatActivity {
     ProgressBar progress;
     PreferenceManager pref;
     ProgressBar progressBar;
+    DataEtablissements dataEtablissements;
 
 
 
@@ -56,7 +61,10 @@ public class NewBusiness2Activity extends AppCompatActivity {
 
         pref = new PreferenceManager(this);
 
-        String idEtablissement = getIntent().getStringExtra("idEtablissement");
+
+        String etablissement = getIntent().getStringExtra("etablissement");
+
+        dataEtablissements = new Gson().fromJson(etablissement, DataEtablissements.class);
 
         phone = findViewById(R.id.phone);
         whatsapp1 = findViewById(R.id.whatsapp1);
@@ -75,6 +83,25 @@ public class NewBusiness2Activity extends AppCompatActivity {
         back2.setOnClickListener(v -> finish());
 
 
+        if(dataEtablissements != null) {
+
+            for (int i = 0; i < dataEtablissements.getTelephones().size(); i++) {
+                if(dataEtablissements.getTelephones().get(i).getPrincipal().equals("1")) {
+                    phone.setText(dataEtablissements.getTelephones().get(i).getNumero());
+                } if(dataEtablissements.getTelephones().get(i).getPrincipal().equals("1")) {
+                    whatsapp1.setText(dataEtablissements.getTelephones().get(1).getNumero());
+                }
+            }
+
+            code_postal.setText(dataEtablissements.getCodePostal());
+            site_internet.setText(dataEtablissements.getSiteInternet());
+
+
+
+
+        }
+
+
 
         next2.setOnClickListener(v -> {
             String getphone = phone.getText().toString();
@@ -88,25 +115,18 @@ public class NewBusiness2Activity extends AppCompatActivity {
             if(TextUtils.isEmpty(getphone) || getphone.length() != 9){
                 Toast.makeText(this, "Entrez un numéro valide pour l'entreprise", Toast.LENGTH_SHORT).show();
             }
-            if(TextUtils.isEmpty(getwhatsapp1)|| getwhatsapp1.length() != 9){
+            else if(TextUtils.isEmpty(getwhatsapp1)|| getwhatsapp1.length() != 9){
                 Toast.makeText(this, "Entrez le numéro whatsapp valide", Toast.LENGTH_SHORT).show();
             }
 
-            if(!TextUtils.isEmpty(getwhatsapp2) && getwhatsapp2.length() != 9){
+            else if(!TextUtils.isEmpty(getwhatsapp2) && getwhatsapp2.length() != 9){
                 Toast.makeText(this, "Entrez le numéro whatsapp valide", Toast.LENGTH_SHORT).show();
             }
-            if(!TextUtils.isEmpty(getwhatsapp2) && getwhatsapp2.length() != 9){
+           else if(!TextUtils.isEmpty(getwhatsapp2) && getwhatsapp2.length() != 9){
                 Toast.makeText(this, "Entrez le numéro whatsapp valide", Toast.LENGTH_SHORT).show();
             }
-          /*  if(!TextUtils.isEmpty(getsiteinternet)){
-                Pattern p = Pattern.compile("^(http:\\/\\/|https:\\/\\/)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?$");
-                Matcher m;
-                m=p.matcher(getsiteinternet);
-            }*/
-
-
             else {
-                sendData(idEtablissement,getphone,getwhatsapp1,getwhatsapp2,getindication,getcodepostal,getsiteinternet);
+                sendData(getphone,getwhatsapp1,getwhatsapp2,getindication,getcodepostal,getsiteinternet);
             }
 
         });
@@ -114,9 +134,46 @@ public class NewBusiness2Activity extends AppCompatActivity {
 
     }
 
-    public void sendData(String idEtablissement,String phone,String whatsapp1,String whatsapp2, String indication,String codepostal,String siteinternet) {
-        progressBar.setVisibility(View.VISIBLE);
-        DataEtablissements dataEtablissements = new DataEtablissements();
+    public void sendData(String phone,String whatsapp1,String whatsapp2, String indication,String codepostal,String siteinternet) {
+       // Toast.makeText(getApplicationContext(), getIntent().getStringExtra("rue"), Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(NewBusiness2Activity.this, NewBusiness3Activity.class);
+        intent.putExtra("idBatiment", getIntent().getStringExtra("idBatiment"));
+        intent.putExtra("nomBatiment", getIntent().getStringExtra("nomBatiment"));
+        intent.putExtra("nombreNiveaux", getIntent().getStringExtra("nombreNiveaux"));
+        intent.putExtra("codeBatiment", getIntent().getStringExtra("codeBatiment"));
+        intent.putExtra("longitude", getIntent().getStringExtra("longitude"));
+        intent.putExtra("latitude", getIntent().getStringExtra("latitude"));
+        intent.putExtra("indication", getIntent().getStringExtra("indication"));
+        intent.putExtra("rue", getIntent().getStringExtra("rue"));
+        intent.putExtra("ville", getIntent().getStringExtra("ville"));
+        intent.putExtra("commune", getIntent().getStringExtra("commune"));
+        intent.putExtra("quartier", getIntent().getStringExtra("quartier"));
+        intent.putExtra("imageBatiment", (File) getIntent().getExtras().get("imageBatiment"));
+
+        intent.putExtra("nomEtablissement", getIntent().getStringExtra("nomEtablissement"));
+        intent.putExtra("idSousCategorie", getIntent().getStringExtra("idSousCategorie"));
+        intent.putExtra("autres", getIntent().getStringExtra("autres"));
+        intent.putExtra("etage", getIntent().getStringExtra("etage"));
+        intent.putExtra("description", getIntent().getStringExtra("description"));
+        intent.putExtra("coverEtablissement", (File) getIntent().getExtras().get("coverEtablissement"));
+        intent.putExtra("imageEtablissement", (File) getIntent().getExtras().get("imageEtablissement"));
+
+        intent.putExtra("indicationAdresse", indication);
+        intent.putExtra("codepostal", codepostal);
+        intent.putExtra("siteinternet", siteinternet);
+        intent.putExtra("telephone", phone);
+        intent.putExtra("whatsapp1", whatsapp1);
+        intent.putExtra("whatsapp2", whatsapp2);
+        if(dataEtablissements != null) {
+            intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
+            intent.putExtra("imageN", getIntent().getStringExtra("imageN"));
+        }
+        startActivity(intent);
+
+        /*progressBar.setVisibility(View.VISIBLE);
+
+
+          DataEtablissements dataEtablissements = new DataEtablissements();
         dataEtablissements.setIndicationAdresse(indication);
         dataEtablissements.setCodePostal(codepostal);
         dataEtablissements.setSiteInternet(siteinternet);
@@ -221,7 +278,7 @@ public class NewBusiness2Activity extends AppCompatActivity {
         } else {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
-        }
+        }*/
 
 
     }

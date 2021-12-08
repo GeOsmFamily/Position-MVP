@@ -22,11 +22,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.gson.Gson;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.sogefi.position.R;
 import com.sogefi.position.api.APIClient;
 import com.sogefi.position.api.ApiInterface;
 import com.sogefi.position.models.Batiments;
 import com.sogefi.position.models.Nominatim;
+import com.sogefi.position.models.data.DataEtablissements;
 import com.sogefi.position.utils.Function;
 import com.sogefi.position.utils.PreferenceManager;
 import com.squareup.picasso.Picasso;
@@ -56,6 +59,7 @@ public class NewBusiness5Activity extends AppCompatActivity {
     TextView address,addressName;
     File image;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +70,9 @@ public class NewBusiness5Activity extends AppCompatActivity {
         String longitude = getIntent().getStringExtra("longitude");
         String latitude = getIntent().getStringExtra("latitude");
         String adresseName = getIntent().getStringExtra("adresseName");
+
+
+
 
         name5 = findViewById(R.id.name5);
         niveaux5 = findViewById(R.id.niveaux5);
@@ -81,6 +88,7 @@ public class NewBusiness5Activity extends AppCompatActivity {
         back = findViewById(R.id.back5);
         add = findViewById(R.id.add);
 
+
         progressBar5.setVisibility(View.GONE);
         scrollView5.setVisibility(View.VISIBLE);
 
@@ -93,17 +101,11 @@ public class NewBusiness5Activity extends AppCompatActivity {
         String[] coordinates = address.getText().toString().split(",");
 
         lladdress5.setOnClickListener(v -> {
-            Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
-            intent.putExtra("longitude",coordinates[0]);
-            intent.putExtra("latitude",coordinates[1]);
-           startActivityForResult(intent,202);
+            finish();
         });
 
         lladdressName5.setOnClickListener(v -> {
-            Intent intent = new Intent(NewBusiness5Activity.this, PicklocationActivity.class);
-            intent.putExtra("longitude",coordinates[0]);
-            intent.putExtra("latitude",coordinates[1]);
-            startActivityForResult(intent,202);
+            finish();
         });
 
         image5.setOnClickListener(v -> chooseImage());
@@ -172,9 +174,26 @@ public class NewBusiness5Activity extends AppCompatActivity {
     }
 
     public void saveBatiment(String nom, String nombreNiveaux, String codeBatiment, String longitude, String latitude, String indication, String rue, String ville, String commune, String quartier) {
-RequestBody requestBody;
+      //  Toast.makeText(getApplicationContext(), rue, Toast.LENGTH_LONG).show();
+        RequestBody requestBody;
         if(image != null) {
-            RequestBody requestFile =
+            progressBar5.setVisibility(View.GONE);
+            Intent intent = new Intent(NewBusiness5Activity.this, NewBusinessActivity.class);
+            intent.putExtra("nomBatiment", nom);
+                    intent.putExtra("nombreNiveaux", nombreNiveaux);
+                    intent.putExtra("codeBatiment", codeBatiment);
+                    intent.putExtra("longitude", longitude);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("indication", indication);
+                    intent.putExtra("rue", rue);
+                    intent.putExtra("ville", ville);
+                    intent.putExtra("commune", commune);
+                    intent.putExtra("quartier", quartier);
+            intent.putExtra("imageBatiment",image);
+            startActivity(intent);
+
+
+          /*  RequestBody requestFile =
                     RequestBody.create(MediaType.parse("multipart/form-data"), image);
              requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
@@ -210,7 +229,6 @@ RequestBody requestBody;
                             intent.putExtra("idBatiment",String.valueOf(idBatiment));
                             intent.putExtra("nombreNiveau",String.valueOf(nombreNiveau));
                             startActivity(intent);
-                            finish();
                         }
 
                         progressBar5.setVisibility(View.GONE);
@@ -229,7 +247,7 @@ RequestBody requestBody;
             } else {
                 progressBar5.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
-            }
+            }*/
         } else {
             progressBar5.setVisibility(View.GONE);
             Toast.makeText(this, "Ajouter une image", Toast.LENGTH_SHORT).show();

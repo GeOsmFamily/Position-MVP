@@ -1,35 +1,33 @@
-package com.sogefi.position.models;
+package com.sogefi.position.models.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.sogefi.position.models.data.DataCategories;
+import com.sogefi.position.models.Commercial;
 
 import java.util.List;
 
-
-
-public class SousCategory {
+public class DataZones {
     @SerializedName("id")
     @Expose
     private Integer id;
     @SerializedName("nom")
     @Expose
     private String nom;
-    @SerializedName("idCategorie")
+    @SerializedName("ville")
     @Expose
-    private Integer idCategorie;
-    @SerializedName("logoUrl")
+    private String ville;
+    @SerializedName("limite")
     @Expose
-    private String logoUrl;
+    private String limite;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
-    @SerializedName("categorie")
+    @SerializedName("commerciaux")
     @Expose
-    private DataCategories categorie;
+    private List<Commercial> commerciaux = null;
 
     public Integer getId() {
         return id;
@@ -47,20 +45,20 @@ public class SousCategory {
         this.nom = nom;
     }
 
-    public Integer getIdCategorie() {
-        return idCategorie;
+    public String getVille() {
+        return ville;
     }
 
-    public void setIdCategorie(Integer idCategorie) {
-        this.idCategorie = idCategorie;
+    public void setVille(String ville) {
+        this.ville = ville;
     }
 
-    public String getLogoUrl() {
-        return logoUrl;
+    public String getLimite() {
+        return limite;
     }
 
-    public void setLogoUrl(String logoUrl) {
-        this.logoUrl = logoUrl;
+    public void setLimite(String limite) {
+        this.limite = limite;
     }
 
     public String getCreatedAt() {
@@ -79,13 +77,11 @@ public class SousCategory {
         this.updatedAt = updatedAt;
     }
 
-
-    public DataCategories getCategorie() {
-        return categorie;
+    public List<Commercial> getCommerciaux() {
+        return commerciaux;
     }
 
-    public void setCategorie(DataCategories categorie) {
-        this.categorie = categorie;
+    public void setCommerciaux(List<Commercial> commerciaux) {
+        this.commerciaux = commerciaux;
     }
-
 }

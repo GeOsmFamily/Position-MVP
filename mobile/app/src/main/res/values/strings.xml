@@ -1,6 +1,6 @@
 <resources>
     <string name="mapbox_access_token">pk.eyJ1IjoiZ2F1dHk5NiIsImEiOiJjanN4aDd2cG8wMmw3NDRwaDc2cnc2OXJwIn0.YRVVo-3FkQtfkMPH4lt2hw</string>
-    <string name="app_name">Position</string>
+    <string name="app_name">PositionCollect</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="version">Version</string>
 
@@ -103,7 +103,7 @@
     <string name="connectToSaveBusiness">Login to register an establishment</string>
     <string name="noCommercial">You are not a salesman</string>
     <string name="connectToViewBusiness">Log in with your manager account to see your establishment</string>
-    <string name="app_version" translatable="false">v0.1.5+Build01</string>
+    <string name="app_version" translatable="false">v0.2.0 Stable</string>
     <string name="description">Description</string>
     <string name="About_us">A propos de nous</string>
     <string name="mail">Email</string>

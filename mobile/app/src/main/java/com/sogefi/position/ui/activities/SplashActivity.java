@@ -22,6 +22,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -38,12 +39,14 @@ public class SplashActivity extends AppCompatActivity implements PermissionsList
     private static final String DEEPLINK_QUERY_FRIEND_POSITION = "friend_position";
     String friendPosition;
     private PermissionsManager permissionsManager;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         getSharedPosition();
 

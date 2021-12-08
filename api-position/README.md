@@ -301,7 +301,13 @@ Response
         "ville":"Douala",
         "quartier":"Yassa",
         "imageProfil":null,
-        "zone":"Akwa"
+        "idZone": 1,
+        "sexe" : "M",
+        "whatsapp" : "699999999",
+        "diplome" : "BAC",
+        "tailleTshirt" : "XL",
+        "age" : 23
+
     }
 ],
 "message":"Liste des Commerciaux"
@@ -329,7 +335,12 @@ X-Authorization : yourApiKey
     "ville":"Douala",
     "quartier":"Yassa",
     "file":null,
-    "zone":"Akwa"
+    "idZone": 1,
+    "sexe" : "M",
+    "whatsapp" : "699999999",
+    "diplome" : "BAC",
+    "tailleTshirt" : "XL",
+    "age" : 23
 }
 
 ```
@@ -345,7 +356,12 @@ Response
     "numeroBadge": "12",
     "ville": "Douala",
     "quartier": "Yassa",
-    "zone": "Akwa",
+    "idZone": "Akwa",
+    "sexe" : "M",
+    "whatsapp" : "699999999",
+    "diplome" : "BAC",
+    "tailleTshirt" : "XL",
+    "age" : 23,
     "idUser": 6,
     "updated_at": "2021-11-08T16:23:21.000000Z",
     "created_at": "2021-11-08T16:23:21.000000Z",
@@ -392,7 +408,12 @@ Response
         "quartier":"Yassa",
         "imageProfil":null,
         "zone":"Akwa",
-        "actif":"1"
+        "actif":"1",
+        "sexe" : "M",
+        "whatsapp" : "699999999",
+        "diplome" : "BAC",
+        "tailleTshirt" : "XL",
+        "age" : 23
     }
 ],
 "message":"Commercial"
@@ -419,7 +440,12 @@ X-Authorization : yourApiKey
     "quartier":"Yassa",
     "file":null,
     "zone":"Akwa",
-    "actif" : "0"
+    "actif" : "0",
+    "sexe" : "M",
+    "whatsapp" : "699999999",
+    "diplome" : "BAC",
+    "tailleTshirt" : "XL",
+    "age" : 23
 }
 
 ```
@@ -440,6 +466,11 @@ Response
     "imageProfil": null,
     "zone": "Akwa",
     "actif": 1,
+    "sexe" : "M",
+    "whatsapp" : "699999999",
+    "diplome" : "BAC",
+    "tailleTshirt" : "XL",
+    "age" : 23
     "created_at": "2021-11-08T16:23:21.000000Z",
     "updated_at": "2021-11-08T16:23:21.000000Z"
 },
@@ -1791,6 +1822,229 @@ Response
 ```
 
 [DELETE api/horaires/{id}](http://127.0.0.1:8000/api/horaires/{id}) - Delete Horaire
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
+{
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": "",
+    "message": "Suppression réussie"
+}
+
+```
+
+## Zones
+
+[GET api/zones](http://127.0.0.1:8000/api/zones) - Zones List
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+X-Authorization : yourApiKey
+{
+
+}
+
+```
+
+Response
+
+```
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "nom": "Zone 1.1",
+            "ville": "Yaoundé",
+            "limite": "/storage/uploads/zones/Zone 1.1/1638448161_mfoundi.geojson",
+            "created_at": "2021-12-02T12:29:21.000000Z",
+            "updated_at": "2021-12-02T12:29:21.000000Z",
+            "commerciaux": []
+        },
+        {
+            "id": 2,
+            "nom": "zone1_1",
+            "ville": "Yaoundé",
+            "limite": "/storage/uploads/zones/zone1_1/1638448222_mfoundi.geojson",
+            "created_at": "2021-12-02T12:30:22.000000Z",
+            "updated_at": "2021-12-02T12:30:22.000000Z",
+            "commerciaux": [
+                {
+                    "id": 2,
+                    "idUser": 5,
+                    "numeroCni": 12345678,
+                    "numeroBadge": 52,
+                    "ville": "Yaounde",
+                    "quartier": "Melen",
+                    "imageProfil": "/storage/uploads/commerciaux/profils/1637279707_Image1.jpg",
+                    "idZone": 2,
+                    "actif": 1,
+                    "sexe": "",
+                    "age": 0,
+                    "tailleTshirt": "",
+                    "diplome": "",
+                    "whatsapp": "",
+                    "created_at": "2021-11-18T23:55:07.000000Z",
+                    "updated_at": "2021-11-18T23:55:07.000000Z"
+                },
+                {
+                    "id": 3,
+                    "idUser": 6,
+                    "numeroCni": 12345678,
+                    "numeroBadge": 259,
+                    "ville": "Douala",
+                    "quartier": "yassa",
+                    "imageProfil": "/storage/uploads/commerciaux/profils/1637590800_images.jpg",
+                    "idZone": 2,
+                    "actif": 1,
+                    "sexe": "",
+                    "age": 0,
+                    "tailleTshirt": "",
+                    "diplome": "",
+                    "whatsapp": "",
+                    "created_at": "2021-11-22T14:20:00.000000Z",
+                    "updated_at": "2021-11-22T14:20:00.000000Z"
+                }
+            ]
+        }
+    ],
+    "message": "Liste des Zones"
+}
+
+```
+
+[POST api/zones](http://127.0.0.1:8000/api/zones) - Zone Add
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
+{
+
+            "nom": "zone1_1",
+            "ville": "YAOUNDE",
+            "file": file,
+
+}
+
+```
+
+Response
+
+```
+
+{
+    "success": true,
+    "data": {
+        "nom": "zone1_2",
+        "ville": "Yaoundé",
+        "updated_at": "2021-12-02T12:37:45.000000Z",
+        "created_at": "2021-12-02T12:37:45.000000Z",
+        "id": 3,
+        "limite": "/storage/uploads/zones/zone1_2/1638448665_mfoundi.geojson"
+    },
+    "message": "Création de la zone reussie"
+}
+
+```
+
+[GET api/zones/{id}](http://127.0.0.1:8000/api/zones/{id}) - Zone by Id
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+X-Authorization : yourApiKey
+{
+
+}
+
+```
+
+Response
+
+```
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "nom": "Zone 1.1",
+        "ville": "Yaoundé",
+        "limite": "/storage/uploads/zones/Zone 1.1/1638448161_mfoundi.geojson",
+        "created_at": "2021-12-02T12:29:21.000000Z",
+        "updated_at": "2021-12-02T12:29:21.000000Z",
+        "commerciaux": []
+    },
+    "message": "Zone"
+}
+
+```
+
+[PUT api/zones/{id}](http://127.0.0.1:8000/api/zones/{id}) - Update Zone Field
+
+Request
+
+```
+
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer YourAccessToken
+X-Authorization : yourApiKey
+{
+        "nom": "zone1_1",
+        "ville": "YAOUNDE",
+        "file": file,
+}
+
+```
+
+Response
+
+```
+
+{
+"success": true,
+    "data": {
+        "id": 1,
+        "nom": "Zone 1.1",
+        "ville": "Yaoundé",
+        "limite": "/storage/uploads/zones/Zone 1.1/1638448161_mfoundi.geojson",
+        "created_at": "2021-12-02T12:29:21.000000Z",
+        "updated_at": "2021-12-02T12:29:21.000000Z",
+        "commerciaux": []
+    },
+    "message": "Update Success"
+}
+
+```
+
+[DELETE api/zones/{id}](http://127.0.0.1:8000/api/zones/{id}) - Delete Zone
 
 Request
 

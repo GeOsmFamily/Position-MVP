@@ -10,9 +10,11 @@ import com.sogefi.position.models.Images;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
 import com.sogefi.position.models.SearchEtablissement;
+import com.sogefi.position.models.SearchSousCategories;
 import com.sogefi.position.models.Telephones;
 import com.sogefi.position.models.Tracking;
 import com.sogefi.position.models.UserModel;
+import com.sogefi.position.models.Zones;
 import com.sogefi.position.models.data.DataBatiments;
 import com.sogefi.position.models.data.DataEtablissements;
 import com.sogefi.position.models.data.DataTracking;
@@ -71,21 +73,31 @@ public interface ApiInterface {
     @POST("api/etablissements")
     Call<Etablissements> addetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);
 
-    @Headers({"Content-Type: application/json"})
+
+    @POST("api/etablissements/{id}")
+    Call<Etablissements> updateetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body,@Path("id") int idEtablissement);
+
+   /* @Headers({"Content-Type: application/json"})
     @PUT("api/etablissements/{id}")
-    Call<Etablissements> updateetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body DataEtablissements body, @Path("id") int idEtablissement);
+    Call<Etablissements> updateetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body DataEtablissements body, @Path("id") int idEtablissement);*/
 
     @POST("api/images")
     Call<Images> addimage(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);
 
+    @POST("api/images/{id}")
+    Call<Images> updateimage(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body,@Path("id") int idImage);
 
     @POST("api/telephones")
     Call<Telephones> addtelephone(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);
 
+    @POST("api/telephones/{id}")
+    Call<Telephones> updatetelephone(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body,@Path("id") int idPhone);
 
     @POST("api/horaires")
     Call<Horaires> addhoraire(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);
 
+    @POST("api/horaires/{id}")
+    Call<Horaires> updatehoraire(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body,@Path("id") int idHoraire);
 
     @POST("api/tracking")
     Call<Tracking> addtracking(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body DataTracking body);
@@ -93,5 +105,11 @@ public interface ApiInterface {
     @GET("api/search/etablissements")
     Call<SearchEtablissement> searchetablissement(@Header("X-Authorization") String apiKey, @Query("q") String q);
 
+
+    @GET("api/search/souscategories")
+    Call<SearchSousCategories> searchsouscategories(@Header("X-Authorization") String apiKey, @Query("q") String q);
+
+    @GET("api/zones/{id}")
+    Call<Zones> getzone(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Path("id") int idZone);
 }
 

@@ -4,6 +4,18 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Commercial {
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
+    @SerializedName("role")
+    @Expose
+    private Integer role;
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -25,18 +37,59 @@ public class Commercial {
     @SerializedName("imageProfil")
     @Expose
     private String imageProfil;
-    @SerializedName("zone")
+    @SerializedName("idZone")
     @Expose
-    private String zone;
+    private Integer idZone;
     @SerializedName("actif")
     @Expose
     private Integer actif;
-    @SerializedName("created_at")
+    @SerializedName("sexe")
     @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
+    private String sexe;
+    @SerializedName("whatsapp")
     @Expose
-    private String updatedAt;
+    private String whatsapp;
+    @SerializedName("diplome")
+    @Expose
+    private String diplome;
+    @SerializedName("tailleTshirt")
+    @Expose
+    private String tailleTshirt;
+    @SerializedName("age")
+    @Expose
+    private Integer age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
+    }
 
     public Integer getId() {
         return id;
@@ -94,12 +147,12 @@ public class Commercial {
         this.imageProfil = imageProfil;
     }
 
-    public String getZone() {
-        return zone;
+    public Integer getIdZone() {
+        return idZone;
     }
 
-    public void setZone(String zone) {
-        this.zone = zone;
+    public void setIdZone(Integer idZone) {
+        this.idZone = idZone;
     }
 
     public Integer getActif() {
@@ -110,19 +163,43 @@ public class Commercial {
         this.actif = actif;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getSexe() {
+        return sexe;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setSexe(String sexe) {
+        this.sexe = sexe;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public String getWhatsapp() {
+        return whatsapp;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setWhatsapp(String whatsapp) {
+        this.whatsapp = whatsapp;
+    }
+
+    public String getDiplome() {
+        return diplome;
+    }
+
+    public void setDiplome(String diplome) {
+        this.diplome = diplome;
+    }
+
+    public String getTailleTshirt() {
+        return tailleTshirt;
+    }
+
+    public void setTailleTshirt(String tailleTshirt) {
+        this.tailleTshirt = tailleTshirt;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 }
