@@ -13,7 +13,7 @@ IsLoading=false
  @ViewChild(SearchComponent)
  set greetApp(search: SearchComponent) {
   this.IsLoading = search.isLoading
-  console.log("gghh "+this.IsLoading)
+  
 };
 
   constructor() { }
@@ -24,7 +24,7 @@ IsLoading=false
 
   countChangedHandler(count:boolean) {
     this.IsLoading = count;
-    console.log("vertical "+count);
+
   }
 
 }

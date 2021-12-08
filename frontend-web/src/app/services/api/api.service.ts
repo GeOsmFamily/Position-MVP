@@ -92,7 +92,7 @@ export class ApiService {
         .toPromise()
         .then(
           (res) => {
-            console.log(res);
+          
             resolve(res);
           },
           (msg) => {

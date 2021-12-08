@@ -13,8 +13,7 @@ export class HandleEtablissementsSearch {
 
   formatDataForTheList(responseData: any): Array<FilterOptionInterface> {
     var responses = Array();
-    console.log('response Data');
-    console.log(responseData);
+
     responseData.forEach((element: any) => {
       var geometry = {
         type: 'Point',
@@ -46,7 +45,7 @@ export class HandleEtablissementsSearch {
         if (this._formatType(element)) {
           details.push(this._formatType(element));
         }
-
+       
         response.push({
           name: features[0].get('nom'),
           id: features[0].get('id'),
@@ -86,20 +85,20 @@ export class HandleEtablissementsSearch {
 
   _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
     if (emprise.geometry) {
-      console.log(emprise);
+
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
         var searchResultLayer = new VectorLayer();
         searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
         var cover = environment.url_image + emprise.cover;
         var image = environment.url_image + emprise.images[0].imageUrl;
-        console.log(cover + '' + image);
+
         this.imagesCourousel.push(cover);
         this.imagesCourousel.push(image);
         var feature = new Feature();
         var textLabel = emprise.name;
         var description = emprise.description;
-        console.log('description' + description);
+
         feature.set('imagesCarousel', this.imagesCourousel);
         feature.set('textLabel', textLabel);
         feature.set('id', emprise.id);
@@ -140,7 +139,7 @@ export class HandleEtablissementsSearch {
               heureFermeture: emprise.horaires[index].heureFermeture,
             });
           }
-          // console.log(categories[index].nom)
+
         }
         feature.set('horaires', this.horaires);
 
@@ -156,9 +155,7 @@ export class HandleEtablissementsSearch {
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
 
-        console.log('whatsapp');
-        //console.log(numero_whatsapp)
-        console.log(this.telephones);
+      
         searchResultLayer.getSource().clear();
 
         searchResultLayer.getSource().addFeature(feature);

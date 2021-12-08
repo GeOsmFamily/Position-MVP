@@ -93,82 +93,16 @@ this.getPosition()
 
   handleMapParamsUrl() {
     var mapHelper = new MapHelper();
-    console.log("hello")
+
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['etablissements']) {
 
         var layers = params['etablissements'].split(',');
-       var  etablissement=this.positionApi.getEtablissement(layers[0])
-        console.log(layers + " nnnnnnnnn")
-        console.log(etablissement!)
-
-        //creation d'un vectorlayer
-        var searchResultLayer = new VectorLayer();
-        var cover=environment.url_image+etablissement
-      /*  var image=environment.url_image+this.etablissements[0].images[0].imageUrl
-        console.log(cover+ "" +image)
-          this.imagesCourousel.push(cover)
-        this.imagesCourousel.push(image)
-        var feature = new Feature();
-        var textLabel = this.etablissements[0].name;
-        var description=this.etablissements[0].description
-        console.log("description"+description)
-        feature.set('imagesCourousel',this.imagesCourousel)
-        feature.set('textLabel', textLabel);
-        feature.set('id',this.etablissements[0].id);
-        feature.set('logo_url', environment.url_image + this.etablissements[0].sous_categories[0].categorie.logoUrl);
-        feature.set('description',this.etablissements[0].description);
-        feature.set('type',"position");
-        feature.set('nomCategorie',this.etablissements[0].nomCategorie);
-        feature.set('nomSousCategorie',this.etablissements[0].sous_categories[0].nom)
-        feature.set('cover',this.etablissements[0].cover);
-        feature.set('siteInternet',this.etablissements[0].siteInternet);
-        feature.set('indication',this.etablissements[0].batiment.indication);
-
-        feature.setGeometry(this.etablissements[0].geometry);
-  var i=0
-        for (let index = 0; index < this.etablissements[0].horaires.length; index++){
-          if(this.etablissements[0].horaires[index].jour == "Lundi" && i==0){
-            i++
-            this.horaires?.push({"tous_les_jours":this.etablissements[0].horaires[index].jour,"heureOuverture":this.etablissements[0].horaires[index].heureOuverture,"heureFermeture":this.etablissements[0].horaires[index].heureFermeture})
-
-          }
-          if(this.etablissements[0].horaires[index].jour == "Samedi"){
-            this.horaires?.push({"Samedi":this.etablissements[0].horaires[index].jour,"heureOuverture":this.etablissements[0].horaires[index].heureOuverture,"heureFermeture":this.etablissements[0].horaires[index].heureFermeture})
-
-          }
-          if(this.etablissements[0].horaires[index].jour == "Dimanche"){
-            this.horaires?.push({"Dimanche":this.etablissements[0].horaires[index].jour,"heureOuverture":this.etablissements[0].horaires[index].heureOuverture,"heureFermeture":this.etablissements[0].horaires[index].heureFermeture})
-
-          }
-             // console.log(categories[index].nom)
-        }
-        feature.set('horaires',this.horaires)
-
-        var numero_whatsapp=new Array()
-        for (let index = 0; index < this.etablissements[0].telephones.length; index++){
-
-          if(this.etablissements[0].telephones[index].principal==true){
-           // this.telephones?.push({"principal":emprise.telephones[index].numero})
-            feature.set("telephonePrincipal",this.etablissements[0].telephones[index].numero);
-          }
-          else{
-            this.telephones.push(this.etablissements[0].telephones[index].numero)
-          }
+       this.positionApi.getEtablissement(layers[0])
 
 
-        }
-       // this.telephones?.push({"whatsapp":this.numero_whatsapp})
-        feature.set('telephones',this.telephones)
-        searchResultLayer.getSource().clear();
+     
 
-        searchResultLayer.getSource().addFeature(feature);
-
-        var extent = this.etablissements[0].geometry.getExtent();
-
-        mapHelper.fit_view(extent, 16);*/
-
-       // this.shareService.addLayersFromUrl(layers);
       }
     });
   }
@@ -180,7 +114,7 @@ this.getPosition()
     //Add 'implements AfterViewInit' to the class.
    /* map.on('pointermove', function(event) {
 
-      console.log( event.coordinate)
+
 
     });*/
     this.mapClicked()
@@ -278,19 +212,12 @@ geolocation.on('change:position', function () {
 
 
 
-      console.log("feature1")
-      console.log(feature)
+
       if(feature?.get('type')=="position"){
-        console.log("position")
+
           this.componentHelper.openFicheEntreprise(feature)
       }
 
-
-
-
-
-   // console.log( this.componentHelper.openEtablissement())
-  console.log("map has been clicked")
 });
 }
 

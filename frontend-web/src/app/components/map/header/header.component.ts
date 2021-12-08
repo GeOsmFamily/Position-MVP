@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
         filter((value) => typeof value === 'string' && value.length > 2),
         tap(() => {
           this.isLoading = true;
-          console.log('loading');
+
         }),
         switchMap((value) => {
           return observerMerge(...this.getQuerryForSerach(value)).pipe(
@@ -128,7 +128,7 @@ ngAfterViewInit(): void {
 
 }
 login(){
-  console.log(this.form?.value.searchWord)
+  
 }
 
   clearSearch() {

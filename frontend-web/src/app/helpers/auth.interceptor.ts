@@ -27,7 +27,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (error.message === 'Token expired') {
             if (error.error.message ) {
                 //Genrate params for token refreshing
-                console.log("refreshing token")
+               
               this.autService.refreshToken()
               req = req.clone({
                 setHeaders: {
@@ -35,11 +35,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
                 }
               });
-              console.log("new token :"+localStorage.getItem('access_token'))
+
              //REFRESH FUNTION FROM AUTH SERVICE
             }else {
-              console.log("Nothing to be done")
-              console.log("interceptor ="+  localStorage.getItem('access_token'))
 
                 //Logout from account or do some other stuff
             }

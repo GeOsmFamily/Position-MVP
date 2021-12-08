@@ -26,8 +26,7 @@ export class FicheEntrepriseComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private componentHelper: ComponentHelper
   ) {
-    //console.log(this.router.getCurrentNavigation().extras.state);
-  }
+    }
 
   ngOnInit(): void {}
 
@@ -59,28 +58,25 @@ export class FicheEntrepriseComponent implements OnInit {
     });
     this.meta.updateTag({
       property: 'og:image',
-      content: this.url_position + this.featurePoint?.get('cover'),
+      content:  environment.url_image+ this.featurePoint?.get('cover'),
     });
     this.meta.updateTag({
       property: 'og:url',
       content:
-        environment.url_frontend +
-        '?etablissements=' +
+        environment.url_demo +
+        'home?etablissements=' +
         this.featurePoint?.get('id') +
         ',16',
     });
 
     this.images = this.featurePoint?.get('imagesCarousel');
-    console.log(this.featurePoint?.get('imagesCarousel'));
 
-    console.log(featurePoint.get('telephones'));
-    console.log('bjr');
 
     $('app-fiche-entreprise').css('left', '0px');
   }
 
   close() {
-    console.log('closing');
+    
     $('app-fiche-entreprise').css('left', '-350px');
   }
   alert1() {
@@ -93,13 +89,8 @@ export class FicheEntrepriseComponent implements OnInit {
     modalRef.componentInstance.my_modal_title =this.featurePoint?.get("telephones")[0].principal;
     modalRef.componentInstance.my_modal_content = 'I am your content';
     */
-    alert(this.featurePoint?.get('telephones')[0].principal);
+   // alert(this.featurePoint?.get('telephones')[0].principal);
 
-    console.log(
-      this.url_position +
-        '?etablissements=' +
-        this.featurePoint?.get('id') +
-        ',16'
-    );
+   
   }
 }

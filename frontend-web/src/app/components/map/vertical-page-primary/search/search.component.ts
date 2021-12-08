@@ -135,7 +135,7 @@ export class SearchComponent implements OnInit {
         tap(() => {
           this.isLoading = true;
           this.countChanged.emit(this.isLoading);
-          console.log('loading');
+
         }),
         switchMap((value) => {
           return observerMerge(...this.getQuerryForSerach(value)).pipe(
@@ -247,7 +247,7 @@ export class SearchComponent implements OnInit {
     //Add 'implements AfterViewInit' to the class.
   }
   login() {
-    console.log(this.form?.value.searchWord);
+
   }
 
   clearSearch() {
@@ -278,7 +278,7 @@ export class SearchComponent implements OnInit {
     if (option) {
       this.isLoading = false;
       this.countChanged.emit(this.isLoading);
-      console.log('selection ' + this.isLoading);
+
       /* if (option.typeOption == 'nominatim') {
         new HandleNominatimSearch().optionSelected(option);
       } else if (option.typeOption == 'souscategories') {

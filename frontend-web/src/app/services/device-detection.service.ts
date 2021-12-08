@@ -21,8 +21,7 @@ export class DeviceDetectionService {
       searchResultLayer = this.mapHelper.getLayerByName('searchResultLayer')[0];
       var source = searchResultLayer.getSource();
     this.features = source.getFeatures();
-    console.log("feature")
-    console.log(this.features!.get('description'))
+  
     }
   }
 

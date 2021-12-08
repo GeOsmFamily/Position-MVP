@@ -39,16 +39,15 @@ export class LoginComponent implements OnInit {
       return;
     }*/
 
-    //console.log(JSON.stringify(this.loginForm.value, null, 2));
+
 
     this.authService
     .login(this.loginForm.value.email, this.loginForm.value.password)
     .then((response: { error: boolean; msg?: string }) => {
-    //  console.log(response.msg)
+
       if (response.error) {
         // Affichage d'un message d'erreur
-        console.log(response.msg)
-        console.log(this.loginForm.value.email)
+
         this.router.navigate(['login'])
       } else {
         this.loading=true
@@ -82,7 +81,7 @@ export class LoginComponent implements OnInit {
 
 
   open(){
-    console.log("bjr")
+   
 
     $('app-login').css('left','0px')
   }

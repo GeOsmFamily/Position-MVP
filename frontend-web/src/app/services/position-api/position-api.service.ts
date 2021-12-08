@@ -1,6 +1,7 @@
 import { Data } from './../../interfaces/userInterface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import {fromLonLat} from 'ol/proj';
 import {
   HttpClient,
   HttpHeaders,
@@ -69,21 +70,21 @@ export class PositionApiService {
       .then((data: ListeCategorie) => {
         const categories = data.data;
 
-        console.log(data.data);
+
         for (let index = 0; index < categories.length; index++) {
           this.Categories?.push({
             id: categories[index].id,
             nom: categories[index].nom,
             logo_url: categories[index].logo_url,
           });
-          // console.log(categories[index].nom)
+
         }
-        console.log(this.Categories);
+
       });
     return this.Categories;
   }
 
-  getEtablissement(id: string): any {
+  getEtablissement(id: string) {
     const options = {};
     var mapHelper = new MapHelper();
 
@@ -100,13 +101,13 @@ export class PositionApiService {
         var cover = environment.url_image + data.data.cover;
 
         var image = environment.url_image + data.data.images[0].imageUrl;
-        console.log(cover + '' + image);
+
         this.imagesCourousel.push(cover);
         this.imagesCourousel.push(image);
         var feature = new Feature();
         var textLabel = data.data.nom;
         var description = data.data.description;
-        console.log('description' + description);
+       
         feature.set('imagesCarousel', this.imagesCourousel);
         feature.set('textLabel', textLabel);
         feature.set('id', data.data.id);
@@ -121,9 +122,12 @@ export class PositionApiService {
         feature.set('siteInternet', data.data.siteInternet);
         feature.set('indication', data.data.batiment.indication);
 
-        feature.setGeometry(
-          new Point([data.data.batiment.longitude, data.data.batiment.latitude])
+        console.log("batiment geometry")
+        console.log(data.data.batiment.longitude+" " +data.data.batiment.latitude)
+        feature.setGeometry(new Point(fromLonLat([data.data.batiment.longitude, data.data.batiment.latitude]))
+         
         );
+       // new Point([, 3.866667])
         var i = 0;
         for (let index = 0; index < data.data.horaires.length; index++) {
           if (data.data.horaires[index].jour == 'Lundi' && i == 0) {

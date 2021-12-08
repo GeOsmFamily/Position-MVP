@@ -41,10 +41,8 @@ export class RegisterComponent implements OnInit {
         if (response.error) {
           // Affichage d'un message d'erreur
 
-          console.log(response.msg)
-        } else {
-          console.log("hellllllp")
-          console.log( this.registerForm.value.phone)
+          } else {
+        
           this.router.navigate(['home']);
         }
       });

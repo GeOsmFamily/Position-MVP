@@ -30,11 +30,10 @@ AuthGuardGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (localStorage.getItem('access_token')!=null && localStorage.getItem('role') =='2') {
-      console.log("hj "+localStorage.getItem('access_token'))
+
       return true
     } else {
-      //console.log("ert "+localStorage.getItem('role')+ "     "+localStorage.getItem('access_token'))
-     // alert("vous n'avez pas des droits")
+     
       return this.router.navigate(['login']);
     }
   }

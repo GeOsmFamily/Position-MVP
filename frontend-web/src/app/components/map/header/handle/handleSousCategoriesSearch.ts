@@ -15,10 +15,10 @@ export class HandleSousCategoriesSearch {
   formatDataForTheList(responseData: any): Array<FilterOptionInterface> {
     var responses = Array();
 
-    console.log(responseData);
+
 
     responseData.forEach((element: any) => {
-      console.log(element.etablissements);
+
       element.etablissements.forEach((elementE: any) => {
         var geometry = {
           type: 'Point',
@@ -41,7 +41,7 @@ export class HandleSousCategoriesSearch {
       features: responses,
     };
 
-    console.log(this.geojson);
+
 
     var response: Array<FilterOptionInterface> = [];
     for (let index = 0; index < responseData.length; index++) {
@@ -98,7 +98,7 @@ export class HandleSousCategoriesSearch {
 
       searchResultLayer.getSource().clear();
       searchResultLayer.setSource(clusterSource);
-      console.log(emprise.geojson);
+    
       //  searchResultLayer.getSource().addFeatures(vectorSource);
     }
   }

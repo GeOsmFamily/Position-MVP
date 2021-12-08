@@ -11,7 +11,7 @@ export const environment = {
   avaible_language: ['fr', 'en'],
   default_language: 'fr',
   url_frontend:"http://localhost:52748/",
-  url_demo:"http://demoposition.cm/"
+  url_demo:"https://demo.position.cm/"
 };
 
 /*

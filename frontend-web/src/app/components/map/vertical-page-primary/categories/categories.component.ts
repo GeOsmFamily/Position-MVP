@@ -47,11 +47,8 @@ export class CategoriesComponent implements OnInit {
 
 
 
-    console.log("categories")
-    console.log(this.categories)
     this.categories=this.positionApi.getCategories()
-    console.log("rrrrr")
-    console.log(this.categories )
+
 
 
   }
@@ -60,8 +57,7 @@ export class CategoriesComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("categories boolean")
-    console.log(this.isloading)
+  
   }
 }
 

@@ -28,13 +28,13 @@
         <ng-container *ngFor="let option of objectsIn(filterOptions) "
           >
           <mat-option *ngFor="let item of filterOptions[option]" [value]="item">
-            <ng-container *ngIf="option === 'souscategories'">
+      <!--      <ng-container *ngIf="option === 'souscategories'">
               {{item.name}}
               <span *ngIf="item.ref" style="color:black"> - {{item.ref}} </span>
               <br>
               <small> {{item.limitName}} </small>
             </ng-container>
-<!--
+
             <ng-container *ngIf="option === 'nominatim'" style="color:black">
               {{item.name}}
               <br>
@@ -43,9 +43,26 @@
           -->
 
             <ng-container *ngIf="option === 'etablissements'">
-              {{item.name}}
-              <br>
-              <small> {{item.details}} </small>
+              <table style="margin-top: 20px;">
+                  <tr>
+
+                    <td>
+                      <img src="{{item.logo_url}}" alt="categorieLogo" />
+             
+                    </td>
+                    <td>
+                      <tr>
+                        {{item.name}}
+                      </tr>
+                      <tr>
+                        <small> {{item.details}} </small>
+                      </tr>
+                    </td>
+                  </tr>
+
+              </table>
+                <br>
+              
             </ng-container>
 
 

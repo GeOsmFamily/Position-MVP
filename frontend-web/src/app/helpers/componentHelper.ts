@@ -3,7 +3,7 @@ import { LoginComponent } from "../components/auth/login/login.component";
 import { EtablissementComponent } from "../components/map/etablissement/etablissement.component";
 import { SocialShareComponent } from "../components/social-share/social-share/social-share.component";
 import { FicheEntrepriseComponent } from './../components/map/fiche-entreprise/fiche-entreprise.component';
-import { MatSnackBar } from '@angular/material/snack-bar'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +28,7 @@ export class ComponentHelper{
 
  //display and close profilComponent
   openFicheEntreprise(featurePoint:any){
-    console.log("openFicheEntreprise")
+
     this.ficheEntrepriseComponent?.open(featurePoint)
   }
   closeFicheEntreprise(){
@@ -38,7 +38,7 @@ export class ComponentHelper{
 
  //display and close etablissementComponent
  openEtablissement(){
-  console.log("openEtablissement")
+
   this.etablissementComponent?.open()
 }
 closeEtablissement(){
@@ -47,7 +47,7 @@ closeEtablissement(){
 
 //display and close loginComponent
 openloginPage(){
-  console.log("openFicheEntreprise")
+ 
   this.loginComponent?.open()
 }
 closeloginPage(){
