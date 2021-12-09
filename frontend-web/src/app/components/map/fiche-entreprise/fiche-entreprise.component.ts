@@ -16,7 +16,7 @@ import { Meta } from '@angular/platform-browser';
 export class FicheEntrepriseComponent implements OnInit {
   featurePoint: Feature<Point> | undefined;
   url_image = environment.url_image;
-  url_position = environment.url_frontend;
+ // url_position = environment.url_frontend;
   url_demo = environment.url_demo;
   images = [];
   constructor(
@@ -32,7 +32,7 @@ export class FicheEntrepriseComponent implements OnInit {
 
   shareLink() {
     var url_share =
-      environment.url_frontend +
+      environment.url_demo+
       'home/?etablissements=' +
       this.featurePoint?.get('id') +
       ',16';
@@ -51,10 +51,8 @@ export class FicheEntrepriseComponent implements OnInit {
     });
     this.meta.updateTag({
       property: 'og:description',
-      content:
-        this.featurePoint?.get('nomCategorie') +
-        ',' +
-        this.featurePoint?.get('nomSousCategorie'),
+      content:"Retrouvez mon business sur la plateforme Position"
+        //this.featurePoint?.get('nomCategorie') +',' + this.featurePoint?.get('nomSousCategorie'),
     });
     this.meta.updateTag({
       property: 'og:image',
@@ -76,7 +74,7 @@ export class FicheEntrepriseComponent implements OnInit {
   }
 
   close() {
-    
+
     $('app-fiche-entreprise').css('left', '-350px');
   }
   alert1() {
@@ -91,6 +89,6 @@ export class FicheEntrepriseComponent implements OnInit {
     */
    // alert(this.featurePoint?.get('telephones')[0].principal);
 
-   
+
   }
 }

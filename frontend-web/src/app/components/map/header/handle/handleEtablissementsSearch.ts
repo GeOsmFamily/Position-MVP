@@ -8,6 +8,7 @@ export class HandleEtablissementsSearch {
   horaires = new Array();
   telephones = new Array();
   numero_whatsapp = new Array();
+  chaine_num_whatsapp=""
   url_position = environment.url_image;
   imagesCourousel = new Array();
 
@@ -45,6 +46,7 @@ export class HandleEtablissementsSearch {
         if (this._formatType(element)) {
           details.push(this._formatType(element));
         }
+
        
         response.push({
           name: features[0].get('nom'),
@@ -52,7 +54,7 @@ export class HandleEtablissementsSearch {
           adresse: features[0].get('description'),
           geometry: features[0].getGeometry(),
           details: details.join(', '),
-          logo_url: features[0].get('logo_url'),
+          logo: environment.url_image+features[0].get('logo_url'),
           typeOption: 'etablissements',
           ...features[0].getProperties(),
         });
@@ -106,14 +108,19 @@ export class HandleEtablissementsSearch {
           'logo_url',
           environment.url_image + emprise.sous_categories[0].categorie.logoUrl
         );
+       
         feature.set('description', emprise.description);
         feature.set('type', 'position');
+        feature.set('adresse',emprise.batiment.rue+","+emprise.batiment.ville)
+       
         feature.set('nomCategorie', emprise.nomCategorie);
         feature.set('nomSousCategorie', emprise.sous_categories[0].nom);
         feature.set('cover', emprise.cover);
         feature.set('siteInternet', emprise.siteInternet);
-        feature.set('indication', emprise.batiment.indication);
-
+        feature.set('indication', emprise.indicationAdresse);
+        feature.set('codePostal',emprise.codePostal)
+        feature.set('etage',emprise.etage)
+        feature.set('motCle',emprise.autres)
         feature.setGeometry(emprise.geometry);
         var i = 0;
         for (let index = 0; index < emprise.horaires.length; index++) {
@@ -143,19 +150,23 @@ export class HandleEtablissementsSearch {
         }
         feature.set('horaires', this.horaires);
 
-        var numero_whatsapp = new Array();
+       
         for (let index = 0; index < emprise.telephones.length; index++) {
-          if (emprise.telephones[index].principal == true) {
+          if (emprise.telephones[index].principal == 1) {
             // this.telephones?.push({"principal":emprise.telephones[index].numero})
             feature.set('telephonePrincipal', emprise.telephones[index].numero);
+           // console.log(emprise.telephones[index].numero)
           } else {
-            this.telephones.push(emprise.telephones[index].numero);
+            this.numero_whatsapp.push(emprise.telephones[index].numero);
+            //console.log(emprise.telephones[index].numero)
+            
+
           }
         }
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
+        feature.set('whatsapp',this.numero_whatsapp)
 
-      
         searchResultLayer.getSource().clear();
 
         searchResultLayer.getSource().addFeature(feature);

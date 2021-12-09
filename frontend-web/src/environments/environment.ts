@@ -10,7 +10,7 @@ export const environment = {
  url_position_Api:'https://services.position.cm/',
   avaible_language: ['fr', 'en'],
   default_language: 'fr',
-  url_frontend:"http://localhost:52748/",
+  //url_frontend:"http://localhost:52748/",
   url_demo:"https://demo.position.cm/"
 };
 
