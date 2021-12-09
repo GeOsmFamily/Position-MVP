@@ -111,7 +111,7 @@ export class HandleEtablissementsSearch {
        
         feature.set('description', emprise.description);
         feature.set('type', 'position');
-        feature.set('adresse',emprise.batiment.rue+","+emprise.batiment.ville)
+        feature.set('adresse',emprise.batiment.rue+", "+emprise.batiment.ville+", bâtiment "+emprise.batiment.nom+", étage "+emprise.etage)
        
         feature.set('nomCategorie', emprise.nomCategorie);
         feature.set('nomSousCategorie', emprise.sous_categories[0].nom);
