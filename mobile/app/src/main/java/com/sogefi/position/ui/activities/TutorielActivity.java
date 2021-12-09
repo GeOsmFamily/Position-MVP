@@ -56,6 +56,11 @@ public class TutorielActivity extends AppCompatActivity {
         super.onStart();
         if (first.matches("no")) {
             pref.firstConnect("yes");
+        } else if(pref.getToken().equals("token")) {
+            Intent intent = new Intent(TutorielActivity.this, LoginActivity.class);
+            intent.putExtra(DEEPLINK_QUERY_FRIEND_POSITION, friendPosition);
+            startActivity(intent);
+            finish();
         } else {
             Intent intent = new Intent(TutorielActivity.this, MapActivity.class);
             intent.putExtra(DEEPLINK_QUERY_FRIEND_POSITION, friendPosition);

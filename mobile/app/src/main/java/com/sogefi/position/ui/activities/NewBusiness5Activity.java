@@ -154,7 +154,13 @@ public class NewBusiness5Activity extends AppCompatActivity {
                     Random random = new Random();
                     int y = random.nextInt(100000);
                     String codeBatiment = "BATIMENT_"+quartierCapital+"_"+String.valueOf(y);
-                    saveBatiment(name5.getText().toString(),niveaux5.getText().toString(),codeBatiment,lon,lat,indication5.getText().toString(),rue,ville,commune,quartier5.getText().toString());
+                    if(rue != null && ville != null && commune != null) {
+                        saveBatiment(name5.getText().toString(),niveaux5.getText().toString(),codeBatiment,lon,lat,indication5.getText().toString(),rue,ville,commune,quartier5.getText().toString());
+                    } else {
+                        progressBar5.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Reeesayez", Toast.LENGTH_LONG).show();
+                    }
+
                 }
 
                 @Override

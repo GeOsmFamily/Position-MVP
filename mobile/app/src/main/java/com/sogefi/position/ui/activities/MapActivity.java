@@ -25,13 +25,17 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOutlineColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.symbolSortKey;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textAnchor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textJustify;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textSize;
 import static com.sogefi.position.R2.id.all;
 import static com.sogefi.position.R2.id.stop;
@@ -45,6 +49,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -159,6 +165,7 @@ import com.sogefi.position.models.SearchEtablissement;
 import com.sogefi.position.models.Tracking;
 import com.sogefi.position.models.UserModel;
 import com.sogefi.position.models.Zones;
+import com.sogefi.position.models.data.DataBatiments;
 import com.sogefi.position.models.data.DataCategories;
 import com.sogefi.position.models.data.DataEtablissements;
 import com.sogefi.position.models.data.DataSearchEtablissement;
@@ -204,7 +211,7 @@ import retrofit2.Response;
 import timber.log.Timber;
 
 public class MapActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener, MaterialSearchBar.OnSearchActionListener {
+        OnMapReadyCallback, PermissionsListener ,MapboxMap.OnMapLongClickListener, MapboxMap.OnMapClickListener, MaterialSearchBar.OnSearchActionListener {
 
     private static final String DEEPLINK_QUERY_FRIEND_POSITION = "friend_position";
     private static final String ORIGIN_ICON_ID = "origin-icon-id";
@@ -560,7 +567,6 @@ public class MapActivity extends AppCompatActivity implements
                 Intent intent = new Intent(MapActivity.this, LoginActivity.class);
                 drawer.closeDrawers();
                 startActivity(intent);
-                finish();
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.noCommercial), Toast.LENGTH_LONG).show();
             }
@@ -608,13 +614,7 @@ public class MapActivity extends AppCompatActivity implements
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
         BottomSheetBehavior.from(bottom_sheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
-        if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
-            getBatiment();
 
-            //  geojsonBatiment(style);
-
-
-        }
     }
 
     @Override
@@ -741,14 +741,24 @@ public class MapActivity extends AppCompatActivity implements
         mapboxMap.setStyle(style, style1 -> {
             initSpaceStationSymbolLayer(style1);
             mapboxMap.addOnMapLongClickListener(MapActivity.this);
+            mapboxMap.addOnMapClickListener(MapActivity.this);
+            if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
+                //  getBatiment();
+
+                geojsonBatiment(style1);
+
+
+            }
         });
         mapBoxUtils.setMapSetting();
 
         pref.setStyle(style);
+
+
     }
 
     public void alertDialog() {
-        final String[] items = {"STREET", "SATELLITE", "LIGHT", "TRAFFIC-NIGHT", "STAMEN"};
+        final String[] items = {"STREET", "SATELLITE"};
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
         builder.setTitle( getString(R.string.selectStyle));
         builder.setSingleChoiceItems(items, checkItem, (dialog, which) -> {
@@ -822,13 +832,7 @@ public class MapActivity extends AppCompatActivity implements
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
-        if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
-            getBatiment();
 
-            //  geojsonBatiment(style);
-
-
-        }
 
         onBottomSheetLoading(1);
         groupMyPosition.setVisibility(View.VISIBLE);
@@ -1181,13 +1185,14 @@ if(pref.getRoleid().equals("2")) {
          //   style.setTransition(new TransitionOptions(0, 0, false));
 
             mapboxMap.addOnMapLongClickListener(MapActivity.this);
+            mapboxMap.addOnMapClickListener(MapActivity.this);
             if (friendPosition != null) {
                 getSharedPosition(friendPosition);
             }
             if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
-                getBatiment();
+              //  getBatiment();
 
-              //  geojsonBatiment(style);
+                geojsonBatiment(style);
 
 
             }
@@ -1224,13 +1229,7 @@ if(pref.getRoleid().equals("2")) {
         mapboxMap.getStyle().removeLayer(ICON_LAYER_ID);
         mapboxMap.getStyle().removeSource(ICON_SOURCE_ID);
         mapboxMap.getStyle().removeSource(ROUTE_LINE_SOURCE_ID);
-        if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
-            getBatiment();
 
-            //  geojsonBatiment(style);
-
-
-        }
 
         arrival.setText("");
         duration.setText("");
@@ -1619,8 +1618,13 @@ if(pref.getRoleid().equals("2")) {
         }
     }
 
+
+
     @Override
     public boolean onMapLongClick(@NonNull LatLng point) {
+
+
+
         longo = String.valueOf(point.getLongitude());
         latgo = String.valueOf(point.getLatitude());
 
@@ -1673,6 +1677,58 @@ if(pref.getRoleid().equals("2")) {
 
 
         return true;
+    }
+
+    public void getBatimentById(String id){
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<Batiments> call = apiService.getbatimentsbyid(API_KEY,Integer.parseInt(id));
+
+            call.enqueue(new Callback<Batiments>() {
+                @Override
+                public void onResponse(@NotNull Call<Batiments> call, @NotNull Response<Batiments> response) {
+                    List<DataEtablissements> listetablissements = response.body().getData().getEtablissements();
+
+
+                    View dialogEtablissement = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_etablissement, null, false);
+
+                    RecyclerView etablissements = dialogEtablissement.findViewById(R.id.etablissements);
+
+                    Button addEtablissement = dialogEtablissement.findViewById(R.id.add_etablissement);
+                    ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
+                    ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
+                    TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
+                    textView9.setText(response.body().getData().getNom()+" ("+response.body().getData().getNombreNiveaux()+" étages)");
+                    closeButton.setOnClickListener(v -> mat.dismiss());
+
+                    addEtablissement.setOnClickListener(v -> {
+                        Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+                        intent.putExtra("idBatiment",String.valueOf(response.body().getData().getId()));
+                        intent.putExtra("nombreNiveau",String.valueOf(response.body().getData().getNombreNiveaux()));
+                        startActivity(intent);
+                    });
+
+
+
+                    etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
+
+                    mat =  new MaterialAlertDialogBuilder(MapActivity.this)
+                            .setView(dialogEtablissement)
+                            .show();
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Batiments> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("logout").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void launchWorker() {
@@ -1880,6 +1936,8 @@ if(pref.getRoleid().equals("2")) {
 
                                 feature.put("type", "Feature");
                                 JSONObject propertiesData = new JSONObject();
+                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body().getData().get(i)));
+                                propertiesData.put("batiment", jsonObject);
                                 propertiesData.put("nom",response.body().getData().get(i).getNom());
                                 propertiesData.put("codeBatiment",response.body().getData().get(i).getCodeBatiment());
                                 propertiesData.put("id",response.body().getData().get(i).getId());
@@ -2029,7 +2087,7 @@ if(pref.getRoleid().equals("2")) {
     private GeoJsonSource createClusterSource(String features) throws URISyntaxException {
         return new GeoJsonSource(GEOJSON_SOURCE_ID,features, new GeoJsonOptions()
                 .withCluster(true)
-                .withClusterMaxZoom(14)
+                .withClusterMaxZoom(16)
                 .withClusterRadius(10)
 
         );
@@ -2040,31 +2098,36 @@ if(pref.getRoleid().equals("2")) {
                 .withProperties(
                         iconImage("markerBatimentImage"),
                         iconSize(
-                                division(
-                                        get("mag"), literal(80.0f)
-                                )
-                        )
+                              0.06f
+                        ),
+                        iconAllowOverlap(true),
+                        symbolSortKey(10.0f)
 
-                )
-                .withFilter(has("mag"));
+                );
+
+      /*  CircleLayer circles = new CircleLayer(UNCLUSTERED_POINTS , GEOJSON_SOURCE_ID);
+        circles.setProperties(
+                circleColor(ContextCompat.getColor(MapActivity.this, R.color.mapbox_blue)),
+                circleRadius(10f),
+                textField("Manger"),
+                textAnchor(Property.TEXT_ANCHOR_TOP),
+                textJustify(Property.TEXT_JUSTIFY_CENTER)
+                );
+        circles.setFilter(has("mag"));*/
+
     }
 
-    private SymbolLayer createClusterLevelLayer(int level, int[][] layerColors) {
-     /*   CircleLayer circles = new CircleLayer("cluster-" + level, GEOJSON_SOURCE_ID);
+    private CircleLayer createClusterLevelLayer(int level, int[][] layerColors) {
+        CircleLayer circles = new CircleLayer("cluster-" + level, GEOJSON_SOURCE_ID);
         circles.setProperties(
                 circleColor(layerColors[level][1]),
                 circleRadius(18f)
-        );*/
+        );
 
-        SymbolLayer symbolLayer = new SymbolLayer("cluster-" + level, GEOJSON_SOURCE_ID);
-        symbolLayer.setProperties(iconImage("markerBatimentImage"), iconSize(
-                division(
-                        get("mag"), literal(80.0f)
-                )
-        ));
+
 
         Expression pointCount = toNumber(get("point_count"));
-        symbolLayer.setFilter(
+        circles.setFilter(
                 level == 0
                         ? all(has("point_count"),
                         gte(pointCount, literal(layerColors[level][0]))
@@ -2073,7 +2136,7 @@ if(pref.getRoleid().equals("2")) {
                         lt(pointCount, literal(layerColors[level - 1][0]))
                 )
         );
-        return symbolLayer;
+        return circles;
     }
 
     private SymbolLayer createClusterTextLayer() {
@@ -2368,5 +2431,48 @@ searchResult.clear();
             Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
         }
     }
-    
+
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+
+        PointF pointf = mapboxMap.getProjection().toScreenLocation(point);
+        RectF rectF = new RectF(pointf.x - 10, pointf.y - 10, pointf.x + 10, pointf.y + 10);
+        List<Feature> featureList = mapboxMap.queryRenderedFeatures(rectF, UNCLUSTERED_POINTS);
+        if (featureList.size() > 0) {
+            for (Feature feature : featureList) {
+                DataBatiments batiments = new Gson().fromJson(feature.properties().get("batiment"), DataBatiments.class);
+
+                List<DataEtablissements> listetablissements = batiments.getEtablissements();
+
+
+                View dialogEtablissement = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_etablissement, null, false);
+
+                RecyclerView etablissements = dialogEtablissement.findViewById(R.id.etablissements);
+
+                Button addEtablissement = dialogEtablissement.findViewById(R.id.add_etablissement);
+                ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
+                ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
+                TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
+                textView9.setText(batiments.getNom()+" ("+batiments.getNombreNiveaux()+" étages)");
+                closeButton.setOnClickListener(v -> mat.dismiss());
+
+                addEtablissement.setOnClickListener(v -> {
+                    Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+                    intent.putExtra("idBatiment",String.valueOf(batiments.getId()));
+                    intent.putExtra("nombreNiveau",String.valueOf(batiments.getNombreNiveaux()));
+                    startActivity(intent);
+                });
+
+
+
+                etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
+
+                mat =  new MaterialAlertDialogBuilder(MapActivity.this)
+                        .setView(dialogEtablissement)
+                        .show();
+            }
+            return true;
+        }
+        return false;
+    }
 }
