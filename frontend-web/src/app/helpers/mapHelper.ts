@@ -58,7 +58,7 @@ export class MapHelper {
   constructor(map?: Map) {
     if (map) {
       this.map = map;
-      console.log("hello map")
+
     } else {
       this.map = geoportailMap;
     }
@@ -109,7 +109,7 @@ export class MapHelper {
     var layer = all_layers![index]
     if (layer.get('nom') == name) {
       layer_to_remove.push(layer)
-      console.log(layer.get('nom'))
+
     }
 
   }
@@ -148,10 +148,10 @@ geolocatEnterprise() {
 
   this.geolocation?.once('change:position', () => {
     var coordinates = this.geolocation?.getPosition();
-    console.log(coordinates)
+
     positionFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
     if (coordinates) {
-      console.log("coordinate =" + coordinates)
+
     //  this.fit_view(new Point(coordinates), 18)
     }
   });
@@ -210,7 +210,7 @@ this.map?.addInteraction(translate1);
       new Style({
         image: new Icon({
         scale: 0.1,
-          src: '/assets/location-marker.svg',
+          src: '/assets/icon-place.svg',
           anchor:[0.5,0.95]
         }),
         // text: new Text({
@@ -266,7 +266,7 @@ this.map?.addInteraction(translate1);
     });
 
     geolocalisationLayer.getSource().addFeature(positionFeature)
-    console.log(geolocalisationLayer)
+
   }
 
 
@@ -307,7 +307,7 @@ trackMarkerFeaturePosition(translateMarker:any,marker:Point):Translate{
 
   return translateMarker.on('translatestart',  function (evt: { coordinate: any; }) {
     //coordMarker1 = marker1.getCoordinates();
-  console.log(evt.coordinate)
+
   });
 }
 

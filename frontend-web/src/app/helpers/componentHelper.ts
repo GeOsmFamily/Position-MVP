@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { LoginComponent } from "../components/auth/login/login.component";
 import { EtablissementComponent } from "../components/map/etablissement/etablissement.component";
+import { SocialShareComponent } from "../components/social-share/social-share/social-share.component";
 import { FicheEntrepriseComponent } from './../components/map/fiche-entreprise/fiche-entreprise.component';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,10 +14,22 @@ export class ComponentHelper{
 
  loginComponent: LoginComponent | undefined
 
+ constructor(
+
+  private _snackBar: MatSnackBar,
+
+) {}
+ openSocialShare(url: string, durationInSeconds: number = 5) {
+  this._snackBar.openFromComponent(SocialShareComponent, {
+    duration: durationInSeconds * 1000,
+    data: { url: url },
+  });
+}
+
  //display and close profilComponent
-  openFicheEntreprise(){
-    console.log("openFicheEntreprise")
-    this.ficheEntrepriseComponent?.open()
+  openFicheEntreprise(featurePoint:any){
+
+    this.ficheEntrepriseComponent?.open(featurePoint)
   }
   closeFicheEntreprise(){
     this.ficheEntrepriseComponent?.close()
@@ -25,7 +38,7 @@ export class ComponentHelper{
 
  //display and close etablissementComponent
  openEtablissement(){
-  console.log("openEtablissement")
+
   this.etablissementComponent?.open()
 }
 closeEtablissement(){
@@ -34,7 +47,7 @@ closeEtablissement(){
 
 //display and close loginComponent
 openloginPage(){
-  console.log("openFicheEntreprise")
+ 
   this.loginComponent?.open()
 }
 closeloginPage(){

@@ -72,12 +72,12 @@ export class EtablissementComponent implements OnInit {
   }
 
   selectionChange(event: StepperSelectionEvent):string {
-    console.log(event.selectedStep.label);  
+
     let stepLabel = event.selectedStep.label
     if (stepLabel == "Fill out your name") {
       this.current_label="Fill out your name"
 
-      console.log("step= "+stepLabel)
+
     }
     return stepLabel
   }
@@ -86,33 +86,33 @@ export class EtablissementComponent implements OnInit {
     this.stepper?.selectionChange
       .pipe(pluck("selectedIndex"))
       .subscribe((res: number) => {
-        console.log("res number= "+ res)
+
 
 
        if(res == 0){
         this.current_label="Ajouter le profil"
-        console.log("ng-after= "+this.current_label)
+
        }
        else if(res==1){
          this.current_label="Ajouter la description"
-         console.log("ng-after= "+this.current_label)
+
        }
        else if(res==2){
         this.current_label="adresse"
-        console.log("ng-after= "+this.current_label)
+
        }
        else if(res==3){
         this.current_label="Ajouter le contact"
-        console.log("ng-after= "+this.current_label)
+
        }
 
        else if(res==4){
         this.current_label="Ajouter les horaires"
-        console.log("ng-after= "+this.current_label)
+
        }
        else {
         this.current_label="Ajouter les photos"
-        console.log("ng-after= "+this.current_label)
+
        }
        if(this.current_index>res)
        {
@@ -128,14 +128,12 @@ export class EtablissementComponent implements OnInit {
 
        }
        this.current_index=res
-        console.log("current= "+this.current_index+"   "+ "res= "+res)
-console.log("progress= "+this.progressBarValue
-)
+
       });
   }
 
 open(){
-    console.log("bjr")
+
 
     $('app-etablissement').css('left','0px')
   }
@@ -148,9 +146,9 @@ open(){
   }
 
   submit(){
-    console.log("sousmission du formulaire")
+
     this.progressBarValue=10
-    console.log("progressbar= "+ this.progressBarValue)
+    
     this.close()
 
     this.stepper?.reset()

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DescriptionComponent } from './description.component';
+import { SocialShareComponent } from './social-share.component';
 
-describe('DescriptionComponent', () => {
-  let component: DescriptionComponent;
-  let fixture: ComponentFixture<DescriptionComponent>;
+describe('SocialShareComponent', () => {
+  let component: SocialShareComponent;
+  let fixture: ComponentFixture<SocialShareComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DescriptionComponent ]
+      declarations: [ SocialShareComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DescriptionComponent);
+    fixture = TestBed.createComponent(SocialShareComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

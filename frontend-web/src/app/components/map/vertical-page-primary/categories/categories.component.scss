@@ -21,6 +21,7 @@
 
 
 .mat-button{
+  background-color: white;
   border-radius: 50px;
     border: 2px solid rgb(148, 146, 146);
     padding: 0 5px 0px 5px;
@@ -38,6 +39,7 @@
 
   width: 320px;
 }
+
 }
 @media (width:320px) {
   .categories{
@@ -64,6 +66,16 @@ width: 15px;
 }
 
 .mobileListeView{
-  display: flex; 
+  display: flex;
      overflow-x: auto;
+}
+
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+
+  button {
+    display: inline-block;
+  }
 }
