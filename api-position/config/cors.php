@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*.position.cm', 'position.cm', 'http://localhost:52748'],
+    'allowed_origins' => ['*.position.cm', 'https://position.cm', 'http://localhost:52748'],
 
     'allowed_origins_patterns' => [],
 
