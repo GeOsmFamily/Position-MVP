@@ -30,6 +30,17 @@ import { ShareButtonsConfig } from 'ngx-sharebuttons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import {
+  provideAnalytics,
+  getAnalytics,
+  ScreenTrackingService,
+  UserTrackingService,
+} from '@angular/fire/analytics';
+import { providePerformance, getPerformance } from '@angular/fire/performance';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -61,12 +72,11 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     CategoriesComponent,
     SearchComponent,
     SocialShareComponent,
-
-
-
-
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAnalyticsModule,
     ShareButtonsModule.withConfig(customConfig),
     ShareIconsModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -104,12 +114,13 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
-
+    /*   provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAnalytics(() => getAnalytics()),
+    providePerformance(() => getPerformance()),*/
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ScreenTrackingService, UserTrackingService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
- 
+export class AppModule {}

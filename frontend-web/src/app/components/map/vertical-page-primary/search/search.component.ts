@@ -91,7 +91,7 @@ export class SearchComponent implements OnInit {
           width: 6,
         }),
         image: new Icon({
-          scale: 1.5,
+          scale: 2.5,
           src: feature.get('logo_url'),
         }),
         //@ts-ignore
@@ -135,7 +135,6 @@ export class SearchComponent implements OnInit {
         tap(() => {
           this.isLoading = true;
           this.countChanged.emit(this.isLoading);
-
         }),
         switchMap((value) => {
           return observerMerge(...this.getQuerryForSerach(value)).pipe(
@@ -246,9 +245,7 @@ export class SearchComponent implements OnInit {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
   }
-  login() {
-
-  }
+  login() {}
 
   clearSearch() {
     this.form?.get('searchWord')?.patchValue('');
