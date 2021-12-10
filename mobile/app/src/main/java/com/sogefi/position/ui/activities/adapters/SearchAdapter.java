@@ -76,7 +76,10 @@ public class SearchAdapter extends SuggestionsAdapter<DataSearchEtablissement, S
                 holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
             }
 
+
+
         DataEtablissements dataEtablissements = new DataEtablissements();
+
             dataEtablissements.setId(suggestion.getId());
         dataEtablissements.setIdBatiment(suggestion.getIdBatiment());
         dataEtablissements.setNom(suggestion.getNom());
@@ -102,7 +105,9 @@ public class SearchAdapter extends SuggestionsAdapter<DataSearchEtablissement, S
 
 
 
-        holder.constraintLayout.setOnClickListener(view -> mapActivity.clickDialog(dataEtablissements));
+
+
+        holder.constraintLayout.setOnClickListener(view -> mapActivity.resultSearch(dataEtablissements.getBatiment().getId().toString()));
 
 
 

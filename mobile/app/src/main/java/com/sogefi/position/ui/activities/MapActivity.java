@@ -1902,6 +1902,11 @@ if(pref.getRoleid().equals("2")) {
         startActivity(intent);
     }
 
+    public void resultSearch(String id) {
+        search.closeSearch();
+        getBatimentById(id);
+    }
+
 
 
     private void geojsonBatiment(@NonNull Style style) {
