@@ -6,8 +6,8 @@
     <style>
         img{border-width: 10; border: solid; text-align: center}
         H1{text-align: center;}
-        H2{text-align: center; color: #dbd821}
-        .approved{border-width: 1; color: green; text-align: center}
+        H2{text-align: center; color: green }
+        .approved{border-width: 1; color: #dbd821; text-align: center}
 
         .fancy {
             position: relative;
@@ -43,9 +43,11 @@
 
         <h1 class='fancy'> {{ name }}</h1>
 
-        <h2>Commercial Numero: {{ id }}</h2>
+        <h2>Badge: {{ numeroBadge }}</h2>
+        <h3>CNI: {{ numeroCni }}</h3>
     
-        <h3 class='approved'><i class="fas fa-user"></i> Commercial Position Approved </h3> 
+        <h4 class='approved'><i class="fas fa-user"></i> Commercial Position Approved/Certifié </h4>
+        <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Position All Rights Reserved</p>
     </center>
 
 

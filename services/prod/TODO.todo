@@ -1,0 +1,44 @@
+rechercher un commercial par son nom
+
+consulter ses statistiques journalières et globales
+connaître son activité journalière et globale
+évaluer le nombre d’entreprises enregistrées en fonction de l’objectif journalier(distinguer ceux qui ont atteint l’objectif journalier)
+imprimer la fiche de paie du commercial(mensuel)
+chiffre d’affaire= nombre d’entreprise recensés* 10 000
+revenu total=nombre d’entreprise recensés* 10 000(sur un mois)
+salaire:
+
+si point == 500 >>>> 500K salaire
+si point > 500 >>>>> 
+
+si nb entreprises = 500 alors salaire=200 000   >>>> 40%(500*1000)
+si nb entreprises > 500 alors salaire =  >>>>>>>>>>> 40%(500*1000)
+
+
+si ( nb_entreprises < 200) alors salaire=250 000 - (200 - nb_entreprises) * 13%
+lister les établissements enregistrés par un commercial
+
+
+
+detail hebdo, detail par personne (nombre de boutique), doual par ordre alphabetique(zone),7
+ classement des commerciauyx par rdre de merite, generation d'un excel non modifialble
+
+
+statistiques journaliere pour tous les et
+
+etat statistiques jour, semaines, mois
+- vue pour le responsable des operations / journee
+- total journalier des zones
+- bilan hebdo , un fichier pour chaque commerciale et sa paie
+- 
+
+
+
+get number of etablissement and etanlissemnt by year, month, week, day. done
+chiffre d'affaire . done
+position administrative get etablissement and money by day, week , month, year
+get a commercial and all what he had done in timeline
+
+
+apourentage des entreprises par categories
+qr code

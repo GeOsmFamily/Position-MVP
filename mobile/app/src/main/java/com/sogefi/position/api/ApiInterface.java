@@ -70,6 +70,9 @@ public interface ApiInterface {
     @GET("api/batiments")
     Call<BatimentsModel> getbatiments(@Header("X-Authorization") String apiKey);
 
+    @GET("api/batiments/{id}")
+    Call<Batiments> getbatimentsbyid(@Header("X-Authorization") String apiKey,@Path("id") int idBatiment);
+
     @POST("api/etablissements")
     Call<Etablissements> addetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body);
 

@@ -32,8 +32,21 @@ class SousCategories(Base):
     updated_at = Column(Date)
     
     categorie = relationship("Categories", back_populates="souscategories")
-    etablissement = relationship("Etablissements", back_populates="souscategorie")
+    sousCategoriesEtablissements = relationship("SousCategoriesEtablissements", back_populates="souscategorie")
+    
 
+#### SousCategoriesEtablissements ####
+class SousCategoriesEtablissements(Base):
+    __tablename__ = "souscategories_etablissements"
+
+    id = Column(Integer, primary_key=True, index=True)
+    idEtablissement = Column(Integer,  ForeignKey("etablissements.id"))
+    idSousCategorie = Column(Integer, ForeignKey("sous_categories.id"))
+    created_at = Column(Date)
+    updated_at = Column(Date)
+    
+    souscategorie = relationship("SousCategories", back_populates="sousCategoriesEtablissements")
+    etablissement = relationship("Etablissements", back_populates="sousCategoriesEtablissements")
 
 #### Managers models ####
 class Managers(Base):
@@ -60,6 +73,11 @@ class Commercials(Base):
     imageProfil = Column(String(191), index=True)
     idZone = Column(String(191), index=True)
     actif = Column(Integer)
+    sexe = Column(String(191))
+    whatsapp = Column(String(191))
+    diplome = Column(String(191))
+    tailleTshirt = Column(String(191))
+    age = Column(Integer)
     created_at = Column(Date)
     updated_at = Column(Date)
     etablissement = relationship("Etablissements", back_populates="commercial")
@@ -147,10 +165,10 @@ class Etablissements(Base):
     indicationAdresse = Column(String(191), index=True)
     codePostal = Column(String(191), index=True)
     siteInternet = Column(String(191), index=True)
-    idSousCategorie = Column(Integer, ForeignKey('sous_categories.id')) # Foreign key
     idCommercial = Column(Integer, ForeignKey('commercials.id')) # Foreign key
     idManager = Column(Integer, ForeignKey('managers.id')) # Foreign key
     etage = Column(Integer)
+    autres = Column(String(191))
     cover = Column(String(191))
     vues = Column(Integer)
     created_at = Column(Date)
@@ -161,9 +179,9 @@ class Etablissements(Base):
     images = relationship("Images", back_populates="etablissement")
     horaires = relationship("Horaires", back_populates="etablissement")
     batiment = relationship("Batiments", back_populates="etablissement")
-    souscategorie = relationship("SousCategories", back_populates="etablissement")
     commercial = relationship("Commercials", back_populates="etablissement")
     manager = relationship("Managers", back_populates="etablissement")
+    sousCategoriesEtablissements = relationship("SousCategoriesEtablissements", back_populates="etablissement")
     
 
 #### User models ####
