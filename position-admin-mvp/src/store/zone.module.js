@@ -82,5 +82,17 @@ export const zone = {
     zones: ({ zones }) => {
       return zones;
     },
+    zonesOPtions: ({ zones }) => {
+      let data = [{ value: null, text: "Selectionner une zone" }];
+      if (zones != null) {
+        zones.forEach((zone) => {
+          data.push({
+            value: zone.id,
+            text: zone.nom + " " + zone.ville,
+          });
+        });
+      }
+      return data;
+    },
   },
 };

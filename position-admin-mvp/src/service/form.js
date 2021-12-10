@@ -9,7 +9,7 @@ const form = axios.create({
     "Content-Type": "multipart/form-data",
     "Access-Control-Allow-Origin": "*",
     "X-Authorization":
-      "Enkk78Zn7I0FvaAt5YyM6EOadfbbgvX9lfm3ymGcUN1BVVpaOFq6S3OSGIz0j0CE",
+      "Uf51LFMwxxcnFEhP0dLItN03Ok78snVjqHgqLU8OsBdVFxpzfz9dj8zcKGYBrkO2",
   },
 });
 form.interceptors.request.use(

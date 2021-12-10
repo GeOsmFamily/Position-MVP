@@ -18,7 +18,7 @@
                 v-model.trim="$v.name.$model"
                 :state="!submitted ? null : submitted && !$v.name.$invalid"
                 id="Name22"
-                placeholder="Nom de la catégorie"
+                placeholder="Nom de la zone"
                 type="text"
                 class="form-control"
               />
@@ -30,27 +30,33 @@
             </div>
             <br />
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-              <label class="mr-sm-2">Logo catégorie</label>
+              <label for="Town22" class="mr-sm-2">Ville</label
+              ><b-form-input
+                name="name"
+                v-model="town"
+                v-model.trim="$v.town.$model"
+                :state="!submitted ? null : submitted && !$v.town.$invalid"
+                id="Town22"
+                placeholder="Nom de la ville"
+                type="text"
+                class="form-control"
+              />
+              <b-form-invalid-feedback
+                :state="!submitted ? null : submitted && $v.town.required"
+              >
+                Field is required
+              </b-form-invalid-feedback>
+            </div>
+            <br />
+            <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+              <label class="mr-sm-2">Limites</label>
               <b-form-file
                 v-model="logo"
                 :state="submitted ? Boolean(logo) : null"
-                placeholder="Choisissez un logo pour la catégorie..."
+                placeholder="Choisissez un fichier de limite pour la zone..."
                 drop-placeholder="Drop file here..."
                 @change="handleFileUpload($event)"
               ></b-form-file>
-            </div>
-            <br />
-            <div v-if="previewImage">
-              <div>
-                <b-img
-                  :src="previewImage"
-                  fluid
-                  alt="Fluid image"
-                  width="20"
-                  height="20"
-                ></b-img>
-                <!--                <img class="preview my-3" :src="previewImage" alt="" />-->
-              </div>
             </div>
             <br />
             <div class="float-right">
@@ -75,7 +81,7 @@
 
 <script>
 import PageTitle from "../../Layout/Components/PageTitle.vue";
-import { required, requiredIf } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 export default {
   components: {
     PageTitle,
@@ -85,14 +91,14 @@ export default {
     subheading: "Ajouter une nouvelle zone",
     icon: "pe-7s-graph text-success",
     name: "",
+    town: "",
     logo: null,
-    previewImage: null,
     message: "",
     submitted: false,
   }),
   computed: {
     loading() {
-      return this.$store.getters["category/loading"];
+      return this.$store.getters["zone/loading"];
     },
   },
   validations: {
@@ -100,30 +106,31 @@ export default {
       required,
     },
     logo: {
-      required: requiredIf(function () {
-        return this.logo !== "";
-      }),
+      required,
+    },
+    town: {
+      required,
     },
   },
   methods: {
     handleFileUpload(event) {
       console.log(event.target.files[0]);
       this.logo = event.target.files[0];
-      this.previewImage = URL.createObjectURL(this.logo);
     },
     handleLogin() {
-      this.$store.commit("category/toggleLoading", true);
+      this.$store.commit("zone/toggleLoading", true);
       this.submitted = true;
       this.$v.$touch();
       if (this.$v.$invalid) {
-        this.$store.commit("category/toggleLoading", false);
+        this.$store.commit("zone/toggleLoading", false);
       } else {
         if (this.name) {
           console.log("requête envoyée");
           let formData = new FormData();
           formData.append("file", this.logo);
           formData.append("nom", this.name);
-          this.$store.dispatch("category/createCategory", formData).then(
+          formData.append("ville", this.town);
+          this.$store.dispatch("zone/createZone", formData).then(
             (data) => {
               console.log(data);
               this.$bvToast.toast(`Modification  succès`, {
