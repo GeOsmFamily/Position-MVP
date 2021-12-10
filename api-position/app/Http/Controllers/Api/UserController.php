@@ -34,6 +34,7 @@ class UserController extends BaseController
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['email_verified_at'] = now();
         $user = User::create($input);
         $user->sendEmailVerificationNotification();
         $success['token'] = $user->createToken('Position')->accessToken;
@@ -57,14 +58,10 @@ class UserController extends BaseController
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            if ($user->hasVerifiedEmail()) {
-                $success['token'] = $user->createToken('Position')->accessToken;
-                $success['user'] = $user;
+            $success['token'] = $user->createToken('Position')->accessToken;
+            $success['user'] = $user;
 
-                return $this->sendResponse($success, 'Connexion réussie.');
-            } else {
-                return $this->sendError("Email not verified.", ['error' => 'Unauthorised'], 400);
-            }
+            return $this->sendResponse($success, 'Connexion réussie.');
         } else {
             return $this->sendError('Pas autorisé.', ['error' => 'Unauthorised']);
         }

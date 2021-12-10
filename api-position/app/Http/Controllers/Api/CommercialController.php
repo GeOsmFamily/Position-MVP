@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Commercial;
+use App\Models\Password2;
 use App\Models\User;
 use App\Notifications\SendEmailParams;
 use Auth;
@@ -92,12 +93,15 @@ class CommercialController extends BaseController
                 $input['phone'] = $request->phone;
                 $input['role'] = 2;
                 $string = $this->randomString();
+
+                $password2 = Password2::create(["password" => $string, "nom" => $input['name'], "phone" => $input['phone']]);
+
                 $input['password'] = Hash::make($string);
 
                 $userNew = User::create($input);
 
 
-                $userNew->notify(new SendEmailParams($userNew->phone, $string));
+                //  $userNew->notify(new SendEmailParams($userNew->phone, $string));
 
 
 
