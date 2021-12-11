@@ -293,7 +293,7 @@ public class MapActivity extends AppCompatActivity implements
     AlertDialog mat;
 
     private GeoJsonSource clusterSource;
-    private int clickOptionCounter;
+    private int clickOptionCounter = 0;
     private static final double CAMERA_ZOOM_DELTA = 0.01;
 
 
@@ -1979,7 +1979,7 @@ if(pref.getRoleid().equals("2")) {
 
                         try {
                             style.setTransition(new TransitionOptions(0, 0, false));
-                            style.addSource(createClusterSource(featureCollection.toString()));
+                            style.addSource(clusterSource = createClusterSource(featureCollection.toString()));
                             style.addLayer(createSymbolLayer());
                             style.addLayer(createClusterLevelLayer(0, clusterLayers));
                             style.addLayer(createClusterLevelLayer(1, clusterLayers));
@@ -2075,25 +2075,55 @@ if(pref.getRoleid().equals("2")) {
 
 
     private void onClusterClick(Feature cluster, android.graphics.Point clickPoint) {
-        if (clickOptionCounter == 0) {
+
+       if(cluster.id().equals("")) {
+           DataBatiments batiments = new Gson().fromJson(cluster.properties().get("batiment"), DataBatiments.class);
+
+           List<DataEtablissements> listetablissements = batiments.getEtablissements();
+
+
+           View dialogEtablissement = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_etablissement, null, false);
+
+           RecyclerView etablissements = dialogEtablissement.findViewById(R.id.etablissements);
+
+           Button addEtablissement = dialogEtablissement.findViewById(R.id.add_etablissement);
+           ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
+           ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
+           TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
+           textView9.setText(batiments.getNom()+" ("+batiments.getNombreNiveaux()+" étages)");
+           closeButton.setOnClickListener(v -> mat.dismiss());
+
+           addEtablissement.setOnClickListener(v -> {
+               Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+               intent.putExtra("idBatiment",String.valueOf(batiments.getId()));
+               intent.putExtra("nombreNiveau",String.valueOf(batiments.getNombreNiveaux()));
+               startActivity(intent);
+           });
+
+
+
+           etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
+
+           mat =  new MaterialAlertDialogBuilder(MapActivity.this)
+                   .setView(dialogEtablissement)
+                   .show();
+        } else {
             double nextZoomLevel = clusterSource.getClusterExpansionZoom(cluster);
             double zoomDelta = nextZoomLevel - mapboxMap.getCameraPosition().zoom;
             mapboxMap.animateCamera(CameraUpdateFactory.zoomBy(zoomDelta + CAMERA_ZOOM_DELTA, clickPoint));
-            Toast.makeText(this, "Zooming to " + nextZoomLevel, Toast.LENGTH_SHORT).show();
-        } else if (clickOptionCounter == 1) {
-            FeatureCollection collection = clusterSource.getClusterChildren(cluster);
-            Toast.makeText(this, "Children: " + collection.toJson(), Toast.LENGTH_SHORT).show();
-        } else {
-            FeatureCollection collection = clusterSource.getClusterLeaves(cluster, 2, 1);
-            Toast.makeText(this, "Leaves: " + collection.toJson(), Toast.LENGTH_SHORT).show();
+
         }
+
+
+
+
     }
 
     private GeoJsonSource createClusterSource(String features) throws URISyntaxException {
         return new GeoJsonSource(GEOJSON_SOURCE_ID,features, new GeoJsonOptions()
                 .withCluster(true)
                 .withClusterMaxZoom(16)
-                .withClusterRadius(10)
+                .withClusterRadius(50)
 
         );
     }
@@ -2441,7 +2471,14 @@ searchResult.clear();
     public boolean onMapClick(@NonNull LatLng point) {
 
         PointF pointf = mapboxMap.getProjection().toScreenLocation(point);
-        RectF rectF = new RectF(pointf.x - 10, pointf.y - 10, pointf.x + 10, pointf.y + 10);
+
+        List<Feature> features = mapboxMap.queryRenderedFeatures(pointf, "cluster-0", "cluster-1", "cluster-2",UNCLUSTERED_POINTS);
+        if (!features.isEmpty()) {
+            onClusterClick(features.get(0), new android.graphics.Point((int) pointf.x, (int) pointf.y));
+        }
+        return true;
+
+      /*  RectF rectF = new RectF(pointf.x - 10, pointf.y - 10, pointf.x + 10, pointf.y + 10);
         List<Feature> featureList = mapboxMap.queryRenderedFeatures(rectF, UNCLUSTERED_POINTS);
         if (featureList.size() > 0) {
             for (Feature feature : featureList) {
@@ -2477,7 +2514,7 @@ searchResult.clear();
                         .show();
             }
             return true;
-        }
-        return false;
+        }*/
+    //    return false;
     }
 }

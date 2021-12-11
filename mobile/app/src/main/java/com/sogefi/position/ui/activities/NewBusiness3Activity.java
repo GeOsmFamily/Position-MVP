@@ -183,7 +183,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
         if(dataEtablissements != null) {
 
             for (int i = 0; i < dataEtablissements.getHoraires().size(); i++) {
-                if(dataEtablissements.getHoraires().get(i).getJour().equals("Lundi")) {
+                if(dataEtablissements.getHoraires().get(i).getJour().equals("Lundi") || dataEtablissements.getHoraires().get(i).getJour().equals("Mardi") || dataEtablissements.getHoraires().get(i).getJour().equals("Mercredi") || dataEtablissements.getHoraires().get(i).getJour().equals("Jeudi") || dataEtablissements.getHoraires().get(i).getJour().equals("Vendredi")) {
                     openLundi.setText(dataEtablissements.getHoraires().get(i).getHeureOuverture());
                     closedLundi.setText(dataEtablissements.getHoraires().get(i).getHeureFermeture());
                 }
@@ -961,11 +961,12 @@ RequestBody requestBody;
                     sdf = new SimpleDateFormat("HH:mm");
                     String formatedTime = sdf.format(time);
                     Date open = sdf.parse(openTime);
-                    if(open.compareTo(time) < 0) {
+                    closed.setText(formatedTime);
+                   /* if(open.compareTo(time) < 0) {
                         closed.setText(formatedTime);
                     } else {
                         Toast.makeText(NewBusiness3Activity.this, "Heure de fermeture non valide", Toast.LENGTH_SHORT).show();
-                    }
+                    }*/
 
 
                 } catch (Exception e) {}
