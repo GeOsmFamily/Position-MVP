@@ -82,6 +82,7 @@ loginComponent: LoginComponent | undefined;
 
   ngOnInit(): void {
 
+
 this.initialiazeMap()
 this.handleMapParamsUrl()
 this.getPosition()
@@ -94,14 +95,23 @@ this.getPosition()
   handleMapParamsUrl() {
     var mapHelper = new MapHelper();
 
+
     this.activatedRoute.queryParams.subscribe((params) => {
       if (params['etablissements']) {
 
         var layers = params['etablissements'].split(',');
+
        this.positionApi.getEtablissement(layers[0])
+      /*console.log("rrrrr "+ feature)
+       var searchResultLayer = new VectorLayer();
+       searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
+       searchResultLayer.getSource().clear();
 
+       searchResultLayer.getSource().addFeature(feature);
 
-     
+       var extent = feature.getGeometry()?.getExtent();
+      // mapHelper.fit_view(feature.getGeometry()?.getExtent(), 16);
+*/
 
       }
     });
@@ -120,7 +130,7 @@ this.getPosition()
     this.mapClicked()
     this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
     this.componentHelper.setComponent('EtablissementComponent',this.etablissementComponent)
-
+   
 
 
 
@@ -216,6 +226,8 @@ geolocation.on('change:position', function () {
       if(feature?.get('type')=="position"){
 
           this.componentHelper.openFicheEntreprise(feature)
+          console.log("adress")
+          console.log(feature.get('horaires'))
       }
 
 });

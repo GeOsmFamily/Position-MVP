@@ -1,12 +1,12 @@
 <div style="background-color: #fff;color:black;height: 100vh;">
   <!-- Photo de l'entreprise-->
-  <div class="parent " style="width: 100%; height: 250px;overflow: hidden;">
+  <div class="parent " style="width: 100%;overflow: hidden;">
     <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
    -->
     <ngb-carousel>
       <ng-template ngbSlide *ngFor="let image of images">
         <div class="picsum-img-wrapper">
-          <img src="{{ image }}" alt="{{ image }}" style="width: 100%;" class="img-fluid">
+          <img src="{{ image }}" alt="{{ image }}" style="width: 100%;height: 250px;" class="img-fluid">
         </div>
 
       </ng-template>
@@ -25,13 +25,29 @@
   <!-- Bloc contenant les informations de l'entreprise-->
   <div class="container" style="margin-top: 20px;margin-left: 20px;">
 
-    <!-- Nom et catégorie de l'entreprise-->
-    <div class=" clearfix">
+    <!-- Nom et catégorie de l'entreprise   logo_url-->
+    <div class=" clearfix" *ngIf="featurePoint?.get('textLabel')">
       <div class="pull-left" style="font-weight: bold;">
-        <p style="font-size: 15px;"> {{featurePoint?.get("textLabel")}}</p>
+        <table>
+          <tr>
+            <td>
+              <img src="{{featurePoint?.get('logo_url')}}" alt="logo_categorie" style="margin-left: -30px;margin-top: -10px;"/>
+            </td>
+            <td>
+              <p style="font-size: 15px;"> {{featurePoint?.get("textLabel")}}</p>
+            </td>
+          </tr>
+        </table>
+
+
       </div>
       <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;">
-        {{featurePoint?.get("nomCategorie")}}</div>
+        {{featurePoint?.get("nomCategorieSousCategorie")}}
+      </div>
+      <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;">
+        {{featurePoint?.get("motCle")}}
+      </div>
+
     </div>
 
     <!-- Moyen de contacter et de partager les infos sur l'entreprise-->
@@ -83,7 +99,7 @@
 
 
       <div class="item">
-        <button
+        <button [disabled]="true"
           style="  padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
           <img (click)=" alert1()" src="assets/button/icon-action-vignette-enregistrer.svg"
             style="width:75%;cursor: pointer;">
@@ -111,11 +127,15 @@
 
       <div style="display: inline-block;" *ngIf="featurePoint?.get('horaires')">
         <ng-container *ngFor="let h of featurePoint?.get('horaires')">
-          <p style="font-size: 11px;" *ngIf="h.tous_les_jours"> Tous les jours: {{h.heureOuverture}} -
+          <p style="font-size: 11px;" *ngIf="h.jour=='Lundi'"> Lun: {{h.heureOuverture}} -
             {{h.heureFermeture}} </p>
-          <br>
-          <p style="font-size: 11px;" *ngIf="h.Samedi">Samedi: {{h.heureOuverture}} - {{h.heureFermeture}} </p><br>
-          <p style="font-size: 11px;" *ngIf="h.Dimanche">Dimanche: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+
+          <p style="font-size: 11px;" *ngIf="h.jour =='Mardi'">Mar: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Mercredi'">Mer: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Jeudi'">Jeu: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='vendredi'">Ven: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Samedi'">Sam: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jou=='dimanche'">Dim: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
 
         </ng-container>
 
@@ -202,7 +222,7 @@
 
       <span>Présentation</span>
       <p style=" text-align: justify;
-     text-justify: inter-word;margin-right: 15px;">
+     text-justify: inter-word;margin-right: 15px;color:black;">
         {{featurePoint?.get('description')}}
 
 

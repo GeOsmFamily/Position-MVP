@@ -35,6 +35,13 @@ const routes: Routes = [
     //  loadChildren: () => import('./app.module').then((mod) => mod.AppModule),
 
     component: MapComponent,
+    data: {
+      seo: {
+        title: "eeeee",
+        description: "I'm a 30 year old software engineer living in Belgium.",
+        shareImg: '/assets/share/about.png',
+      }
+    }
   },
 /*
   {

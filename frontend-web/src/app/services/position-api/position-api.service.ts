@@ -29,6 +29,7 @@ import {
   VectorSource,
   VectorSourceEvent,
 } from 'src/app/modules/ol';
+import { ComponentHelper } from 'src/app/helpers/componentHelper';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,7 @@ export class PositionApiService {
 
   horaires = new Array();
   telephones = new Array();
+  numero_whatsapp = new Array();
 
   entetes = new HttpHeaders()
     .set('content-type', 'application/json')
@@ -54,10 +56,12 @@ export class PositionApiService {
   Categories = new Array();
   geometry: Geometry | undefined;
 
+
   constructor(
     public router: Router,
     private httpClient: HttpClient,
-    public apiService: ApiService
+    public apiService: ApiService,
+    public componentHelper:ComponentHelper
   ) {}
 
   public getCategories(): any[] {
@@ -99,15 +103,15 @@ export class PositionApiService {
         searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
 
         var cover = environment.url_image + data.data.cover;
-
+        var imageBatiment=environment.url_image + data.data.batiment.image;
         var image = environment.url_image + data.data.images[0].imageUrl;
-
+        this.imagesCourousel.push(imageBatiment)
         this.imagesCourousel.push(cover);
         this.imagesCourousel.push(image);
         var feature = new Feature();
         var textLabel = data.data.nom;
         var description = data.data.description;
-       
+
         feature.set('imagesCarousel', this.imagesCourousel);
         feature.set('textLabel', textLabel);
         feature.set('id', data.data.id);
@@ -118,18 +122,46 @@ export class PositionApiService {
         feature.set('type', 'position');
         feature.set('nomCategorie', data.data.sous_categories[0].categorie.nom);
         feature.set('nomSousCategorie', data.data.sous_categories[0].nom);
-        feature.set('cover', data.data.cover);
-        feature.set('siteInternet', data.data.siteInternet);
-        feature.set('indication', data.data.batiment.indication);
+        var cover = environment.url_image + data.data.cover;
+        var image = environment.url_image + data.data.images[0].imageUrl;
+        feature.set('imagesCarousel', this.imagesCourousel);
 
-        console.log("batiment geometry")
-        console.log(data.data.batiment.longitude+" " +data.data.batiment.latitude)
+        feature.set('textLabel', textLabel);
+        feature.set('id', data.data.id);
+        feature.set(
+          'logo_url',
+          environment.url_image + data.data.sous_categories[0].categorie.logoUrl
+        );
+
+        feature.set('description', data.data.description);
+        feature.set('type', 'position');
+        feature.set('adresse', data.data.batiment.rue+", "+ data.data.batiment.ville+", bâtiment "+ data.data.batiment.nom+", étage "+ data.data.etage)
+
+        //feature.set('nomCategorie',  data.data.nomCategorie);
+
+        feature.set('nomCategorieSousCategorie', data.data.sous_categories[0].nom+", "+data.data.sous_categories[0].nom);
+         feature.set('cover',  data.data.cover);
+        feature.set('siteInternet',  data.data.siteInternet);
+        feature.set('indication',  data.data.indicationAdresse);
+        feature.set('codePostal', data.data.codePostal)
+        feature.set('etage', data.data.etage)
+        feature.set('motCle', data.data.autres)
+
+
+
+
+
+
+          //console.log(data.data.batiment.rue+", "+data.data.batiment.ville+", bâtiment "+data.data.batiment.nom+", étage "+data.data.etage)
+
+
         feature.setGeometry(new Point(fromLonLat([data.data.batiment.longitude, data.data.batiment.latitude]))
-         
+
         );
        // new Point([, 3.866667])
         var i = 0;
         for (let index = 0; index < data.data.horaires.length; index++) {
+
           if (data.data.horaires[index].jour == 'Lundi' && i == 0) {
             i++;
             this.horaires?.push({
@@ -154,9 +186,9 @@ export class PositionApiService {
           }
           // console.log(categories[index].nom)
         }
-        feature.set('horaires', this.horaires);
+        //feature.set('horaires', this.horaires);
 
-        var numero_whatsapp = new Array();
+        //var numero_whatsapp = new Array();
         for (let index = 0; index < data.data.telephones.length; index++) {
           if (data.data.telephones[index].principal == 1) {
             // this.telephones?.push({"principal":emprise.telephones[index].numero})
@@ -165,11 +197,18 @@ export class PositionApiService {
               data.data.telephones[index].numero
             );
           } else {
-            this.telephones.push(data.data.telephones[index].numero);
+            this.numero_whatsapp.push(data.data.telephones[index].numero);
+            console.log(data.data.telephones[index].numero)
+
           }
         }
+
+
+
+        console.log("helloooooooo")
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
+        feature.set('whatsapp',this.numero_whatsapp)
 
         searchResultLayer.getSource().clear();
 
@@ -177,8 +216,11 @@ export class PositionApiService {
 
         var extent = feature.getGeometry()?.getExtent();
 
+        this.componentHelper.openFicheEntreprise(feature)
         //@ts-ignore
         mapHelper.fit_view(extent, 16);
+       // console.log("kkkkkkkkkkkkkkkkkkkkkk")
+
       });
   }
 }

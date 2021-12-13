@@ -47,7 +47,7 @@ export class HandleEtablissementsSearch {
           details.push(this._formatType(element));
         }
 
-       
+
         response.push({
           name: features[0].get('nom'),
           id: features[0].get('id'),
@@ -85,18 +85,29 @@ export class HandleEtablissementsSearch {
     }
   }
 
+  includehoraire(hs:any, index:number,jour:string){
+    this.horaires?.push({
+      jour: hs[index].jour,
+      heureOuverture: hs[index].heureOuverture,
+      heureFermeture: hs[index].heureFermeture,
+    });
+
+  }
   _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
     if (emprise.geometry) {
 
+      console.log(emprise)
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
         var searchResultLayer = new VectorLayer();
         searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
         var cover = environment.url_image + emprise.cover;
         var image = environment.url_image + emprise.images[0].imageUrl;
-
+        var imageBatiment=environment.url_image + emprise.batiment.image;
+        this.imagesCourousel.push(imageBatiment)
         this.imagesCourousel.push(cover);
         this.imagesCourousel.push(image);
+
         var feature = new Feature();
         var textLabel = emprise.name;
         var description = emprise.description;
@@ -108,12 +119,12 @@ export class HandleEtablissementsSearch {
           'logo_url',
           environment.url_image + emprise.sous_categories[0].categorie.logoUrl
         );
-       
+
         feature.set('description', emprise.description);
         feature.set('type', 'position');
-        feature.set('adresse',emprise.batiment.rue+", "+emprise.batiment.ville+", bâtiment "+emprise.batiment.nom+", étage "+emprise.etage)
-       
-        feature.set('nomCategorie', emprise.nomCategorie);
+        feature.set('adresse',emprise.batiment.ville+", "+emprise.batiment.quartier+", "+ emprise.batiment.rue)
+
+        feature.set('nomCategorieSousCategorie', emprise.sous_categories[0].nom+", "+emprise.nomCategorie);
         feature.set('nomSousCategorie', emprise.sous_categories[0].nom);
         feature.set('cover', emprise.cover);
         feature.set('siteInternet', emprise.siteInternet);
@@ -123,34 +134,10 @@ export class HandleEtablissementsSearch {
         feature.set('motCle',emprise.autres)
         feature.setGeometry(emprise.geometry);
         var i = 0;
-        for (let index = 0; index < emprise.horaires.length; index++) {
-          if (emprise.horaires[index].jour == 'Lundi' && i == 0) {
-            i++;
-            this.horaires?.push({
-              tous_les_jours: emprise.horaires[index].jour,
-              heureOuverture: emprise.horaires[index].heureOuverture,
-              heureFermeture: emprise.horaires[index].heureFermeture,
-            });
-          }
-          if (emprise.horaires[index].jour == 'Samedi') {
-            this.horaires?.push({
-              Samedi: emprise.horaires[index].jour,
-              heureOuverture: emprise.horaires[index].heureOuverture,
-              heureFermeture: emprise.horaires[index].heureFermeture,
-            });
-          }
-          if (emprise.horaires[index].jour == 'Dimanche') {
-            this.horaires?.push({
-              Dimanche: emprise.horaires[index].jour,
-              heureOuverture: emprise.horaires[index].heureOuverture,
-              heureFermeture: emprise.horaires[index].heureFermeture,
-            });
-          }
 
-        }
-        feature.set('horaires', this.horaires);
+        feature.set('horaires',emprise.horaires);
 
-       
+
         for (let index = 0; index < emprise.telephones.length; index++) {
           if (emprise.telephones[index].principal == 1) {
             // this.telephones?.push({"principal":emprise.telephones[index].numero})
@@ -159,7 +146,7 @@ export class HandleEtablissementsSearch {
           } else {
             this.numero_whatsapp.push(emprise.telephones[index].numero);
             //console.log(emprise.telephones[index].numero)
-            
+
 
           }
         }
