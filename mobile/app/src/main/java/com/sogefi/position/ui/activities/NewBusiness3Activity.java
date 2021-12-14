@@ -408,7 +408,7 @@ RequestBody requestBody;
                     if(response.code() == 401 || response.code() == 500) {
                         progressBar.setVisibility(View.GONE);
                         next3.setEnabled(true);
-                        Toast.makeText(getApplicationContext(), "Error Create Etablissement", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Error Update Etablissement", Toast.LENGTH_LONG).show();
                     } else {
                         int idEtablissement = response.body().getData().getId();
 

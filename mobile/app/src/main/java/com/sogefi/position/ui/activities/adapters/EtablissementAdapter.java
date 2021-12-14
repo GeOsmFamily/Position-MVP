@@ -6,6 +6,7 @@ import static com.sogefi.position.utils.Constants.IMAGEURL;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,7 @@ public class EtablissementAdapter extends RecyclerView.Adapter<EtablissementAdap
             String[] parts = etablissements.get(position).getCreatedAt().split("T");
             holder.etablissement_create.setText("Crée le "+parts[0]+" par "+etablissements.get(position).getNomCommercial());
             holder.card_etablissement.setOnClickListener(v -> mapActivity.clickDialog(etablissements.get(position)));
+            holder.openFiche.setOnClickListener(v -> mapActivity.openFiche(etablissements.get(position)));
         } catch (IndexOutOfBoundsException e) {
             Toast.makeText(getApplicationContext(), "Ce batiment n'est pas complet", Toast.LENGTH_LONG).show();
         }
@@ -81,6 +83,7 @@ public class EtablissementAdapter extends RecyclerView.Adapter<EtablissementAdap
         TextView etablissement_etage;
         TextView etablissement_categorie;
         TextView etablissement_create;
+        Button openFiche;
         ConstraintLayout card_etablissement;
 
 
@@ -92,6 +95,7 @@ public class EtablissementAdapter extends RecyclerView.Adapter<EtablissementAdap
             etablissement_categorie= v.findViewById(R.id.etablissement_categorie);
             etablissement_create= v.findViewById(R.id.etablissement_create);
             card_etablissement = v.findViewById(R.id.card_etablissement);
+            openFiche = v.findViewById(R.id.open_fiche);
         }
     }
 }

@@ -69,6 +69,22 @@
             app:layout_constraintTop_toBottomOf="@id/etablissement_name"
             tools:text="etage 1" />
 
+        <customfonts.Button_SF_Pro_Display_Medium
+            android:id="@+id/open_fiche"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/button_round_1"
+            android:text="ouvrir la fiche"
+            android:textSize="8dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.971"
+            app:layout_constraintStart_toStartOf="@id/etablissement_etage"
+            app:layout_constraintTop_toBottomOf="@id/etablissement_categorie"
+            app:layout_constraintVertical_bias="0.0" />
+
         <TextView
             android:id="@+id/etablissement_create"
             android:layout_width="match_parent"

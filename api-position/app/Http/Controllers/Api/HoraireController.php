@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Etablissement;
 use App\Models\Horaire;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 
 class HoraireController extends BaseController
@@ -27,23 +28,34 @@ class HoraireController extends BaseController
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
 
-        $role = $user->role;
+        DB::beginTransaction();
+        try {
 
-        if ($role == 1 || $role == 2) {
 
-            $input = $request->all();
+            $user = Auth::user();
 
-            $etablissement = Etablissement::find($request->idEtablissement);
+            $role = $user->role;
 
-            $horaire = $etablissement->horaires()->create($input);
+            if ($role == 1 || $role == 2) {
 
-            if ($horaire) {
-                return $this->sendResponse($horaire, "Ajout de l'horaire reussi", 201);
-            } else {
-                return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                $input = $request->all();
+
+                $etablissement = Etablissement::find($request->idEtablissement);
+
+                $horaire = $etablissement->horaires()->create($input);
+
+                DB::commit();
+
+                if ($horaire) {
+                    return $this->sendResponse($horaire, "Ajout de l'horaire reussi", 201);
+                } else {
+                    return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                }
             }
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return $this->sendError("Erreur de Création.", ['error' => $ex->getMessage()], 500);
         }
     }
 

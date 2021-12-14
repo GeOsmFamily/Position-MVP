@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Etablissement;
 use App\Models\Image;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 
 class ImageController extends BaseController
@@ -83,34 +84,43 @@ class ImageController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $user = Auth::user();
+        DB::beginTransaction();
+        try {
 
-        $role = $user->role;
+            $user = Auth::user();
 
-        $image = Image::find($id);
+            $role = $user->role;
 
-        $idUserCommercial = $image->etablissement->commercial->idUser;
+            $image = Image::find($id);
 
-        if ($role == 1 || $user->id = $idUserCommercial) {
+            $idUserCommercial = $image->etablissement->commercial->idUser;
 
-            $batiment = $image->etablissement->batiment;
-            $etablissement = $image->etablissement;
+            if ($role == 1 || $user->id = $idUserCommercial) {
 
-            if ($request->file()) {
-                $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $etablissement->nom, $fileName, 'public');
-                $image->imageUrl = '/storage/' . $filePath;
-            }
+                $batiment = $image->etablissement->batiment;
+                $etablissement = $image->etablissement;
 
-            $save = $image->save();
+                if ($request->file()) {
+                    $fileName = time() . '_' . $request->file->getClientOriginalName();
+                    $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $etablissement->nom, $fileName, 'public');
+                    $image->imageUrl = '/storage/' . $filePath;
+                }
 
-            if ($save) {
-                return $this->sendResponse($image, "Update Success", 201);
+                $save = $image->save();
+
+                DB::commit();
+
+                if ($save) {
+                    return $this->sendResponse($image, "Update Success", 201);
+                } else {
+                    return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                }
             } else {
-                return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
             }
-        } else {
-            return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return $this->sendError("Erreur de Création.", ['error' => $ex->getMessage()], 500);
         }
     }
 
