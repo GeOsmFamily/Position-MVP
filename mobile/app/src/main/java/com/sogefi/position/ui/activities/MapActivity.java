@@ -763,36 +763,31 @@ public class MapActivity extends AppCompatActivity implements
         final String[] items = {"STREET", "SATELLITE"};
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
         builder.setTitle( getString(R.string.selectStyle));
-        builder.setSingleChoiceItems(items, Integer.valueOf(pref.getCheckitem()), (dialog, which) -> {
+        builder.setSingleChoiceItems(items, checkItem, (dialog, which) -> {
             switch (which) {
                 case 0:
                     newStyle(Style.MAPBOX_STREETS);
                     checkItem = which;
-                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 1:
                     newStyle(Style.SATELLITE);
                     checkItem = which;
-                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 2:
                     newStyle(Style.LIGHT);
                     checkItem = which;
-                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 3:
                     newStyle(Style.TRAFFIC_NIGHT);
                     checkItem = which;
-                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 4:
                     newStyle("mapbox://styles/mapbox/cj3kbeqzo00022smj7akz3o1e");
                     checkItem = which;
-                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
             }
