@@ -5,8 +5,9 @@ import * as $ from 'jquery';
 import { Feature, Point } from 'src/app/modules/ol';
 import { DeviceDetectionService } from 'src/app/services/device-detection.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { Meta } from '@angular/platform-browser';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-fiche-entreprise',
@@ -20,7 +21,7 @@ export class FicheEntrepriseComponent implements OnInit {
   url_demo = environment.url_demo;
   images = [];
   constructor(
-    private meta: Meta,
+      private meta: Meta,
     private router: Router,
     private modalService: NgbModal,
     private activatedRoute: ActivatedRoute,
@@ -30,7 +31,52 @@ export class FicheEntrepriseComponent implements OnInit {
 
   ngOnInit(): void {}
 
+
+
+
+  private setupRouting() {
+    this.router.events.pipe(
+      filter((event: any) => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map(route => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      filter(route => route.outlet === 'primary')
+    ).subscribe((route: ActivatedRoute) => {
+      const seo = route.snapshot.data['seo'];
+      this.meta.updateTag({
+        property: 'og:title',
+        content: this.featurePoint?.get('textLabel'),
+      });
+      this.meta.updateTag({
+        property: 'og:description',
+        content:"Retrouvez mon business sur la plateforme Position"
+          //this.featurePoint?.get('nomCategorie') +',' + this.featurePoint?.get('nomSousCategorie'),
+      });
+      this.meta.updateTag({
+        property: 'og:image',
+        content:  environment.url_image+ this.featurePoint?.get('cover'),
+      });
+      this.meta.updateTag({
+        property: 'og:url',
+        content:
+          environment.url_demo +
+          'home?etablissements=' +
+          this.featurePoint?.get('id') +
+          ',16',
+      });
+
+      // set your meta tags & title here
+
+    });
+  }
+
   shareLink() {
+
+    this.setupRouting()
     var url_share =
       environment.url_demo+
       'home/?etablissements=' +
@@ -45,27 +91,6 @@ export class FicheEntrepriseComponent implements OnInit {
   }
   open(featurePoint: any) {
     this.featurePoint = featurePoint;
-    this.meta.updateTag({
-      property: 'og:title',
-      content: this.featurePoint?.get('textLabel'),
-    });
-    this.meta.updateTag({
-      property: 'og:description',
-      content:"Retrouvez mon business sur la plateforme Position"
-        //this.featurePoint?.get('nomCategorie') +',' + this.featurePoint?.get('nomSousCategorie'),
-    });
-    this.meta.updateTag({
-      property: 'og:image',
-      content:  environment.url_image+ this.featurePoint?.get('cover'),
-    });
-    this.meta.updateTag({
-      property: 'og:url',
-      content:
-        environment.url_demo +
-        'home?etablissements=' +
-        this.featurePoint?.get('id') +
-        ',16',
-    });
 
     this.images = this.featurePoint?.get('imagesCarousel');
 
