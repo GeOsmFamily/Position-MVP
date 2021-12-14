@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/logo_dialog"
-        android:layout_width="27dp"
-        android:layout_height="27dp"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="16dp"
@@ -29,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:textSize="10dp"
         android:text="Etablissements"
         app:layout_constraintBottom_toTopOf="@id/etablissements"
         app:layout_constraintEnd_toEndOf="parent"

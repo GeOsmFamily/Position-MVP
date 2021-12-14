@@ -755,37 +755,44 @@ public class MapActivity extends AppCompatActivity implements
         pref.setStyle(style);
 
 
+
+
     }
 
     public void alertDialog() {
         final String[] items = {"STREET", "SATELLITE"};
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
         builder.setTitle( getString(R.string.selectStyle));
-        builder.setSingleChoiceItems(items, checkItem, (dialog, which) -> {
+        builder.setSingleChoiceItems(items, Integer.valueOf(pref.getCheckitem()), (dialog, which) -> {
             switch (which) {
                 case 0:
                     newStyle(Style.MAPBOX_STREETS);
                     checkItem = which;
+                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 1:
                     newStyle(Style.SATELLITE);
                     checkItem = which;
+                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 2:
                     newStyle(Style.LIGHT);
                     checkItem = which;
+                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 3:
                     newStyle(Style.TRAFFIC_NIGHT);
                     checkItem = which;
+                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
                 case 4:
                     newStyle("mapbox://styles/mapbox/cj3kbeqzo00022smj7akz3o1e");
                     checkItem = which;
+                    pref.setCheckitem(String.valueOf(checkItem));
                     dialog.dismiss();
                     break;
             }
@@ -1688,6 +1695,15 @@ if(pref.getRoleid().equals("2")) {
             call.enqueue(new Callback<Batiments>() {
                 @Override
                 public void onResponse(@NotNull Call<Batiments> call, @NotNull Response<Batiments> response) {
+                    LatLng point = new LatLng(Double.parseDouble(response.body().getData().getLatitude()),Double.parseDouble(response.body().getData().getLongitude()));
+
+                    CameraPosition cam = new CameraPosition.Builder()
+                            .target(point)
+                            .zoom(17)
+                            .build();
+
+                    mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(cam), 5000);
+
                     List<DataEtablissements> listetablissements = response.body().getData().getEtablissements();
 
 
@@ -1699,7 +1715,13 @@ if(pref.getRoleid().equals("2")) {
                     ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
                     ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
                     TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
-                    textView9.setText(response.body().getData().getNom()+" ("+response.body().getData().getNombreNiveaux()+" étages)");
+                    if(response.body().getData().getNombreNiveaux() > 1) {
+
+                        textView9.setText(response.body().getData().getNom()+" ("+response.body().getData().getNombreNiveaux()+" étages)");
+                    } else {
+
+                        textView9.setText(response.body().getData().getNom()+" ("+response.body().getData().getNombreNiveaux()+" étage)");
+                    }
                     closeButton.setOnClickListener(v -> mat.dismiss());
 
                     addEtablissement.setOnClickListener(v -> {
@@ -1835,7 +1857,12 @@ if(pref.getRoleid().equals("2")) {
                                 ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
                                 ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
                                 TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
-                                textView9.setText(nomBatiment+" ("+nombreNiveau+" étages)");
+                                if(Integer.parseInt(nombreNiveau) > 1 ) {
+                                    textView9.setText(nomBatiment+" ("+nombreNiveau+" étages)");
+                                } else {
+                                    textView9.setText(nomBatiment+" ("+nombreNiveau+" étage)");
+                                }
+
                                 closeButton.setOnClickListener(v -> mat.dismiss());
 
                                 addEtablissement.setOnClickListener(v -> {
@@ -1902,7 +1929,15 @@ if(pref.getRoleid().equals("2")) {
         startActivity(intent);
     }
 
+    public void openFiche(DataEtablissements dataEtablissements) {
+
+        Intent intent = new Intent(MapActivity.this, DetailsBusinessActivity.class);
+        intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
+        startActivity(intent);
+    }
+
     public void resultSearch(String id) {
+
         search.closeSearch();
         getBatimentById(id);
     }
@@ -2090,7 +2125,13 @@ if(pref.getRoleid().equals("2")) {
            ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
            ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
            TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
-           textView9.setText(batiments.getNom()+" ("+batiments.getNombreNiveaux()+" étages)");
+           if(batiments.getNombreNiveaux() > 1) {
+
+               textView9.setText(batiments.getNom()+" ("+batiments.getNombreNiveaux()+" étages)");
+           } else {
+
+               textView9.setText(batiments.getNom()+" ("+batiments.getNombreNiveaux()+" étage)");
+           }
            closeButton.setOnClickListener(v -> mat.dismiss());
 
            addEtablissement.setOnClickListener(v -> {

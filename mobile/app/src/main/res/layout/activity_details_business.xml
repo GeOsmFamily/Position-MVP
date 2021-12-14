@@ -3,21 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white">
 
-    <com.mapbox.mapboxsdk.maps.MapView
+
+    <org.imaginativeworld.whynotimagecarousel.ImageCarousel
         android:id="@+id/carrousel"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        app:autoPlay="true"
+        app:autoPlayDelay="3000"/>
 
-    <androidx.appcompat.widget.Toolbar
+    <!--androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="35dp"
         android:background="@drawable/bg_circle_radius"
-        app:navigationIcon="@drawable/ic_back_black" />
+        app:navigationIcon="@drawable/ic_back_black" /-->
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -60,7 +64,7 @@
                             android:id="@+id/categorie_entreprise"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
+                            android:layout_marginStart="10dp"
                             android:text="Informatique"
                             android:textColor="@android:color/black"
                             android:textSize="12sp"
@@ -76,8 +80,8 @@
                         android:orientation="horizontal">
 
 
-                        <LinearLayout
-                            android:id="@+id/llPhone"
+                        <!--LinearLayout
+                            android:id="@+id/llPhone_entreprise"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -101,10 +105,10 @@
                                 android:textColor="@color/green"
                                 android:textSize="12sp" />
 
-                        </LinearLayout>
+                        </LinearLayout-->
 
                         <LinearLayout
-                            android:id="@+id/llShare"
+                            android:id="@+id/llShare_entreprise"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
@@ -126,6 +130,34 @@
                                 android:layout_marginTop="5dp"
                                 android:text="Partager"
                                 android:textColor="@color/green"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/llrevoir_entreprise"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_circle_radius"
+                                android:backgroundTint="@color/red"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_baseline_warning_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="Client à revoir"
+                                android:textColor="@color/red"
                                 android:textSize="12sp" />
 
                         </LinearLayout>
@@ -155,7 +187,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_toEndOf="@+id/imageLocation"
-                            android:text="Yaounde,Melen"
+                            android:text="Yaounde,Melen,Rue 5123"
                             android:textColor="@android:color/black"
                             android:textSize="14sp" />
 
@@ -174,24 +206,25 @@
                             android:layout_alignParentStart="true"
                             android:layout_centerInParent="true"
                             android:padding="5dp"
-                            android:src="@drawable/ic_location"
+                            android:src="@drawable/ic_phone_black"
                             app:tint="@color/green" />
 
                         <TextView
-                            android:id="@+id/indicationAdresse"
+                            android:id="@+id/contact_entreprise"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:layout_marginStart="10dp"
                             android:layout_marginEnd="10dp"
                             android:layout_toEndOf="@+id/imageLocation1"
-                            android:text="Face Polytechnique"
+                            android:text="691201946,699455899"
                             android:textColor="@android:color/black"
                             android:textSize="14sp" />
 
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/relativeSite"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp">
@@ -221,6 +254,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/relativeHour"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp">
@@ -251,123 +285,22 @@
                         </LinearLayout>
 
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="30dp">
-
-                            <TextView
-                                android:id="@+id/tvJours"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:text="Tous les jours : "
-                                app:tint="@color/green" />
-
-                            <TextView
-                                android:id="@+id/heureOuvertureJour"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_toEndOf="@+id/tvJours"
-                                android:text="08:00  - "
-                                android:textColor="@android:color/black"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/heureFermetureJour"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_toEndOf="@+id/heureOuvertureJour"
-                                android:text="18:00"
-                                android:textColor="@android:color/black"
-                                android:textSize="14sp" />
-
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="60dp">
-
-                            <TextView
-                                android:id="@+id/tvSamedi"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:text="Samedi : "
-                                app:tint="@color/green" />
-
-                            <TextView
-                                android:id="@+id/heureOuvertureSamedi"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_toEndOf="@+id/tvSamedi"
-                                android:text="08:00  - "
-                                android:textColor="@android:color/black"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/heureFermetureSamedi"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_toEndOf="@+id/heureOuvertureSamedi"
-                                android:text="18:00"
-                                android:textColor="@android:color/black"
-                                android:textSize="14sp" />
-
-                        </RelativeLayout>
-
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="90dp">
-
-                            <TextView
-                                android:id="@+id/tvDimanche"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentStart="true"
-                                android:layout_centerInParent="true"
-                                android:text="Samedi : "
-                                app:tint="@color/green" />
-
-                            <TextView
-                                android:id="@+id/heureOuvertureDimanche"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_toEndOf="@+id/tvDimanche"
-                                android:text="08:00  - "
-                                android:textColor="@android:color/black"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/heureFermetureDimanche"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:layout_toEndOf="@+id/heureOuvertureDimanche"
-                                android:text="18:00"
-                                android:textColor="@android:color/black"
-                                android:textSize="14sp" />
-
-                        </RelativeLayout>
 
                     </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycle_horaire"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="26dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_below="@id/relativeHour"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:itemCount="7"
+                        android:scrollbars="vertical"
+                        tools:listitem="@layout/item_horaire" />
 
                 </LinearLayout>
 

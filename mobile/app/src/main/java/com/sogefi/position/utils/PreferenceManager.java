@@ -20,6 +20,8 @@ public class PreferenceManager {
 
     private static final String STYLE = "style";
 
+    private static final String CHECKITEM = "0";
+
     private static final String TOKEN = "token";
 
     private static final String EMAIL = "email";
@@ -155,6 +157,15 @@ public class PreferenceManager {
 
     public void setStyle(String style) {
         editor.putString(STYLE, style);
+        editor.apply();
+    }
+
+    public String getCheckitem() {
+        return pref.getString(CHECKITEM, "checkitem");
+    }
+
+    public void setCheckitem(String checkitem) {
+        editor.putString(CHECKITEM, checkitem);
         editor.apply();
     }
 

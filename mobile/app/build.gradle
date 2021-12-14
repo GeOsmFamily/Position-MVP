@@ -19,8 +19,8 @@ android {
         applicationId "com.sogefi.position"
         minSdk 21
         targetSdk 30
-        versionCode 11
-        versionName "0.3.1 Stable"
+        versionCode 12
+        versionName "0.3.2 Stable"
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -131,6 +131,16 @@ dependencies {
     implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
 
     implementation 'com.mapbox.mapboxsdk:mapbox-sdk-turf:5.8.0'
+
+
+    // Material Components for Android
+    implementation 'com.google.android.material:material:1.4.0'
+
+    // Optional: Circle Indicator (To fix the xml preview "Missing classes" error)
+    implementation 'me.relex:circleindicator:2.1.6'
+
+    implementation 'com.github.ImaginativeShohag:Why-Not-Image-Carousel:v1.0.0'
+
 
 
 
