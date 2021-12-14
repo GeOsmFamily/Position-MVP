@@ -280,10 +280,6 @@ class EtablissementController extends BaseController
             $etablissement['horaires'] = $horaires;
             $etablissement['telephones'] = $telephones;
 
-
-
-
-            $etablissement['logo_url'] = $categorie->logoUrl;
             $commercial = Commercial::find($etablissement->commercial->id);
             $etablissement["nomCommercial"] = $commercial->user->name;
         }
