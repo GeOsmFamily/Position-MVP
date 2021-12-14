@@ -19,7 +19,7 @@ android {
         applicationId "com.sogefi.position"
         minSdk 21
         targetSdk 30
-        versionCode 12
+        versionCode 13
         versionName "0.3.2 Stable"
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
