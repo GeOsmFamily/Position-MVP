@@ -7,7 +7,7 @@ user=root
 # MySQL password
 password=positionApi2021
 #MySQL host
-host=localhost
+host=5.39.75.179
 #MySQL port
 port=9501
 # Number of days to store the backup 
