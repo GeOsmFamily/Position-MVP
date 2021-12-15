@@ -7,13 +7,15 @@ user=root
 # MySQL password
 password=positionApi2021
 #MySQL host
-host=5.39.75.179:9501
+host=localhost
+#MySQL port
+port=9501
 # Number of days to store the backup 
 keep_day=30 
 sqlfile=$backupfolder/all-database-$(date +%d-%m-%Y_%H-%M-%S).sql
 zipfile=$backupfolder/all-database-$(date +%d-%m-%Y_%H-%M-%S).zip 
 # Create a backup 
-sudo mysqldump -h $host -u $user -p$password --all-databases > $sqlfile 
+sudo mysqldump -h $host -P $port -u $user -p$password --all-databases > $sqlfile 
 if [ $? == 0 ]; then
   echo 'Sql dump created' 
 else
