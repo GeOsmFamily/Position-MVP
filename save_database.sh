@@ -12,10 +12,10 @@ host=5.39.75.179
 port=9501
 # Number of days to store the backup 
 keep_day=30 
-sqlfile=$backupfolder/all-database-$(date +%d-%m-%Y_%H-%M-%S).sql
-zipfile=$backupfolder/all-database-$(date +%d-%m-%Y_%H-%M-%S).zip 
+sqlfile=$backupfolder/position-$(date +%d-%m-%Y_%H-%M-%S).sql
+zipfile=$backupfolder/position-$(date +%d-%m-%Y_%H-%M-%S).zip 
 # Create a backup 
-sudo mysqldump -h $host -P $port -u $user -p$password --all-databases > $sqlfile 
+sudo mysqldump -h $host -P $port -u $user -p$password position > $sqlfile 
 if [ $? == 0 ]; then
   echo 'Sql dump created' 
 else
