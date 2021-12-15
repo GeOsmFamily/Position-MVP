@@ -7,7 +7,7 @@ user=root
 # MySQL password
 password=positionApi2021
 #MySQL host
-host=localhost:9501
+host=127.0.0.1:9501
 # Number of days to store the backup 
 keep_day=30 
 sqlfile=$backupfolder/all-database-$(date +%d-%m-%Y_%H-%M-%S).sql
