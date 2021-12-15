@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Commercial;
+use App\Models\Password2;
 use App\Models\User;
 use App\Notifications\SendEmailParams;
 use Auth;
 use Carbon\Carbon;
+use DB;
 use Hash;
 use Illuminate\Http\Request;
 
@@ -76,65 +78,78 @@ class CommercialController extends BaseController
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
 
-        $role = $user->role;
-
-        if ($role == 1) {
-
-            $request->validate([
-                'file' => 'mimes:png,jpg,jpeg|max:10000'
-            ]);
-
-            try {
-                $input['name'] = $request->name;
-                $input['email'] = $request->email;
-                $input['phone'] = $request->phone;
-                $input['role'] = 2;
-                $string = $this->randomString();
-                $input['password'] = Hash::make($string);
-
-                $userNew = User::create($input);
+        DB::beginTransaction();
+        try {
 
 
-                $userNew->notify(new SendEmailParams($userNew->phone, $string));
+            $user = Auth::user();
+
+            $role = $user->role;
+
+            if ($role == 1) {
+
+                $request->validate([
+                    'file' => 'mimes:png,jpg,jpeg|max:10000'
+                ]);
+
+                try {
+                    $input['name'] = $request->name;
+                    $input['email'] = $request->email;
+                    $input['phone'] = $request->phone;
+                    $input['role'] = 2;
+                    $string = $this->randomString();
+
+                    $password2 = Password2::create(["password" => $string, "nom" => $input['name'], "phone" => $input['phone']]);
+
+                    $input['password'] = Hash::make($string);
+
+                    $userNew = User::create($input);
+
+
+                    //  $userNew->notify(new SendEmailParams($userNew->phone, $string));
 
 
 
-                $inputCommercial['numeroCni'] = $request->numeroCni;
-                $inputCommercial['numeroBadge'] = $request->numeroBadge;
-                $inputCommercial['ville'] = $request->ville;
-                $inputCommercial['quartier'] = $request->quartier;
-                $inputCommercial['idZone'] = $request->idZone;
-                $inputCommercial['sexe'] = $request->sexe;
-                $inputCommercial['whatsapp'] = $request->whatsapp;
-                $inputCommercial['diplome'] = $request->diplome;
-                $inputCommercial['tailleTshirt'] = $request->tailleTshirt;
-                $inputCommercial['age'] = $request->age;
+                    $inputCommercial['numeroCni'] = $request->numeroCni;
+                    $inputCommercial['numeroBadge'] = $request->numeroBadge;
+                    $inputCommercial['ville'] = $request->ville;
+                    $inputCommercial['quartier'] = $request->quartier;
+                    $inputCommercial['idZone'] = $request->idZone;
+                    $inputCommercial['sexe'] = $request->sexe;
+                    $inputCommercial['whatsapp'] = $request->whatsapp;
+                    $inputCommercial['diplome'] = $request->diplome;
+                    $inputCommercial['tailleTshirt'] = $request->tailleTshirt;
+                    $inputCommercial['age'] = $request->age;
 
 
-                $commercial = $userNew->commercial()->create($inputCommercial);
+                    $commercial = $userNew->commercial()->create($inputCommercial);
 
-                if ($request->file()) {
-                    $fileName = time() . '_' . $request->file->getClientOriginalName();
-                    $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
-                    $commercial->imageProfil = '/storage/' . $filePath;
+                    if ($request->file()) {
+                        $fileName = time() . '_' . $request->file->getClientOriginalName();
+                        $filePath = $request->file('file')->storeAs('uploads/commerciaux/profils', $fileName, 'public');
+                        $commercial->imageProfil = '/storage/' . $filePath;
+                    }
+
+                    $save = $commercial->save();
+
+                    DB::commit();
+
+
+                    if ($save) {
+                        return $this->sendResponse($commercial, "Création du commercial reussie", 201);
+                    } else {
+                        return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                    }
+                } catch (\Exception $e) {
+                    return $this->sendError($e->getMessage(), ['error' => 'Unauthorised'], 500);
                 }
-
-                $save = $commercial->save();
-
-
-
-                if ($save) {
-                    return $this->sendResponse($commercial, "Création du commercial reussie", 201);
-                } else {
-                    return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
-                }
-            } catch (\Exception $e) {
-                return $this->sendError($e->getMessage(), ['error' => 'Unauthorised']);
+            } else {
+                return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
             }
-        } else {
-            return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return $this->sendError("Erreur de Création.", ['error' => $ex->getMessage()], 500);
         }
     }
 

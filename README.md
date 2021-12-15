@@ -1,4 +1,4 @@
-## POSITION-MVP v0.1.5
+## POSITION-MVP v0.3.2
 
 New Project POSITION
 

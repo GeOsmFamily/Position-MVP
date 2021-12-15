@@ -68,7 +68,7 @@ export class AuthService {
     let removeToken = localStorage.removeItem('access_token');
 
     if (removeToken == null) {
-      console.log("logout "+removeToken)
+
      // this.router.navigate(['home']);
     }
 
@@ -90,7 +90,7 @@ export class AuthService {
             });
             if (err.status != 200)
             {
-              console.log("paramètres incorrects= "+err.msg)
+
             }
             // return ''
             throw new Error(err);
@@ -98,8 +98,7 @@ export class AuthService {
         )
         .subscribe(
           (data) => {
-            console.log("login= "+data)
-            console.log(data.access_token)
+
             this.storeToken(data.access_token);
            // localStorage.setItem('access_token',userInterface.access_token!)
             //console.log(localStorage.getItem('access_token'))
@@ -107,7 +106,7 @@ export class AuthService {
          var decodedToken: any = jwtDecode(data.access_token);
             this.storeRole(decodedToken.roles_id[0])
           // let jsonObj = JSON.parse(decodedHeader)
-             console.log(decodedToken.roles_id[0]);
+
            // console.log("decode "+decoded)
             resolve({
               error: false,
@@ -256,7 +255,7 @@ export class AuthService {
         .subscribe(
           (data: any) => {
 
-           console.log(data)
+  
             resolve({
               error: false,
             });

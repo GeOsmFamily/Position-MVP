@@ -25,8 +25,7 @@ export class IsauthGuardGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (localStorage.getItem('token') == '') {
-      //console.log(this.authService.token)
-      console.log("rrr")
+      
       return true;
     } else {
       return this.router.navigate(['login']);

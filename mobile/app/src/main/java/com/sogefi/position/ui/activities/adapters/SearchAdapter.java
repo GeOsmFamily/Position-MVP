@@ -69,14 +69,24 @@ public class SearchAdapter extends SuggestionsAdapter<DataSearchEtablissement, S
     public void onBindSuggestionHolder(DataSearchEtablissement suggestion, SearchViewHolder holder, int position) {
 
             holder.suggestion.setText(suggestion.getNom());
-            holder.suggestionAdress.setText(suggestion.getNomSousCategorie()+","+suggestion.getNomCategorie());
-            if(suggestion.getLogoUrl() != null) {
-                Picasso.get().load(IMAGEURL + suggestion.getLogoUrl()).into(holder.imageView);
+            if(suggestion.getSousCategories().size() > 0) {
+
+                holder.suggestionAdress.setText(suggestion.getSousCategories().get(0).getNom()+","+suggestion.getNomCategorie());
+                if(suggestion.getSousCategories().get(0).getCategorie().getLogoUrl() != null) {
+                    Picasso.get().load(IMAGEURL + suggestion.getSousCategories().get(0).getCategorie().getLogoUrl()).into(holder.imageView);
+                } else {
+                    holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
+                }
             } else {
+                holder.suggestionAdress.setText(suggestion.getNomCategorie());
                 holder.imageView.setImageResource(R.drawable.ic_baseline_location_on_24);
             }
 
+
+
+
         DataEtablissements dataEtablissements = new DataEtablissements();
+
             dataEtablissements.setId(suggestion.getId());
         dataEtablissements.setIdBatiment(suggestion.getIdBatiment());
         dataEtablissements.setNom(suggestion.getNom());
@@ -102,7 +112,9 @@ public class SearchAdapter extends SuggestionsAdapter<DataSearchEtablissement, S
 
 
 
-        holder.constraintLayout.setOnClickListener(view -> mapActivity.clickDialog(dataEtablissements));
+
+
+        holder.constraintLayout.setOnClickListener(view -> mapActivity.resultSearch(dataEtablissements.getBatiment().getId().toString()));
 
 
 

@@ -1,4 +1,4 @@
-<div  class="container categories" *ngIf="deviceDetector.isDesktopDevice">
+<div  class="container categories" *ngIf="(deviceDetector.isDesktopDevice || deviceDetector.isTablet) && !isloading">
   <p style="color:black;font-family:OpenSans bold;margin-top: 10px; text-align: center;font-size: 12px;">  Categories</p>
   <div  fxLayout="row wrap" fxLayoutGap="5px" fxLayoutAlign="flex-start">
 
@@ -171,8 +171,8 @@
   </div>
 </div>
 
-<div  class="mobileListeView" *ngIf="deviceDetector.isMobile">
-  <div >
+<div  class="mobileListeView" *ngIf="deviceDetector.isMobile" style="margin-top: 20px;">
+  <div class="scrolling-wrapper " >
 
 
 

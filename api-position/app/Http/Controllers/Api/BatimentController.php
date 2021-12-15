@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Batiment;
 use App\Models\Commercial;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 
 class BatimentController extends BaseController
@@ -50,33 +51,43 @@ class BatimentController extends BaseController
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
 
-        $role = $user->role;
+        DB::beginTransaction();
+        try {
 
-        if ($role == 1 || $role == 2) {
-            $request->validate([
-                'file' => 'mimes:png,jpg,jpeg|max:10000'
-            ]);
-            $input = $request->all();
+            $user = Auth::user();
 
-            $batiment = Batiment::create($input);
+            $role = $user->role;
 
-            if ($request->file()) {
-                $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->codeBatiment, $fileName, 'public');
-                $batiment->image = '/storage/' . $filePath;
-            }
+            if ($role == 1 || $role == 2) {
+                $request->validate([
+                    'file' => 'mimes:png,jpg,jpeg|max:10000'
+                ]);
+                $input = $request->all();
 
-            $save = $batiment->save();
+                $batiment = Batiment::create($input);
 
-            if ($save) {
-                return $this->sendResponse($batiment, "Création du batiment reussie", 201);
+                if ($request->file()) {
+                    $fileName = time() . '_' . $request->file->getClientOriginalName();
+                    $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $request->codeBatiment, $fileName, 'public');
+                    $batiment->image = '/storage/' . $filePath;
+                }
+
+                $save = $batiment->save();
+
+                DB::commit();
+
+                if ($save) {
+                    return $this->sendResponse($batiment, "Création du batiment reussie", 201);
+                } else {
+                    return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                }
             } else {
-                return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
             }
-        } else {
-            return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return $this->sendError("Erreur de Création.", ['error' => $ex->getMessage()], 500);
         }
     }
 

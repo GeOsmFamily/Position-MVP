@@ -1,148 +1,236 @@
-
-
-<div>
+<div style="background-color: #fff;color:black;height: 100vh;">
   <!-- Photo de l'entreprise-->
-  <div class="parent " style="width: 100%; overflow: hidden;">
-   <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
+  <div class="parent " style="width: 100%;overflow: hidden;">
+    <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
    -->
-   <ngb-carousel >
-    <ng-template ngbSlide>
-      <div class="picsum-img-wrapper">
-        <img src="assets/resto.jpg" alt="Angular Carousel 1" style="width: 100%;" class="img-fluid">
-      </div>
-      <div class="carousel-caption">
-        <h3>Title Goes Here</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
-    </ng-template>
-    <ng-template ngbSlide>
-      <div class="picsum-img-wrapper">
-        <img src="assets/resto.jpg" alt="Angular Carousel 2" style="width: 100%;" class="img-fluid">
-      </div>
-      <div class="carousel-caption">
-        <h3>Title Goes Here</h3>
-        <p>Consxectetur tortor volutpat pretium.</p>
-      </div>
-    </ng-template>
-  </ngb-carousel>
+    <ngb-carousel>
+      <ng-template ngbSlide *ngFor="let image of images">
+        <div class="picsum-img-wrapper">
+          <img src="{{ image }}" alt="{{ image }}" style="width: 100%;height: 250px;" class="img-fluid">
+        </div>
+
+      </ng-template>
+
+    </ngb-carousel>
 
     <button style=" display: flex;
     justify-content: center;
     align-items: center; z-index:20;color: white;
-        " class="closeb"  (click)="close()">
-      <img class="img-fluid clear-logo"  src="assets/icon-clear.svg" alt="fermer" />
+        " class="closeb" (click)="close()">
+      <img class="img-fluid clear-logo" src="assets/icon/icon-clear.svg" alt="fermer" />
 
     </button>
   </div>
 
   <!-- Bloc contenant les informations de l'entreprise-->
-   <div class="container" style="margin-top: 20px;margin-left: 20px;">
+  <div class="container" style="margin-top: 20px;margin-left: 20px;">
 
-    <!-- Nom et catégorie de l'entreprise-->
-    <div class=" clearfix">
-      <div class="pull-left" style="font-weight: normal;">Nom établissment</div>
-      <div class="pull-right" style="font-family:OpenSans light ;">catégorie</div>
+    <!-- Nom et catégorie de l'entreprise   logo_url-->
+    <div class=" clearfix" *ngIf="featurePoint?.get('textLabel')">
+      <div class="pull-left" style="font-weight: bold;">
+        <table>
+          <tr>
+            <td>
+              <img src="{{featurePoint?.get('logo_url')}}" alt="logo_categorie"
+                style="margin-left: -30px;margin-top: -10px;" />
+            </td>
+            <td>
+              <p style="font-size: 15px;"> {{featurePoint?.get("textLabel")}}</p>
+            </td>
+          </tr>
+        </table>
+
+
+      </div>
+      <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;">
+        {{featurePoint?.get("nomCategorieSousCategorie")}}
+      </div>
+      <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;">
+        {{featurePoint?.get("motCle")}}
+      </div>
+
     </div>
 
     <!-- Moyen de contacter et de partager les infos sur l'entreprise-->
-    <div class="container" style="margin-top: 10px;margin-bottom: 10px;margin-left: -20px;">
+    <div class="container" style="margin-top: 20px;margin-bottom: 10px;margin-left: -20px;">
 
 
       <div class="item">
-        <button style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-          <img src="assets/button/icon-tel.svg" style="width: 75%; cursor:pointer"/>
+        <a href="{{'tel:'+featurePoint?.get('telephonePrincipal')}}">
+          <button type="button"
+            style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;"
+            data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+            <img src="assets/button/icon-tel.svg" style="width: 75%; cursor:pointer" />
 
 
-      </button>
+          </button>
+        </a>
         <span class="caption">Contacter</span>
-    </div>
 
-    <div class="item">
-      <button style=" padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-        <img src="assets/button/icon-action-vignette-itinéraire.svg" style="color:black;width: 75%;cursor:pointer;"/>
+
+      </div>
+
+
+      <div class="item">
+
+        <button style=" padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
+          <img src="assets/button/icon-action-vignette-itinéraire.svg" style="color:black;width: 75%;cursor:pointer;" />
 
         </button>
 
 
         <span class="caption">Itinéraire</span>
+      </div>
+
+      <div class="item">
+
+        <button (click)="shareLink()"
+          style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
+          <img matPrefix src="assets/button/icon-action-vignette-partager.svg" style="width: 75%; cursor:pointer">
+
+        </button>
+        <span class="caption">Partager</span>
+
+
+
+
+
+      </div>
+
+
+      <div class="item">
+        <button [disabled]="true"
+          style="  padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
+          <img (click)=" alert1()" src="assets/button/icon-action-vignette-enregistrer.svg"
+            style="width:75%;cursor: pointer;">
+
+        </button>
+
+
+        <span class="caption">Enregistrer</span>
+      </div>
+
+
+
     </div>
 
-  <div class="item">
-    <button style=" padding:1px;height:26px; border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-      <img matPrefix src="assets/button/icon-action-vignette-partager.svg"style="width: 75%; cursor:pointer">
-
-      </button>
+    <hr align="left" style="margin-left: -10px;margin-right: -6px;width: 100%;" />
 
 
-    <span class="caption">Partager</span>
+    <!-- Informations d'ouverture et adresse de l'entreprise-->
+    <div *ngIf="featurePoint?.get('horaires')" class="container"
+      style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
+
+
+      <img class="img-fluid" src="assets/button/icon-time.svg" alt=""
+        style="    margin-top: -3px;width: 20px; float:left;" />
+
+      <div style="display: inline-block;" *ngIf="featurePoint?.get('horaires')">
+        <ng-container *ngFor="let h of featurePoint?.get('horaires')">
+          <p style="font-size: 11px;" *ngIf="h.jour=='Lundi'"> Lun: {{h.heureOuverture}} -
+            {{h.heureFermeture}} </p>
+
+          <p style="font-size: 11px;" *ngIf="h.jour =='Mardi'">Mar: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Mercredi'">Mer: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Jeudi'">Jeu: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='vendredi'">Ven: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Samedi'">Sam: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jou=='dimanche'">Dim: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+
+        </ng-container>
+
+      </div>
+    </div>
+    <div *ngIf="featurePoint?.get('adresse')" class="container"
+      style="margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
+
+      <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""
+        style="    margin-top: -3px; width:20px;float:left;" />
+
+
+      <p style="font-size: 11px;">{{featurePoint?.get('adresse')}}</p>
+
+    </div>
+
+    <div *ngIf="featurePoint?.get('indication')" class="container"
+      style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
+
+      <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""
+        style="    margin-top: -3px; width:20px;float:left;" />
+
+
+      <p style="font-size: 11px;">{{featurePoint?.get('indication')}}</p>
+
+    </div>
+
+
+
+    <div *ngIf="featurePoint?.get('telephonePrincipal')" class="container"
+      style="margin-top: 20px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
+
+
+      <img class="img-fluid" src="assets/mobile-phone.svg" alt=""
+        style="    margin-top: -3px; width:20px;float:left;height: 15px;" />
+
+
+      <p style="font-size: 11px;">{{featurePoint?.get('telephonePrincipal')}}</p>
+
+    </div>
+
+    <div *ngIf="featurePoint?.get('whatsapp')" class="container"
+      style="margin-top: 20px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
+
+
+      <img class="img-fluid" src="assets/whatsapp.svg" alt="" style="margin-top: -3px;width: 20px; float:left;" />
+
+      <div style="display: inline-block;" *ngIf="featurePoint?.get('whatsapp')">
+        <ng-container *ngFor="let numero_whatsapp of featurePoint?.get('whatsapp')">
+          <p style="font-size: 11px;">{{numero_whatsapp}}</p>
+        </ng-container>
+
+      </div>
+    </div>
+
+
+
+
+    <div *ngIf="featurePoint?.get('siteInternet')" class="container"
+      style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
+
+      <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""
+        style="    margin-top: -3px;width: 20px; float:left;" />
+
+
+      <p style="font-size: 11px;">{{featurePoint?.get('siteInternet')}}</p>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Présentation de l'entreprise-->
+
+    <div *ngIf="featurePoint?.get('description')" class="container"
+      style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
+
+      <span>Présentation</span>
+      <p style=" text-align: justify;
+     text-justify: inter-word;margin-right: 15px;color:black;">
+        {{featurePoint?.get('description')}}
+
+
+
+      </p>
+
+    </div>
+
+  </div>
 </div>
-
-
-<div class="item">
-  <button style="  padding:1px;height:26px;border: thin solid #05BF95;border-radius: 5px;background-color: white;">
-    <img (click)=" alert1()" src="assets/button/icon-action-vignette-enregistrer.svg" style="width:75%;cursor: pointer;">
-
-  </button>
-
-
-  <span class="caption">Enregistrer</span>
-</div>
-
-
-
-    </div>
-
-<hr align="left" style="margin-left: -10px;margin-right: -20px;"/>
-
-
-<!-- Informations d'ouverture et adresse de l'entreprise-->
-    <div class="container" style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
-
-
-        <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style="    margin-top: -3px;width: 20px; float:left;"/>
-
-      <div style="display: inline-block;">
-        <p> ouvert maintenant:  08:30 - 19:30</p>
-        <p >ouvert maintenant:  08:30 - 19:30</p>
-      </div>
-
-      <div>
-        <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""  style="    margin-top: -3px; width:20px;float:left;"/>
-
-
-        <p >Rue de Melen, face Polytech et à côté l'hôtel "le Résidence" </p>
-
-      </div>
-
-
-      <div>
-        <img class="img-fluid" src="assets/button/icon-time.svg" alt=""  style="    margin-top: -3px;width: 20px; float:left;"/>
-
-
-        <p>www.position.cm </p>
-
-      </div>
-
-
-
-  </div>
-
-<hr align="left" style="margin-left: -10px;margin-right: -20px;"/>
-  <!-- Présentation de l'entreprise-->
-
-  <div class="container" style="margin-left:-10px;margin-top: 10px;margin-bottom: 20px;font-family:OpenSans light ;">
-
-     <span>Présentation</span>
-     <p style=" text-align: justify;
-     text-justify: inter-word;margin-right: 15px;">
-      Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée.
-     </p>
-
-  </div>
-
-    </div>
-  </div>
-
-
-
-

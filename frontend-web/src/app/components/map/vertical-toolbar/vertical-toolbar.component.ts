@@ -22,12 +22,12 @@ export class VerticalToolbarComponent implements OnInit {
 
  private readonly notifier: NotifierService;
 
-  constructor(public positionApi:PositionApiService, notifierService: NotifierService,public componentHelper:ComponentHelper,public mapcomponent:MapComponent,private router:Router,public authService: AuthService) {
+  constructor(notifierService: NotifierService,public componentHelper:ComponentHelper,public mapcomponent:MapComponent,private router:Router,public authService: AuthService) {
     this.notifier = notifierService;
    }
 
   ngOnInit(): void {
-    this.positionApi.getCategories()
+
   }
 
   ngAfterViewInit(): void {

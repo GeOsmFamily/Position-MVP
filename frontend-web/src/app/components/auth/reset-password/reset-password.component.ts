@@ -40,16 +40,15 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
 
-    //console.log(JSON.stringify(this.loginForm.value, null, 2));
+   
 
     this.authService
     .reset(this.resetPasswordForm.value.email)
     .then((response: { error: boolean; msg?: string }) => {
-    //  console.log(response.msg)
+
       if (response.error) {
         // Affichage d'un message d'erreur
-        console.log(response.msg)
-        console.log(this.resetPasswordForm.value.email)
+
         //this.router.navigate(['home'])
       } else {
 

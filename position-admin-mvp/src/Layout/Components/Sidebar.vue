@@ -44,7 +44,7 @@ export default {
       menu: [
         {
           header: true,
-          title: "Main Navigation",
+          title: "Menu principal",
         },
         {
           title: "Dashboards",
@@ -52,28 +52,28 @@ export default {
           child: [
             {
               href: "/",
-              title: "Analytics",
+              title: "Analytique",
             },
           ],
         },
-        {
-          title: "Pages",
-          icon: "pe-7s-browser",
-          child: [
-            {
-              href: "/pages/login-boxed",
-              title: "Login Boxed",
-            },
-            {
-              href: "/pages/register-boxed",
-              title: "Register Boxed",
-            },
-            {
-              href: "/pages/forgot-password-boxed",
-              title: "Forgot Password Boxed",
-            },
-          ],
-        },
+        // {
+        //   title: "Pages",
+        //   icon: "pe-7s-browser",
+        //   child: [
+        //     {
+        //       href: "/pages/login-boxed",
+        //       title: "Login Boxed",
+        //     },
+        //     {
+        //       href: "/pages/register-boxed",
+        //       title: "Register Boxed",
+        //     },
+        //     {
+        //       href: "/pages/forgot-password-boxed",
+        //       title: "Forgot Password Boxed",
+        //     },
+        //   ],
+        // },
         {
           header: true,
           title: "Categories",
@@ -89,6 +89,39 @@ export default {
           href: "/category/list",
         },
         {
+          header: true,
+          title: "Commerciaux",
+        },
+        {
+          title: "Créer une zone",
+          icon: "pe-7s-rocket",
+          href: "/zone/create",
+        },
+        {
+          title: "Créer un commercial",
+          icon: "pe-7s-rocket",
+          href: "/commercial/create",
+        },
+        {
+          title: "Lister les commerciaux",
+          icon: "pe-7s-rocket",
+          href: "/commercial/list",
+        },
+        {
+          header: true,
+          title: "Entreprises",
+        },
+        {
+          title: "Créer une entreprise",
+          icon: "pe-7s-rocket",
+          href: "/business/create",
+        },
+        {
+          title: "Lister les entreprises",
+          icon: "pe-7s-rocket",
+          href: "/business/list",
+        },
+        /*{
           header: true,
           title: "UI Components",
         },
@@ -218,7 +251,7 @@ export default {
           icon: "pe-7s-graph2",
           title: "ChartJS",
           href: "/charts/chartjs",
-        },
+        },*/
       ],
       collapsed: true,
 

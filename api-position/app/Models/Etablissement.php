@@ -54,13 +54,19 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereDescription($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\SousCategorie[] $sousCategories
  * @property-read int|null $sous_categories_count
+ * @property string|null $autres
+ * @property int $revoir
+ * @property int $valide
+ * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereAutres($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereRevoir($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereValide($value)
  */
 class Etablissement extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idCommercial", "idManager", "etage", "cover", "vues", "autres"
+        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idCommercial", "idManager", "etage", "cover", "vues", "autres", "revoir", "valide"
     ];
 
     public function batiment()

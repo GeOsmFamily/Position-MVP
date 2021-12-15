@@ -217,6 +217,7 @@
                     android:gravity="center_vertical"
                     android:background="@drawable/round_edittext_background"
                     android:hint="Whatsapp 2"
+                    android:inputType="number"
                     android:textSize="15dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@android:color/black"

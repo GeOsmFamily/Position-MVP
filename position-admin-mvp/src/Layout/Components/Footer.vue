@@ -1,8 +1,6 @@
 <template>
   <div class="app-footer">
-    <div class="app-footer__inner text-center">
-      Copyright 2019 DashboardPack.com
-    </div>
+    <div class="app-footer__inner text-center">Copyright 2021 Position</div>
   </div>
 </template>
 

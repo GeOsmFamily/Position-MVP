@@ -18,15 +18,37 @@ import { HeaderComponent } from './components/map/header/header.component';
 import { EtablissementComponent } from './components/map/etablissement/etablissement.component';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { authInterceptorProviders } from './helpers/auth.interceptor';
-import { NgImageSliderModule } from 'ng-image-slider';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotifierModule } from 'angular-notifier';
-import { ArchwizardModule } from 'angular-archwizard';
 import { VerticalPagePrimaryComponent } from './components/map/vertical-page-primary/vertical-page-primary.component';
 import { CategoriesComponent } from './components/map/vertical-page-primary/categories/categories.component';
 import { SearchComponent } from './components/map/vertical-page-primary/search/search.component';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { SocialShareComponent } from './components/social-share/social-share/social-share.component';
+import { ShareButtonsConfig } from 'ngx-sharebuttons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import {
+  provideAnalytics,
+  getAnalytics,
+  ScreenTrackingService,
+  UserTrackingService,
+} from '@angular/fire/analytics';
+import { providePerformance, getPerformance } from '@angular/fire/performance';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
+const customConfig: ShareButtonsConfig = {
+  include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
+  exclude: ['tumblr', 'stumble', 'vk'],
+  theme: 'circles-dark',
+  gaTracking: true,
+  twitterAccount: 'twitterUsername',
+};
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -49,21 +71,24 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     VerticalPagePrimaryComponent,
     CategoriesComponent,
     SearchComponent,
-
-
+    SocialShareComponent,
   ],
   imports: [
-    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAnalyticsModule,
+    ShareButtonsModule.withConfig(customConfig),
+    ShareIconsModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgImageSliderModule,
-    SlickCarouselModule,
     NgbModule,
-    ArchwizardModule,
+    FontAwesomeModule,
+
     NotifierModule.withConfig({
       position: {
         horizontal: {
@@ -85,8 +110,17 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         deps: [HttpClient],
       },
     }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+    /*   provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAnalytics(() => getAnalytics()),
+    providePerformance(() => getPerformance()),*/
   ],
-  providers: [authInterceptorProviders],
-  bootstrap: [AppComponent]
+  providers: [ScreenTrackingService, UserTrackingService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

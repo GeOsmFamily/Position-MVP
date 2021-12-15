@@ -11,9 +11,9 @@ export const category = {
   namespaced: true,
   state: initialState,
   actions: {
-    fetchCategories({ commit, rootState }) {
+    fetchCategories({ commit }) {
       commit("toggleLoading", true);
-      return CategoryService.getListCategories(rootState.auth.token).then(
+      return CategoryService.getListCategories().then(
         (categories) => {
           commit("toggleLoading", false);
           commit("categoriesSuccess", categories.data.data);
@@ -26,12 +26,13 @@ export const category = {
         }
       );
     },
-    createCategory({ commit, rootState }, data) {
+    createCategory({ dispatch, commit }, data) {
       commit("toggleLoading", true);
-      return CategoryService.createCategory(rootState.auth.token, data).then(
+      return CategoryService.createCategory(data).then(
         (result) => {
           console.log(data);
           commit("toggleLoading", false);
+          dispatch("fetchCategories");
           return Promise.resolve(result);
         },
         (error) => {
@@ -40,8 +41,19 @@ export const category = {
         }
       );
     },
-    deleteCategory({ dispatch, rootState }, id) {
-      return CategoryService.deleteCategory(rootState.auth.token, id).then(
+    deleteCategory({ dispatch }, id) {
+      return CategoryService.deleteCategory(id).then(
+        (result) => {
+          dispatch("fetchCategories");
+          return Promise.resolve(result);
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
+    },
+    editCategory({ dispatch }, data) {
+      return CategoryService.editCategory(data.id, data.category).then(
         (result) => {
           dispatch("fetchCategories");
           return Promise.resolve(result);
@@ -54,7 +66,17 @@ export const category = {
   },
   mutations: {
     categoriesSuccess(state, categories) {
-      state.categories = categories;
+      state.categories = categories.map((category) => {
+        category.created_at = new Date(category.created_at).toLocaleDateString(
+          "fr-FR",
+          { year: "numeric", month: "numeric", day: "numeric" }
+        );
+        category.updated_at = new Date(category.updated_at).toLocaleDateString(
+          "fr-FR",
+          { year: "numeric", month: "numeric", day: "numeric" }
+        );
+        return category;
+      });
     },
     categoriesFailure(state) {
       state.categories = null;

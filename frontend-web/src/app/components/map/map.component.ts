@@ -1,19 +1,31 @@
+import { Data } from './../../interfaces/userInterface';
+import { Commercial, Etablissement } from './../../interfaces/etablissementInterface';
 import { ComponentHelper } from './../../helpers/componentHelper';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TileLayer, View, XYZ, Map, Zoom, Feature } from 'src/app/modules/ol';
 import {defaults} from 'ol/control';
 import Geolocation from 'ol/Geolocation';
 import * as proj4 from 'proj4';
-import Style from 'ol/style/Style';
 
-import { Circle as CircleStyle, Fill, Stroke, Text, Icon } from 'ol/style.js';
+
+import {
+  Fill,
+  Icon,
+  Stroke,
+  Style,
+  VectorLayer,
+  VectorSource,
+  Text,
+} from 'src/app/modules/ol';
 import Point from 'ol/geom/Point';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
+
 import { MapHelper } from 'src/app/helpers/mapHelper';
 import { FicheEntrepriseComponent } from './fiche-entreprise/fiche-entreprise.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { EtablissementComponent } from './etablissement/etablissement.component';
+import { PositionApiService } from 'src/app/services/position-api/position-api.service';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -44,6 +56,13 @@ export class MapComponent implements OnInit {
 
 
 coordinates=[0,0]
+etablissements:any | undefined
+horaires=new Array()
+telephones=new Array()
+numero_whatsapp=new Array()
+url_position=environment.url_image
+  imagesCourousel=new Array()
+
 
 @ViewChild(FicheEntrepriseComponent, { static: true })
 ficheEntrepriseComponent: FicheEntrepriseComponent | undefined;
@@ -57,16 +76,45 @@ loginComponent: LoginComponent | undefined;
 
 
 
-  constructor(public componentHelper: ComponentHelper) {
+  constructor( private activatedRoute: ActivatedRoute,public positionApi:PositionApiService, public componentHelper: ComponentHelper) {
 
   }
 
   ngOnInit(): void {
 
+
 this.initialiazeMap()
+this.handleMapParamsUrl()
 this.getPosition()
+
 //this.userLocation()
 
+  }
+
+
+  handleMapParamsUrl() {
+    var mapHelper = new MapHelper();
+
+
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params['etablissements']) {
+
+        var layers = params['etablissements'].split(',');
+
+       this.positionApi.getEtablissement(layers[0])
+      /*console.log("rrrrr "+ feature)
+       var searchResultLayer = new VectorLayer();
+       searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
+       searchResultLayer.getSource().clear();
+
+       searchResultLayer.getSource().addFeature(feature);
+
+       var extent = feature.getGeometry()?.getExtent();
+      // mapHelper.fit_view(feature.getGeometry()?.getExtent(), 16);
+*/
+
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -76,13 +124,13 @@ this.getPosition()
     //Add 'implements AfterViewInit' to the class.
    /* map.on('pointermove', function(event) {
 
-      console.log( event.coordinate)
+
 
     });*/
-    this.mapClicked()   
+    this.mapClicked()
     this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
     this.componentHelper.setComponent('EtablissementComponent',this.etablissementComponent)
-
+   
 
 
 
@@ -162,12 +210,26 @@ geolocation.on('change:position', function () {
    * Event if mapClicked
    */
  mapClicked() {
+
+  let mapHelper = new MapHelper();
   map.on('singleclick', (event) => {
+     var pixel=map?.getEventPixel(event.originalEvent)
+     var feature=map?.forEachFeatureAtPixel(
+       pixel,function(feature,layer){
+         return feature
+       }
+     )
 
 
-    this.componentHelper.openFicheEntreprise()
-   // console.log( this.componentHelper.openEtablissement())
-  console.log("map has been clicked")
+
+
+      if(feature?.get('type')=="position"){
+
+          this.componentHelper.openFicheEntreprise(feature)
+          console.log("adress")
+          console.log(feature.get('horaires'))
+      }
+
 });
 }
 

@@ -6,6 +6,7 @@ use App\Models\Batiment;
 use App\Models\Commercial;
 use App\Models\Etablissement;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 
 class EtablissementController extends BaseController
@@ -72,45 +73,55 @@ class EtablissementController extends BaseController
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
 
-        $role = $user->role;
+        DB::beginTransaction();
+        try {
 
-        if ($role == 1 || $role == 2) {
-            $request->validate([
-                'file' => 'mimes:png,jpg,jpeg|max:10000'
-            ]);
-            $input = $request->all();
+            $user = Auth::user();
 
-            $commercial = Commercial::where("idUser", $user->id)->first();
+            $role = $user->role;
 
-            $input['idCommercial'] = $commercial->id;
+            if ($role == 1 || $role == 2) {
+                $request->validate([
+                    'file' => 'mimes:png,jpg,jpeg|max:10000'
+                ]);
+                $input = $request->all();
 
-            $batiment = Batiment::find($request->idBatiment);
+                $commercial = Commercial::where("idUser", $user->id)->first();
 
-            $etablissement = $batiment->etablissements()->create($input);
+                $input['idCommercial'] = $commercial->id;
 
-            if ($request->idSousCategorie != null) {
-                $etablissement->sousCategories()->attach([$input['idSousCategorie']]);
-            }
+                $batiment = Batiment::find($request->idBatiment);
+
+                $etablissement = $batiment->etablissements()->create($input);
+
+                if ($request->idSousCategorie != null) {
+                    $etablissement->sousCategories()->attach([$input['idSousCategorie']]);
+                }
 
 
 
-            if ($request->file()) {
-                $fileName = time() . '_' . $request->file->getClientOriginalName();
-                $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
-                $etablissement->cover = '/storage/' . $filePath;
-            }
+                if ($request->file()) {
+                    $fileName = time() . '_' . $request->file->getClientOriginalName();
+                    $filePath = $request->file('file')->storeAs('uploads/batiments/images/' . $batiment->codeBatiment . '/' . $request->nom, $fileName, 'public');
+                    $etablissement->cover = '/storage/' . $filePath;
+                }
 
-            $save = $etablissement->save();
+                $save = $etablissement->save();
 
-            if ($save) {
-                return $this->sendResponse($etablissement, "Création de l'etablissement reussie", 201);
+                DB::commit();
+
+                if ($save) {
+                    return $this->sendResponse($etablissement, "Création de l'etablissement reussie", 201);
+                } else {
+                    return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                }
             } else {
-                return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
             }
-        } else {
-            return $this->sendError("Vous n'avez pas les droits.", ['error' => 'Unauthorised']);
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return $this->sendError("Erreur de Création.", ['error' => $ex->getMessage()], 500);
         }
     }
 
@@ -184,6 +195,8 @@ class EtablissementController extends BaseController
             $etablissement->autres = $request->autres ?? $etablissement->autres;
             $etablissement->idManager = $request->idManager ?? $etablissement->idManager;
             $etablissement->vues = $request->vues ?? $etablissement->vues;
+            $etablissement->revoir = $request->revoir ?? $etablissement->revoir;
+            $etablissement->valide = $request->valide ?? $etablissement->valide;
 
 
             if ($request->file()) {
@@ -257,12 +270,12 @@ class EtablissementController extends BaseController
 
                 $categorie = $souscategorie->categorie;
                 $etablissement['nomCategorie'] = $categorie->nom;
+                $etablissement['logo_url'] = $categorie->logoUrl;
             }
 
 
 
             $etablissement['batiment'] = $batiment;
-            $etablissement['nomSousCategorie'] = $souscategorie->nom;
 
             $etablissement['images'] = $images;
             $etablissement['horaires'] = $horaires;
@@ -271,7 +284,7 @@ class EtablissementController extends BaseController
 
 
 
-            $etablissement['logo_url'] = $categorie->logoUrl;
+
             $commercial = Commercial::find($etablissement->commercial->id);
             $etablissement["nomCommercial"] = $commercial->user->name;
         }

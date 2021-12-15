@@ -81,9 +81,14 @@ hr {
   height: 30px;
   top: 50%;
   transform: translateY(-50%);
+  display: none;
 }
-
-
+::ng-deep .carousel-control-next-icon{
+  display: none;
+}
+::ng-deep  .carousel-control-prev-icon{
+  display: none;
+}
 .picsum-img-wrapper{
   margin: 0;
 }

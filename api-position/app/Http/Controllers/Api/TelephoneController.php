@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Etablissement;
 use App\Models\Telephone;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,23 +28,31 @@ class TelephoneController extends BaseController
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
 
-        $role = $user->role;
+            $role = $user->role;
 
-        if ($role == 1 || $role == 2) {
+            if ($role == 1 || $role == 2) {
 
-            $input = $request->all();
+                $input = $request->all();
 
-            $etablissement = Etablissement::find($request->idEtablissement);
+                $etablissement = Etablissement::find($request->idEtablissement);
 
-            $telephone = $etablissement->telephones()->create($input);
+                $telephone = $etablissement->telephones()->create($input);
 
-            if ($telephone) {
-                return $this->sendResponse($telephone, "Ajout du telephone reussi", 201);
-            } else {
-                return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                DB::commit();
+
+                if ($telephone) {
+                    return $this->sendResponse($telephone, "Ajout du telephone reussi", 201);
+                } else {
+                    return $this->sendError("Erreur de Création.", ['error' => 'Unauthorised']);
+                }
             }
+        } catch (\Exception $ex) {
+            DB::rollback();
+            return $this->sendError("Erreur de Création.", ['error' => $ex->getMessage()], 500);
         }
     }
 

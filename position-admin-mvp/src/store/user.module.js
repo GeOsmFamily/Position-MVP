@@ -7,9 +7,7 @@ export const user = {
   state: initialState,
   actions: {
     getUser({ commit }) {
-      return UserService.getUserData(
-        JSON.parse(localStorage.getItem("user"))
-      ).then(
+      return UserService.getUserData().then(
         (data) => {
           commit("userSuccess", data.data);
           return Promise.resolve(data.data);

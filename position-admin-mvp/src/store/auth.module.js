@@ -22,7 +22,7 @@ export const auth = {
       );
     },
     logout({ commit }) {
-      AuthService.logout(token).then(
+      AuthService.logout().then(
         (data) => {
           commit("logout");
           return Promise.resolve(data);
@@ -49,7 +49,7 @@ export const auth = {
   mutations: {
     loginSuccess(state, user) {
       state.status.loggedIn = true;
-      state.token = user.access_token;
+      state.token = user.token;
     },
     loginFailure(state) {
       state.status.loggedIn = false;

@@ -5,6 +5,6 @@
 
 </div>
 
-<app-search></app-search>
-<app-categories></app-categories>
-<!--<app-filter></app-filter>-->
+<app-search (countChanged)="countChangedHandler($event)"></app-search>
+<!--<app-categories [isloading]="IsLoading"></app-categories>
+<app-filter></app-filter>-->
