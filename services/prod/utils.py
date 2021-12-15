@@ -6,7 +6,11 @@ from lib2to3.pytree import convert
 import qrcode
 from PIL import Image
 
+import pandas as pd
+
 BASE_URL_QRCODE = os.getenv('BASE_URL_QRCODE')
+BASE_URL_QRCODE="https://api.position.cm/commercial/identity?commercials_id="
+
 
 def read_last_image_identification(table: str):
     filename = "images_" + table + ".txt" 
@@ -23,7 +27,6 @@ def save_last_image_identification(table: str):
     file.write(str(_id))
     file.close()
 
-
 def create_qr(commercial_id):
     logo = Image.open('images/static/position.png')
     basewidth = 75
@@ -39,5 +42,12 @@ def create_qr(commercial_id):
     name = "images/qrcodes/qr_" + str(commercial_id) + ".png"
     img_qr_big.save(name)
 
+def automate_from_csv():
+    data = pd.read_csv('commerciaux.csv')
+    for index, row in data.iterrows():
+        create_qr(row['id'])
+    
 if __name__ == '__main__':
-    read_last_image_identification()
+    # read_last_image_identification()
+    # automate_from_csv()
+    create_qr(69)
