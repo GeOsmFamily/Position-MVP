@@ -1,13 +1,13 @@
 # Backup storage directory 
 backupfolder=/var/backups
 # Notification email address 
-recipient_email=<bt@geo.sm>
+recipient_email=bt@geo.sm
 # MySQL user
-user=<root>
+user=root
 # MySQL password
-password=<positionApi2021>
+password=positionApi2021
 #MySQL host
-host=<localhost:9501>
+host=localhost:9501
 # Number of days to store the backup 
 keep_day=30 
 sqlfile=$backupfolder/all-database-$(date +%d-%m-%Y_%H-%M-%S).sql
