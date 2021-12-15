@@ -491,13 +491,6 @@ class Commercial:
     # API to get the list of d info
     @router.get("/commercials", response_model=PaginatedCommercialsInfo)
     def list_all_comm(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
-        if authorization is None:
-            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-        auth_response = verify_token(authorization.split(' ')[1])
-        if ('user_id' not in auth_response):
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-            raise HTTPException(status_code=401, detail=auth_response['message'])
         commercials_list = get_all_commercials(self.session, limit, offset)
         response = {"limit": limit, "offset": offset, "data": commercials_list}
         return response
