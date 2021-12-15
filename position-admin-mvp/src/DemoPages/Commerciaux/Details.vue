@@ -495,7 +495,9 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
                             small
                           "
                         >
-                          <line-chart :chart-data="datacollection"></line-chart>
+                          <line-chart
+                            :chart-data="getDataCollection(weekStat)"
+                          ></line-chart>
                         </div>
                         <!--                        <div
                           class="widget-chart-wrapper he-auto opacity-10 m-0"
@@ -529,17 +531,17 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
                           <div class="widget-content-left">
                             <div class="widget-heading">Total semaine</div>
                             <div class="widget-subheading">
-                              90 entreprises enregistrées
+                              {{ weekCount }} entreprises enregistrées
                             </div>
                           </div>
                           <div class="widget-content-right">
                             <div class="widget-numbers text-success">
                               <small>FCFA</small>
-                              45000
+                              {{ cashWeek }}
                             </div>
                           </div>
                         </div>
-                        <div class="widget-progress-wrapper">
+                        <!--                        <div class="widget-progress-wrapper">
                           <div
                             class="
                               progress-bar-sm progress-bar-animated-alt progress
@@ -558,7 +560,7 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
                             <div class="sub-label-left"></div>
                             <div class="sub-label-right">100%</div>
                           </div>
-                        </div>
+                        </div>-->
                       </div>
                     </div>
                   </li>
@@ -611,7 +613,7 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
                         >
                           <vue-good-table
                             :columns="fields"
-                            :rows="entreprises"
+                            :rows="dayEtablissement"
                             :fixed-header="true"
                             :search-options="{
                               enabled: true,
@@ -737,16 +739,6 @@ export default {
   name: "Details",
   data() {
     return {
-      datacollection: {
-        labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
-        datasets: [
-          {
-            label: "Semaine du 12 Decembre 2021",
-            backgroundColor: "#f87979",
-            data: [10, 10, 12, 8, 25, 25],
-          },
-        ],
-      },
       rankCollection: {
         labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
         datasets: [
@@ -758,96 +750,10 @@ export default {
           },
         ],
       },
-      entreprises: [
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-        {
-          name: "Entreprise 1",
-          category: " Achat",
-          phone: "655480901",
-          created_at: "12/12/2021",
-        },
-      ],
       fields: [
         {
           label: "Nom",
-          field: "name",
+          field: "nom",
           type: "string",
         },
         {
@@ -863,9 +769,7 @@ export default {
         {
           label: "Crée le",
           field: "created_at",
-          type: "date",
-          dateInputFormat: "dd/mm/yyyy",
-          dateOutputFormat: "dd/mm/yyyy",
+          type: "string",
         },
       ],
     };
@@ -873,14 +777,51 @@ export default {
   components: {
     LineChart,
   },
+  mounted() {
+    this.$store.dispatch("stat/fetchStatByWeek", this.commercial.id);
+  },
   computed: {
     commercial() {
-      return this.$store.getters["commercial/commercial"];
+      return this.$store.getters["commercial/commercialCourant"];
+    },
+    weekCount() {
+      return this.$store.getters["stat/weekCount"];
+    },
+    cashWeek() {
+      return this.$store.getters["stat/cashWeek"];
+    },
+    weekStat() {
+      return this.$store.getters["stat/weekStat"];
+    },
+    dayEtablissement() {
+      return this.$store.getters["stat/dayEtablissement"];
     },
   },
   methods: {
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
+    },
+    getDataCollection(collected) {
+      return {
+        labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
+        datasets: [
+          {
+            label: `Semaine du ${this.$moment()
+              .clone()
+              .weekday(1)
+              .format("DD")} ${this.$moment()
+              .clone()
+              .weekday(1)
+              .lang("fr")
+              .format("MMMM")} ${this.$moment()
+              .clone()
+              .weekday(1)
+              .format("YY")}`,
+            backgroundColor: "#f87979",
+            data: collected,
+          },
+        ],
+      };
     },
   },
 };

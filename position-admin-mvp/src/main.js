@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import VueToast from "vue-toast-notification";
 import {
   BootstrapVue,
   BootstrapVueIcons,
@@ -24,6 +25,8 @@ Vue.use(VueTelInput); // Define default global options here (optional)
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
+Vue.use(require("vue-moment"));
+Vue.moment().locale("fr");
 Vue.use(ToastPlugin);
 Vue.use(BVToastPlugin);
 Vue.use(Vuelidate);
@@ -32,6 +35,7 @@ Vue.use(VueAxios, form);
 Vue.use(Element);
 Vue.use(VueDataTables);
 Vue.use(VueGoodTablePlugin);
+Vue.use(VueToast);
 Vue.component("default-layout", Default);
 Vue.component("userpages-layout", Pages);
 new Vue({

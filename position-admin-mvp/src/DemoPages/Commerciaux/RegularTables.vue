@@ -56,8 +56,7 @@
               <b-button
                 variant="success"
                 class="mx-1"
-                v-b-modal.edit-modal
-                @click="setRow(props.row)"
+                @click="modify(props.row)"
                 >Modifier</b-button
               >
               <b-button
@@ -77,72 +76,6 @@
           </div>
         </vue-good-table>
 
-        <div>
-          <b-modal
-            id="edit-modal"
-            ref="modal"
-            title="Modifier la catégorie"
-            hide-backdrop
-            hide-footer
-          >
-            <b-form name="category">
-              <b-form-group
-                id="input-group-1"
-                label="Nom catégorie:"
-                label-for="input-1"
-                description=""
-                ><b-form-input
-                  name="name"
-                  v-model="name"
-                  v-model.trim="$v.name.$model"
-                  :state="!submitted ? null : submitted && !$v.name.$invalid"
-                  id="Name22"
-                  placeholder="Nom de la catégorie"
-                  type="text"
-                  :value="currentRow != null ? currentRow.nom : 'test'"
-                  class="form-control"
-                />
-                <b-form-invalid-feedback
-                  :state="!submitted ? null : submitted && $v.name.required"
-                >
-                  Field is required
-                </b-form-invalid-feedback>
-              </b-form-group>
-              <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                <label for="logo22" class="mr-sm-2">Logo</label
-                ><b-form-input
-                  name="logo"
-                  v-model="logo"
-                  :state="!submitted ? null : submitted"
-                  id="logo22"
-                  placeholder="https://via.placeholder.com/150.png/09f/fff"
-                  type="text"
-                  :value="currentRow != null ? currentRow.logo_url : ''"
-                  class="form-control"
-                />
-              </div>
-              <div class="form-group">
-                <div v-if="message" class="alert alert-danger" role="alert">
-                  {{ message }}
-                </div>
-              </div>
-              <br />
-              <div class="float-right">
-                <b-button
-                  variant="success"
-                  :disabled="editLoading"
-                  @click="editCategory"
-                >
-                  <span
-                    v-show="editLoading"
-                    class="spinner-border spinner-border-sm"
-                  ></span>
-                  <span>Modifier</span>
-                </b-button>
-              </div>
-            </b-form>
-          </b-modal>
-        </div>
         <b-modal
           id="my-modal"
           title="Supprimer le commercial"
@@ -216,6 +149,11 @@ export default {
     opacity: 0.85,
     blur: "2px",
     fields: [
+      {
+        label: "No",
+        field: "id",
+        type: "number",
+      },
       {
         label: "No Badge",
         field: "numeroBadge",
@@ -296,6 +234,12 @@ export default {
       this.currentRow = data;
       this.name = data.nom;
       this.logo = data.logo_url;
+    },
+    modify(commercial) {
+      this.$store.dispatch("commercial/setCurrentCommercial", commercial);
+      this.$router.push({
+        path: `/commercial/${commercial.id}/edit`,
+      });
     },
     closeModal() {
       this.$bvModal.hide("my-modal");
