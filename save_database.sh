@@ -1,5 +1,5 @@
 # Backup storage directory 
-backupfolder=/var/backups
+backupfolder=/var/backups/position
 # Notification email address 
 recipient_email=bt@geo.sm
 # MySQL user
