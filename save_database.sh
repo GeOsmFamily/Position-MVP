@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Backup storage directory 
 backupfolder=/var/backups/position
 # Notification email address 
