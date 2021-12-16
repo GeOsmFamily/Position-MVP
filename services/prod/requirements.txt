@@ -45,3 +45,4 @@ wsproto==1.0.0
 pillow
 qrcode
 jinja2
+pandas

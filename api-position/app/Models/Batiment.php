@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Batiment
@@ -45,7 +46,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Batiment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         "nom", "nombreNiveaux", "codeBatiment", "longitude", "latitude", "image", "indication", "rue", "ville", "commune", "quartier"

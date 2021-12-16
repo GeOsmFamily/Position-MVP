@@ -160,6 +160,7 @@ import com.sogefi.position.models.Favorite;
 import com.sogefi.position.models.Language;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
+import com.sogefi.position.models.ResponseModel;
 import com.sogefi.position.models.Search;
 import com.sogefi.position.models.SearchEtablissement;
 import com.sogefi.position.models.Tracking;
@@ -1919,9 +1920,14 @@ if(pref.getRoleid().equals("2")) {
 
     public void clickDialog(DataEtablissements dataEtablissements) {
 
-        Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
-        intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
-        startActivity(intent);
+        if(pref.getId().equals(String.valueOf(dataEtablissements.getIdCommercial()))) {
+            Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
+            intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Vous ne pouvez pas modifier cette fiche", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void openFiche(DataEtablissements dataEtablissements) {
@@ -1929,6 +1935,36 @@ if(pref.getRoleid().equals("2")) {
         Intent intent = new Intent(MapActivity.this, DetailsBusinessActivity.class);
         intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
         startActivity(intent);
+    }
+
+    public void deleteFiche(DataEtablissements dataEtablissements) {
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient3().create(ApiInterface.class);
+            Call<ResponseModel> call = apiService.deleteetablissements(API_KEY,pref.getToken(), dataEtablissements.getId());
+
+            call.enqueue(new Callback<ResponseModel>() {
+                @Override
+                public void onResponse(@NotNull Call<ResponseModel> call, @NotNull Response<ResponseModel> response) {
+                    if(response.code() == 401 || response.code() == 500) {
+                        Toast.makeText(getApplicationContext(), "Vous ne pouvez pas supprimer cette entreprise", Toast.LENGTH_LONG).show();
+                    }
+                    Toast.makeText(getApplicationContext(), "Suppression de l'entreprise reussie", Toast.LENGTH_LONG).show();
+                    geojsonBatiment(Objects.requireNonNull(mapboxMap.getStyle()));
+
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<ResponseModel> call, @NotNull Throwable t) {
+                    // Log error here since request failed
+                    Timber.tag("logout").e(t.toString());
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+
     }
 
     public void resultSearch(String id) {
