@@ -158,7 +158,7 @@ public class NewBusiness5Activity extends AppCompatActivity {
                         saveBatiment(name5.getText().toString(),niveaux5.getText().toString(),codeBatiment,lon,lat,indication5.getText().toString(),rue,ville,commune,quartier5.getText().toString());
                     } else {
                         progressBar5.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Reeesayez", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Verifiez votre connexion et Reessayez", Toast.LENGTH_LONG).show();
                     }
 
                 }

@@ -5,6 +5,7 @@ div.item {
   //width: 120px;
   margin-left: 20px;
 }
+
 /*
 img {
   //width: 100px;
@@ -16,15 +17,15 @@ img {
   color: #05BF95;
 
 }
-.caption:focus{
- color:#05BF95;
+
+.caption:focus {
+  color: #05BF95;
 }
 
-.clear-logo
-{
+.clear-logo {
 
 
-  width:20px;
+  width: 20px;
 
 }
 
@@ -41,34 +42,38 @@ img {
   background-color: white;
   width: 30px;
   height: 30px;
-  border:none;
+  border: none;
 }
 
 
 
-.horaires{
- float:left;
-  width:70%;
+.horaires {
+  float: left;
+  width: 70%;
   //padding-left:10%;
 }
+
 .logo-wrapper {
-	float:left;
-    width:20%;
+  float: left;
+  width: 20%;
 }
-.logo-wrapper img{
-    max-width:100%
+
+.logo-wrapper img {
+  max-width: 100%
 }
 
 .logo {
-    position: relative;
-    /* padding-top: 50%; */
-    height: 100%;
+  position: relative;
+  /* padding-top: 50%; */
+  height: 100%;
 }
-.openCloseTime,.adresse
-{
+
+.openCloseTime,
+.adresse {
   margin-left: -40px;
   margin-top: 6px;
 }
+
 hr {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -77,21 +82,43 @@ hr {
 }
 
 
-.carousel-control-next, .carousel-control-prev {
+.carousel-control-next,
+.carousel-control-prev {
   height: 30px;
   top: 50%;
   transform: translateY(-50%);
   display: none;
 }
-::ng-deep .carousel-control-next-icon{
+
+::ng-deep .carousel-control-next-icon {
   display: none;
 }
-::ng-deep  .carousel-control-prev-icon{
+
+::ng-deep .carousel-control-prev-icon {
   display: none;
 }
-.picsum-img-wrapper{
+
+.picsum-img-wrapper {
   margin: 0;
 }
- ::ng-deep .close{
-   opacity:1;
- }
+
+::ng-deep .close {
+  opacity: 1;
+}
+
+/* width */
+.fiche::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track */
+.fiche::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px transparent;
+  border-radius: 10px;
+}
+
+/* Handle */
+.fiche::-webkit-scrollbar-thumb {
+  background: transparent;
+  //border-radius: 10px;
+}

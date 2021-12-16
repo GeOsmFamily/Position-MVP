@@ -150,7 +150,7 @@
                 android:layout_below="@id/llbed"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
-                android:text="Jours Exclus :  "
+                android:text="Sauf Le :  "
                 android:textSize="20dp"
                 android:textStyle="bold" />
 

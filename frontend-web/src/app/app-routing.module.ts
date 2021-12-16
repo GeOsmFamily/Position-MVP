@@ -18,42 +18,27 @@ const routes: Routes = [
   {
     path: 'resetPassword',
     component: ResetPasswordComponent,
-
-
   },
 
   {
     path: 'login',
-    //  loadChildren: () => import('./app.module').then((mod) => mod.AppModule),
     component: LoginComponent,
-
   },
-         { path: '', redirectTo: '/home', pathMatch: 'full' },
 
-{
+  {
     path: 'home',
-    //  loadChildren: () => import('./app.module').then((mod) => mod.AppModule),
 
     component: MapComponent,
     data: {
       seo: {
-        title: "eeeee",
+        title: 'eeeee',
         description: "I'm a 30 year old software engineer living in Belgium.",
         shareImg: '/assets/share/about.png',
-      }
-    }
+      },
+    },
   },
-/*
-  {
-    path: 'test',
-    //  loadChildren: () => import('./app.module').then((mod) => mod.AppModule),
-    data: {
-      title: 'About',
-      description:'Description Meta Tag Content',
-      ogUrl: 'your og url'
-    } ,
-    component: FicheEntrepriseComponent,
-  },*/
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+
   {
     path: 'ajouterEtablissement',
     component: EtablissementComponent,
@@ -61,11 +46,12 @@ const routes: Routes = [
   },
 ];
 
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabledBlocking'
-})],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabledBlocking',
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

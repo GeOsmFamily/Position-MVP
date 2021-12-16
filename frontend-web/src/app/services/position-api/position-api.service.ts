@@ -1,7 +1,7 @@
 import { Data } from './../../interfaces/userInterface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import {fromLonLat} from 'ol/proj';
+import { fromLonLat } from 'ol/proj';
 import {
   HttpClient,
   HttpHeaders,
@@ -56,12 +56,11 @@ export class PositionApiService {
   Categories = new Array();
   geometry: Geometry | undefined;
 
-
   constructor(
     public router: Router,
     private httpClient: HttpClient,
     public apiService: ApiService,
-    public componentHelper:ComponentHelper
+    public componentHelper: ComponentHelper
   ) {}
 
   public getCategories(): any[] {
@@ -74,16 +73,13 @@ export class PositionApiService {
       .then((data: ListeCategorie) => {
         const categories = data.data;
 
-
         for (let index = 0; index < categories.length; index++) {
           this.Categories?.push({
             id: categories[index].id,
             nom: categories[index].nom,
             logo_url: categories[index].logo_url,
           });
-
         }
-
       });
     return this.Categories;
   }
@@ -103,9 +99,9 @@ export class PositionApiService {
         searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
 
         var cover = environment.url_image + data.data.cover;
-        var imageBatiment=environment.url_image + data.data.batiment.image;
+        var imageBatiment = environment.url_image + data.data.batiment.image;
         var image = environment.url_image + data.data.images[0].imageUrl;
-        this.imagesCourousel.push(imageBatiment)
+        this.imagesCourousel.push(imageBatiment);
         this.imagesCourousel.push(cover);
         this.imagesCourousel.push(image);
         var feature = new Feature();
@@ -135,29 +131,26 @@ export class PositionApiService {
 
         feature.set('description', data.data.description);
         feature.set('type', 'position');
-        feature.set('adresse', data.data.batiment.rue+", "+ data.data.batiment.ville+", bâtiment "+ data.data.batiment.nom+", étage "+ data.data.etage)
+        feature.set(
+          'adresse',
+          data.data.batiment.rue +
+            ', ' +
+            data.data.batiment.ville +
+            ', bâtiment ' +
+            data.data.batiment.nom +
+            ', étage ' +
+            data.data.etage
+        );
 
         //feature.set('nomCategorie',  data.data.nomCategorie);
 
-        feature.set('nomCategorieSousCategorie', data.data.sous_categories[0].nom+", "+data.data.sous_categories[0].nom);
-         feature.set('cover',  data.data.cover);
-        feature.set('siteInternet',  data.data.siteInternet);
-        feature.set('indication',  data.data.indicationAdresse);
-        feature.set('codePostal', data.data.codePostal)
-        feature.set('etage', data.data.etage)
-        feature.set('motCle', data.data.autres)
-
-
-
-
-
-
-          //console.log(data.data.batiment.rue+", "+data.data.batiment.ville+", bâtiment "+data.data.batiment.nom+", étage "+data.data.etage)
-
-
-        feature.setGeometry(new Point(fromLonLat([data.data.batiment.longitude, data.data.batiment.latitude]))
-
+        feature.set(
+          'nomCategorieSousCategorie',
+          data.data.sous_categories[0].nom +
+            ', ' +
+            data.data.sous_categories[0].nom
         );
+<<<<<<< HEAD
        // new Point([, 3.866667])
         var i = 0;
         var jour=""
@@ -210,6 +203,45 @@ export class PositionApiService {
           // console.log(categories[index].nom)
         }*/
         //feature.set('horaires', this.horaires);
+=======
+        feature.set('cover', data.data.cover);
+        feature.set('siteInternet', data.data.siteInternet);
+        feature.set('indication', data.data.indicationAdresse);
+        feature.set('codePostal', data.data.codePostal);
+        feature.set('etage', data.data.etage);
+        feature.set('motCle', data.data.autres);
+
+        //console.log(data.data.batiment.rue+", "+data.data.batiment.ville+", bâtiment "+data.data.batiment.nom+", étage "+data.data.etage)
+
+        feature.setGeometry(
+          new Point(
+            fromLonLat([
+              data.data.batiment.longitude,
+              data.data.batiment.latitude,
+            ])
+          )
+        );
+        // new Point([, 3.866667])
+        const sorter = {
+          // "sunday": 0, // << if sunday is first day of week
+          lundi: 1,
+          mardi: 2,
+          mercredi: 3,
+          jeudi: 4,
+          vendredi: 5,
+          samedi: 6,
+          dimanche: 7,
+        };
+
+        //@ts-ignore
+        data.data.horaires.sort(function sortByDay(a, b) {
+          let day1 = a.jour.toLowerCase();
+          let day2 = b.jour.toLowerCase();
+          //@ts-ignore
+          return sorter[day1] - sorter[day2];
+        });
+        feature.set('horaires', data.data.horaires);
+>>>>>>> 54ccd5cf50e7d45b48f0d94152746ddc0f26fa79
 
         //var numero_whatsapp = new Array();
         for (let index = 0; index < data.data.telephones.length; index++) {
@@ -221,17 +253,14 @@ export class PositionApiService {
             );
           } else {
             this.numero_whatsapp.push(data.data.telephones[index].numero);
-            console.log(data.data.telephones[index].numero)
-
+            console.log(data.data.telephones[index].numero);
           }
         }
 
-
-
-        console.log("helloooooooo")
+        console.log('helloooooooo');
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
-        feature.set('whatsapp',this.numero_whatsapp)
+        feature.set('whatsapp', this.numero_whatsapp);
 
         searchResultLayer.getSource().clear();
 
@@ -239,11 +268,10 @@ export class PositionApiService {
 
         var extent = feature.getGeometry()?.getExtent();
 
-        this.componentHelper.openFicheEntreprise(feature)
+        this.componentHelper.openFicheEntreprise(feature);
         //@ts-ignore
         mapHelper.fit_view(extent, 16);
-       // console.log("kkkkkkkkkkkkkkkkkkkkkk")
-
+        // console.log("kkkkkkkkkkkkkkkkkkkkkk")
       });
   }
 }

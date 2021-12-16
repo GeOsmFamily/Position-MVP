@@ -64,14 +64,7 @@ from fastapi.templating import Jinja2Templates
 # POSITION ADMIN
 # API endpoint to get info of a particular etablissement
 @router.get("/position/chiffre_affaire",)
-def get_chiffre_affaire(session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_chiffre_affaire(session: Session = Depends(get_db), ):
     try:
         chiffreA = chiffre_affaire(session)
         return chiffreA 
@@ -80,14 +73,7 @@ def get_chiffre_affaire(session: Session = Depends(get_db), authorization:str = 
     
 # API endpoint to get count of etablissement of a commercial
 @router.get("/position/statistics/get/ets/by_day/", )
-def get_position_info(day: datetime, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_position_info(day: datetime, session: Session = Depends(get_db),):
     try:
         position_info = position_get_by_day(session, day=day)
         return position_info
@@ -96,14 +82,7 @@ def get_position_info(day: datetime, session: Session = Depends(get_db), authori
 
 # API endpoint to get count of etablissement of a commercial
 @router.get("/position/statistics/get/ets/by_week/", )
-def get_position_info(aDayOfTheWeek: datetime, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_position_info(aDayOfTheWeek: datetime, session: Session = Depends(get_db)):
     try:
         position_info = position_get_by_week(session, day=aDayOfTheWeek)
         return position_info
@@ -112,14 +91,7 @@ def get_position_info(aDayOfTheWeek: datetime, session: Session = Depends(get_db
 
 # API endpoint to get count of etablissement of a commercial
 @router.get("/position/statistics/get/ets/by_month/", )
-def get_position_info(month: int, year: int, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_position_info(month: int, year: int, session: Session = Depends(get_db)):
     try:
         x_date = datetime2.datetime(year, month, 1) # random date just to target the month
         position_info = position_get_by_month(session, day=x_date)
@@ -129,14 +101,7 @@ def get_position_info(month: int, year: int, session: Session = Depends(get_db),
 
 # API endpoint to get count of etablissement of a commercial
 @router.get("/position/statistics/get/ets/by_year/", )
-def get_position_info(year: int ,session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_position_info(year: int ,session: Session = Depends(get_db)):
     try:
         position_info = position_get_by_year(session, year=year)
         return position_info
@@ -518,31 +483,14 @@ class Commercial:
     
     
     @router.post("/commercial/generateQrCode")
-    async def generate_qr_code(self, commercial_id: int, authorization:str=Header(None), session: Session = Depends(get_db)):
-        if authorization is None:
-                raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-        auth_response = verify_token(authorization.split(' ')[1])
-        if ('user_id' not in auth_response):
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        try:
-            create_qr(commercial_id)
-            return {'message': 'Qr code  - Generated Succesfully!'}
-        except Exception as cie:
-            raise HTTPException(**cie.__dict__)
+    async def generate_qr_code(self, commercial_id: int, session: Session = Depends(get_db)):
+        create_qr(commercial_id)
+        return {'message': 'Qr code  - Generated Succesfully!'}
     
     
     # API to get the list of d info
     @router.get("/commercials", response_model=PaginatedCommercialsInfo)
     def list_all_comm(self, limit: int = 10, offset: int = 0, authorization:str = Header(None)):
-        if authorization is None:
-            raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-        auth_response = verify_token(authorization.split(' ')[1])
-        if ('user_id' not in auth_response):
-            raise HTTPException(status_code=401, detail=auth_response['message'])
-        if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-            raise HTTPException(status_code=401, detail=auth_response['message'])
         commercials_list = get_all_commercials(self.session, limit, offset)
         response = {"limit": limit, "offset": offset, "data": commercials_list}
         return response
@@ -594,13 +542,7 @@ class Commercial:
 # API endpoint to get specific info of a particular commercials
 @router.get("/commercials/", response_model=Commercials)
 def get_commercials_info(commercials_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+
     try:
         commercials_info = get_commercials_info_by_id(session, commercials_id)
         return commercials_info
@@ -609,14 +551,8 @@ def get_commercials_info(commercials_id: int, session: Session = Depends(get_db)
 
 # API endpoint to get count of etablissement of a commercial
 @router.get("/commercials/statistics/count/ets/", )
-def get_commercials_info(commercials_id: int, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_commercials_info(commercials_id: int, session: Session = Depends(get_db), ):
+
     try:
         commercials_info = count_number_of_ets(session, commercials_id)
         return commercials_info
@@ -625,14 +561,8 @@ def get_commercials_info(commercials_id: int, session: Session = Depends(get_db)
     
 # API endpoint to get count of etablissement of a commercial
 @router.get("/commercials/statistics/get/ets/by_day/", )
-def get_commercials_info(commercials_id: int, day: datetime ,session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_commercials_info(commercials_id: int, day: datetime ,session: Session = Depends(get_db), ):
+
     try:
         commercials_info = get_ets_by_day(session, commercials_id, day=day)
         return commercials_info
@@ -641,14 +571,8 @@ def get_commercials_info(commercials_id: int, day: datetime ,session: Session = 
 
 # API endpoint to get count of etablissement of a commercial
 @router.get("/commercials/statistics/get/ets/by_week/", )
-def get_commercials_info(commercials_id: int, aDayOfTheWeek: datetime, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_commercials_info(commercials_id: int, aDayOfTheWeek: datetime, session: Session = Depends(get_db), ):
+
     try:
         commercials_info = get_ets_by_week(session, commercials_id, day=aDayOfTheWeek)
         return commercials_info
@@ -657,14 +581,8 @@ def get_commercials_info(commercials_id: int, aDayOfTheWeek: datetime, session: 
 
 # API endpoint to get count of etablissement of a commercial 
 @router.get("/commercials/statistics/get/ets/by_month/", )
-def get_commercials_info(commercials_id: int, month: int, year: int, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_commercials_info(commercials_id: int, month: int, year: int, session: Session = Depends(get_db), ):
+
     try:
         x_date = datetime2.datetime(year, month, 1) # random date just to target the month
         commercials_info = get_ets_by_month(session, commercials_id, day=x_date)
@@ -674,14 +592,8 @@ def get_commercials_info(commercials_id: int, month: int, year: int, session: Se
 
 # API endpoint to get count of etablissement of a commercial
 @router.get("/commercials/statistics/get/ets/by_year/", )
-def get_commercials_info(commercials_id: int, year: int ,session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_commercials_info(commercials_id: int, year: int ,session: Session = Depends(get_db), ):
+
     try:
         commercials_info = get_ets_by_year(session, commercials_id, year=year)
         return commercials_info
@@ -706,14 +618,7 @@ def update_commercials(commercials_id: int, new_info: CreateAndUpdateCommercials
 
 # API endpoint to get Salary of a commercial for specific month
 @router.get("/commercials/statistics/salary/", )
-def get_commercials_salary(commercials_id: int, month: int, year: int, session: Session = Depends(get_db), authorization:str = Header(None)):
-    if authorization is None:
-        raise HTTPException(500, {'message': 'DecodeError - Token is invalid!'})
-    auth_response = verify_token(authorization.split(' ')[1])
-    if ('user_id' not in auth_response):
-        raise HTTPException(status_code=401, detail=auth_response['message'])
-    if (has_authority(roles=auth_response['roles_id'], access_type='r',target='ETS')) is False:
-        raise HTTPException(status_code=401, detail=auth_response['message'])
+def get_commercials_salary(commercials_id: int, month: int, year: int, session: Session = Depends(get_db),):
     try:
         x_date = datetime2.datetime(year, month, 1) # random date just to target the month
         commercials_info = get_comm_salary(session, commercials_id, day=x_date)

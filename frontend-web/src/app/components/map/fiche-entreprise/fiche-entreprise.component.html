@@ -1,6 +1,6 @@
-<div style="background-color: #fff;color:black;height: 100vh;">
+<div class="fiche" style="background-color: #fff;color:black; overflow-x: hidden; overflow-y: scroll; height: 100vh;">
   <!-- Photo de l'entreprise-->
-  <div class="parent " style="width: 100%;overflow: hidden;">
+  <div class="parent " style="width: 100%;">
     <!-- <img class="img-fluid " src="assets/resto.jpg" style="width: 101%; height: 130px;" alt="photo entreprise"/>
    -->
     <ngb-carousel>
@@ -134,9 +134,9 @@
           <p style="font-size: 11px;" *ngIf="h.jour =='Mardi'">Mar: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
           <p style="font-size: 11px;" *ngIf="h.jour=='Mercredi'">Mer: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
           <p style="font-size: 11px;" *ngIf="h.jour=='Jeudi'">Jeu: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
-          <p style="font-size: 11px;" *ngIf="h.jour=='vendredi'">Ven: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Vendredi'">Ven: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
           <p style="font-size: 11px;" *ngIf="h.jour=='Samedi'">Sam: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
-          <p style="font-size: 11px;" *ngIf="h.jou=='dimanche'">Dim: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Dimanche'">Dim: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
 
         </ng-container>
 

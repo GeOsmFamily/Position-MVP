@@ -8,7 +8,7 @@ export class HandleEtablissementsSearch {
   horaires = new Array();
   telephones = new Array();
   numero_whatsapp = new Array();
-  chaine_num_whatsapp=""
+  chaine_num_whatsapp = '';
   url_position = environment.url_image;
   imagesCourousel = new Array();
 
@@ -47,14 +47,13 @@ export class HandleEtablissementsSearch {
           details.push(this._formatType(element));
         }
 
-
         response.push({
           name: features[0].get('nom'),
           id: features[0].get('id'),
           adresse: features[0].get('description'),
           geometry: features[0].getGeometry(),
           details: details.join(', '),
-          logo: environment.url_image+features[0].get('logo_url'),
+          logo: environment.url_image + features[0].get('logo_url'),
           typeOption: 'etablissements',
           ...features[0].getProperties(),
         });
@@ -74,7 +73,9 @@ export class HandleEtablissementsSearch {
 
   _formatType(option: any) {
     return (
-      option.properties.nomCategorie + ',' + option.properties.nomSousCategorie
+      option.properties.nomCategorie +
+      ',' +
+      option.properties.sous_categories[0].nom
     );
   }
 
@@ -85,26 +86,24 @@ export class HandleEtablissementsSearch {
     }
   }
 
-  includehoraire(hs:any, index:number,jour:string){
+  includehoraire(hs: any, index: number, jour: string) {
     this.horaires?.push({
       jour: hs[index].jour,
       heureOuverture: hs[index].heureOuverture,
       heureFermeture: hs[index].heureFermeture,
     });
-
   }
   _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
     if (emprise.geometry) {
-
-      console.log(emprise)
+      console.log(emprise);
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
         var searchResultLayer = new VectorLayer();
         searchResultLayer = mapHelper.getLayerByName('searchResultLayer')[0];
         var cover = environment.url_image + emprise.cover;
         var image = environment.url_image + emprise.images[0].imageUrl;
-        var imageBatiment=environment.url_image + emprise.batiment.image;
-        this.imagesCourousel.push(imageBatiment)
+        var imageBatiment = environment.url_image + emprise.batiment.image;
+        this.imagesCourousel.push(imageBatiment);
         this.imagesCourousel.push(cover);
         this.imagesCourousel.push(image);
 
@@ -122,19 +121,30 @@ export class HandleEtablissementsSearch {
 
         feature.set('description', emprise.description);
         feature.set('type', 'position');
-        feature.set('adresse',emprise.batiment.ville+", "+emprise.batiment.quartier+", "+ emprise.batiment.rue)
+        feature.set(
+          'adresse',
+          emprise.batiment.ville +
+            ', ' +
+            emprise.batiment.quartier +
+            ', ' +
+            emprise.batiment.rue
+        );
 
-        feature.set('nomCategorieSousCategorie', emprise.sous_categories[0].nom+", "+emprise.nomCategorie);
+        feature.set(
+          'nomCategorieSousCategorie',
+          emprise.sous_categories[0].nom + ', ' + emprise.nomCategorie
+        );
         feature.set('nomSousCategorie', emprise.sous_categories[0].nom);
         feature.set('cover', emprise.cover);
         feature.set('siteInternet', emprise.siteInternet);
         feature.set('indication', emprise.indicationAdresse);
-        feature.set('codePostal',emprise.codePostal)
-        feature.set('etage',emprise.etage)
-        feature.set('motCle',emprise.autres)
+        feature.set('codePostal', emprise.codePostal);
+        feature.set('etage', emprise.etage);
+        feature.set('motCle', emprise.autres);
         feature.setGeometry(emprise.geometry);
         var i = 0;
 
+<<<<<<< HEAD
         var jour=""
         var heureOuv=""
         var heureFerm=""
@@ -162,23 +172,44 @@ export class HandleEtablissementsSearch {
 
         console.log(emprise.horaires)
         feature.set('horaires',emprise.horaires);
+=======
+        const sorter = {
+          // "sunday": 0, // << if sunday is first day of week
+          lundi: 1,
+          mardi: 2,
+          mercredi: 3,
+          jeudi: 4,
+          vendredi: 5,
+          samedi: 6,
+          dimanche: 7,
+        };
 
+        //@ts-ignore
+        emprise.horaires.sort(function sortByDay(a, b) {
+          let day1 = a.jour.toLowerCase();
+          let day2 = b.jour.toLowerCase();
+          //@ts-ignore
+          return sorter[day1] - sorter[day2];
+        });
+
+        console.log(emprise.horaires);
+>>>>>>> 54ccd5cf50e7d45b48f0d94152746ddc0f26fa79
+
+        feature.set('horaires', emprise.horaires);
 
         for (let index = 0; index < emprise.telephones.length; index++) {
           if (emprise.telephones[index].principal == 1) {
             // this.telephones?.push({"principal":emprise.telephones[index].numero})
             feature.set('telephonePrincipal', emprise.telephones[index].numero);
-           // console.log(emprise.telephones[index].numero)
+            // console.log(emprise.telephones[index].numero)
           } else {
             this.numero_whatsapp.push(emprise.telephones[index].numero);
             //console.log(emprise.telephones[index].numero)
-
-
           }
         }
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
-        feature.set('whatsapp',this.numero_whatsapp)
+        feature.set('whatsapp', this.numero_whatsapp);
 
         searchResultLayer.getSource().clear();
 
