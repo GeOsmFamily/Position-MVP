@@ -295,7 +295,7 @@ class CommercialController extends BaseController
                 }
             } else {
                 $request->validate([
-                    'file' => 'mimes:png|max:10000'
+                    'file' => 'mimes:png,jpg,jpeg|max:10000'
                 ]);
 
 
