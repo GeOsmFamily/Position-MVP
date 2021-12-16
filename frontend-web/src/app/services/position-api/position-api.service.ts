@@ -160,7 +160,30 @@ export class PositionApiService {
         );
        // new Point([, 3.866667])
         var i = 0;
-        for (let index = 0; index < data.data.horaires.length; index++) {
+        var jour=""
+        var heureOuv=""
+        var heureFerm=""
+        for (let index_i =data.data.horaires.length-1; index_i >=0; index_i--) {
+          for (let index_j =2; index_j <=index_i; index_j++){
+
+            if(data.data.horaires[index_j -1] > data.data.horaires[index_j]){
+               jour=data.data.horaires[index_j-1].jour
+               heureOuv=data.data.horaires[index_j-1].heureOuverture
+                heureFerm=data.data.horaires[index_j-1].heureFermeture
+
+                data.data.horaires[index_j-1].jour=data.data.horaires[index_j].jour
+                data.data.horaires[index_j-1].heureOuverture=data.data.horaires[index_j].heureOuverture
+                data.data.horaires[index_j-1].heureFermeture=data.data.horaires[index_j].heureFermeture
+
+                data.data.horaires[index_j].jour=jour
+                data.data.horaires[index_j].heureOuverture=heureOuv
+                data.data.horaires[index_j].heureFermeture=heureFerm
+
+            }
+          }
+}
+
+      /*  for (let index = 0; index < data.data.horaires.length; index++) {
 
           if (data.data.horaires[index].jour == 'Lundi' && i == 0) {
             i++;
@@ -185,7 +208,7 @@ export class PositionApiService {
             });
           }
           // console.log(categories[index].nom)
-        }
+        }*/
         //feature.set('horaires', this.horaires);
 
         //var numero_whatsapp = new Array();

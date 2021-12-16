@@ -135,6 +135,32 @@ export class HandleEtablissementsSearch {
         feature.setGeometry(emprise.geometry);
         var i = 0;
 
+        var jour=""
+        var heureOuv=""
+        var heureFerm=""
+        for (let index_i =emprise.horaires.length-1; index_i >=0; index_i--) {
+          for (let index_j =1; index_j <=index_i; index_j++){
+
+            if(emprise.horaires[index_j -1].jour > emprise.horaires[index_j].jour){
+              console.log("helll")
+               jour=emprise.horaires[index_j-1].jour
+               console.log(emprise.horaires[index_j].jour)
+               heureOuv=emprise.horaires[index_j-1].heureOuverture
+                heureFerm=emprise.horaires[index_j-1].heureFermeture
+
+                emprise.horaires[index_j-1].jour=emprise.horaires[index_j].jour
+                emprise.horaires[index_j-1].heureOuverture=emprise.horaires[index_j].heureOuverture
+                emprise.horaires[index_j-1].heureFermeture=emprise.horaires[index_j].heureFermeture
+
+                emprise.horaires[index_j].jour=jour
+                emprise.horaires[index_j].heureOuverture=heureOuv
+               emprise.horaires[index_j].heureFermeture=heureFerm
+
+            }
+          }
+}
+
+        console.log(emprise.horaires)
         feature.set('horaires',emprise.horaires);
 
 
