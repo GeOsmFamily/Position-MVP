@@ -103,7 +103,7 @@ export class HandleEtablissementsSearch {
   }
   _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
     if (emprise.geometry) {
-      console.log(emprise);
+      
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
         var searchResultLayer = new VectorLayer();

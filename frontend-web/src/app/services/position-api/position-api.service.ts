@@ -207,11 +207,10 @@ export class PositionApiService {
             );
           } else {
             this.numero_whatsapp.push(data.data.telephones[index].numero);
-            console.log(data.data.telephones[index].numero);
+
           }
         }
 
-        console.log('helloooooooo');
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
         feature.set('whatsapp', this.numero_whatsapp);
