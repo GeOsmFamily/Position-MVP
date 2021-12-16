@@ -84,8 +84,18 @@ loginComponent: LoginComponent | undefined;
 
 
 this.initialiazeMap()
+
+
+
 this.handleMapParamsUrl()
-this.getPosition()
+
+try {
+  this.getPosition()
+} catch (error) {
+
+}
+
+
 
 //this.userLocation()
 
@@ -130,7 +140,7 @@ this.getPosition()
     this.mapClicked()
     this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
     this.componentHelper.setComponent('EtablissementComponent',this.etablissementComponent)
-   
+
 
 
 

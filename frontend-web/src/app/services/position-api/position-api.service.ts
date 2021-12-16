@@ -150,60 +150,7 @@ export class PositionApiService {
             ', ' +
             data.data.sous_categories[0].nom
         );
-<<<<<<< HEAD
-       // new Point([, 3.866667])
-        var i = 0;
-        var jour=""
-        var heureOuv=""
-        var heureFerm=""
-        for (let index_i =data.data.horaires.length-1; index_i >=0; index_i--) {
-          for (let index_j =2; index_j <=index_i; index_j++){
 
-            if(data.data.horaires[index_j -1] > data.data.horaires[index_j]){
-               jour=data.data.horaires[index_j-1].jour
-               heureOuv=data.data.horaires[index_j-1].heureOuverture
-                heureFerm=data.data.horaires[index_j-1].heureFermeture
-
-                data.data.horaires[index_j-1].jour=data.data.horaires[index_j].jour
-                data.data.horaires[index_j-1].heureOuverture=data.data.horaires[index_j].heureOuverture
-                data.data.horaires[index_j-1].heureFermeture=data.data.horaires[index_j].heureFermeture
-
-                data.data.horaires[index_j].jour=jour
-                data.data.horaires[index_j].heureOuverture=heureOuv
-                data.data.horaires[index_j].heureFermeture=heureFerm
-
-            }
-          }
-}
-
-      /*  for (let index = 0; index < data.data.horaires.length; index++) {
-
-          if (data.data.horaires[index].jour == 'Lundi' && i == 0) {
-            i++;
-            this.horaires?.push({
-              tous_les_jours: data.data.horaires[index].jour,
-              heureOuverture: data.data.horaires[index].heureOuverture,
-              heureFermeture: data.data.horaires[index].heureFermeture,
-            });
-          }
-          if (data.data.horaires[index].jour == 'Samedi') {
-            this.horaires?.push({
-              Samedi: data.data.horaires[index].jour,
-              heureOuverture: data.data.horaires[index].heureOuverture,
-              heureFermeture: data.data.horaires[index].heureFermeture,
-            });
-          }
-          if (data.data.horaires[index].jour == 'Dimanche') {
-            this.horaires?.push({
-              Dimanche: data.data.horaires[index].jour,
-              heureOuverture: data.data.horaires[index].heureOuverture,
-              heureFermeture: data.data.horaires[index].heureFermeture,
-            });
-          }
-          // console.log(categories[index].nom)
-        }*/
-        //feature.set('horaires', this.horaires);
-=======
         feature.set('cover', data.data.cover);
         feature.set('siteInternet', data.data.siteInternet);
         feature.set('indication', data.data.indicationAdresse);
@@ -240,8 +187,15 @@ export class PositionApiService {
           //@ts-ignore
           return sorter[day1] - sorter[day2];
         });
+
+        for (let index = 0; index < data.data.horaires.length; index++) {
+          data.data.horaires[index].heureOuverture=data.data.horaires[index].heureOuverture.slice(0,5)
+          data.data.horaires[index].heureFermeture=data.data.horaires[index].heureFermeture.slice(0,5)
+
+          }
+
         feature.set('horaires', data.data.horaires);
->>>>>>> 54ccd5cf50e7d45b48f0d94152746ddc0f26fa79
+
 
         //var numero_whatsapp = new Array();
         for (let index = 0; index < data.data.telephones.length; index++) {

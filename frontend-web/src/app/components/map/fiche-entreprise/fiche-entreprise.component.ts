@@ -36,26 +36,20 @@ export class FicheEntrepriseComponent implements OnInit {
   ngOnInit(): void {}
 
   private setupRouting() {
+
     this.router.events
       .pipe(
         filter((event: any) => event instanceof NavigationEnd),
         map(() => this.activatedRoute),
-        map((route) => {
-          while (route.firstChild) {
-            route = route.firstChild;
-          }
-          return route;
-        }),
-        filter((route) => route.outlet === 'primary')
-      )
+       )
       .subscribe((route: ActivatedRoute) => {
         const seo = route.snapshot.data['seo'];
         this.meta.updateTag({
-          property: 'og:title',
+          property: 'title',
           content: this.featurePoint?.get('textLabel'),
         });
         this.meta.updateTag({
-          property: 'og:description',
+          property: 'description',
           content: 'Retrouvez mon business sur la plateforme Position',
           //this.featurePoint?.get('nomCategorie') +',' + this.featurePoint?.get('nomSousCategorie'),
         });
@@ -77,10 +71,11 @@ export class FicheEntrepriseComponent implements OnInit {
   }
 
   shareLink() {
-    this.setupRouting();
+
+
     var url_share =
       environment.url_demo +
-      'home?etablissements=' +
+      '?etablissements=' +
       this.featurePoint?.get('id') +
       ',16';
     this.componentHelper.openSocialShare(url_share, 7);
@@ -89,9 +84,12 @@ export class FicheEntrepriseComponent implements OnInit {
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
+    this.setupRouting();
+
   }
   open(featurePoint: any) {
     this.featurePoint = featurePoint;
+    this.setupRouting()
 
     this.images = this.featurePoint?.get('imagesCarousel');
 
