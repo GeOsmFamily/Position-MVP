@@ -1938,32 +1938,38 @@ if(pref.getRoleid().equals("2")) {
     }
 
     public void deleteFiche(DataEtablissements dataEtablissements) {
-        if (Function.isNetworkAvailable(getApplicationContext())) {
-            ApiInterface apiService =
-                    APIClient.getNewClient3().create(ApiInterface.class);
-            Call<ResponseModel> call = apiService.deleteetablissements(API_KEY,pref.getToken(), dataEtablissements.getId());
+        if(pref.getId().equals(String.valueOf(dataEtablissements.getIdCommercial()))) {
+            if (Function.isNetworkAvailable(getApplicationContext())) {
+                ApiInterface apiService =
+                        APIClient.getNewClient3().create(ApiInterface.class);
+                Call<ResponseModel> call = apiService.deleteetablissements(API_KEY,pref.getToken(), dataEtablissements.getId());
 
-            call.enqueue(new Callback<ResponseModel>() {
-                @Override
-                public void onResponse(@NotNull Call<ResponseModel> call, @NotNull Response<ResponseModel> response) {
-                    if(response.code() == 401 || response.code() == 500) {
-                        Toast.makeText(getApplicationContext(), "Vous ne pouvez pas supprimer cette entreprise", Toast.LENGTH_LONG).show();
+                call.enqueue(new Callback<ResponseModel>() {
+                    @Override
+                    public void onResponse(@NotNull Call<ResponseModel> call, @NotNull Response<ResponseModel> response) {
+                        if(response.code() == 401 || response.code() == 500) {
+                            Toast.makeText(getApplicationContext(), "Erreur de suppression, contactez un administrateur", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Suppression de l'entreprise reussie", Toast.LENGTH_LONG).show();
+                        }
+
+
                     }
-                    Toast.makeText(getApplicationContext(), "Suppression de l'entreprise reussie", Toast.LENGTH_LONG).show();
-                    geojsonBatiment(Objects.requireNonNull(mapboxMap.getStyle()));
 
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<ResponseModel> call, @NotNull Throwable t) {
-                    // Log error here since request failed
-                    Timber.tag("logout").e(t.toString());
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
-                }
-            });
+                    @Override
+                    public void onFailure(@NotNull Call<ResponseModel> call, @NotNull Throwable t) {
+                        // Log error here since request failed
+                        Timber.tag("logout").e(t.toString());
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else {
+                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Vous ne pouvez pas supprimer cette entreprise", Toast.LENGTH_LONG).show();
         }
+
 
     }
 
