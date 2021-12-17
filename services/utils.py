@@ -50,4 +50,4 @@ def automate_from_csv():
 if __name__ == '__main__':
     # read_last_image_identification()
     # automate_from_csv()
-    create_qr(69)
+    create_qr(70)
