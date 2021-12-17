@@ -30,12 +30,10 @@ const routes: Routes = [
 
     component: MapComponent,
     data: {
-      seo: {
-        title: 'eeeee',
-        description: "I'm a 30 year old software engineer living in Belgium.",
-        shareImg: '/assets/share/about.png',
-      },
-    },
+      title: 'About',
+      description: 'Description Meta Tag Content',
+      ogUrl: 'your og url'
+   }
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 
