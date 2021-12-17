@@ -133,15 +133,12 @@ export class PositionApiService {
         feature.set('type', 'position');
         feature.set(
           'adresse',
-          data.data.batiment.rue +
+          data.data.batiment.ville +
             ', ' +
-            data.data.batiment.ville +
-            ', bâtiment ' +
-            data.data.batiment.nom +
-            ', étage ' +
-            data.data.etage
+            data.data.batiment.quartier +
+            ', ' +
+            data.data.batiment.rue
         );
-
         //feature.set('nomCategorie',  data.data.nomCategorie);
 
         feature.set(
@@ -196,7 +193,7 @@ export class PositionApiService {
 
         feature.set('horaires', data.data.horaires);
 
-
+        var chaine_w=""
         //var numero_whatsapp = new Array();
         for (let index = 0; index < data.data.telephones.length; index++) {
           if (data.data.telephones[index].principal == 1) {
@@ -207,13 +204,14 @@ export class PositionApiService {
             );
           } else {
             this.numero_whatsapp.push(data.data.telephones[index].numero);
+            chaine_w=chaine_w+data.data.telephones[index].numero+", "
 
           }
         }
 
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
-        feature.set('whatsapp', this.numero_whatsapp);
+        feature.set('whatsapp', chaine_w.slice(0,-2));
 
         searchResultLayer.getSource().clear();
 

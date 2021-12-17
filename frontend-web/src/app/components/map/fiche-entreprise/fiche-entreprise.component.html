@@ -131,12 +131,12 @@
           <p style="font-size: 11px;" *ngIf="h.jour=='Lundi'"> Lun: {{h.heureOuverture}} -
             {{h.heureFermeture}} </p>
 
-          <p style="font-size: 11px;" *ngIf="h.jour =='Mardi'">Mar: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
-          <p style="font-size: 11px;" *ngIf="h.jour=='Mercredi'">Mer: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
-          <p style="font-size: 11px;" *ngIf="h.jour=='Jeudi'"> Jeu:  {{h.heureOuverture}} - {{h.heureFermeture}} </p>
-          <p style="font-size: 11px;" *ngIf="h.jour=='Vendredi'">Ven: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
-          <p style="font-size: 11px;" *ngIf="h.jour=='Samedi'">Sam: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
-          <p style="font-size: 11px;" *ngIf="h.jour=='Dimanche'">Dim: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour =='Mardi'"> Mar: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Mercredi'"> Mer: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Jeudi'"> Jeu:   <span>{{h.heureOuverture}} - {{h.heureFermeture}}</span> </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Vendredi'"> Ven: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Samedi'"> Sam: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
+          <p style="font-size: 11px;" *ngIf="h.jour=='Dimanche'"> Dim: {{h.heureOuverture}} - {{h.heureFermeture}} </p>
 
         </ng-container>
 
@@ -184,9 +184,9 @@
       <img class="img-fluid" src="assets/whatsapp.svg" alt="" style="margin-top: -3px;width: 20px; float:left;" />
 
       <div style="display: inline-block;" *ngIf="featurePoint?.get('whatsapp')">
-        <ng-container *ngFor="let numero_whatsapp of featurePoint?.get('whatsapp')">
-          <p style="font-size: 11px;margin-left: 5px;">{{numero_whatsapp}}</p>
-        </ng-container>
+       
+          <p style="font-size: 11px;margin-left: 5px;">{{featurePoint?.get('whatsapp')}}</p>
+     
 
       </div>
     </div>
@@ -197,11 +197,11 @@
     <div *ngIf="featurePoint?.get('siteInternet')" class="container"
       style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
 
-      <img class="img-fluid" src="assets/button/icon-position-pin.svg" alt=""
+      <img class="img-fluid" src="assets/icon/icon-web.svg" alt=""
         style="    margin-top: -3px;width: 20px; float:left;" />
 
 
-      <p style="font-size: 11px;">{{featurePoint?.get('siteInternet')}}</p>
+      <p style="font-size: 11px;margin-left:25px">{{featurePoint?.get('siteInternet')}}</p>
 
     </div>
 
