@@ -16,14 +16,14 @@ export class AppComponent {
   title = 'frontend-web';
   subscription: Subscription;
 
-  featurePoint:string="test"
+  featurePoint:string | undefined
   constructor(private ds:ParentChildServiceService ,private tit: Title,private router: Router, private activatedRoute: ActivatedRoute, private meta:Meta) {
     this.subscription = this.ds.getData().subscribe(x => {
                       this.featurePoint = x[0];
                       console.log("rrrrrr +"+ this.featurePoint)
                       this.meta.updateTag({
                         name: 'description',
-                        content: this.featurePoint
+                        content: this.featurePoint!
                      })
                      this.meta.updateTag({
                       name: 'image',
@@ -31,7 +31,7 @@ export class AppComponent {
                    })
                      this.tit.setTitle(x[0]);
     });
-    console.log(this.featurePoint)
+
   }
 
 
