@@ -41,6 +41,7 @@ import { providePerformance, getPerformance } from '@angular/fire/performance';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAnalyticsModule } from '@angular/fire/compat/analytics';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { ParentChildServiceService } from './services/parentChildService/parent-child-service.service';
 
 const customConfig: ShareButtonsConfig = {
   include: ['copy', 'facebook', 'twitter', 'linkedin', 'messenger', 'whatsapp'],
@@ -120,7 +121,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     provideAnalytics(() => getAnalytics()),
     providePerformance(() => getPerformance()),*/
   ],
-  providers: [ScreenTrackingService, UserTrackingService],
+  providers: [ScreenTrackingService, UserTrackingService,ParentChildServiceService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 
-import { filter, map } from 'rxjs/operators';
+import { filter, map, mergeMap } from 'rxjs/operators';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { ParentChildServiceService } from './services/parentChildService/parent-child-service.service';
+import { Feature, Point } from './modules/ol';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,39 +14,51 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 })
 export class AppComponent {
   title = 'frontend-web';
+  subscription: Subscription;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private meta:Meta) {
+  featurePoint:string="test"
+  constructor(private ds:ParentChildServiceService ,private tit: Title,private router: Router, private activatedRoute: ActivatedRoute, private meta:Meta) {
+    this.subscription = this.ds.getData().subscribe(x => {
+                      this.featurePoint = x[0];
+                      console.log("rrrrrr +"+ this.featurePoint)
+                      this.meta.updateTag({
+                        name: 'description',
+                        content: this.featurePoint
+                     })
+                     this.meta.updateTag({
+                      name: 'image',
+                      content: x[1]
+                   })
+                     this.tit.setTitle(x[0]);
+    });
+    console.log(this.featurePoint)
   }
+
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.router.events
-    .pipe(
-      filter((event: any) => event instanceof NavigationEnd),
-      map(() => this.activatedRoute),
-     )
-    .subscribe((route: ActivatedRoute) => {
-      const seo = route.snapshot.data['seo'];
-      this.meta.updateTag({
-        property: 'title',
-        content: 'llllllllllllllll',
-      });
-      this.meta.updateTag({
-        property: 'description',
-        content: 'Retrouvez mon business sur la plateforme Position',
-        //this.featurePoint?.get('nomCategorie') +',' + this.featurePoint?.get('nomSousCategorie'),
-      });
-      this.meta.updateTag({
-        property: 'image',
-        content: "eeeeeeeeeeeeeeeeeeeeeee",
-      });
-      this.meta.updateTag({
-        property: 'url',
-        content:''
-      });
 
-      // set your meta tags & title here
-    });
+
+
+  }ngAfterViewInit(): void {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    //Add 'implements AfterViewInit' to the class.
+    this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map((route) => {
+         while (route.firstChild) route = route.firstChild;
+         return route;
+      }),
+      filter((route) => route.outlet === 'primary'),
+      mergeMap((route) => route.data)
+   )
+   .subscribe((event) => {
+
+
+      //Updating Description tag dynamically with title
+      //this._seoService.updateDescription(event['title'] + event['description'])
+   });
   }
 }

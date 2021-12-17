@@ -1,6 +1,6 @@
 import { ComponentHelper } from 'src/app/helpers/componentHelper';
 import { environment } from './../../../../environments/environment';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter  } from '@angular/core';
 import * as $ from 'jquery';
 import { Feature, Point } from 'src/app/modules/ol';
 import { DeviceDetectionService } from 'src/app/services/device-detection.service';
@@ -11,8 +11,9 @@ import {
   NavigationStart,
   NavigationEnd,
 } from '@angular/router';
-import { Meta } from '@angular/platform-browser';
-import { filter, map } from 'rxjs/operators';
+import { Meta, Title } from '@angular/platform-browser';
+import { filter, map, mergeMap } from 'rxjs/operators';
+import { ParentChildServiceService } from 'src/app/services/parentChildService/parent-child-service.service';
 
 @Component({
   selector: 'app-fiche-entreprise',
@@ -25,7 +26,13 @@ export class FicheEntrepriseComponent implements OnInit {
   // url_position = environment.url_frontend;
   url_demo = environment.url_demo;
   images = [];
-  constructor(
+
+  @Output() newItemEvent = new EventEmitter<Feature<Point>>();
+  addNewItem(featurePoint: Feature<Point> ) {
+    this.newItemEvent.emit(featurePoint);
+  }
+  constructor(private ds:ParentChildServiceService ,
+    private tit:Title,
     private meta: Meta,
     private router: Router,
     private modalService: NgbModal,
@@ -33,42 +40,12 @@ export class FicheEntrepriseComponent implements OnInit {
     private componentHelper: ComponentHelper
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
 
-  private setupRouting() {
 
-    this.router.events
-      .pipe(
-        filter((event: any) => event instanceof NavigationEnd),
-        map(() => this.activatedRoute),
-       )
-      .subscribe((route: ActivatedRoute) => {
-        const seo = route.snapshot.data['seo'];
-        this.meta.updateTag({
-          property: 'title',
-          content: this.featurePoint?.get('textLabel'),
-        });
-        this.meta.updateTag({
-          property: 'description',
-          content: 'Retrouvez mon business sur la plateforme Position',
-          //this.featurePoint?.get('nomCategorie') +',' + this.featurePoint?.get('nomSousCategorie'),
-        });
-        this.meta.updateTag({
-          property: 'og:image',
-          content: environment.url_image + this.featurePoint?.get('cover'),
-        });
-        this.meta.updateTag({
-          property: 'og:url',
-          content:
-            environment.url_demo +
-            'home?etablissements=' +
-            this.featurePoint?.get('id') +
-            ',16',
-        });
-
-        // set your meta tags & title here
-      });
   }
+
+
 
   shareLink() {
 
@@ -82,14 +59,23 @@ export class FicheEntrepriseComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    this.setupRouting();
+
+
 
   }
+
+  sendData(){
+    //this.ds.sendData(this.featurePoint!);
+  }
+
   open(featurePoint: any) {
     this.featurePoint = featurePoint;
-    this.setupRouting()
+    this.ds.sendData([this.featurePoint?.get('textLabel'),environment.url_image+this.featurePoint?.get('cover')]);
+   // this.ds.sendData();
+
 
     this.images = this.featurePoint?.get('imagesCarousel');
 

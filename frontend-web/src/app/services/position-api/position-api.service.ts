@@ -133,15 +133,12 @@ export class PositionApiService {
         feature.set('type', 'position');
         feature.set(
           'adresse',
-          data.data.batiment.rue +
+          data.data.batiment.ville +
             ', ' +
-            data.data.batiment.ville +
-            ', bâtiment ' +
-            data.data.batiment.nom +
-            ', étage ' +
-            data.data.etage
+            data.data.batiment.quartier +
+            ', ' +
+            data.data.batiment.rue
         );
-
         //feature.set('nomCategorie',  data.data.nomCategorie);
 
         feature.set(
