@@ -19,14 +19,14 @@ from crud import (chiffre_affaire, count_number_of_ets, create_Batiments, create
                   delete_ets_info, delete_failedJobs_info, delete_horaires_info, delete_images_info,
                   delete_managers_info, delete_sousCategoriesEtablissements_info, delete_souscategories_info,
                   delete_telephones_info, delete_trackings_info, delete_users_info, delete_zones_info, get_all_batiments, get_all_categories,
-                  get_all_commercials, get_all_commercials_by_quartier,
+                  get_all_commercials, get_all_commercials_by_day, get_all_commercials_by_quartier,
                   get_all_commercials_by_ville, get_all_ets,
                   get_all_ets_by_payment, get_all_failedJobs, get_all_horaires, get_all_images,
                   get_all_managers, get_all_sousCategoriesEtablissements, get_all_souscategories, get_all_telephones, get_all_trackings, get_all_users, get_all_zones, get_batiments_info_by_id,
                   get_categories_info_by_id, get_comm_salary, get_commercials_info_by_id,
                   get_etablissement_info_by_id, get_ets_by_day, get_ets_by_month, get_ets_by_week, get_ets_by_year, get_failedJobs_info_by_id, get_images_info_by_id,
                   get_managers_info_by_id, get_sousCategoriesEtablissements_info_by_id,
-                  get_telephones_info_by_id, get_trackings_info_by_id, get_users_info_by_id, get_zones_info_by_id, position_get_by_day, position_get_by_month, position_get_by_week, position_get_by_year, update_batiments_info, update_categories_info,
+                  get_telephones_info_by_id, get_trackings_info_by_id, get_users_info_by_id, get_zones_info_by_id, position_get_by_day, position_get_by_month, position_get_by_week, position_get_by_year, position_get_classement_by_day, position_get_classement_by_week, update_batiments_info, update_categories_info,
                   update_commercials_info, update_ets_info, update_failedJobs_info,
                   update_horaires_info, update_images_info,
                   update_managers_info, update_sousCategoriesEtablissements_info, update_souscategories_info,
@@ -79,12 +79,30 @@ def get_position_info(day: datetime, session: Session = Depends(get_db),):
         return position_info
     except EtablissementInfoException as cie:
         raise HTTPException(**cie.__dict__)
+    
+# API endpoint to get count of etablissement of a commercial
+@router.get("/position/statistics/get/classement/by_day/", )
+def get_position_info(day: datetime, session: Session = Depends(get_db),):
+    try:
+        position_info = position_get_classement_by_day(session, day=day)
+        return position_info
+    except EtablissementInfoException as cie:
+        raise HTTPException(**cie.__dict__)
 
 # API endpoint to get count of etablissement of a commercial
 @router.get("/position/statistics/get/ets/by_week/", )
 def get_position_info(aDayOfTheWeek: datetime, session: Session = Depends(get_db)):
     try:
         position_info = position_get_by_week(session, day=aDayOfTheWeek)
+        return position_info
+    except EtablissementInfoException as cie:
+        raise HTTPException(**cie.__dict__)
+
+# API endpoint to get count of etablissement of a commercial
+@router.get("/position/statistics/get/classement/by_week/", )
+def get_position_info(aDayOfTheWeek: datetime, session: Session = Depends(get_db)):
+    try:
+        position_info = position_get_classement_by_week(session, day=aDayOfTheWeek)
         return position_info
     except EtablissementInfoException as cie:
         raise HTTPException(**cie.__dict__)
@@ -494,6 +512,16 @@ class Commercial:
         commercials_list = get_all_commercials(self.session, limit, offset)
         response = {"limit": limit, "offset": offset, "data": commercials_list}
         return response
+    
+    # API endpoint to get count of etablissement of a commercial
+    @router.get("/commercials/statistics/get/commercials/by_day/", )
+    def get_commercials_info(day: datetime ,session: Session = Depends(get_db), ):
+
+        try:
+            commercials_info = get_all_commercials_by_day(session, day=day)
+            return commercials_info
+        except CommercialsInfoException as cie:
+            raise HTTPException(**cie.__dict__)
 
     # API to get the list of commercial by town
     @router.get("/commercials/by_ville", response_model=PaginatedCommercialsInfo)

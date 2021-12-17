@@ -25,6 +25,8 @@ from fastapi import UploadFile, File
 from os import getcwd, remove
 from fastapi.responses import FileResponse, JSONResponse
 
+from collections import Counter
+
 
 import os
 POSITION_FEE = float(os.getenv('POSITION_FEE'))
@@ -41,19 +43,124 @@ def chiffre_affaire(session: Session) -> float:
 def position_get_by_day(session: Session, day: datetime):
     etablissemnts = session.query(Etablissements).all()
     journey_result = [ets for ets in etablissemnts if (ets.created_at.day == day.day and ets.created_at.month == day.month and ets.created_at.year == day.year)]
-    countAndEts = {"count": len(journey_result), "cash": POSITION_FEE *len(journey_result),"etablissements": journey_result}
+    
+    fake_journey_result = list()
+    for j in journey_result:
+        data = j.idCommercial
+        commercial = session.query(Commercials).get(data)
+        
+        item = {
+            "id": j.id,
+            "idManager": j.idManager,
+            "description": j.description, 
+            "idBatiment": j.idBatiment, 
+            "etage": j.etage,
+            "autres": j.autres, 
+            "nom": j.nom, 
+            "cover": j.cover, 
+            "indicationAdresse": j.indicationAdresse, 
+            "created_at": j.created_at, 
+            "updated_at": j.updated_at, 
+            "vues": j.vues, 
+            "codePostal": j.codePostal, 
+            "siteInternet": j.siteInternet, 
+            "idCommercial": j.idCommercial,
+            "commercial_idUser": commercial.idUser,
+            "commercial_numeroBadge": commercial.numeroBadge,
+            "commercial_imageProfil":  commercial.imageProfil, 
+            "commercial_actif": commercial.actif, 
+            "commercial_name": commercial.user.name,
+            "commercial_email":  commercial.user.email
+        }
+        fake_journey_result.append(item)
+    countAndEts = {"count": len(journey_result), "cash": POSITION_FEE *len(journey_result),"etablissements": fake_journey_result}
     if etablissemnts is None:
         raise EtablissementInfoNotFoundError
     return countAndEts
+
+#get all classement by day
+def position_get_classement_by_day(session: Session, day: datetime):
+    etablissemnts = session.query(Etablissements).all()
+    journey_result = [ets for ets in etablissemnts if (ets.created_at.day == day.day and ets.created_at.month == day.month and ets.created_at.year == day.year)]
+    
+    fake_journey_result = list()
+    for j in journey_result:
+        data = j.idCommercial
+        commercial = session.query(Commercials).get(data)
+        
+        item = {
+            "idCommercial": j.idCommercial,
+            "commercial_name": commercial.user.name,
+        }
+        fake_journey_result.append(item)
+    c = Counter((x['commercial_name']) for x in fake_journey_result)
+    if etablissemnts is None:
+        raise EtablissementInfoNotFoundError
+    return c.most_common()
+
+
 
 #get all etablissement by week
 def position_get_by_week(session: Session, day: datetime):
     etablissements = session.query(Etablissements).all()
     week_result = [ets for ets in etablissements if ets.created_at.isocalendar()[1] == day.isocalendar()[1]]
-    countAndEts = {"count": len(week_result),"cash": POSITION_FEE*len(week_result), "etablissements": week_result}
+    
+    fake_week_result = list()
+    for j in week_result:
+        data = j.idCommercial
+        commercial = session.query(Commercials).get(data)
+        
+        item = {
+            "id": j.id,
+            "idManager": j.idManager,
+            "description": j.description, 
+            "idBatiment": j.idBatiment, 
+            "etage": j.etage,
+            "autres": j.autres, 
+            "nom": j.nom, 
+            "cover": j.cover, 
+            "indicationAdresse": j.indicationAdresse, 
+            "created_at": j.created_at, 
+            "updated_at": j.updated_at, 
+            "vues": j.vues, 
+            "codePostal": j.codePostal, 
+            "siteInternet": j.siteInternet, 
+            "idCommercial": j.idCommercial,
+            "commercial_idUser": commercial.idUser,
+            "commercial_numeroBadge": commercial.numeroBadge,
+            "commercial_imageProfil":  commercial.imageProfil, 
+            "commercial_actif": commercial.actif, 
+            "commercial_name": commercial.user.name,
+            "commercial_email":  commercial.user.email
+        }
+        fake_week_result.append(item)
+    countAndEts = {"count": len(week_result), "cash": POSITION_FEE *len(week_result),"etablissements": fake_week_result}
     if etablissements is None:
         raise EtablissementInfoNotFoundError
     return countAndEts
+
+#get all classement by day
+def position_get_classement_by_week(session: Session, day: datetime):
+    etablissements = session.query(Etablissements).all()
+    week_result = [ets for ets in etablissements if ets.created_at.isocalendar()[1] == day.isocalendar()[1]]
+    
+    fake_week_result = list()
+    for j in week_result:
+        data = j.idCommercial
+        commercial = session.query(Commercials).get(data)
+        
+        item = {
+            "idCommercial": j.idCommercial,
+            "commercial_name": commercial.user.name,
+        }
+        fake_week_result.append(item)
+    c = Counter((x['commercial_name']) for x in fake_week_result)
+    if etablissements is None:
+        raise EtablissementInfoNotFoundError
+    return c.most_common()
+
+
+
 
 #get all etablissement by month
 def position_get_by_month(session: Session, day: datetime):
@@ -348,8 +455,33 @@ def delete_managers_info(session: Session, _id: int):
 
 #### Commercials ####
 # Function to get list of commercials info
-def get_all_commercials(session: Session, limit: int, offset: int) -> List[Commercials]:
+def get_all_commercials(session: Session, limit:int, offset: int) -> List[Commercials]:
     return session.query(Commercials).offset(offset).limit(limit).all()
+
+# Function to get list of commercials info
+def get_all_commercials_by_day(session: Session, day: datetime) -> List[Commercials]:
+    all_commercials = session.query(Commercials).all()
+    data_resutls = []
+    
+    for commercial in all_commercials:
+        
+        commercial.etablissement = session.query(Commercials).get(commercial.id).etablissement
+        print(">>>>>>>>>", commercial.etablissement )
+        journey_result = list()
+        for ets in commercial.etablissement:
+            if type(ets) is list:
+                if ets.created_at.day == day.day and ets.created_at.month == day.month and ets.created_at.year == day.year:
+                    journey_result.append(ets)
+        countAndEts = {
+            "number_of_ets": len(journey_result), 
+            "cash": POSITION_FEE *len(journey_result),
+            "commercials": commercial.user,
+            "etablissements": journey_result
+        }
+        data_resutls.append(countAndEts)
+    if all_commercials is None:
+        raise CommercialsInfoNotFoundError
+    return data_resutls
 
 # Function to  get info of a particular commercials
 def get_commercials_info_by_id(session: Session, _id: int) -> Commercials:
@@ -366,7 +498,7 @@ def count_number_of_ets(session: Session, _id: int):
         raise CommercialsInfoNotFoundError
     return len(commercials_info)
 
-# Function to  get count and etablissemnt of a journey of a commercial
+# Function to  get count and etablissemnt of a journey of a commercial specific
 def get_ets_by_day(session: Session, _id: int, day: datetime):
     commercials_info = session.query(Commercials).get(_id).etablissement
     journey_result = [ets for ets in commercials_info if (ets.created_at.day == day.day and ets.created_at.month == day.month and ets.created_at.year == day.year)]

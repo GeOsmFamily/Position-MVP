@@ -65,7 +65,7 @@ class Commercials(Base):
     __tablename__ = "commercials"
 
     id = Column(Integer, primary_key=True, index=True)
-    idUser = Column(Integer)
+    idUser = Column(Integer,  ForeignKey("users.id"))
     numeroCni = Column(String(191), index=True)
     numeroBadge = Column(Integer)
     ville = Column(String(191), index=True)
@@ -80,6 +80,7 @@ class Commercials(Base):
     age = Column(Integer)
     created_at = Column(Date)
     updated_at = Column(Date)
+    user = relationship("Users", back_populates="commercial")
     etablissement = relationship("Etablissements", back_populates="commercial")
 
 #### Batiments models ####
@@ -191,12 +192,13 @@ class Users(Base):
     name = Column(String(191), index=True)
     email = Column(String(191), index=True)
     email_verified_at = Column(Date)
-    password = Column(String())
+    password = Column(String(191))
     phone = Column(String(191))
     role = Column(Integer)
     remember_token = Column(String(191))
     created_at = Column(Date)
     updated_at = Column(Date)
+    commercial=relationship("Commercials", back_populates="user")
     
 
 ### Tracking ####

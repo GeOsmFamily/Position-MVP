@@ -5,6 +5,7 @@ from datetime import datetime, time
 
 
 
+
 #### managers schemas ####
 # TO support creation and update APIs
 class CreateAndUpdateManagers(BaseModel):
@@ -136,37 +137,6 @@ class PaginatedFailedJobsInfo(BaseModel):
     offset: int
     data: List[FailedJobs]
 
-#### commercials schemas ####
-# TO support creation and update APIs
-class CreateAndUpdateCommercials(BaseModel):
-    id : Optional[int]
-    idUser : int
-    numeroCni : str
-    numeroBadge : int
-    ville : str
-    quartier : str
-    imageProfil : str
-    idZone : str
-    actif : int
-    sexe = str
-    whatsapp = str
-    diplome = str
-    tailleTshirt = str
-    age = int
-    created_at : Optional[datetime]
-    updated_at : Optional[datetime]
-    etablissement: List[Etablissements] = []
-# TO support list and get APIs
-class Commercials(CreateAndUpdateCommercials):
-    id : int
-    class Config():
-        orm_mode = True
-# To support list Commercials APISousCommercials
-class PaginatedCommercialsInfo(BaseModel):
-    limit: int
-    offset: int
-    data: List[Commercials]
-
 #### Sous categories schemas ####
 # TO support creation and update APIs
 class CreateAndUpdateSousCategories(BaseModel):
@@ -262,6 +232,39 @@ class PaginatedUsersInfo(BaseModel):
     offset: int
     data: List[Users]
 
+
+#### commercials schemas ####
+# TO support creation and update APIs
+class CreateAndUpdateCommercials(BaseModel):
+    id : Optional[int]
+    idUser : int
+    numeroCni : str
+    numeroBadge : int
+    ville : str
+    quartier : str
+    imageProfil : str
+    idZone : str
+    actif : int
+    sexe = str
+    whatsapp = str
+    diplome = str
+    tailleTshirt = str
+    age = int
+    created_at : Optional[datetime]
+    updated_at : Optional[datetime]
+    
+    etablissement: List[Etablissements] = []
+    user: Users
+# TO support list and get APIs
+class Commercials(CreateAndUpdateCommercials):
+    id : int
+    class Config():
+        orm_mode = True
+# To support list Commercials APISousCommercials
+class PaginatedCommercialsInfo(BaseModel):
+    limit: int
+    offset: int
+    data: List[Commercials]
 
 #### trackings schemas ####
 class CreateAndUpdateTrackings(BaseModel):
