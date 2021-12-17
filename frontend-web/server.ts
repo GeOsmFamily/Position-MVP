@@ -12,6 +12,10 @@ import { existsSync } from 'fs';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
+
+
+
+
   const server = express();
   const distFolder = join(process.cwd(), 'dist/frontend-web/browser');
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
@@ -58,5 +62,8 @@ const moduleFilename = mainModule && mainModule.filename || '';
 if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();
 }
+
+
+
 
 export * from './src/main.server';

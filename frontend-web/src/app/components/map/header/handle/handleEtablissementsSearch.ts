@@ -72,11 +72,19 @@ export class HandleEtablissementsSearch {
   }
 
   _formatType(option: any) {
-    return (
-      option.properties.nomCategorie +
-      ',' +
-      option.properties.sous_categories[0].nom
-    );
+    try {
+
+      return (
+        option.properties.nomCategorie +
+        ',' +
+        option.properties.sous_categories[0].nom
+      );
+    } catch (error) {
+      ///console.log("fake point")
+      return
+
+    }
+
   }
 
   optionSelected(emprise: FilterOptionInterface) {
@@ -95,7 +103,7 @@ export class HandleEtablissementsSearch {
   }
   _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
     if (emprise.geometry) {
-      console.log(emprise);
+      
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
         var searchResultLayer = new VectorLayer();
@@ -144,6 +152,8 @@ export class HandleEtablissementsSearch {
         feature.setGeometry(emprise.geometry);
         var i = 0;
 
+
+
         const sorter = {
           // "sunday": 0, // << if sunday is first day of week
           lundi: 1,
@@ -163,8 +173,13 @@ export class HandleEtablissementsSearch {
           return sorter[day1] - sorter[day2];
         });
 
-        console.log(emprise.horaires);
+       // console.log(emprise.horaires);
 
+       for (let index = 0; index < emprise.horaires.length; index++) {
+          emprise.horaires[index].heureOuverture=emprise.horaires[index].heureOuverture.slice(0,5)
+          emprise.horaires[index].heureFermeture=emprise.horaires[index].heureFermeture.slice(0,5)
+
+          }
         feature.set('horaires', emprise.horaires);
 
         for (let index = 0; index < emprise.telephones.length; index++) {
