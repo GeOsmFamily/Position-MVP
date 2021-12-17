@@ -150,6 +150,7 @@ export class PositionApiService {
             ', ' +
             data.data.sous_categories[0].nom
         );
+
         feature.set('cover', data.data.cover);
         feature.set('siteInternet', data.data.siteInternet);
         feature.set('indication', data.data.indicationAdresse);
@@ -186,7 +187,15 @@ export class PositionApiService {
           //@ts-ignore
           return sorter[day1] - sorter[day2];
         });
+
+        for (let index = 0; index < data.data.horaires.length; index++) {
+          data.data.horaires[index].heureOuverture=data.data.horaires[index].heureOuverture.slice(0,5)
+          data.data.horaires[index].heureFermeture=data.data.horaires[index].heureFermeture.slice(0,5)
+
+          }
+
         feature.set('horaires', data.data.horaires);
+
 
         //var numero_whatsapp = new Array();
         for (let index = 0; index < data.data.telephones.length; index++) {
@@ -198,11 +207,10 @@ export class PositionApiService {
             );
           } else {
             this.numero_whatsapp.push(data.data.telephones[index].numero);
-            console.log(data.data.telephones[index].numero);
+
           }
         }
 
-        console.log('helloooooooo');
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
         feature.set('whatsapp', this.numero_whatsapp);

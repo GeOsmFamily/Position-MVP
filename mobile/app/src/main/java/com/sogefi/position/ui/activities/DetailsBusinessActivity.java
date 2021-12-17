@@ -127,32 +127,6 @@ llrevoir.setOnClickListener(new View.OnClickListener() {
                     } else {
                         relativeSite.setVisibility(View.GONE);
                     }
-                  /*  int index = 0;
-
-                    for (int i =0; i < dataEtablissements.getHoraires().size(); i++) {
-                        if(dataEtablissements.getHoraires().get(i).getJour().equals("Lundi")) {
-                            listHoraires.add(index, dataEtablissements.getHoraires().get(i));
-                            index = index +1 ;
-                        }if(dataEtablissements.getHoraires().get(i).getJour().equals("Mardi")) {
-                            listHoraires.add(index, dataEtablissements.getHoraires().get(i));
-                            index = index +1 ;
-                        }if(dataEtablissements.getHoraires().get(i).getJour().equals("Mercredi")) {
-                            listHoraires.add(index, dataEtablissements.getHoraires().get(i));
-                            index = index +1 ;
-                        }if(dataEtablissements.getHoraires().get(i).getJour().equals("Jeudi")) {
-                            listHoraires.add(index, dataEtablissements.getHoraires().get(i));
-                            index = index +1 ;
-                        }if(dataEtablissements.getHoraires().get(i).getJour().equals("Vendredi")) {
-                            listHoraires.add(index, dataEtablissements.getHoraires().get(i));
-                            index = index +1 ;
-                        }if(dataEtablissements.getHoraires().get(i).getJour().equals("Samedi")) {
-                            listHoraires.add(index, dataEtablissements.getHoraires().get(i));
-                            index = index +1 ;
-                        }if(dataEtablissements.getHoraires().get(i).getJour().equals("Dimanche")) {
-                            listHoraires.add(index, dataEtablissements.getHoraires().get(i));
-                            index = index +1 ;
-                        }
-                    }*/
 
 
 
@@ -176,7 +150,7 @@ llrevoir.setOnClickListener(new View.OnClickListener() {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Position");
-            String shareMessage = "Retrouvez mon entreprise sur la plateforme Position en suivant le lien : \n https://position.cm/home/?etablissements="+idEtablissement+",16";
+            String shareMessage = "Retrouvez mon entreprise sur la plateforme Position en suivant le lien : \n https://position.cm/home?etablissements="+idEtablissement+",16";
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
             startActivity(Intent.createChooser(shareIntent, getString(R.string.chooseApp)));
         } catch (Exception e) {

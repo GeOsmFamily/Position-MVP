@@ -84,8 +84,18 @@ loginComponent: LoginComponent | undefined;
 
 
 this.initialiazeMap()
+
+
+
 this.handleMapParamsUrl()
-this.getPosition()
+
+try {
+  this.getPosition()
+} catch (error) {
+
+}
+
+
 
 //this.userLocation()
 
@@ -130,7 +140,7 @@ this.getPosition()
     this.mapClicked()
     this.componentHelper.setComponent('FicheEntrepriseComponent',this.ficheEntrepriseComponent)
     this.componentHelper.setComponent('EtablissementComponent',this.etablissementComponent)
-   
+
 
 
 
@@ -226,8 +236,7 @@ geolocation.on('change:position', function () {
       if(feature?.get('type')=="position"){
 
           this.componentHelper.openFicheEntreprise(feature)
-          console.log("adress")
-          console.log(feature.get('horaires'))
+         
       }
 
 });

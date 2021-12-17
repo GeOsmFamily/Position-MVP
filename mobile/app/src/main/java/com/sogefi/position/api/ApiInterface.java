@@ -9,6 +9,7 @@ import com.sogefi.position.models.Horaires;
 import com.sogefi.position.models.Images;
 import com.sogefi.position.models.Nominatim;
 import com.sogefi.position.models.ResponseApi;
+import com.sogefi.position.models.ResponseModel;
 import com.sogefi.position.models.SearchEtablissement;
 import com.sogefi.position.models.SearchSousCategories;
 import com.sogefi.position.models.Telephones;
@@ -27,6 +28,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -79,6 +81,9 @@ public interface ApiInterface {
 
     @POST("api/etablissements/{id}")
     Call<Etablissements> updateetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Body RequestBody body,@Path("id") int idEtablissement);
+
+    @DELETE("api/etablissements/{id}")
+    Call<ResponseModel> deleteetablissements(@Header("X-Authorization") String apiKey, @Header("Authorization") String token, @Path("id") int idEtablissement);
 
    /* @Headers({"Content-Type: application/json"})
     @PUT("api/etablissements/{id}")

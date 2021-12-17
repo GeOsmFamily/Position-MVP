@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Backup storage directory 
 backupfolder=/var/backups/position
 # Notification email address 
@@ -15,7 +17,7 @@ keep_day=30
 sqlfile=$backupfolder/position-$(date +%d-%m-%Y_%H-%M-%S).sql
 zipfile=$backupfolder/position-$(date +%d-%m-%Y_%H-%M-%S).zip 
 # Create a backup 
-sudo mysqldump --column-statistics=0 -h $host -P $port -u $user -p$password position > $sqlfile 
+mysqldump --column-statistics=0 -h $host -P $port -u $user -p$password position > $sqlfile 
 if [ $? == 0 ]; then
   echo 'Sql dump created' 
 else

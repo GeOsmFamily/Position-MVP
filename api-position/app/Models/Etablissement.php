@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Etablissement
@@ -63,7 +64,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Etablissement extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idCommercial", "idManager", "etage", "cover", "vues", "autres", "revoir", "valide"
