@@ -174,7 +174,7 @@ export class HandleEtablissementsSearch {
         });
 
        // console.log(emprise.horaires);
-
+        var chaine_w=""
        for (let index = 0; index < emprise.horaires.length; index++) {
           emprise.horaires[index].heureOuverture=emprise.horaires[index].heureOuverture.slice(0,5)
           emprise.horaires[index].heureFermeture=emprise.horaires[index].heureFermeture.slice(0,5)
@@ -189,12 +189,14 @@ export class HandleEtablissementsSearch {
             // console.log(emprise.telephones[index].numero)
           } else {
             this.numero_whatsapp.push(emprise.telephones[index].numero);
+            chaine_w=chaine_w+emprise.telephones[index].numero+", "
             //console.log(emprise.telephones[index].numero)
           }
         }
+        //console.log(chaine_w.slice(0,-2))
         // this.telephones?.push({"whatsapp":this.numero_whatsapp})
         feature.set('telephones', this.telephones);
-        feature.set('whatsapp', this.numero_whatsapp);
+        feature.set('whatsapp', chaine_w.slice(0,-2));
 
         searchResultLayer.getSource().clear();
 

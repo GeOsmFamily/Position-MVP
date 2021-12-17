@@ -55,6 +55,7 @@ export class FicheEntrepriseComponent implements OnInit {
       '?etablissements=' +
       this.featurePoint?.get('id') +
       ',16';
+     // console.log(url_share)
     this.componentHelper.openSocialShare(url_share, 7);
   }
 
@@ -73,7 +74,7 @@ export class FicheEntrepriseComponent implements OnInit {
 
   open(featurePoint: any) {
     this.featurePoint = featurePoint;
-    this.ds.sendData([this.featurePoint?.get('textLabel'),environment.url_image+this.featurePoint?.get('cover')]);
+    this.ds.sendData([this.featurePoint?.get('textLabel'),this.featurePoint?.get('imagesCarousel')[1],this.featurePoint?.get('motCle'),this.featurePoint?.get('nomCategorieSousCategorie')]);
    // this.ds.sendData();
 
 

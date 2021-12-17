@@ -20,15 +20,23 @@ export class AppComponent {
   constructor(private ds:ParentChildServiceService ,private tit: Title,private router: Router, private activatedRoute: ActivatedRoute, private meta:Meta) {
     this.subscription = this.ds.getData().subscribe(x => {
                       this.featurePoint = x[0];
-                      console.log("rrrrrr +"+ this.featurePoint)
+                     // console.log("rrrrrr +"+ this.featurePoint)
                       this.meta.updateTag({
                         name: 'description',
-                        content: this.featurePoint!
+                        content: "Retrouvez mon entreprise sur la plateforme Position en suivant ce lien"
                      })
                      this.meta.updateTag({
-                      name: 'image',
+                      name: 'keywords',
+                      content: x[2]
+                   })
+                     this.meta.updateTag({
+                      name: 'og:image',
                       content: x[1]
                    })
+                   this.meta.updateTag({
+                    name: 'title',
+                    content: x[0]
+                 })
                      this.tit.setTitle(x[0]);
     });
 
