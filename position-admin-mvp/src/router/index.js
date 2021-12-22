@@ -65,6 +65,11 @@ const routes = [
     component: () => import("../DemoPages/Commerciaux/RegularTables.vue"),
   },
   {
+    path: "/business/list",
+    name: "business-list",
+    component: () => import("../DemoPages/Business/RegularTables.vue"),
+  },
+  {
     path: "/commercial/:id",
     name: "commercial-details",
     component: () => import("../DemoPages/Commerciaux/Details.vue"),
