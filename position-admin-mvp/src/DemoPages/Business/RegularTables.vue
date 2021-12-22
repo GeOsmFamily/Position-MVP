@@ -18,7 +18,7 @@
       <b-card title="Entreprises" class="main-card mb-4" v-if="!loading">
         <vue-good-table
           :columns="fields"
-          :rows="categories"
+          :rows="businesses"
           :fixed-header="true"
           :search-options="{
             enabled: true,
@@ -90,7 +90,7 @@
             </span>
           </template>
           <div slot="emptystate">
-            No data yet.<b-button @click="getCategories">Réessayer</b-button>
+            No data yet.<b-button @click="getBusinesses">Réessayer</b-button>
           </div>
         </vue-good-table>
 
@@ -261,11 +261,6 @@ export default {
         type: "number",
       },
       {
-        label: "Logo",
-        field: "logoUrl",
-        type: "string",
-      },
-      {
         label: "Nom",
         field: "nom",
         type: "string",
@@ -307,19 +302,19 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.getters["category/loading"];
+      return this.$store.getters["business/loading"];
     },
-    categories() {
-      return this.$store.getters["category/categories"];
+    businesses() {
+      return this.$store.getters["business/businesses"];
     },
   },
   created() {
     if (this.categories == null || this.categories.length === 0)
-      this.getCategories();
+      this.getBusinesses();
   },
   methods: {
-    getCategories() {
-      this.$store.dispatch("category/fetchCategories");
+    getBusinesses() {
+      this.$store.dispatch("business/fetchBusinesses");
     },
     handleFileUpload(event) {
       console.log(event.target.files[0]);

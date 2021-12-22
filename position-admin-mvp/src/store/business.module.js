@@ -2,33 +2,32 @@ import BusinessService from "../service/business.service";
 
 const initialState = {
   loading: null,
-  categories: null,
-  currentCategory: null,
-  subCategory: null,
+  businesses: null,
+  currentBusiness: null,
 };
 
-export const category = {
+export const business = {
   namespaced: true,
   state: initialState,
   actions: {
-    fetchCategories({ commit }) {
+    fetchBusinesses({ commit }) {
       commit("toggleLoading", true);
-      return CategoryService.getListCategories().then(
-        (categories) => {
+      return BusinessService.getListBusiness().then(
+        (businesses) => {
           commit("toggleLoading", false);
-          commit("categoriesSuccess", categories.data.data);
-          return Promise.resolve(categories);
+          commit("businessesSuccess", businesses.data.data);
+          return Promise.resolve(businesses);
         },
         (error) => {
           commit("toggleLoading", false);
-          commit("categoriesFailure");
+          commit("businessFailure");
           return Promise.reject(error);
         }
       );
     },
     createCategory({ dispatch, commit }, data) {
       commit("toggleLoading", true);
-      return CategoryService.createCategory(data).then(
+      return BusinessService.createBusiness(data).then(
         (result) => {
           console.log(data);
           commit("toggleLoading", false);
@@ -42,7 +41,7 @@ export const category = {
       );
     },
     deleteCategory({ dispatch }, id) {
-      return CategoryService.deleteCategory(id).then(
+      return BusinessService.deleteBusiness(id).then(
         (result) => {
           dispatch("fetchCategories");
           return Promise.resolve(result);
@@ -53,7 +52,7 @@ export const category = {
       );
     },
     editCategory({ dispatch }, data) {
-      return CategoryService.editCategory(data.id, data.category).then(
+      return BusinessService.editBusiness(data.id, data.category).then(
         (result) => {
           dispatch("fetchCategories");
           return Promise.resolve(result);
@@ -65,21 +64,21 @@ export const category = {
     },
   },
   mutations: {
-    categoriesSuccess(state, categories) {
-      state.categories = categories.map((category) => {
-        category.created_at = new Date(category.created_at).toLocaleDateString(
+    businessesSuccess(state, businesses) {
+      state.businesses = businesses.map((business) => {
+        business.created_at = new Date(business.created_at).toLocaleDateString(
           "fr-FR",
           { year: "numeric", month: "numeric", day: "numeric" }
         );
-        category.updated_at = new Date(category.updated_at).toLocaleDateString(
+        business.updated_at = new Date(business.updated_at).toLocaleDateString(
           "fr-FR",
           { year: "numeric", month: "numeric", day: "numeric" }
         );
-        return category;
+        return business;
       });
     },
-    categoriesFailure(state) {
-      state.categories = null;
+    businessFailure(state) {
+      state.businesses = null;
     },
     toggleLoading(state, value) {
       state.loading = value;
@@ -89,8 +88,8 @@ export const category = {
     loading: ({ loading }) => {
       return loading;
     },
-    categories: ({ categories }) => {
-      return categories;
+    businesses: ({ businesses }) => {
+      return businesses;
     },
   },
 };
