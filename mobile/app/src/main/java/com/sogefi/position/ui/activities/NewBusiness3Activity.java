@@ -35,8 +35,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -182,7 +185,16 @@ public class NewBusiness3Activity extends AppCompatActivity {
 
         if(dataEtablissements != null) {
 
+
+
             for (int i = 0; i < dataEtablissements.getHoraires().size(); i++) {
+
+                ArrayList<String> days = new ArrayList<String>();
+
+                days.add(dataEtablissements.getHoraires().get(i).getJour());
+
+                check(days,dataEtablissements.getHoraires().get(i).getJour());
+
                 if(dataEtablissements.getHoraires().get(i).getJour().equals("Lundi") || dataEtablissements.getHoraires().get(i).getJour().equals("Mardi") || dataEtablissements.getHoraires().get(i).getJour().equals("Mercredi") || dataEtablissements.getHoraires().get(i).getJour().equals("Jeudi") || dataEtablissements.getHoraires().get(i).getJour().equals("Vendredi")) {
                     openLundi.setText(dataEtablissements.getHoraires().get(i).getHeureOuverture());
                     closedLundi.setText(dataEtablissements.getHoraires().get(i).getHeureFermeture());
@@ -277,6 +289,24 @@ public class NewBusiness3Activity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void check(ArrayList<String> arr, String toCheckValue)
+    {
+        boolean test
+                = arr.contains(toCheckValue);
+
+     if(!test && toCheckValue.equals("Lundi")) {
+         checkBoxLundi.setChecked(true);
+     } if(!test && toCheckValue.equals("Mardi")) {
+        checkBoxMardi.setChecked(true);
+    } if(!test && toCheckValue.equals("Mercredi")) {
+        checkBoxMercredi.setChecked(true);
+    }if(!test && toCheckValue.equals("Jeudi")) {
+        checkBoxJeudi.setChecked(true);
+    }if(!test && toCheckValue.equals("Vendredi")) {
+        checkBoxVendredi.setChecked(true);
+    }
     }
 
     public void updateData(String openLundi,String closedLundi,String openSamedi,String closedSamedi,String openDimanche,String closedDimanche) {
