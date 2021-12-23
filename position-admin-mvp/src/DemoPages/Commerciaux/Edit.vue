@@ -7,7 +7,7 @@
     ></page-title>
     <div class="main-card mb-3 card">
       <div class="card-body">
-        <h5 class="card-title">Nouveau Commercial</h5>
+        <h5 class="card-title">Modifier Commercial</h5>
         <div>
           <b-form name="category">
             <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
@@ -18,6 +18,7 @@
                 v-model.trim="$v.name.$model"
                 :state="!submitted ? null : submitted && !$v.name.$invalid"
                 id="Name22"
+                :value="'Ivan'"
                 placeholder="Nom du commercial"
                 type="text"
                 class="form-control"
@@ -37,6 +38,7 @@
                 v-model.trim="$v.email.$model"
                 :state="!submitted ? null : submitted && !$v.email.$invalid"
                 id="Email22"
+                :value="commercial.email"
                 placeholder="Email du commercial"
                 type="email"
                 class="form-control"
@@ -298,7 +300,7 @@ export default {
   },
   data: () => ({
     heading: "Commerciaux",
-    subheading: "Ajouter une nouveau commercial",
+    subheading: "Modifier un commercial",
     icon: "pe-7s-graph text-success",
     name: "",
     email: "",
@@ -333,6 +335,9 @@ export default {
     },
     zones() {
       return this.$store.getters["zone/zonesOPtions"];
+    },
+    commercial() {
+      return this.$store.getters["commercial/commercialCourant"];
     },
   },
   validations: {
@@ -375,6 +380,7 @@ export default {
     },
   },
   created() {
+    console.log(this.$store.getters["commercial/commercialCourant"]);
     this.$toast.open({
       message: "Something went wrong!",
       type: "error",
@@ -383,6 +389,7 @@ export default {
     });
   },
   mounted() {
+    console.log(this.$store.getters["commercial/commercialCourant"]);
     this.$toast.open({
       message: "Something went wrong!",
       type: "error",
@@ -390,6 +397,7 @@ export default {
       duration: 10000,
     });
   },
+
   methods: {
     handleFileUpload(event) {
       console.log(event.target.files[0]);
@@ -408,8 +416,8 @@ export default {
           formData.append("file", this.imageProfil);
           formData.append("name", this.name);
           formData.append("email", this.email);
-          formData.append("whatsapp", this.phone.replace(/\s/g, ""));
-          formData.append("phone", this.phone.replace(/\s/g, ""));
+          formData.append("whatsapp", this.phone);
+          formData.append("phone", this.phone);
           formData.append("ville", this.town);
           formData.append("idZone", 1);
           formData.append("numeroCni", this.numeroCni);

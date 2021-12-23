@@ -32,9 +32,10 @@ export const commercial = {
       commit("toggleLoading", true);
       return CommercialService.saveCommercial(data).then(
         (result) => {
-          console.log(data);
+          console.log(result.data.data);
           commit("toggleLoading", false);
           dispatch("fetchCommerciaux");
+          CommercialService.createQrCode(result.data.data.id);
           return Promise.resolve(result);
         },
         (error) => {
@@ -87,7 +88,7 @@ export const commercial = {
     commerciaux: ({ commerciaux }) => {
       return commerciaux;
     },
-    commercial: ({ currentCommercial }) => {
+    commercialCourant: ({ currentCommercial }) => {
       return currentCommercial;
     },
   },

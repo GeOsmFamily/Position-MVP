@@ -50,6 +50,11 @@ const routes = [
     component: () => import("../DemoPages/Commerciaux/Layouts.vue"),
   },
   {
+    path: "/commercial/:id/edit",
+    name: "commercial-edit",
+    component: () => import("../DemoPages/Commerciaux/Edit.vue"),
+  },
+  {
     path: "/zone/create",
     name: "zone-create",
     component: () => import("../DemoPages/Zone/Layouts.vue"),
@@ -58,6 +63,11 @@ const routes = [
     path: "/commercial/list",
     name: "commercial-list",
     component: () => import("../DemoPages/Commerciaux/RegularTables.vue"),
+  },
+  {
+    path: "/business/list",
+    name: "business-list",
+    component: () => import("../DemoPages/Business/RegularTables.vue"),
   },
   {
     path: "/commercial/:id",

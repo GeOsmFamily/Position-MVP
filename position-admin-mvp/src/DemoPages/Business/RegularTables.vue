@@ -15,15 +15,15 @@
       <div class="text-center" v-if="loading">
         <b-spinner variant="success" label="Spinning"></b-spinner>
       </div>
-      <b-card title="Commerciaux" class="main-card mb-4" v-if="!loading">
+      <b-card title="Entreprises" class="main-card mb-4" v-if="!loading">
         <vue-good-table
           :columns="fields"
-          :rows="commerciaux"
+          :rows="businesses"
           :fixed-header="true"
           :search-options="{
             enabled: true,
             skipDiacritics: true,
-            placeholder: 'Rechercher un commercial',
+            placeholder: 'Rechercher une entreprise',
           }"
           :pagination-options="{
             enabled: true,
@@ -50,13 +50,14 @@
               <b-button
                 class="mx-1"
                 variant="info"
-                @click="commercialDetails(props.row)"
+                @click="editRow(props.row.id)"
                 >Détails</b-button
               >
               <b-button
                 variant="success"
                 class="mx-1"
-                @click="modify(props.row)"
+                v-b-modal.edit-modal
+                @click="setRow(props.row)"
                 >Modifier</b-button
               >
               <b-button
@@ -67,31 +68,132 @@
                 >Supprimer</b-button
               >
             </span>
+            <span v-if="props.column.field === 'logoUrl'">
+              <center>
+                <b-img
+                  :src="
+                    'https://services.position.cm' +
+                    props.formattedRow[props.column.field]
+                  "
+                  height="20"
+                  width="20"
+                  alt="Logo catégorie"
+                  v-if="
+                    props.formattedRow[props.column.field] !== '' ||
+                    props.formattedRow[props.column.field] != null
+                  "
+                ></b-img>
+              </center>
+            </span>
             <span v-else>
               {{ props.formattedRow[props.column.field] }}
             </span>
           </template>
           <div slot="emptystate">
-            No data yet.<b-button @click="getCommerciaux()">Réessayer</b-button>
+            No data yet.<b-button @click="getBusinesses">Réessayer</b-button>
           </div>
         </vue-good-table>
 
+        <div>
+          <b-modal
+            id="edit-modal"
+            ref="modal"
+            title="Modifier la catégorie"
+            hide-backdrop
+            hide-footer
+          >
+            <b-form name="category">
+              <b-form-group
+                id="input-group-1"
+                label="Nom catégorie:"
+                label-for="input-1"
+                description=""
+                ><b-form-input
+                  name="name"
+                  v-model="name"
+                  v-model.trim="$v.name.$model"
+                  :state="!submitted ? null : submitted && !$v.name.$invalid"
+                  id="Name22"
+                  placeholder="Nom de la catégorie"
+                  type="text"
+                  :value="currentRow != null ? currentRow.nom : 'test'"
+                  class="form-control"
+                />
+                <b-form-invalid-feedback
+                  :state="!submitted ? null : submitted && $v.name.required"
+                >
+                  Field is required
+                </b-form-invalid-feedback>
+              </b-form-group>
+              <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                <label class="mr-sm-2">Logo catégorie</label>
+                <b-form-file
+                  v-model="logo"
+                  :state="submitted ? Boolean(logo) : null"
+                  placeholder="Choisissez un logo pour la catégorie..."
+                  drop-placeholder="Drop file here..."
+                  @change="handleFileUpload($event)"
+                ></b-form-file>
+              </div>
+              <br />
+              <div v-if="previewImage">
+                <div>
+                  <b-img
+                    :src="previewImage"
+                    fluid
+                    alt="Fluid image"
+                    width="400"
+                    height="400"
+                    v-if="previewImage != null"
+                  ></b-img>
+                  <b-img
+                    :src="'https://services.position.cm' + currentRow.logoUrl"
+                    fluid
+                    alt="Fluid image"
+                    width="400"
+                    height="400"
+                    v-if="previewImage == null"
+                  ></b-img>
+                </div>
+              </div>
+              <div class="form-group">
+                <div v-if="message" class="alert alert-danger" role="alert">
+                  {{ message }}
+                </div>
+              </div>
+              <br />
+              <div class="float-right">
+                <b-button
+                  variant="success"
+                  :disabled="editLoading"
+                  @click="editCategory"
+                >
+                  <span
+                    v-show="editLoading"
+                    class="spinner-border spinner-border-sm"
+                  ></span>
+                  <span>Modifier</span>
+                </b-button>
+              </div>
+            </b-form>
+          </b-modal>
+        </div>
         <b-modal
           id="my-modal"
-          title="Supprimer le commercial"
+          title="Supprimer la catégorie"
           hide-backdrop
           hide-footer
         >
           <div class="d-block text-center">
             <h5>
-              Voulez vous vraiment supprimer le commercial
-              {{ currentRow != null ? currentRow.name : "" }}!
+              Voulez vous vraiment supprimer la catégorie
+              {{ currentRow != null ? currentRow.nom : "" }}!
             </h5>
           </div>
           <b-button
             class="mt-3"
             variant="outline-danger"
-            @click="deleteCommercial"
+            @click="deleteCategory"
             block
             >Supprimer</b-button
           >
@@ -120,6 +222,9 @@
         </div>
       </template>
     </b-overlay>
+    <b-toast id="example-toast" title="BootstrapVue" static no-auto-hide>
+      Hello, world! This is a toast message.
+    </b-toast>
   </div>
 </template>
 
@@ -134,14 +239,15 @@ export default {
   },
   data: () => ({
     name: "",
-    logo: "",
+    logo: null,
+    previewImage: null,
     nameState: null,
     message: "",
     submittedNames: [],
     editLoading: false,
     submitted: false,
-    heading: "Commerciaux",
-    subheading: "Liste des commerciaux",
+    heading: "Entreprises",
+    subheading: "Liste des entreprises",
     icon: "pe-7s-drawer icon-gradient bg-happy-itmeo",
     currentRow: null,
     deleteLoading: false,
@@ -155,31 +261,11 @@ export default {
         type: "number",
       },
       {
-        label: "No Badge",
-        field: "numeroBadge",
-        type: "number",
-      },
-      {
         label: "Nom",
-        field: "name",
+        field: "nom",
         type: "string",
       },
       {
-        label: "Email",
-        field: "email",
-        type: "string",
-      },
-      {
-        label: "Contact",
-        field: "phone",
-        type: "string",
-      },
-      {
-        label: "Ville",
-        field: "ville",
-        type: "string",
-      },
-      /*{
         label: "Crée le",
         field: "created_at",
         type: "date",
@@ -192,7 +278,7 @@ export default {
         type: "date",
         dateInputFormat: "dd/mm/yyyy",
         dateOutputFormat: "dd/mm/yyyy",
-      },*/
+      },
       {
         label: "Actions",
         field: "actions",
@@ -216,53 +302,56 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.getters["commercial/loading"];
+      return this.$store.getters["business/loading"];
     },
-    commerciaux() {
-      return this.$store.getters["commercial/commerciaux"];
+    businesses() {
+      return this.$store.getters["business/businesses"];
     },
   },
   created() {
-    if (this.commerciaux == null || this.commerciaux.length === 0)
-      this.getCommerciaux();
+    if (this.categories == null || this.categories.length === 0)
+      this.getBusinesses();
   },
   methods: {
-    getCommerciaux() {
-      this.$store.dispatch("commercial/fetchCommerciaux");
+    getBusinesses() {
+      this.$store.dispatch("business/fetchBusinesses");
+    },
+    handleFileUpload(event) {
+      console.log(event.target.files[0]);
+      this.logo = event.target.files[0];
+      this.previewImage = URL.createObjectURL(this.logo);
     },
     setRow(data) {
+      console.log(data);
       this.currentRow = data;
       this.name = data.nom;
-      this.logo = data.logo_url;
-    },
-    modify(commercial) {
-      this.$store.dispatch("commercial/setCurrentCommercial", commercial);
-      this.$router.push({
-        path: `/commercial/${commercial.id}/edit`,
-      });
     },
     closeModal() {
       this.$bvModal.hide("my-modal");
     },
-    deleteCommercial() {
+    deleteCategory() {
       this.$bvModal.hide("my-modal");
       this.deleteLoading = true;
       this.$store
-        .dispatch("commercial/deleteCommercial", this.currentRow.id)
+        .dispatch("category/deleteCategory", this.currentRow.id)
         .then((data) => {
           this.deleteLoading = false;
           console.log(data);
+          this.$bvToast.toast(
+            `Modification de ${this.currentRow.nom} avec succès`,
+            {
+              title: "Information",
+              variant: "success",
+              autoHideDelay: 5000,
+              appendToast: true,
+              solid: true,
+            }
+          );
         })
         .catch((error) => {
           this.deleteLoading = false;
           console.log(error);
         });
-    },
-    commercialDetails(commercial) {
-      this.$store.dispatch("commercial/setCurrentCommercial", commercial);
-      this.$router.push({
-        path: `/commercial/${commercial.id}`,
-      });
     },
     editCategory() {
       console.log(this.logo);
@@ -273,12 +362,15 @@ export default {
         this.editLoading = false;
       } else {
         if (this.name) {
+          let formData = new FormData();
+          console.log(this.name);
+          if (this.logo !== null) formData.append("file", this.logo);
+          formData.append("nom", this.name);
+          formData.append("_method", "put");
           this.$store
             .dispatch("category/editCategory", {
               id: this.currentRow.id,
-              category: {
-                nom: this.name,
-              },
+              category: formData,
             })
             .then((result) => {
               this.editLoading = false;
