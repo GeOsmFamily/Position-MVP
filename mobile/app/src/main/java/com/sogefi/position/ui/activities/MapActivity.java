@@ -1920,7 +1920,8 @@ if(pref.getRoleid().equals("2")) {
 
     public void clickDialog(DataEtablissements dataEtablissements) {
 
-        if(pref.getId().equals(String.valueOf(dataEtablissements.getIdCommercial()))) {
+
+        if(pref.getName().equals(dataEtablissements.getNomCommercial())) {
             Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
             intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
             startActivity(intent);
@@ -1938,7 +1939,7 @@ if(pref.getRoleid().equals("2")) {
     }
 
     public void deleteFiche(DataEtablissements dataEtablissements) {
-        if(pref.getId().equals(String.valueOf(dataEtablissements.getIdCommercial()))) {
+        if(pref.getName().equals(dataEtablissements.getNomCommercial())) {
             if (Function.isNetworkAvailable(getApplicationContext())) {
                 ApiInterface apiService =
                         APIClient.getNewClient3().create(ApiInterface.class);

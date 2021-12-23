@@ -112,7 +112,9 @@ public class LoginActivity extends AppCompatActivity {
                         pref.setEmail(response.body().getData().getUser(). getEmail());
                         pref.setName(response.body().getData().getUser().getName());
                         pref.setPhone(response.body().getData().getUser().getPhone().toString());
-                        pref.setId(response.body().getData().getUser().toString());
+                        pref.setId(response.body().getData().getUser().getCommercial().getId().toString());
+
+
                         if(response.body().getData().getUser().getCommercial().getImageProfil() != null) {
                             pref.setProfileimage(response.body().getData().getUser().getCommercial().getImageProfil());
                         } else {
