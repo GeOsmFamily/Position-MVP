@@ -1452,13 +1452,10 @@ if(pref.getRoleid().equals("2")) {
                     displayNameTv.setText(name[0]+","+name[1]+","+name[2]+",\n"+name[3]);
                     latTv = (response.body() != null ? response.body().getLat():null);
                     lonTv = (response.body() != null ? response.body().getLon():null);
-                    Timber.tag("displayName").d(response.body() != null ? response.body().getDisplayName() : null);
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<Nominatim> call, @NotNull Throwable t) {
-                    // Log error here since request failed
-                    Timber.tag("main2").e(t.toString());
                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 }
             });
@@ -1492,8 +1489,6 @@ if(pref.getRoleid().equals("2")) {
 
                 @Override
                 public void onFailure(@NotNull Call<ResponseApi> call, @NotNull Throwable t) {
-                    // Log error here since request failed
-                    Timber.tag("logout").e(t.toString());
                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 }
             });
@@ -1739,8 +1734,6 @@ if(pref.getRoleid().equals("2")) {
 
                 @Override
                 public void onFailure(@NotNull Call<Batiments> call, @NotNull Throwable t) {
-                    // Log error here since request failed
-                    Timber.tag("logout").e(t.toString());
                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 }
             });
@@ -1959,8 +1952,6 @@ if(pref.getRoleid().equals("2")) {
 
                     @Override
                     public void onFailure(@NotNull Call<ResponseModel> call, @NotNull Throwable t) {
-                        // Log error here since request failed
-                        Timber.tag("logout").e(t.toString());
                         Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -1993,7 +1984,6 @@ if(pref.getRoleid().equals("2")) {
                     if(response.code() == 401 || response.code() == 500) {
                         Toast.makeText(getApplicationContext(), "Error get batiments", Toast.LENGTH_LONG).show();
                     } else {
-                        //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
 
                         try {
                             featureCollection.put("type", "FeatureCollection");
@@ -2016,14 +2006,6 @@ if(pref.getRoleid().equals("2")) {
                                 JSONObject propertiesData = new JSONObject();
                             JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body().getData().get(i)));
                                 propertiesData.put("batiment", jsonObject);
-                                propertiesData.put("nom",response.body().getData().get(i).getNom());
-                                propertiesData.put("codeBatiment",response.body().getData().get(i).getCodeBatiment());
-                                propertiesData.put("id",response.body().getData().get(i).getId());
-                                propertiesData.put("commune",response.body().getData().get(i).getCommune());
-                                propertiesData.put("indication",response.body().getData().get(i).getIndication());
-                                propertiesData.put("nombreNiveaux",response.body().getData().get(i).getNombreNiveaux());
-                                propertiesData.put("quartier",response.body().getData().get(i).getQuartier());
-                                propertiesData.put("ville",response.body().getData().get(i).getVille());
                                 feature.put("properties", propertiesData);
                                 JSONObject geometry = new JSONObject();
                                 JSONArray jsonArrayCoord = new JSONArray();
@@ -2065,66 +2047,6 @@ if(pref.getRoleid().equals("2")) {
                         }
 
 
-                        //   GeoJsonSource geoJsonSource = new GeoJsonSource("geojson-source",featureCollection.toString());
-
-                      /*      style.addSource(new GeoJsonSource(GEOJSON_SOURCE_ID,featureCollection.toString(),new GeoJsonOptions().withCluster(true).withClusterMaxZoom(14).withClusterRadius(10)));
-                         //   Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
-
-                        SymbolLayer unclustered = new SymbolLayer("unclustered-points", GEOJSON_SOURCE_ID);
-
-
-                        unclustered.setProperties(
-                                iconImage("markerBatimentImage"),
-                                iconSize(
-                                        division(
-                                                get("mag"), literal(400.0f)
-                                        )
-                                )
-                        );
-                        unclustered.setFilter(has("mag"));
-                        style.addLayer(unclustered);
-
-                        int[][] layers = new int[][] {
-                                new int[] {150, ContextCompat.getColor(MapActivity.this, R.color.green)},
-                                new int[] {20, ContextCompat.getColor(MapActivity.this, R.color.green)},
-                                new int[] {0, ContextCompat.getColor(MapActivity.this, R.color.green)}
-                        };
-
-                        for (int i = 0; i < layers.length; i++) {
-//Add clusters' circles
-                            CircleLayer circles = new CircleLayer("cluster-" + i, GEOJSON_SOURCE_ID);
-                            circles.setProperties(
-                                    circleColor(layers[i][1]),
-                                    circleRadius(18f)
-                            );
-
-
-                            Expression pointCount = toNumber(get("point_count"));
-
-// Add a filter to the cluster layer that hides the circles based on "point_count"
-                            circles.setFilter(
-                                    i == 0
-                                            ? all(has("point_count"),
-                                            gte(pointCount, literal(layers[i][0]))
-                                    ) : all(has("point_count"),
-                                            gte(pointCount, literal(layers[i][0])),
-                                            lt(pointCount, literal(layers[i - 1][0]))
-                                    )
-                            );
-                            style.addLayer(circles);
-                    }
-
-                        SymbolLayer count = new SymbolLayer("count", GEOJSON_SOURCE_ID);
-                        count.setProperties(
-                                textField(Expression.toString(get("point_count"))),
-                                textSize(12f),
-                                textColor(Color.WHITE),
-                                textIgnorePlacement(true),
-                                textAllowOverlap(true)
-                        );
-                        style.addLayer(count);
-                        Log.d("STYLE",style.getJson());
-                        Log.d("FEATURES",featureCollection.toString());*/
 
 
 
@@ -2134,11 +2056,7 @@ if(pref.getRoleid().equals("2")) {
 
                 @Override
                 public void onFailure(@NotNull Call<BatimentsModel> call, @NotNull Throwable t) {
-
-                    // Log error here since request failed
-                    Timber.tag("images").e(t.toString());
-                    Log.e("error create", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Erreur lors du chargement des batiments", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -2410,9 +2328,7 @@ searchResult.clear();
                 public void onResponse(@NotNull Call<Tracking> call, @NotNull Response<Tracking> response) {
                     if(response.code() == 401 || response.code() == 500) {
                         trackingRepository.onSave(dataTracking);
-                        //  Toast.makeText(getApplicationContext(), "Error add tracking", Toast.LENGTH_LONG).show();
                     } else {
-                        //   Toast.makeText(getApplicationContext(), "Add Success", Toast.LENGTH_LONG).show();
                     }
 
 
@@ -2422,15 +2338,10 @@ searchResult.clear();
                 @Override
                 public void onFailure(@NotNull Call<Tracking> call, @NotNull Throwable t) {
                     trackingRepository.onSave(dataTracking);
-                    // Log error here since request failed
-                    Timber.tag("images").e(t.toString());
-                    Log.e("error create", t.toString());
-                    // Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
                 }
             });
         } else {
             trackingRepository.onSave(dataTracking);
-            //  Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -2490,8 +2401,6 @@ searchResult.clear();
 
                 @Override
                 public void onFailure(@NotNull Call<Zones> call, @NotNull Throwable t) {
-                    Log.e("error create", t.toString());
-                    // Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -2528,7 +2437,6 @@ searchResult.clear();
                             Toast.makeText(getApplicationContext(), "Votre compte à été désactivé", Toast.LENGTH_LONG).show();
                             logout();
                         }
-                        //   Toast.makeText(getApplicationContext(), response.body().getData().getUser().getRole().toString(), Toast.LENGTH_LONG).show();
 
                     }
 
@@ -2536,8 +2444,6 @@ searchResult.clear();
 
                 @Override
                 public void onFailure(@NotNull Call<UserModel> call, @NotNull Throwable t) {
-                    // Log error here since request failed
-                    Timber.tag("users").e(t.toString());
                     Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                 }
             });
@@ -2556,44 +2462,5 @@ searchResult.clear();
             onClusterClick(features.get(0), new android.graphics.Point((int) pointf.x, (int) pointf.y));
         }
         return true;
-
-      /*  RectF rectF = new RectF(pointf.x - 10, pointf.y - 10, pointf.x + 10, pointf.y + 10);
-        List<Feature> featureList = mapboxMap.queryRenderedFeatures(rectF, UNCLUSTERED_POINTS);
-        if (featureList.size() > 0) {
-            for (Feature feature : featureList) {
-                DataBatiments batiments = new Gson().fromJson(feature.properties().get("batiment"), DataBatiments.class);
-
-                List<DataEtablissements> listetablissements = batiments.getEtablissements();
-
-
-                View dialogEtablissement = LayoutInflater.from(MapActivity.this).inflate(R.layout.dialog_etablissement, null, false);
-
-                RecyclerView etablissements = dialogEtablissement.findViewById(R.id.etablissements);
-
-                Button addEtablissement = dialogEtablissement.findViewById(R.id.add_etablissement);
-                ImageView closeButton = dialogEtablissement.findViewById(R.id.close_dialog);
-                ImageView logo_dialog = dialogEtablissement.findViewById(R.id.logo_dialog);
-                TextView textView9 = dialogEtablissement.findViewById(R.id.textView99);
-                textView9.setText(batiments.getNom()+" ("+batiments.getNombreNiveaux()+" étages)");
-                closeButton.setOnClickListener(v -> mat.dismiss());
-
-                addEtablissement.setOnClickListener(v -> {
-                    Intent intent = new Intent(MapActivity.this, NewBusinessActivity.class);
-                    intent.putExtra("idBatiment",String.valueOf(batiments.getId()));
-                    intent.putExtra("nombreNiveau",String.valueOf(batiments.getNombreNiveaux()));
-                    startActivity(intent);
-                });
-
-
-
-                etablissements.setAdapter(new EtablissementAdapter(R.layout.item_etablissement, MapActivity.this, listetablissements));
-
-                mat =  new MaterialAlertDialogBuilder(MapActivity.this)
-                        .setView(dialogEtablissement)
-                        .show();
-            }
-            return true;
-        }*/
-    //    return false;
     }
 }

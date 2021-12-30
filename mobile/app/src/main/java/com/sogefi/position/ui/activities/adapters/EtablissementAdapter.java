@@ -65,7 +65,7 @@ public class EtablissementAdapter extends RecyclerView.Adapter<EtablissementAdap
             holder.openFiche.setOnClickListener(v -> mapActivity.openFiche(etablissements.get(position)));
             holder.deleteFiche.setOnClickListener(v -> mapActivity.deleteFiche(etablissements.get(position)));
         } catch (IndexOutOfBoundsException e) {
-            Toast.makeText(getApplicationContext(), "Ce batiment n'est pas complet", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Ce batiments à des etablissements incomplets", Toast.LENGTH_LONG).show();
         }
 
 

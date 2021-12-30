@@ -22,6 +22,14 @@ Route::get('auth/email/resend', [App\Http\Controllers\Api\VerificationController
 Route::post('auth/password/forgot', [App\Http\Controllers\Api\UserController::class, 'forgot']);
 Route::post('auth/password/reset', [App\Http\Controllers\Api\UserController::class, 'reset'])->name('password.reset');
 
+Route::get('statistiques/global', [App\Http\Controllers\Api\StatistiquesController::class, 'getChiffreAffaire']);
+Route::get('statistiques/today', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCurrentDay']);
+Route::get('statistiques/thisweek', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCurrentWeek']);
+Route::get('statistiques/thismonth', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCurrentMonth']);
+Route::get('statistiques/byday', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByDay']);
+Route::get('statistiques/commercial/{id}', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCommercial']);
+Route::get('statistiques/commercial/day/{id}', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCommercialByDay']);
+
 Route::middleware('auth.apikey')->group(
     function () {
 
