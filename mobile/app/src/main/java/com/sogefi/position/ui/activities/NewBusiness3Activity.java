@@ -377,7 +377,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
                         next3.setEnabled(true);
                         Timber.tag("batiments").e(t.toString());
                         Log.e("error create", t.toString());
-                        Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Error Create Batiment", Toast.LENGTH_LONG).show();
                     }
                 });
             } else {
@@ -456,7 +456,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("etablissements").e(t.toString());
                     Log.e("error update", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error Update Etablissement", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -547,7 +547,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("etablissements").e(t.toString());
                     Log.e("error create", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error Create Etablissement", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -618,7 +618,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("telephones").e(t.toString());
                     Log.e("error create", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error create Phone", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -685,7 +685,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("telephones").e(t.toString());
                     Log.e("error update", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error update Phone", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -777,7 +777,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("images").e(t.toString());
                     Log.e("error create", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error upload Image", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -831,7 +831,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("images").e(t.toString());
                     Log.e("error update", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error update Image", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -883,7 +883,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("horaires").e(t.toString());
                     Log.e("error create", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error upload Phone", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -942,7 +942,7 @@ RequestBody requestBody;
                     next3.setEnabled(true);
                     Timber.tag("horaires").e(t.toString());
                     Log.e("error update", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error update", Toast.LENGTH_LONG).show();
                 }
             });
         } else {

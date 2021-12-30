@@ -147,19 +147,14 @@ public class NewBusiness5Activity extends AppCompatActivity {
             call.enqueue(new Callback<Nominatim>() {
                 @Override
                 public void onResponse(@NotNull Call<Nominatim> call, @NotNull Response<Nominatim> response) {
-                    String rue = response.body().getAddress().getRoad();
-                    String ville = response.body().getAddress().getCity();
+                    String ville = response.body().getAddress().getCity()!= null ? response.body().getAddress().getCity() : "Ville";
+                    String rue = response.body().getAddress().getRoad() != null ? response.body().getAddress().getRoad() : ville;
                     String commune = response.body().getAddress().getCityDistrict() != null ? response.body().getAddress().getCityDistrict() : ville;
                     String quartierCapital = quartier5.getText().toString().toUpperCase();
                     Random random = new Random();
                     int y = random.nextInt(100000);
                     String codeBatiment = "BATIMENT_"+quartierCapital+"_"+String.valueOf(y);
-                    if(rue != null && ville != null && commune != null) {
-                        saveBatiment(name5.getText().toString(),niveaux5.getText().toString(),codeBatiment,lon,lat,indication5.getText().toString(),rue,ville,commune,quartier5.getText().toString());
-                    } else {
-                        progressBar5.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(), "Verifiez votre connexion et Reessayez", Toast.LENGTH_LONG).show();
-                    }
+                    saveBatiment(name5.getText().toString(),niveaux5.getText().toString(),codeBatiment,lon,lat,indication5.getText().toString(),rue,ville,commune,quartier5.getText().toString());
 
                 }
 

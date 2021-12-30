@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Log error here since request failed
                         progressBarLogin.setVisibility(View.GONE);
                         Timber.tag("login").e(t.toString());
-                        Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Error login", Toast.LENGTH_LONG).show();
                     }
                 });
             } else {

@@ -190,7 +190,7 @@ llrevoir.setOnClickListener(new View.OnClickListener() {
                     // Log error here since request failed
                     Timber.tag("etablissements").e(t.toString());
                     Log.e("error update", t.toString());
-                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error Update", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
