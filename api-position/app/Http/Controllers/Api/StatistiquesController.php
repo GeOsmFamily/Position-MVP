@@ -39,6 +39,37 @@ class StatistiquesController extends BaseController
         $data["top_commercial"]["gain_personnel"] = ($etablissementsCommercial->count() * 1000 * 4) / 10;
         //  $data["top_commercial"]["etablissements"] = $etablissementsCommercial;
 
+        $etablissementsWeek = Etablissement::where('idCommercial', $commercial->id)->where('created_at', '>', Carbon::now()->startOfWeek())
+            ->where('created_at', '<', Carbon::now()->endOfWeek())->get();
+
+        $data["nbre_etablissement_week"] = $etablissementsWeek->count();
+
+
+        $monday = Carbon::now()->startOfWeek();
+        $tuesday = $monday->copy()->addDay();
+        $wednesday = $tuesday->copy()->addDay();
+        $thursday = $wednesday->copy()->addDay();
+        $friday = $thursday->copy()->addDay();
+        $saturday = $friday->copy()->addDay();
+        $sunday = $saturday->copy()->addDay();
+
+        $mondayStat =  Etablissement::whereDate('created_at', $monday)->get()->count();
+        $tuesdayStat =  Etablissement::whereDate('created_at', $tuesday)->get()->count();
+        $wednesdayStat =  Etablissement::whereDate('created_at', $wednesday)->get()->count();
+        $thursdayStat =  Etablissement::whereDate('created_at', $thursday)->get()->count();
+        $fridayStat =  Etablissement::whereDate('created_at', $friday)->get()->count();
+        $saturdayStat =  Etablissement::whereDate('created_at', $saturday)->get()->count();
+        $sundayStat =  Etablissement::whereDate('created_at', $sunday)->get()->count();
+
+        $data["week"]["period"] = "Du " . Carbon::now()->startOfWeek()->format('Y-m-d') . " au " . Carbon::now()->endOfWeek()->format('Y-m-d');
+        $data["week"]["lundi"] = $mondayStat;
+        $data["week"]["mardi"] = $tuesdayStat;
+        $data["week"]["mercredi"] = $wednesdayStat;
+        $data["week"]["jeudi"] = $thursdayStat;
+        $data["week"]["vendredi"] = $fridayStat;
+        $data["week"]["samedi"] = $saturdayStat;
+        $data["week"]["dimanche"] = $sundayStat;
+
         return $this->sendResponse($data, "Chiffre d'affaire Total");
     }
 
