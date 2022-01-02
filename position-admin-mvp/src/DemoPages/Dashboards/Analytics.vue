@@ -16,7 +16,7 @@
           "
         >
           <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-          Data Statistics
+          Statistiques globales
         </div>
       </div>
       <div class="no-gutters row">
@@ -31,20 +31,25 @@
               text-left
             "
           >
-            <div class="icon-wrapper rounded-circle">
+            <!--            <div class="icon-wrapper rounded-circle">
               <div class="icon-wrapper-bg opacity-10 bg-warning"></div>
               <i class="pe-7s-scissors text-white opacity-8"></i>
-            </div>
-            <div class="widget-chart-content">
-              <div class="widget-subheading">Cash Deposits</div>
-              <div class="widget-numbers">1,7M</div>
+            </div>-->
+            <div class="widget-chart-content" v-if="!globalLoading">
+              <div class="widget-subheading">Total de points crées</div>
+              <div class="widget-numbers">
+                {{ businesses.length * 1000 }} CFA
+              </div>
               <div class="widget-description opacity-8 text-focus">
                 <div class="d-inline text-danger pr-1">
                   <font-awesome-icon icon="angle-down" />
-                  <span class="pl-1">54.1%</span>
+                  <span class="pl-1">{{ businesses.length }} </span>
                 </div>
-                less earnings
+                points crées
               </div>
+            </div>
+            <div class="text-center" v-else>
+              <b-spinner variant="success" label="Spinning"></b-spinner>
             </div>
           </div>
           <div class="divider m-0 d-md-none d-sm-block"></div>
@@ -1200,7 +1205,22 @@ export default {
     subheading: "Statistiques globales sur les chiffres de position",
     icon: "pe-7s-plane icon-gradient bg-tempting-azure",
   }),
-
-  methods: {},
+  computed: {
+    globalLoading() {
+      return this.$store.getters["business/loading"];
+    },
+    businesses() {
+      return this.$store.getters["business/businesses"];
+    },
+  },
+  created() {
+    if (this.businesses == null || this.businesses.length === 0)
+      this.getBusinesses();
+  },
+  methods: {
+    getBusinesses() {
+      this.$store.dispatch("business/fetchBusinesses");
+    },
+  },
 };
 </script>
