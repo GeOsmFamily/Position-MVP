@@ -49,7 +49,9 @@
               </div>
             </div>
             <div class="text-center" v-else>
-              <b-spinner variant="success" label="Spinning"></b-spinner>
+              <center>
+                <b-spinner variant="success" label="Spinning"></b-spinner>
+              </center>
             </div>
           </div>
           <div class="divider m-0 d-md-none d-sm-block"></div>
@@ -65,13 +67,11 @@
               text-left
             "
           >
-            <div class="icon-wrapper rounded-circle">
-              <div class="icon-wrapper-bg opacity-9 bg-danger"></div>
-              <i class="pe-7s-radio text-white"></i>
-            </div>
-            <div class="widget-chart-content">
-              <div class="widget-subheading">Invested Dividents</div>
-              <div class="widget-numbers"><span>9M</span></div>
+            <div class="widget-chart-content" v-if="!monthLoading">
+              <div class="widget-subheading">Points du mois</div>
+              <div class="widget-numbers">
+                <span>{{ monthBusinesses }} points</span>
+              </div>
               <div class="widget-description opacity-8 text-focus">
                 Grow Rate:
                 <span class="text-info pl-1">
@@ -79,6 +79,11 @@
                   <span class="pl-1">14.1%</span>
                 </span>
               </div>
+            </div>
+            <div class="text-center" v-else>
+              <center>
+                <b-spinner variant="success" label="Spinning"></b-spinner>
+              </center>
             </div>
           </div>
           <div class="divider m-0 d-md-none d-sm-block"></div>
@@ -1209,17 +1214,34 @@ export default {
     globalLoading() {
       return this.$store.getters["business/loading"];
     },
+    monthLoading() {
+      return this.$store.getters["business/monthLoading"];
+    },
+    monthBusinesses() {
+      return this.$store.getters["business/monthBusinesses"];
+    },
     businesses() {
       return this.$store.getters["business/businesses"];
     },
   },
   created() {
-    if (this.businesses == null || this.businesses.length === 0)
+    if (this.monthBusinesses == null || this.monthBusinesses.length === 0)
+      console.log(new Date().getMonth() + " " + new Date().getFullYear());
+    this.getMonthBusinesses({
+      month: new Date().getMonth() + 1,
+      year: new Date().getFullYear(),
+    });
+
+    if (this.businesses == null || this.businesses.length === 0) {
       this.getBusinesses();
+    }
   },
   methods: {
     getBusinesses() {
       this.$store.dispatch("business/fetchBusinesses");
+    },
+    getMonthBusinesses(data) {
+      this.$store.dispatch("business/fetchMonthBusinesses", data);
     },
   },
 };
