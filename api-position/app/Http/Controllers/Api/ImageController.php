@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Commercial;
 use App\Models\Etablissement;
 use App\Models\Image;
 use Auth;
@@ -93,9 +94,14 @@ class ImageController extends BaseController
 
             $image = Image::find($id);
 
-            $idUserCommercial = $image->etablissement->commercial->idUser;
 
-            if ($role == 1 || $user->id = $idUserCommercial) {
+            $idCommercial = $image->etablissement->idCommercial;
+
+            $commercial = Commercial::find($idCommercial);
+
+            $idUserCommercial = $commercial->idUser;
+
+            if ($role == 1 || $user->id == $idUserCommercial) {
 
                 $batiment = $image->etablissement->batiment;
                 $etablissement = $image->etablissement;
@@ -136,7 +142,7 @@ class ImageController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1 || $role == 3) {
+        if ($role == 1 || $role == 2) {
             $image = Image::destroy($id);
 
             if ($image != 0) {

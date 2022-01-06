@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.security.cert.CertificateException;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -77,7 +78,10 @@ public class APIClient {
         if (retrofit1 == null) {
             retrofit1 = new Retrofit.Builder()
                     .baseUrl(NOMINATIMURL)
-                    .client(getUnsafeOkHttpClient().build())
+                    .client(new OkHttpClient.Builder()
+                            .readTimeout(30000, TimeUnit.SECONDS)
+                            .connectTimeout(30000, TimeUnit.SECONDS)
+                            .build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
@@ -90,7 +94,10 @@ public class APIClient {
             retrofit3 = new Retrofit.Builder()
                     .baseUrl(NOMINATIMURL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .client(getUnsafeOkHttpClient().build())
+                    .client(new OkHttpClient.Builder()
+                            .readTimeout(30000, TimeUnit.SECONDS)
+                            .connectTimeout(30000, TimeUnit.SECONDS)
+                            .build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
@@ -105,7 +112,10 @@ public class APIClient {
         if (retrofit2 == null) {
             retrofit2 = new Retrofit.Builder()
                     .baseUrl(BASEURL)
-                    .client(getUnsafeOkHttpClient().build())
+                    .client(new OkHttpClient.Builder()
+                            .readTimeout(30000, TimeUnit.SECONDS)
+                            .connectTimeout(30000, TimeUnit.SECONDS)
+                            .build())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }

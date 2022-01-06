@@ -303,119 +303,71 @@ public class NewBusinessActivity extends AppCompatActivity {
             intent.putExtra("imageEtablissement", image2);
             if(dataEtablissements != null) {
                 intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
-            }
-            startActivity(intent);
-
-          /*  RequestBody requestFile =
-                    RequestBody.create(MediaType.parse("multipart/form-data"), image);
-
-            RequestBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("nom", nom)
-                    .addFormDataPart("idBatiment", idBatiment)
-                    .addFormDataPart("idSousCategorie", idSousCategorie)
-                    .addFormDataPart("etage", etage)
-                    .addFormDataPart("description", description)
-                    .addFormDataPart("file", image.getName(), requestFile)
-                    .build();
-
-            if (Function.isNetworkAvailable(getApplicationContext())) {
-                ApiInterface apiService =
-                        APIClient.getNewClient3().create(ApiInterface.class);
-                Call<Etablissements> call = apiService.addetablissements(API_KEY,"Bearer "+pref.getToken(),requestBody);
-                call.enqueue(new Callback<Etablissements>() {
-                    @Override
-                    public void onResponse(@NotNull Call<Etablissements> call, @NotNull Response<Etablissements> response) {
-                        if(response.code() == 401 || response.code() == 500) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Error Create", Toast.LENGTH_LONG).show();
-                        } else {
-                            int idEtablissement = response.body().getData().getId();
-                            progressBar.setVisibility(View.GONE);
-                            Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
-                            intent.putExtra("idEtablissement",String.valueOf(idEtablissement));
-                            startActivity(intent);
-                            finish();
-                        }
-
-                        progressBar.setVisibility(View.GONE);
-
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<Etablissements> call, @NotNull Throwable t) {
-                        // Log error here since request failed
-                        progressBar.setVisibility(View.GONE);
-                        Timber.tag("etablissements").e(t.toString());
-                        Log.e("error create", t.toString());
-                        Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
-            } else {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
-            }*/
-        } else if(image == null || image2 == null && dataEtablissements != null) {
-
-            progressBar.setVisibility(View.GONE);
-            Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
-            intent.putExtra("idBatiment", getIntent().getStringExtra("idBatiment"));
-            intent.putExtra("nomBatiment", getIntent().getStringExtra("nomBatiment"));
-            intent.putExtra("nombreNiveaux", getIntent().getStringExtra("nombreNiveaux"));
-            intent.putExtra("codeBatiment", getIntent().getStringExtra("codeBatiment"));
-            intent.putExtra("longitude", getIntent().getStringExtra("longitude"));
-            intent.putExtra("latitude", getIntent().getStringExtra("latitude"));
-            intent.putExtra("indication", getIntent().getStringExtra("indication"));
-            intent.putExtra("rue", getIntent().getStringExtra("rue"));
-            intent.putExtra("ville", getIntent().getStringExtra("ville"));
-            intent.putExtra("commune", getIntent().getStringExtra("commune"));
-            intent.putExtra("quartier", getIntent().getStringExtra("quartier"));
-            intent.putExtra("imageBatiment", (File) getIntent().getExtras().get("imageBatiment"));
-
-            intent.putExtra("nomEtablissement", nom);
-            intent.putExtra("idSousCategorie", idSousCategorie);
-            intent.putExtra("autres", autres);
-            intent.putExtra("etage", etage);
-            intent.putExtra("description", description);
-            intent.putExtra("coverEtablissement", image);
-            intent.putExtra("imageEtablissement", image2);
-            if(dataEtablissements != null) {
-                intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
                 intent.putExtra("imageN",  "non");
-            }
-            startActivity(intent);
-
-        }  else if(image != null && image2 != null && dataEtablissements != null) {
-
-            progressBar.setVisibility(View.GONE);
-            Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
-            intent.putExtra("idBatiment", getIntent().getStringExtra("idBatiment"));
-            intent.putExtra("nomBatiment", getIntent().getStringExtra("nomBatiment"));
-            intent.putExtra("nombreNiveaux", getIntent().getStringExtra("nombreNiveaux"));
-            intent.putExtra("codeBatiment", getIntent().getStringExtra("codeBatiment"));
-            intent.putExtra("longitude", getIntent().getStringExtra("longitude"));
-            intent.putExtra("latitude", getIntent().getStringExtra("latitude"));
-            intent.putExtra("indication", getIntent().getStringExtra("indication"));
-            intent.putExtra("rue", getIntent().getStringExtra("rue"));
-            intent.putExtra("ville", getIntent().getStringExtra("ville"));
-            intent.putExtra("commune", getIntent().getStringExtra("commune"));
-            intent.putExtra("quartier", getIntent().getStringExtra("quartier"));
-            intent.putExtra("imageBatiment", (File) getIntent().getExtras().get("imageBatiment"));
-
-            intent.putExtra("nomEtablissement", nom);
-            intent.putExtra("idSousCategorie", idSousCategorie);
-            intent.putExtra("autres", autres);
-            intent.putExtra("etage", etage);
-            intent.putExtra("description", description);
-            intent.putExtra("coverEtablissement", image);
-            intent.putExtra("imageEtablissement", image2);
-            if(dataEtablissements != null) {
-                intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
+            } else {
                 intent.putExtra("imageN",  "oui");
             }
             startActivity(intent);
 
-        }else {
+        } else if(image == null && dataEtablissements != null) {
+
+            progressBar.setVisibility(View.GONE);
+            Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
+            intent.putExtra("idBatiment", getIntent().getStringExtra("idBatiment"));
+            intent.putExtra("nomBatiment", getIntent().getStringExtra("nomBatiment"));
+            intent.putExtra("nombreNiveaux", getIntent().getStringExtra("nombreNiveaux"));
+            intent.putExtra("codeBatiment", getIntent().getStringExtra("codeBatiment"));
+            intent.putExtra("longitude", getIntent().getStringExtra("longitude"));
+            intent.putExtra("latitude", getIntent().getStringExtra("latitude"));
+            intent.putExtra("indication", getIntent().getStringExtra("indication"));
+            intent.putExtra("rue", getIntent().getStringExtra("rue"));
+            intent.putExtra("ville", getIntent().getStringExtra("ville"));
+            intent.putExtra("commune", getIntent().getStringExtra("commune"));
+            intent.putExtra("quartier", getIntent().getStringExtra("quartier"));
+            intent.putExtra("imageBatiment", (File) getIntent().getExtras().get("imageBatiment"));
+
+            intent.putExtra("nomEtablissement", nom);
+            intent.putExtra("idSousCategorie", idSousCategorie);
+            intent.putExtra("autres", autres);
+            intent.putExtra("etage", etage);
+            intent.putExtra("description", description);
+            intent.putExtra("coverEtablissement", image);
+            intent.putExtra("imageEtablissement", image2);
+
+                intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
+            intent.putExtra("imageN",  "oui");
+
+            startActivity(intent);
+
+        } else if(image == null && image2 == null){
+            progressBar.setVisibility(View.GONE);
+            Intent intent = new Intent(NewBusinessActivity.this, NewBusiness2Activity.class);
+            intent.putExtra("idBatiment", getIntent().getStringExtra("idBatiment"));
+            intent.putExtra("nomBatiment", getIntent().getStringExtra("nomBatiment"));
+            intent.putExtra("nombreNiveaux", getIntent().getStringExtra("nombreNiveaux"));
+            intent.putExtra("codeBatiment", getIntent().getStringExtra("codeBatiment"));
+            intent.putExtra("longitude", getIntent().getStringExtra("longitude"));
+            intent.putExtra("latitude", getIntent().getStringExtra("latitude"));
+            intent.putExtra("indication", getIntent().getStringExtra("indication"));
+            intent.putExtra("rue", getIntent().getStringExtra("rue"));
+            intent.putExtra("ville", getIntent().getStringExtra("ville"));
+            intent.putExtra("commune", getIntent().getStringExtra("commune"));
+            intent.putExtra("quartier", getIntent().getStringExtra("quartier"));
+            intent.putExtra("imageBatiment", (File) getIntent().getExtras().get("imageBatiment"));
+
+            intent.putExtra("nomEtablissement", nom);
+            intent.putExtra("idSousCategorie", idSousCategorie);
+            intent.putExtra("autres", autres);
+            intent.putExtra("etage", etage);
+            intent.putExtra("description", description);
+            intent.putExtra("coverEtablissement", image);
+            intent.putExtra("imageEtablissement", image2);
+
+            intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
+            intent.putExtra("imageN",  "oui");
+
+            startActivity(intent);
+        }   else {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), "Selectionnez une image", Toast.LENGTH_LONG).show();
         }

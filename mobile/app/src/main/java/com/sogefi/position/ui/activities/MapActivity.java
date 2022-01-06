@@ -1469,7 +1469,7 @@ if(pref.getRoleid().equals("2")) {
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
                     APIClient.getNewClient3().create(ApiInterface.class);
-            Call<ResponseApi> call = apiService.logout(API_KEY,pref.getToken());
+            Call<ResponseApi> call = apiService.logout(API_KEY,"Bearer "+pref.getToken());
 
             call.enqueue(new Callback<ResponseApi>() {
                 @Override
@@ -1936,7 +1936,7 @@ if(pref.getRoleid().equals("2")) {
             if (Function.isNetworkAvailable(getApplicationContext())) {
                 ApiInterface apiService =
                         APIClient.getNewClient3().create(ApiInterface.class);
-                Call<ResponseModel> call = apiService.deleteetablissements(API_KEY,pref.getToken(), dataEtablissements.getId());
+                Call<ResponseModel> call = apiService.deleteetablissements(API_KEY, "Bearer "+pref.getToken(), dataEtablissements.getId());
 
                 call.enqueue(new Callback<ResponseModel>() {
                     @Override
@@ -1945,6 +1945,7 @@ if(pref.getRoleid().equals("2")) {
                             Toast.makeText(getApplicationContext(), "Erreur de suppression, contactez un administrateur", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "Suppression de l'entreprise reussie", Toast.LENGTH_LONG).show();
+                            recreate();
                         }
 
 

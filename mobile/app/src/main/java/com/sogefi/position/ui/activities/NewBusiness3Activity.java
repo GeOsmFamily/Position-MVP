@@ -62,11 +62,14 @@ public class NewBusiness3Activity extends AppCompatActivity {
     Boolean mercredi = false ;
     Boolean jeudi = false ;
     Boolean vendredi = false ;
+    ArrayList<String> days;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_business3);
         pref = new PreferenceManager(this);
+
+        days = new ArrayList<>();
 
         String etablissement = getIntent().getStringExtra("etablissement");
 
@@ -105,51 +108,31 @@ public class NewBusiness3Activity extends AppCompatActivity {
         });
 
         checkBoxLundi.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-               lundi = true;
-            } else {
-                lundi = false;
-            }
+            lundi = isChecked;
             checkBoxLundi.setChecked(isChecked);
         });
 
 
         checkBoxMardi.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-                mardi = true;
-            } else {
-                mardi = false;
-            }
+            mardi = isChecked;
             checkBoxMardi.setChecked(isChecked);
         });
 
 
         checkBoxMercredi.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-                mercredi = true;
-            } else {
-                mercredi = false;
-            }
+            mercredi = isChecked;
             checkBoxMercredi.setChecked(isChecked);
         });
 
 
         checkBoxJeudi.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-                jeudi = true;
-            } else {
-                jeudi = false;
-            }
+            jeudi = isChecked;
             checkBoxJeudi.setChecked(isChecked);
         });
 
 
         checkBoxVendredi.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked){
-                vendredi = true;
-            } else {
-                vendredi = false;
-            }
+            vendredi = isChecked;
             checkBoxVendredi.setChecked(isChecked);
         });
 
@@ -176,11 +159,12 @@ public class NewBusiness3Activity extends AppCompatActivity {
             back3.setText("Accueil");
             back3.setOnClickListener(v -> {
                 Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                 startActivity(intent);
                 finish();
             });
         }
+
 
 
         if(dataEtablissements != null) {
@@ -189,11 +173,11 @@ public class NewBusiness3Activity extends AppCompatActivity {
 
             for (int i = 0; i < dataEtablissements.getHoraires().size(); i++) {
 
-                ArrayList<String> days = new ArrayList<String>();
+
 
                 days.add(dataEtablissements.getHoraires().get(i).getJour());
 
-                check(days,dataEtablissements.getHoraires().get(i).getJour());
+
 
                 if(dataEtablissements.getHoraires().get(i).getJour().equals("Lundi") || dataEtablissements.getHoraires().get(i).getJour().equals("Mardi") || dataEtablissements.getHoraires().get(i).getJour().equals("Mercredi") || dataEtablissements.getHoraires().get(i).getJour().equals("Jeudi") || dataEtablissements.getHoraires().get(i).getJour().equals("Vendredi")) {
                     openLundi.setText(dataEtablissements.getHoraires().get(i).getHeureOuverture());
@@ -208,7 +192,14 @@ public class NewBusiness3Activity extends AppCompatActivity {
                     openDimanche.setText(dataEtablissements.getHoraires().get(i).getHeureOuverture());
                     closedDimanche.setText(dataEtablissements.getHoraires().get(i).getHeureFermeture());
                 }
+
+
             }
+            check(days,"Lundi");
+            check(days,"Mardi");
+            check(days,"Mercredi");
+            check(days,"Jeudi");
+            check(days,"Vendredi");
 
 
 
@@ -293,23 +284,36 @@ public class NewBusiness3Activity extends AppCompatActivity {
 
     public void check(ArrayList<String> arr, String toCheckValue)
     {
+
         boolean test
                 = arr.contains(toCheckValue);
 
-     if(!test && toCheckValue.equals("Lundi")) {
-         checkBoxLundi.setChecked(true);
-     } if(!test && toCheckValue.equals("Mardi")) {
-        checkBoxMardi.setChecked(true);
-    } if(!test && toCheckValue.equals("Mercredi")) {
-        checkBoxMercredi.setChecked(true);
-    }if(!test && toCheckValue.equals("Jeudi")) {
-        checkBoxJeudi.setChecked(true);
-    }if(!test && toCheckValue.equals("Vendredi")) {
-        checkBoxVendredi.setChecked(true);
+     if(toCheckValue.equals("Lundi")) {
+         checkBoxLundi.setChecked(!test);
+     } if(toCheckValue.equals("Mardi")) {
+        checkBoxMardi.setChecked(!test);
+    } if(toCheckValue.equals("Mercredi")) {
+        checkBoxMercredi.setChecked(!test);
+    }if(toCheckValue.equals("Jeudi")) {
+        checkBoxJeudi.setChecked(!test);
+    }if(toCheckValue.equals("Vendredi")) {
+        checkBoxVendredi.setChecked(!test);
     }
     }
 
+    public boolean checkUpload(ArrayList<String> arr, String toCheckValue)
+    {
+        boolean test
+                = arr.contains(toCheckValue);
+
+        return test;
+
+    }
+
     public void updateData(String openLundi,String closedLundi,String openSamedi,String closedSamedi,String openDimanche,String closedDimanche) {
+        progressBar.setVisibility(View.VISIBLE);
+        next3.setEnabled(false);
+
         File coverEtablissement = (File) getIntent().getExtras().get("coverEtablissement");
 
         String idBatiment = getIntent().getStringExtra("idBatiment");
@@ -393,7 +397,7 @@ public class NewBusiness3Activity extends AppCompatActivity {
 
     public void updateEtablissement(String idBatiment,File coverEtablissement,String openLundi,String closedLundi,String openSamedi,String closedSamedi,String openDimanche,String closedDimanche) {
 RequestBody requestBody;
-        if(getIntent().getStringExtra("imageN").equals("non")) {
+        if(!getIntent().getStringExtra("imageN").equals("non")) {
             requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
                     .addFormDataPart("nom", getIntent().getStringExtra("nomEtablissement"))
@@ -403,8 +407,8 @@ RequestBody requestBody;
                     .addFormDataPart("etage", getIntent().getStringExtra("etage"))
                     .addFormDataPart("description", getIntent().getStringExtra("description"))
                     .addFormDataPart("indicationAdresse", getIntent().getStringExtra("indicationAdresse"))
-                    .addFormDataPart("codepostal", getIntent().getStringExtra("codepostal"))
-                    .addFormDataPart("siteinternet", getIntent().getStringExtra("siteinternet"))
+                    .addFormDataPart("codePostal", getIntent().getStringExtra("codepostal"))
+                    .addFormDataPart("siteInternet", getIntent().getStringExtra("siteinternet"))
                     .addFormDataPart("_method", "put")
                     .build();
         } else {
@@ -420,8 +424,8 @@ RequestBody requestBody;
                     .addFormDataPart("etage", getIntent().getStringExtra("etage"))
                     .addFormDataPart("description", getIntent().getStringExtra("description"))
                     .addFormDataPart("indicationAdresse", getIntent().getStringExtra("indicationAdresse"))
-                    .addFormDataPart("codepostal", getIntent().getStringExtra("codepostal"))
-                    .addFormDataPart("siteinternet", getIntent().getStringExtra("siteinternet"))
+                    .addFormDataPart("codePostal", getIntent().getStringExtra("codepostal"))
+                    .addFormDataPart("siteInternet", getIntent().getStringExtra("siteinternet"))
                     .addFormDataPart("_method", "put")
                     .addFormDataPart("file", coverEtablissement.getName(), requestFile)
                     .build();
@@ -440,6 +444,7 @@ RequestBody requestBody;
                         next3.setEnabled(true);
                         Toast.makeText(getApplicationContext(), "Error Update Etablissement", Toast.LENGTH_LONG).show();
                     } else {
+                        assert response.body() != null;
                         int idEtablissement = response.body().getData().getId();
 
                         updateTelephones(String.valueOf(idEtablissement),getIntent().getStringExtra("telephone"),getIntent().getStringExtra("whatsapp1"),getIntent().getStringExtra("whatsapp2"),openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
@@ -500,10 +505,10 @@ RequestBody requestBody;
                         int idEtablissement = response.body().getData().getId();
 
 
-                        uploadPhone(getIntent().getStringExtra("telephone"),String.valueOf(idEtablissement),1);
-                        uploadPhone(getIntent().getStringExtra("whatsapp1"),String.valueOf(idEtablissement),0);
+                        uploadPhone(getIntent().getStringExtra("telephone"),String.valueOf(idEtablissement),1,0);
+                        uploadPhone(getIntent().getStringExtra("whatsapp1"),String.valueOf(idEtablissement),0,1);
                         if(!TextUtils.isEmpty(getIntent().getStringExtra("whatsapp2"))) {
-                            uploadPhone(getIntent().getStringExtra("whatsapp2"),String.valueOf(idEtablissement),0);
+                            uploadPhone(getIntent().getStringExtra("whatsapp2"),String.valueOf(idEtablissement),0,2);
                         }
 
 
@@ -530,7 +535,7 @@ RequestBody requestBody;
 
                         Toast.makeText(getApplicationContext(), "Ajout de l'etablissement reussi", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                         startActivity(intent);
                         finish();
 
@@ -562,15 +567,15 @@ RequestBody requestBody;
 
 
     public void updateTelephones(String idEtablissement,String phone,String whatsapp1,String whatsapp2,String openLundi,String closedLundi,String openSamedi,String closedSamedi,String openDimanche,String closedDimanche) {
-        uploadUpdatePhone(phone,idEtablissement,1,openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
-        uploadUpdatePhone(whatsapp1,idEtablissement,0,openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
+        uploadUpdatePhone(phone,idEtablissement,1,0,openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
+        uploadUpdatePhone(whatsapp1,idEtablissement,0,1,openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
         if(!TextUtils.isEmpty(whatsapp2)) {
-            uploadUpdatePhone(whatsapp2,idEtablissement,0,openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
+            uploadUpdatePhone(whatsapp2,idEtablissement,0,2,openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
         }
     }
 
 
-    public void uploadPhone(String phone,String idEtablissement,int principal) {
+    public void uploadPhone(String phone,String idEtablissement,int principal,int whatsapp) {
         RequestBody requestBody;
         if(principal == 1) {
             requestBody = new MultipartBody.Builder()
@@ -581,13 +586,24 @@ RequestBody requestBody;
                     .addFormDataPart("whatsapp", "0")
                     .build();
         } else {
-            requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("idEtablissement", idEtablissement)
-                    .addFormDataPart("numero", phone)
-                    .addFormDataPart("principal", "0")
-                    .addFormDataPart("whatsapp", "1")
-                    .build();
+            if(whatsapp == 1) {
+                requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("idEtablissement", idEtablissement)
+                        .addFormDataPart("numero", phone)
+                        .addFormDataPart("principal", "0")
+                        .addFormDataPart("whatsapp", "1")
+                        .build();
+            } else {
+                requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("idEtablissement", idEtablissement)
+                        .addFormDataPart("numero", phone)
+                        .addFormDataPart("principal", "0")
+                        .addFormDataPart("whatsapp", "2")
+                        .build();
+            }
+
         }
 
 
@@ -628,13 +644,24 @@ RequestBody requestBody;
         }
     }
 
-    public void uploadUpdatePhone(String phone,String idEtablissement,int principal,String openLundi,String closedLundi,String openSamedi,String closedSamedi,String openDimanche,String closedDimanche) {
+    public void uploadUpdatePhone(String phone,String idEtablissement,int principal,int whatsapp, String openLundi,String closedLundi,String openSamedi,String closedSamedi,String openDimanche,String closedDimanche) {
        int idPhone = 0;
          for (int i = 0; i < dataEtablissements.getTelephones().size(); i++) {
                 if(dataEtablissements.getTelephones().get(i).getPrincipal().equals(String.valueOf(principal))) {
-                    idPhone = dataEtablissements.getTelephones().get(i).getId();
+                    if(principal == 1) {
+                        idPhone = dataEtablissements.getTelephones().get(i).getId();
+                    } else {
+                        if(dataEtablissements.getTelephones().get(i).getWhatsapp().equals(String.valueOf(whatsapp))) {
+                            idPhone = dataEtablissements.getTelephones().get(i).getId();
+                        }
+                    }
+
                 }
             }
+
+         if(idPhone == 0) {
+             uploadPhone(phone,idEtablissement,principal,whatsapp);
+         }
 
         RequestBody requestBody;
         if(principal == 1) {
@@ -647,14 +674,26 @@ RequestBody requestBody;
                     .addFormDataPart("_method", "put")
                     .build();
         } else {
-            requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("idEtablissement", idEtablissement)
-                    .addFormDataPart("numero", phone)
-                    .addFormDataPart("principal", "0")
-                    .addFormDataPart("whatsapp", "1")
-                    .addFormDataPart("_method", "put")
-                    .build();
+            if(whatsapp == 1) {
+                requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("idEtablissement", idEtablissement)
+                        .addFormDataPart("numero", phone)
+                        .addFormDataPart("principal", "0")
+                        .addFormDataPart("whatsapp", "1")
+                        .addFormDataPart("_method", "put")
+                        .build();
+            } else {
+                requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("idEtablissement", idEtablissement)
+                        .addFormDataPart("numero", phone)
+                        .addFormDataPart("principal", "0")
+                        .addFormDataPart("whatsapp", "2")
+                        .addFormDataPart("_method", "put")
+                        .build();
+            }
+
         }
 
 
@@ -673,6 +712,18 @@ RequestBody requestBody;
                     } else {
                         updateHoraires(idEtablissement,openLundi,closedLundi,openSamedi,closedSamedi,openDimanche,closedDimanche);
                     }
+
+                    File imageEtablissement = (File) getIntent().getExtras().get("imageEtablissement");
+
+                    if(getIntent().getStringExtra("imageN").equals("oui") && imageEtablissement != null) {
+                        updateImage(idEtablissement);
+                    }
+
+                    Toast.makeText(getApplicationContext(), "Mise à jour reussie", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
+
+                    startActivity(intent);
+                    finish();
 
 
 
@@ -718,23 +769,7 @@ RequestBody requestBody;
             uploadUHoraire(openDimanche,closedDimanche, String.valueOf(idEtablissement),"Dimanche");
         }
 
-        if(!getIntent().getStringExtra("imageN").equals("non")) {
-            updateImage(idEtablissement);
 
-            Toast.makeText(getApplicationContext(), "Mise à jour de l'etablissement reussie", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        }
-
-        else{
-            Toast.makeText(getApplicationContext(), "Mise à jour de l'etablissement reussie", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(NewBusiness3Activity.this, MapActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-        }
 
 
     }
@@ -902,6 +937,13 @@ RequestBody requestBody;
             if(dataEtablissements.getHoraires().get(i).getJour().equals(jour)) {
                 idHoraire = dataEtablissements.getHoraires().get(i).getId();
             }
+        }
+
+
+
+       if(idHoraire == 0 && !checkUpload(days,jour)) {
+            uploadHoraire(open,closed,idEtablissement,jour);
+            days.add(jour);
         }
 
         RequestBody requestBody = new MultipartBody.Builder()

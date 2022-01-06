@@ -88,8 +88,10 @@ public class NewBusiness2Activity extends AppCompatActivity {
             for (int i = 0; i < dataEtablissements.getTelephones().size(); i++) {
                 if(dataEtablissements.getTelephones().get(i).getPrincipal().equals("1")) {
                     phone.setText(dataEtablissements.getTelephones().get(i).getNumero());
-                } if(dataEtablissements.getTelephones().get(i).getPrincipal().equals("1")) {
-                    whatsapp1.setText(dataEtablissements.getTelephones().get(1).getNumero());
+                } if(dataEtablissements.getTelephones().get(i).getWhatsapp().equals("1")) {
+                    whatsapp1.setText(dataEtablissements.getTelephones().get(i).getNumero());
+                } if(dataEtablissements.getTelephones().get(i).getWhatsapp().equals("2")) {
+                    whatsapp2.setText(dataEtablissements.getTelephones().get(i).getNumero());
                 }
             }
 
@@ -164,9 +166,10 @@ public class NewBusiness2Activity extends AppCompatActivity {
         intent.putExtra("telephone", phone);
         intent.putExtra("whatsapp1", whatsapp1);
         intent.putExtra("whatsapp2", whatsapp2);
+        intent.putExtra("imageN", getIntent().getStringExtra("imageN"));
         if(dataEtablissements != null) {
             intent.putExtra("etablissement",  (new Gson()).toJson(dataEtablissements));
-            intent.putExtra("imageN", getIntent().getStringExtra("imageN"));
+
         }
         startActivity(intent);
 
