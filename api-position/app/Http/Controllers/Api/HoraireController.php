@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Commercial;
 use App\Models\Etablissement;
 use App\Models\Horaire;
 use Auth;
@@ -85,9 +86,13 @@ class HoraireController extends BaseController
 
         $horaire = Horaire::find($id);
 
-        $idUserCommercial = $horaire->etablissement->commercial->idUser;
+        $idCommercial = $horaire->etablissement->idCommercial;
 
-        if ($role == 1 || $user->id = $idUserCommercial) {
+        $commercial = Commercial::find($idCommercial);
+
+        $idUserCommercial = $commercial->idUser;
+
+        if ($role == 1 || $user->id == $idUserCommercial) {
 
 
             $horaire->heureOuverture = $request->heureOuverture ?? $horaire->heureOuverture;
@@ -116,7 +121,7 @@ class HoraireController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1 || $role == 3) {
+        if ($role == 1 || $role == 2) {
             $horaire = Horaire::destroy($id);
 
             if ($horaire != 0) {

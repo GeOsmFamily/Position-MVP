@@ -183,7 +183,7 @@ class EtablissementController extends BaseController
 
         $idUserCommercial = $etablissement->commercial->idUser;
 
-        if ($role == 1 || $user->id = $idUserCommercial) {
+        if ($role == 1 || $user->id == $idUserCommercial) {
             $etablissement = Etablissement::find($id);
             $batiment = Batiment::find($etablissement->idBatiment);
             $request->validate([
@@ -239,7 +239,7 @@ class EtablissementController extends BaseController
 
         $idUserCommercial = $etablissement->commercial->idUser;
 
-        if ($role == 1 || $user->id = $idUserCommercial) {
+        if ($role == 1 || $user->id == $idUserCommercial) {
             $etablissement = Etablissement::find($id);
 
             $etablissement->images()->delete();

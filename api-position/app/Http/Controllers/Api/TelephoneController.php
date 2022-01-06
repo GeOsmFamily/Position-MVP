@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Commercial;
 use App\Models\Etablissement;
 use App\Models\Telephone;
 use DB;
@@ -81,9 +82,14 @@ class TelephoneController extends BaseController
 
         $telephone = Telephone::find($id);
 
-        $idUserCommercial = $telephone->etablissement->commercial->idUser;
 
-        if ($role == 1 || $user->id = $idUserCommercial) {
+        $idCommercial = $telephone->etablissement->idCommercial;
+
+        $commercial = Commercial::find($idCommercial);
+
+        $idUserCommercial = $commercial->idUser;
+
+        if ($role == 1 || $user->id == $idUserCommercial) {
 
 
             $telephone->numero = $request->numero ?? $telephone->numero;
@@ -114,7 +120,7 @@ class TelephoneController extends BaseController
 
         $role = $user->role;
 
-        if ($role == 1 || $role == 3) {
+        if ($role == 1 || $role == 2) {
             $telephone = Telephone::destroy($id);
 
             if ($telephone != 0) {

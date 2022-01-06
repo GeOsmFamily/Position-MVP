@@ -29,6 +29,9 @@ Route::get('statistiques/thismonth', [App\Http\Controllers\Api\StatistiquesContr
 Route::get('statistiques/byday', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByDay']);
 Route::get('statistiques/commercial/{id}', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCommercial']);
 Route::get('statistiques/commercial/day/{id}', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCommercialByDay']);
+Route::get('statistiques/bysouscategories', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatBySousCategorie']);
+Route::get('statistiques/bycategories', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatByCategorie']);
+Route::get('statistiques/souscategories/{id}', [App\Http\Controllers\Api\StatistiquesController::class, 'getStatWithSousCategorie']);
 
 Route::middleware('auth.apikey')->group(
     function () {

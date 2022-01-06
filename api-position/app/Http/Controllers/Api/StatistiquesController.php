@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController;
+use App\Models\Categorie;
 use App\Models\Commercial;
 use App\Models\Etablissement;
+use App\Models\SousCategorie;
+use App\Models\Souscategories_etablissement;
 use App\Models\Tracking;
 use App\Models\User;
 use Carbon\Carbon;
@@ -317,5 +320,98 @@ class StatistiquesController extends BaseController
 
 
         return $this->sendResponse($data, "Statistique Commercial");
+    }
+
+    public function getStatBySousCategorie()
+    {
+        $etablissements = Etablissement::with('sousCategories')->get();
+
+        $sousCategories = SousCategorie::with('etablissements')->get();
+        foreach ($sousCategories as $sousCategorie) {
+            $sousCategorie["etablissement_count"] = $sousCategorie->etablissements->count();
+
+
+            if ($sousCategorie["etablissement_count"] > 0) {
+                $idSousCategories[] = $sousCategorie->id;
+                $data['sous_categories'][] = $sousCategorie;
+            }
+        }
+
+        $sous_categories_actives = count(array_count_values($idSousCategories));
+
+        $top_sous_categorie = array_search(max(array_count_values($idSousCategories)), array_count_values($idSousCategories));
+
+
+
+        //  $data['sous_categories'] = $sousCategories;
+        $data['total_sous_categorie'] = SousCategorie::all()->count();
+        $data['sous_categories_actives'] = $sous_categories_actives;
+        $data['top_sous_categorie_id'] = $top_sous_categorie;
+
+        $sousCategorieTop = SousCategorie::find($top_sous_categorie);
+        $etablissementSousCategorie = $sousCategorieTop->etablissements->count();
+
+        $data["top_sous_categorie_nom"] = $sousCategorieTop->nom;
+        $data["top_sous_categorie_nombre_etablissement"] = $etablissementSousCategorie;
+
+
+        return $this->sendResponse($data, "Statistiques Sous Catégories");
+    }
+
+    public function getStatByCategorie()
+    {
+        $sousCategories = SousCategorie::with('etablissements')->get();
+        foreach ($sousCategories as $sousCategorie) {
+
+            $sousCategorie["etablissement_count"] = $sousCategorie->etablissements->count();
+
+
+            if ($sousCategorie["etablissement_count"] > 0) {
+
+                $idCategories[] = $sousCategorie->idCategorie;
+            }
+        }
+
+        $categories_actives = count(array_count_values($idCategories));
+
+        $top_categorie = array_search(max(array_count_values($idCategories)), array_count_values($idCategories));
+
+
+
+        //  $data['sous_categories'] = $sousCategories;
+        $data['total_categorie'] = Categorie::all()->count();
+        $data['categories_actives'] = $categories_actives;
+        $data['top_categorie_id'] = $top_categorie;
+
+        $categorieTop = Categorie::find($top_categorie);
+        foreach ($categorieTop->sousCategories as $sousCategorie) {
+            $etablissementCategorie[] = $sousCategorie->etablissements->count();
+            $sum = array_sum($etablissementCategorie);
+        }
+
+
+        $data["top_categorie_nom"] = $categorieTop->nom;
+        $data["top_categorie_nombre_etablissement"] = $sum;
+
+
+        return $this->sendResponse($data, "Statistiques Catégories");
+    }
+
+    public function getStatWithSousCategorie($id)
+    {
+
+        $sousCategories = SousCategorie::with('etablissements')->where('id', $id)->get();
+        foreach ($sousCategories as $sousCategorie) {
+            $sousCategorie["etablissement_count"] = $sousCategorie->etablissements->count();
+
+
+            if ($sousCategorie["etablissement_count"] > 0) {
+                $data['sous_categories'] = $sousCategorie;
+                $data['categorie'] = $sousCategorie->categorie;
+            }
+        }
+
+
+        return $this->sendResponse($data, "Statistiques Sous Catégories");
     }
 }
