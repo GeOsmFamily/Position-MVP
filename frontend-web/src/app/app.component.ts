@@ -14,45 +14,48 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent {
   title = 'frontend-web';
-  subscription: Subscription;
+  subscription: Subscription | undefined;
 
   featurePoint:string | undefined
   constructor(private ds:ParentChildServiceService ,private tit: Title,private router: Router, private activatedRoute: ActivatedRoute, private meta:Meta) {
     this.subscription = this.ds.getData().subscribe(x => {
-                      this.featurePoint = x[0];
-                     // console.log("rrrrrr +"+ this.featurePoint)
-                      this.meta.updateTag({
-                        name: 'description',
-                        content: "Retrouvez mon entreprise sur la plateforme Position en suivant ce lien"
-                     })
-                     this.meta.updateTag({
-                      name: 'keywords',
-                      content: x[2]
-                   })
-                     this.meta.updateTag({
-                      name: 'og:image',
-                      content: x[1]
-                   })
-                   this.meta.updateTag({
-                    name: 'title',
-                    content: x[0]
-                 })
-                     this.tit.setTitle(x[0]);
-    });
+      this.featurePoint = x[0];
+     // console.log("rrrrrr +"+ this.featurePoint)
+      this.meta.updateTag({
+        name: 'description',
+        content: "Retrouvez mon entreprise sur la plateforme Position en suivant ce lien"
+     })
+     this.meta.updateTag({
+      name: 'keywords',
+      content: x[2]
+   })
+     this.meta.updateTag({
+      name: 'og:image',
+      content: x[1]
+   })
+   this.meta.updateTag({
+    name: 'title',
+    content: x[0]
+ })
+     this.tit.setTitle(x[0]);
+});
 
   }
 
 
   ngOnInit(): void {
+
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
 
 
 
-  }ngAfterViewInit(): void {
+  }
+
+  ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    this.router.events.pipe(
+  /*  this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       map(() => this.activatedRoute),
       map((route) => {
@@ -67,6 +70,6 @@ export class AppComponent {
 
       //Updating Description tag dynamically with title
       //this._seoService.updateDescription(event['title'] + event['description'])
-   });
+   });*/
   }
 }
