@@ -14,11 +14,13 @@ export class HandleEtablissementsSearch {
   imagesCourousel = new Array();
 
 
-   cover = ""
-  image = ""
-  imageBatiment = ""
-  textLabel = ""
-   description =""
+   cover :string | undefined
+  image :string | undefined
+  imageBatiment:string | undefined
+  textLabel :string | undefined
+   description :string | undefined
+logoUrl:string | undefined
+nomCategorieSousCategorie:string | undefined
 
   formatDataForTheList(responseData: any): Array<FilterOptionInterface> {
     var responses = Array();
@@ -43,38 +45,38 @@ export class HandleEtablissementsSearch {
 
     var response: Array<FilterOptionInterface> = [];
     for (let index = 0; index < geojson.features.length; index++) {
+
       const element = geojson.features[index];
+     
+      if(element.properties.sous_categories[0]){
+
       var features = new GeoJSON().readFeatures(element, {
         dataProjection: 'EPSG:4326',
         featureProjection: 'EPSG:3857',
       });
 
-      if (features.length > 0) {
+      if (features.length > 0 ) {
         var details = Array();
         if (this._formatType(element)) {
           details.push(this._formatType(element));
         }
 
-        var logourl=""
-        try {
-          if(features[0].get('logo_url'))
-          logourl= environment.url_image + features[0].get('logo_url')
-        } catch (error) {
+          response.push({
 
-        }
-        response.push({
-          name: features[0].get('nom'),
-          id: features[0].get('id'),
-          adresse: features[0].get('description'),
-          geometry: features[0].getGeometry(),
-          details: details.join(', '),
-          logo:logourl,
-          typeOption: 'etablissements',
-          ...features[0].getProperties(),
-        });
+            name: features[0].get('nom'),
+            id: features[0].get('id'),
+            adresse: features[0].get('description'),
+            geometry: features[0].getGeometry(),
+            details: details.join(', '),
+            logo:environment.url_image + features[0].get('logo_url'),
+            typeOption: 'etablissements',
+            ...features[0].getProperties(),
+          });
+
+
       }
     }
-
+  }
     return response;
   }
 
@@ -105,6 +107,7 @@ export class HandleEtablissementsSearch {
   optionSelected(emprise: FilterOptionInterface) {
     if (!emprise.geometry) {
     } else {
+
       this._addGeometryAndZoomTO(emprise);
     }
   }
@@ -117,7 +120,8 @@ export class HandleEtablissementsSearch {
     });
   }
   _addGeometryAndZoomTO(emprise: FilterOptionInterface) {
-    if (emprise.geometry) {
+
+    if (emprise.geometry ) {
 
       var mapHelper = new MapHelper();
       if (mapHelper.getLayerByName('searchResultLayer').length > 0) {
@@ -126,17 +130,22 @@ export class HandleEtablissementsSearch {
 
 
 
-        try {
-          this.cover = environment.url_image + emprise.cover;
-          this.image = environment.url_image + emprise.images[0].imageUrl;
-
-          this.textLabel = emprise.name;
-          this.description = emprise.description;
+       try {
+        this.image = environment.url_image + emprise.images[0].imageUrl;
 
         } catch (error) {
-         // console.log("faux point")
+          //console.log("faux point")
 
         }
+        this.cover = environment.url_image + emprise.cover;
+
+        this.nomCategorieSousCategorie= emprise.sous_categories[0].nom + ', ' + emprise.nomCategorie
+        this.textLabel = emprise.name;
+
+        this.description = emprise.description;
+        this.logoUrl= environment.url_image + emprise.sous_categories[0].categorie.logoUrl
+
+
         var imageBatiment = environment.url_image + emprise.batiment.image;
         this.imagesCourousel.push(imageBatiment);
         this.imagesCourousel.push(this.cover);
@@ -150,8 +159,9 @@ export class HandleEtablissementsSearch {
         feature.set('id', emprise.id);
         feature.set(
           'logo_url',
-          environment.url_image + emprise.sous_categories[0].categorie.logoUrl
+          this.logoUrl
         );
+        feature.set("sousCategorie", emprise.sous_categories[0])
 
         feature.set('description', emprise.description);
         feature.set('type', 'position');
@@ -166,7 +176,8 @@ export class HandleEtablissementsSearch {
 
         feature.set(
           'nomCategorieSousCategorie',
-          emprise.sous_categories[0].nom + ', ' + emprise.nomCategorie
+         this.nomCategorieSousCategorie
+
         );
         feature.set('nomSousCategorie', emprise.sous_categories[0].nom);
 
@@ -192,6 +203,7 @@ export class HandleEtablissementsSearch {
           dimanche: 7,
         };
 
+
         //@ts-ignore
         emprise.horaires.sort(function sortByDay(a, b) {
           let day1 = a.jour.toLowerCase();
@@ -207,6 +219,7 @@ export class HandleEtablissementsSearch {
           emprise.horaires[index].heureFermeture=emprise.horaires[index].heureFermeture.slice(0,5)
 
           }
+
         feature.set('horaires', emprise.horaires);
 
         for (let index = 0; index < emprise.telephones.length; index++) {

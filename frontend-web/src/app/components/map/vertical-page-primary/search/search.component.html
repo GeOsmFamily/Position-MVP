@@ -41,13 +41,13 @@
               <small> {{item.details}} </small>
             </ng-container>
           -->
-          
+
 
             <ng-container *ngIf="option === 'etablissements'">
-              <table style="margin-top: 20px;">
+              <table style="margin-top: 20px;" *ngIf="item.logo">
                   <tr >
 
-                    <td>
+                    <td >
                       <img src="{{item.logo}}" alt="categorieLogo" />
 
                     </td>

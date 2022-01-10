@@ -158,6 +158,7 @@ export class SearchComponent implements OnInit {
             new HandleEtablissementsSearch().formatDataForTheList(
               value.value.data
             );
+            //console.log(this.filterOptions['etablissements'])
         }
 
         this.isLoading = false;
