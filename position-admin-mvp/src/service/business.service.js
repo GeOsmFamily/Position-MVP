@@ -20,6 +20,11 @@ class BusinessService {
       `position/statistics/get/ets/by_month/?month=${month}&year=${year}`
     );
   }
+  getWeekBusinesses(dayOfWeek) {
+    return stat.get(
+      `position/statistics/get/ets/by_week/?aDayOfTheWeek=${dayOfWeek}`
+    );
+  }
   editBusiness(id, data) {
     return form.post(`etablissements/${id}`, data);
   }

@@ -3,8 +3,10 @@ import BusinessService from "../service/business.service";
 const initialState = {
   loading: null,
   monthLoading: null,
+  weekLoading: null,
   businesses: null,
   monthBusinesses: null,
+  weekBusinesses: null,
   currentBusiness: null,
 };
 
@@ -32,12 +34,27 @@ export const business = {
       return BusinessService.getMonthBusinness(data.month, data.year).then(
         (businesses) => {
           commit("toggleMonthLoading", false);
-          commit("monthBusinessesSuccess", businesses.data.count);
+          commit("monthBusinessesSuccess", businesses.data);
           return Promise.resolve(businesses);
         },
         (error) => {
-          commit("toggleLoading", false);
+          commit("toggleMonthLoading", false);
           commit("monthBusinessFailure");
+          return Promise.reject(error);
+        }
+      );
+    },
+    fetchWeekBusinesses({ commit }, dayOfWeek) {
+      commit("toggleWeekLoading", true);
+      return BusinessService.getWeekBusinesses(dayOfWeek).then(
+        (businesses) => {
+          commit("toggleWeekLoading", false);
+          commit("weekBusinessesSuccess", businesses.data);
+          return Promise.resolve(businesses);
+        },
+        (error) => {
+          commit("toggleWeekLoading", false);
+          commit("weekBusinessFailure");
           return Promise.reject(error);
         }
       );
@@ -47,8 +64,15 @@ export const business = {
     monthBusinessesSuccess(state, businesses) {
       state.monthBusinesses = businesses;
     },
+
     monthBusinessesFailure(state) {
       state.monthBusinesses = null;
+    },
+    weekBusinessesSuccess(state, businesses) {
+      state.weekBusinesses = businesses;
+    },
+    weekBusinessesFailure(state) {
+      state.weekBusinesses = null;
     },
     businessesSuccess(state, businesses) {
       state.businesses = businesses.map((business) => {
@@ -72,6 +96,9 @@ export const business = {
     toggleMonthLoading(state, value) {
       state.monthLoading = value;
     },
+    toggleWeekLoading(state, value) {
+      state.weekLoading = value;
+    },
   },
   getters: {
     loading: ({ loading }) => {
@@ -85,6 +112,12 @@ export const business = {
     },
     monthBusinesses: ({ monthBusinesses }) => {
       return monthBusinesses;
+    },
+    weekLoading: ({ weekLoading }) => {
+      return weekLoading;
+    },
+    weekBusinesses: ({ weekBusinesses }) => {
+      return weekBusinesses;
     },
   },
 };

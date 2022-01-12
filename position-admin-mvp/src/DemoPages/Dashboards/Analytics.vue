@@ -70,7 +70,7 @@
             <div class="widget-chart-content" v-if="!monthLoading">
               <div class="widget-subheading">Points du mois</div>
               <div class="widget-numbers">
-                <span>{{ monthBusinesses }} points</span>
+                <span>{{ monthBusinesses.count }} points</span>
               </div>
               <div class="widget-description opacity-8 text-focus">
                 Grow Rate:
@@ -99,13 +99,11 @@
               text-left
             "
           >
-            <div class="icon-wrapper rounded-circle">
-              <div class="icon-wrapper-bg opacity-9 bg-success"></div>
-              <i class="pe-7s-musiclist text-white"></i>
-            </div>
-            <div class="widget-chart-content">
-              <div class="widget-subheading">Capital Gains</div>
-              <div class="widget-numbers text-success"><span>$563</span></div>
+            <div class="widget-chart-content" v-if="!weekLoading">
+              <div class="widget-subheading">Points de la semaine</div>
+              <div class="widget-numbers">
+                <span>{{ weekBusinesses.count }} points</span>
+              </div>
               <div class="widget-description text-focus">
                 Increased by
                 <span class="text-warning pl-1">
@@ -113,6 +111,11 @@
                   <span class="pl-1">7.35%</span>
                 </span>
               </div>
+            </div>
+            <div class="text-center" v-else>
+              <center>
+                <b-spinner variant="success" label="Spinning"></b-spinner>
+              </center>
             </div>
           </div>
         </div>
@@ -1217,8 +1220,14 @@ export default {
     monthLoading() {
       return this.$store.getters["business/monthLoading"];
     },
+    weekLoading() {
+      return this.$store.getters["business/weekLoading"];
+    },
     monthBusinesses() {
       return this.$store.getters["business/monthBusinesses"];
+    },
+    weekBusinesses() {
+      return this.$store.getters["business/weekBusinesses"];
     },
     businesses() {
       return this.$store.getters["business/businesses"];
@@ -1226,11 +1235,23 @@ export default {
   },
   created() {
     if (this.monthBusinesses == null || this.monthBusinesses.length === 0)
-      console.log(new Date().getMonth() + " " + new Date().getFullYear());
-    this.getMonthBusinesses({
-      month: new Date().getMonth() + 1,
-      year: new Date().getFullYear(),
-    });
+      this.getMonthBusinesses({
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+      });
+    if (this.weekBusinesses == null) {
+      let today = new Date();
+      let date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      let time =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      let dateTime = date + " " + time;
+      this.getWeekBusinesses(dateTime);
+    }
 
     if (this.businesses == null || this.businesses.length === 0) {
       this.getBusinesses();
@@ -1242,6 +1263,9 @@ export default {
     },
     getMonthBusinesses(data) {
       this.$store.dispatch("business/fetchMonthBusinesses", data);
+    },
+    getWeekBusinesses(aDayOfWeek) {
+      this.$store.dispatch("business/fetchWeekBusinesses", aDayOfWeek);
     },
   },
 };

@@ -420,6 +420,11 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
       </b-tab>
       <b-tab title="Statistiques commercial">
         <div class="row">
+          <div class="col-sm-auto mb-0 col-lg-auto">
+            <DatePicker v-model="customDate" format="dd-MM-yyyy" />
+          </div>
+        </div>
+        <div class="row">
           <div class="col-sm-12 col-lg-6">
             <div class="mb-3 card">
               <div class="card-header-tab card-header">
@@ -735,10 +740,12 @@ A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</textarea
 </template>
 <script>
 import LineChart from "./Analytics/LineChart";
+import DatePicker from "vuejs-datepicker";
 export default {
   name: "Details",
   data() {
     return {
+      customDate: new Date(),
       rankCollection: {
         labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
         datasets: [
@@ -776,9 +783,57 @@ export default {
   },
   components: {
     LineChart,
+    DatePicker,
+  },
+  watch: {
+    customDate: function (val) {
+      let current = new Date(val.getTime());
+      console.log(current);
+      let weekDates = [];
+      let first = current.getDate() - current.getDay() + 1;
+      for (let i = 0; i < 7; i++) {
+        weekDates.push(new Date(current.setDate(first++)));
+      }
+      console.log(weekDates);
+      this.$store.dispatch("stat/changeWeekDays", weekDates);
+      this.$store.dispatch("stat/changeCurrentDay", val);
+      const today = new Date();
+      const date =
+        current.getFullYear() +
+        "-" +
+        (current.getMonth() + 1) +
+        "-" +
+        current.getDate();
+      this.$store.dispatch("stat/fetchStatByWeek", {
+        id: this.commercial.id,
+        date:
+          date +
+          " " +
+          today.getHours() +
+          ":" +
+          today.getMinutes() +
+          ":" +
+          today.getSeconds(),
+      });
+    },
   },
   mounted() {
-    this.$store.dispatch("stat/fetchStatByWeek", this.commercial.id);
+    const today = new Date();
+    this.$store.dispatch("stat/fetchStatByWeek", {
+      id: this.commercial.id,
+      date:
+        this.customDate.getFullYear() +
+        "-" +
+        (this.customDate.getMonth() + 1) +
+        "-" +
+        this.customDate.getDate() +
+        " " +
+        today.getHours() +
+        ":" +
+        today.getMinutes() +
+        ":" +
+        today.getSeconds(),
+    });
   },
   computed: {
     commercial() {
@@ -796,6 +851,9 @@ export default {
     dayEtablissement() {
       return this.$store.getters["stat/dayEtablissement"];
     },
+    weekDays() {
+      return this.$store.getters["stat/weekDays"];
+    },
   },
   methods: {
     getRandomInt() {
@@ -806,17 +864,24 @@ export default {
         labels: ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"],
         datasets: [
           {
-            label: `Semaine du ${this.$moment()
-              .clone()
-              .weekday(1)
-              .format("DD")} ${this.$moment()
-              .clone()
-              .weekday(1)
-              .lang("fr")
-              .format("MMMM")} ${this.$moment()
-              .clone()
-              .weekday(1)
-              .format("YY")}`,
+            label:
+              this.weekDays == null || this.weekDays.length === 0
+                ? `Semaine du ${this.$moment()
+                    .clone()
+                    .weekday(1)
+                    .format("DD")} ${this.$moment()
+                    .clone()
+                    .weekday(1)
+                    .format("MMMM")} ${this.$moment()
+                    .clone()
+                    .weekday(1)
+                    .format("YY")}`
+                : `Semaine du ${this.weekDays[0].toLocaleDateString("fr-FR", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}`,
             backgroundColor: "#f87979",
             data: collected,
           },

@@ -21,18 +21,9 @@ class CommercialService {
   createQrCode(id) {
     return stat.post(`commercial/generateQrCode?commercial_id=${id}`);
   }
-  getDailyStat(id) {
-    const today = new Date();
-    const date =
-      today.getFullYear() +
-      "-" +
-      (today.getMonth() + 1) +
-      "-" +
-      today.getDate();
-    const time =
-      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    const dateTime = date + " " + time;
-    const url = `commercials/statistics/get/ets/by_week/?commercials_id=${id}&aDayOfTheWeek=${dateTime}`;
+  getDailyStat(id, date) {
+    console.log(date);
+    const url = `commercials/statistics/get/ets/by_week/?commercials_id=${id}&aDayOfTheWeek=${date}`;
     return stat.get(url);
   }
 }
