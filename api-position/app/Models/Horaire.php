@@ -30,6 +30,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Horaire whereOuvert($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Horaire whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|Horaire onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Horaire whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Horaire withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Horaire withoutTrashed()
  */
 class Horaire extends Model
 {

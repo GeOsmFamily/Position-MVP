@@ -61,13 +61,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereAutres($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereRevoir($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereValide($value)
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string|null $osmId
+ * @property int $updated
+ * @method static \Illuminate\Database\Query\Builder|Etablissement onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereOsmId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Etablissement whereUpdated($value)
+ * @method static \Illuminate\Database\Query\Builder|Etablissement withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Etablissement withoutTrashed()
  */
 class Etablissement extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idCommercial", "idManager", "etage", "cover", "vues", "autres", "revoir", "valide"
+        "idBatiment", "nom", "indicationAdresse", "codePostal", "siteInternet", "description", "idCommercial", "idManager", "etage", "cover", "vues", "autres", "revoir", "valide", "osmId", "updated"
     ];
 
     public function batiment()
