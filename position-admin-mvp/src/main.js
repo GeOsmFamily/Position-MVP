@@ -26,7 +26,6 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(require("vue-moment"));
-Vue.moment().locale("fr");
 Vue.use(ToastPlugin);
 Vue.use(BVToastPlugin);
 Vue.use(Vuelidate);

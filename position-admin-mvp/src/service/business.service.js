@@ -1,5 +1,6 @@
 import api from "./api";
 import form from "./form";
+import stat from "./stat";
 
 class BusinessService {
   getListBusiness() {
@@ -13,6 +14,16 @@ class BusinessService {
   }
   deleteBusiness(id) {
     return api.delete(`etablissements/${id}`);
+  }
+  getMonthBusinness(month, year) {
+    return stat.get(
+      `position/statistics/get/ets/by_month/?month=${month}&year=${year}`
+    );
+  }
+  getWeekBusinesses(dayOfWeek) {
+    return stat.get(
+      `position/statistics/get/ets/by_week/?aDayOfTheWeek=${dayOfWeek}`
+    );
   }
   editBusiness(id, data) {
     return form.post(`etablissements/${id}`, data);

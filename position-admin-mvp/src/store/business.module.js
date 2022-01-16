@@ -2,7 +2,11 @@ import BusinessService from "../service/business.service";
 
 const initialState = {
   loading: null,
+  monthLoading: null,
+  weekLoading: null,
   businesses: null,
+  monthBusinesses: null,
+  weekBusinesses: null,
   currentBusiness: null,
 };
 
@@ -25,45 +29,51 @@ export const business = {
         }
       );
     },
-    createCategory({ dispatch, commit }, data) {
-      commit("toggleLoading", true);
-      return BusinessService.createBusiness(data).then(
-        (result) => {
-          console.log(data);
-          commit("toggleLoading", false);
-          dispatch("fetchCategories");
-          return Promise.resolve(result);
+    fetchMonthBusinesses({ commit }, data) {
+      commit("toggleMonthLoading", true);
+      return BusinessService.getMonthBusinness(data.month, data.year).then(
+        (businesses) => {
+          commit("toggleMonthLoading", false);
+          commit("monthBusinessesSuccess", businesses.data);
+          return Promise.resolve(businesses);
         },
         (error) => {
-          commit("toggleLoading", false);
+          commit("toggleMonthLoading", false);
+          commit("monthBusinessFailure");
           return Promise.reject(error);
         }
       );
     },
-    deleteCategory({ dispatch }, id) {
-      return BusinessService.deleteBusiness(id).then(
-        (result) => {
-          dispatch("fetchCategories");
-          return Promise.resolve(result);
+    fetchWeekBusinesses({ commit }, dayOfWeek) {
+      commit("toggleWeekLoading", true);
+      return BusinessService.getWeekBusinesses(dayOfWeek).then(
+        (businesses) => {
+          commit("toggleWeekLoading", false);
+          commit("weekBusinessesSuccess", businesses.data);
+          return Promise.resolve(businesses);
         },
         (error) => {
-          return Promise.reject(error);
-        }
-      );
-    },
-    editCategory({ dispatch }, data) {
-      return BusinessService.editBusiness(data.id, data.category).then(
-        (result) => {
-          dispatch("fetchCategories");
-          return Promise.resolve(result);
-        },
-        (error) => {
+          commit("toggleWeekLoading", false);
+          commit("weekBusinessFailure");
           return Promise.reject(error);
         }
       );
     },
   },
   mutations: {
+    monthBusinessesSuccess(state, businesses) {
+      state.monthBusinesses = businesses;
+    },
+
+    monthBusinessesFailure(state) {
+      state.monthBusinesses = null;
+    },
+    weekBusinessesSuccess(state, businesses) {
+      state.weekBusinesses = businesses;
+    },
+    weekBusinessesFailure(state) {
+      state.weekBusinesses = null;
+    },
     businessesSuccess(state, businesses) {
       state.businesses = businesses.map((business) => {
         business.created_at = new Date(business.created_at).toLocaleDateString(
@@ -83,6 +93,12 @@ export const business = {
     toggleLoading(state, value) {
       state.loading = value;
     },
+    toggleMonthLoading(state, value) {
+      state.monthLoading = value;
+    },
+    toggleWeekLoading(state, value) {
+      state.weekLoading = value;
+    },
   },
   getters: {
     loading: ({ loading }) => {
@@ -90,6 +106,18 @@ export const business = {
     },
     businesses: ({ businesses }) => {
       return businesses;
+    },
+    monthLoading: ({ monthLoading }) => {
+      return monthLoading;
+    },
+    monthBusinesses: ({ monthBusinesses }) => {
+      return monthBusinesses;
+    },
+    weekLoading: ({ weekLoading }) => {
+      return weekLoading;
+    },
+    weekBusinesses: ({ weekBusinesses }) => {
+      return weekBusinesses;
     },
   },
 };

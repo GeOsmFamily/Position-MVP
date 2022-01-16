@@ -309,7 +309,7 @@ export default {
     },
   },
   created() {
-    if (this.categories == null || this.categories.length === 0)
+    if (this.businesses == null || this.businesses.length === 0)
       this.getBusinesses();
   },
   methods: {
