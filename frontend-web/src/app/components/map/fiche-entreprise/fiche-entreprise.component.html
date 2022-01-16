@@ -23,7 +23,7 @@
   </div>
 
   <!-- Bloc contenant les informations de l'entreprise-->
-  <div class="container" style="margin-top: 20px;margin-left: 20px;">
+  <div class="container" style="margin-top: 10px;margin-left: 40px;">
 
     <!-- Nom et catégorie de l'entreprise   logo_url-->
     <div class=" clearfix" *ngIf="featurePoint?.get('textLabel')">
@@ -42,10 +42,11 @@
 
 
       </div>
-      <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;">
+      <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;width:290px">
         {{featurePoint?.get("nomCategorieSousCategorie")}}
       </div>
-      <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;">
+      <br/>
+      <div class="pull-right" style="font-family:OpenSans light ; font-size: 12px;width:280px">
         {{featurePoint?.get("motCle")}}
       </div>
 
@@ -119,7 +120,7 @@
 
 
     <!-- Informations d'ouverture et adresse de l'entreprise-->
-    <div *ngIf="featurePoint?.get('horaires')" class="container"
+    <div *ngIf="featurePoint?.get('horaires').length > 0" class="container"
       style="margin-top: 10px;margin-bottom: 10px;font-family:OpenSans light ;margin-left: -20px;">
 
 
@@ -184,9 +185,9 @@
       <img class="img-fluid" src="assets/whatsapp.svg" alt="" style="margin-top: -3px;width: 20px; float:left;" />
 
       <div style="display: inline-block;" *ngIf="featurePoint?.get('whatsapp')">
-       
+
           <p style="font-size: 11px;margin-left: 5px;">{{featurePoint?.get('whatsapp')}}</p>
-     
+
 
       </div>
     </div>

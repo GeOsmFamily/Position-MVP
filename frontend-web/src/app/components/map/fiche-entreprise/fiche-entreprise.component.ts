@@ -41,6 +41,8 @@ export class FicheEntrepriseComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //this.ds.sendData([this.featurePoint?.get('textLabel'),this.featurePoint?.get('imagesCarousel')[1],this.featurePoint?.get('motCle'),this.featurePoint?.get('nomCategorieSousCategorie')]);
+
 
 
   }
@@ -49,10 +51,12 @@ export class FicheEntrepriseComponent implements OnInit {
 
   shareLink() {
 
+    this.ds.sendData([this.featurePoint?.get('textLabel'),this.featurePoint?.get('imagesCarousel')[1],this.featurePoint?.get('motCle'),this.featurePoint?.get('nomCategorieSousCategorie')]);
+
 
     var url_share =
       environment.url_demo +
-      '?etablissements=' +
+      'home?etablissements=' +
       this.featurePoint?.get('id') +
       ',16';
      // console.log(url_share)
@@ -74,8 +78,7 @@ export class FicheEntrepriseComponent implements OnInit {
 
   open(featurePoint: any) {
     this.featurePoint = featurePoint;
-    this.ds.sendData([this.featurePoint?.get('textLabel'),this.featurePoint?.get('imagesCarousel')[1],this.featurePoint?.get('motCle'),this.featurePoint?.get('nomCategorieSousCategorie')]);
-   // this.ds.sendData();
+     // this.ds.sendData();
 
 
     this.images = this.featurePoint?.get('imagesCarousel');
