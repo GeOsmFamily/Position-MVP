@@ -28,6 +28,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  * @property int $principal
  * @method static \Illuminate\Database\Eloquent\Builder|Telephone wherePrincipal($value)
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|Telephone onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Telephone whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Telephone withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Telephone withoutTrashed()
  */
 class Telephone extends Model
 {

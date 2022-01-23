@@ -24,6 +24,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereImageUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|Image onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Image whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Image withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Image withoutTrashed()
  */
 class Image extends Model
 {

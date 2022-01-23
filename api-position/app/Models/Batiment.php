@@ -43,6 +43,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection|Batiment[] $etablissements
  * @property-read int|null $etablissements_count
  * @method static \Illuminate\Database\Eloquent\Builder|Batiment whereQuartier($value)
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|Batiment onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Batiment whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Batiment withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Batiment withoutTrashed()
  */
 class Batiment extends Model
 {
