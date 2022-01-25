@@ -43,6 +43,55 @@ class BatimentController extends BaseController
         return $this->sendResponse($batiments, 'Liste des Batiments');
     }
 
+    public function getBatimentsGeojson()
+    {
+        $batiments = Batiment::all();
+        $response = array();
+        foreach ($batiments as $batiment) {
+
+
+
+            $etablissements = $batiment->etablissements;
+
+            $batiment["etablissements"] = $etablissements;
+
+            foreach ($etablissements as $etablissement) {
+                $souscategorie = $etablissement->sousCategories;
+                $images = $etablissement->images;
+                $horaires = $etablissement->horaires;
+                $telephones = $etablissement->telephones;
+                $commercial = Commercial::find($etablissement->commercial->id);
+
+                $etablissement["nomCommercial"] = $commercial->user->name;
+
+                foreach ($etablissement->sousCategories as $souscategorie) {
+
+                    $souscategorie["logoUrl"] = $souscategorie->categorie->logoUrl;
+                }
+            }
+
+            $geometry = [
+                "type" => "Point",
+                "coordinates" => [$batiment->longitude, $batiment->latitude]
+            ];
+
+            $response[] = [
+                "type" => "Feature",
+                "geometry" => $geometry,
+                "properties" => $batiment
+            ];
+        }
+
+
+
+        $geojson = [
+            "type" => "FeatureCollection",
+            "features" => $response
+        ];
+
+        return response()->json($geojson, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
