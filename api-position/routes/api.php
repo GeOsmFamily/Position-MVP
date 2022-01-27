@@ -60,6 +60,7 @@ Route::middleware('auth.apikey')->group(
 
         Route::get('batiments', [App\Http\Controllers\Api\BatimentController::class, 'index']);
         Route::get('batimentsgeojson', [App\Http\Controllers\Api\BatimentController::class, 'getBatimentsGeojson']);
+        Route::get('batimentsnumber', [App\Http\Controllers\Api\BatimentController::class, 'getBatimentsNumber']);
 
         Route::get('batiments/{id}', [App\Http\Controllers\Api\BatimentController::class, 'show']);
 
