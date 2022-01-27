@@ -43,6 +43,15 @@ class BatimentController extends BaseController
         return $this->sendResponse($batiments, 'Liste des Batiments');
     }
 
+    public function getBatimentsNumber()
+    {
+        $batiments = Batiment::all();
+
+
+
+        return $this->sendResponse((string)$batiments->count(), 'Nombre de Batiments');
+    }
+
     public function getBatimentsGeojson()
     {
         $batiments = Batiment::all();
