@@ -59,6 +59,8 @@ Route::middleware('auth.apikey')->group(
 
 
         Route::get('batiments', [App\Http\Controllers\Api\BatimentController::class, 'index']);
+        Route::get('batimentsposition', [App\Http\Controllers\Api\BatimentController::class, 'getBatimentByPosition']);
+
         Route::get('batimentsgeojson', [App\Http\Controllers\Api\BatimentController::class, 'getBatimentsGeojson']);
         Route::get('batimentsnumber', [App\Http\Controllers\Api\BatimentController::class, 'getBatimentsNumber']);
 
