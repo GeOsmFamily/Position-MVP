@@ -281,6 +281,8 @@ public class MapActivity extends AppCompatActivity implements
     private static final int REQUEST_CODE = 1234;
     private SearchAdapter searchAdapter;
 
+    List<String> bbox = new ArrayList<String>();
+
     JSONObject featureCollection = new JSONObject();
     MapBoxUtils mapBoxUtils;
 
@@ -1464,6 +1466,30 @@ if(pref.getRoleid().equals("2")) {
         }
     }
 
+    public List<String> getBbox(String lat, String lon) {
+
+        if (Function.isNetworkAvailable(getApplicationContext())) {
+            ApiInterface apiService =
+                    APIClient.getNewClient().create(ApiInterface.class);
+            Call<Nominatim> call = apiService.nominatimCoord(lat, lon, 1, "json");
+            call.enqueue(new Callback<Nominatim>() {
+                @Override
+                public void onResponse(@NotNull Call<Nominatim> call, @NotNull Response<Nominatim> response) {
+                   bbox = response.body().getBoundingbox();
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<Nominatim> call, @NotNull Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.noInternet), Toast.LENGTH_LONG).show();
+        }
+
+        return bbox;
+    }
+
     //Methode pour deconnecter l'utilisateur
     public void logout() {
         if (Function.isNetworkAvailable(getApplicationContext())) {
@@ -1975,10 +2001,19 @@ if(pref.getRoleid().equals("2")) {
 
 
     private void geojsonBatiment(@NonNull Style style) {
+        LocationComponent locationComponent = mapboxMap.getLocationComponent();
+        locationComponent.setCameraMode(CameraMode.TRACKING);
+        locationComponent.setRenderMode(RenderMode.COMPASS);
+        locationComponent.zoomWhileTracking(15);
+        Location location = locationComponent.getLastKnownLocation();
+        String lon = String.valueOf(location != null ? location.getLongitude() : 0);
+        String lat = String.valueOf(location != null ? location.getLatitude() : 0);
+        List<String> bbox = getBbox(lat,lon);
+        String bboxF = bbox.get(0) +","+ bbox.get(1) +","+ bbox.get(2) +","+ bbox.get(3);
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
                     APIClient.getNewClient3().create(ApiInterface.class);
-            Call<BatimentsModel> call = apiService.getbatiments(API_KEY);
+            Call<BatimentsModel> call = apiService.getbatimentsposition(API_KEY,bboxF);
             call.enqueue(new Callback<BatimentsModel>() {
                 @Override
                 public void onResponse(@NotNull Call<BatimentsModel> call, @NotNull Response<BatimentsModel> response) {

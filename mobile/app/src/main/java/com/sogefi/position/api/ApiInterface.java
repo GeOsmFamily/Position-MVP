@@ -72,6 +72,10 @@ public interface ApiInterface {
     @GET("api/batiments")
     Call<BatimentsModel> getbatiments(@Header("X-Authorization") String apiKey);
 
+
+    @GET("api/batimentsposition")
+    Call<BatimentsModel> getbatimentsposition(@Header("X-Authorization") String apiKey,@Query("bbox") String bbox);
+
     @GET("api/batiments/{id}")
     Call<Batiments> getbatimentsbyid(@Header("X-Authorization") String apiKey,@Path("id") int idBatiment);
 

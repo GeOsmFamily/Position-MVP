@@ -52,6 +52,79 @@ class BatimentController extends BaseController
         return $this->sendResponse((string)$batiments->count(), 'Nombre de Batiments');
     }
 
+    public function getBatimentByPosition(Request $request)
+    {
+        $bbox = $request->input('bbox');
+
+        $bboxTab = explode(",", $bbox);
+
+        $batiments = Batiment::all();
+
+        $arrayBatiment = array();
+
+        foreach ($batiments as $key => $batiment) {
+            $intoBbox =  $this->intoBbox($bboxTab[0], $bboxTab[1], $bboxTab[2], $bboxTab[3], $batiment->latitude, $batiment->longitude);
+
+            if ($intoBbox) {
+                $etablissements = $batiment->etablissements;
+
+                $batiment["etablissements"] = $etablissements;
+
+                foreach ($etablissements as $etablissement) {
+                    $souscategorie = $etablissement->sousCategories;
+                    $images = $etablissement->images;
+                    $horaires = $etablissement->horaires;
+                    $telephones = $etablissement->telephones;
+                    $commercial = Commercial::find($etablissement->commercial->id);
+
+                    $etablissement["nomCommercial"] = $commercial->user->name;
+
+                    foreach ($etablissement->sousCategories as $souscategorie) {
+
+                        $souscategorie["logoUrl"] = $souscategorie->categorie->logoUrl;
+                    }
+                }
+                $arrayBatiment[] = $batiment;
+            }
+        }
+
+
+        return $this->sendResponse($arrayBatiment, 'Liste des Batiments');
+    }
+
+    function intoBbox($latMin, $latMax, $lonMin, $lonMax, $lat, $lon)
+    {
+        if ($lon >= $lonMin && $lon <= $lonMax) {
+            if ($lat >= $latMin && $lat <= $latMax) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    function distance($lat1, $lng1, $lat2, $lng2, $miles = false)
+    {
+        $pi80 = M_PI / 180;
+        $lat1 *= $pi80;
+        $lng1 *= $pi80;
+        $lat2 *= $pi80;
+        $lng2 *= $pi80;
+
+        $r = 6372.797; // rayon moyen de la Terre en km
+        $dlat = $lat2 - $lat1;
+        $dlng = $lng2 - $lng1;
+        $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin(
+            $dlng / 2
+        ) * sin($dlng / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $km = $r * $c;
+
+        return ($miles ? ($km * 0.621371192) : $km);
+    }
+
     public function getBatimentsGeojson()
     {
         $batiments = Batiment::all();
