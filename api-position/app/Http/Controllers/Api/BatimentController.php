@@ -17,7 +17,7 @@ class BatimentController extends BaseController
      */
     public function index()
     {
-        $batiments = Batiment::all();
+        $batiments = Batiment::orderBy('id', 'desc')->take(500)->get();
 
         foreach ($batiments as $batiment) {
             $etablissements = $batiment->etablissements;
