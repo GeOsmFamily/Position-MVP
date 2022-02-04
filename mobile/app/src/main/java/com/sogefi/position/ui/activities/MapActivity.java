@@ -4,6 +4,7 @@ import static com.google.android.gms.common.util.CollectionUtils.listOf;
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.accumulated;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.all;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.bool;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.concat;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.division;
 import static com.mapbox.mapboxsdk.style.expressions.Expression.exponential;
@@ -98,6 +99,13 @@ import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.github.siyamed.shapeimageview.CircularImageView;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -145,6 +153,7 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.utils.BitmapUtils;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
+import com.mapbox.turf.TurfConversion;
 import com.mapbox.turf.TurfJoins;
 import com.nguyenhoanglam.imagepicker.view.GridSpacingItemDecoration;
 import com.sogefi.position.BuildConfig;
@@ -299,6 +308,10 @@ public class MapActivity extends AppCompatActivity implements
     private int clickOptionCounter = 0;
     private static final double CAMERA_ZOOM_DELTA = 0.01;
 
+
+    private FusedLocationProviderClient mFusedLocationClient;
+
+    private LocationCallback mLocationCallback;
 
 
 
@@ -455,9 +468,12 @@ public class MapActivity extends AppCompatActivity implements
 
         launchWorker();
 
+
+
         if(!pref.getToken().equals("token")) {
             getUsers();
         }
+
 
 
 
@@ -749,6 +765,8 @@ public class MapActivity extends AppCompatActivity implements
                 //  getBatiment();
 
                 geojsonBatiment(style1);
+
+
 
 
             }
@@ -1173,6 +1191,7 @@ if(pref.getRoleid().equals("2")) {
 
 
 
+
         mapboxMap.setStyle(new Style.Builder().fromUri(styleLaunch)
              /*  .withSource(clusterSource = createClusterSource())
                 .withLayer(createSymbolLayer())
@@ -1187,7 +1206,11 @@ if(pref.getRoleid().equals("2")) {
             enableLocationComponent(style);
             initSpaceStationSymbolLayer(style);
 
+
+
          //   style.setTransition(new TransitionOptions(0, 0, false));
+
+
 
             mapboxMap.addOnMapLongClickListener(MapActivity.this);
             mapboxMap.addOnMapClickListener(MapActivity.this);
@@ -1196,6 +1219,7 @@ if(pref.getRoleid().equals("2")) {
             }
             if(pref.getRoleid().equals("2") || pref.getRoleid().equals("1")) {
               //  getBatiment();
+
 
                 geojsonBatiment(style);
 
@@ -2001,22 +2025,18 @@ if(pref.getRoleid().equals("2")) {
 
 
     private void geojsonBatiment(@NonNull Style style) {
-        LocationComponent locationComponent = mapboxMap.getLocationComponent();
-        locationComponent.setCameraMode(CameraMode.TRACKING);
-        locationComponent.setRenderMode(RenderMode.COMPASS);
-        locationComponent.zoomWhileTracking(15);
-        Location location = locationComponent.getLastKnownLocation();
-        String lon = String.valueOf(location != null ? location.getLongitude() : 0);
-        String lat = String.valueOf(location != null ? location.getLatitude() : 0);
-        List<String> bbox = getBbox(lat,lon);
-        String bboxF = bbox.get(0) +","+ bbox.get(1) +","+ bbox.get(2) +","+ bbox.get(3);
+
+
+
+
+
         if (Function.isNetworkAvailable(getApplicationContext())) {
             ApiInterface apiService =
                     APIClient.getNewClient3().create(ApiInterface.class);
-            Call<BatimentsModel> call = apiService.getbatimentsposition(API_KEY,bboxF);
-            call.enqueue(new Callback<BatimentsModel>() {
+            Call<BatimentsModel> call1 = apiService.getbatiments(API_KEY);
+            call1.enqueue(new Callback<BatimentsModel>() {
                 @Override
-                public void onResponse(@NotNull Call<BatimentsModel> call, @NotNull Response<BatimentsModel> response) {
+                public void onResponse(@NotNull Call<BatimentsModel> call1, @NotNull Response<BatimentsModel> response) {
                     if(response.code() == 401 || response.code() == 500) {
                         Toast.makeText(getApplicationContext(), "Error get batiments", Toast.LENGTH_LONG).show();
                     } else {
@@ -2032,15 +2052,15 @@ if(pref.getRoleid().equals("2")) {
                             featureCollection.put("crs", crs);
 
 
-                        JSONArray features = new JSONArray();
+                            JSONArray features = new JSONArray();
 
 
-                        for (int i = 0; i < response.body().getData().size(); i++) {
-                            JSONObject feature = new JSONObject();
+                            for (int i = 0; i < response.body().getData().size(); i++) {
+                                JSONObject feature = new JSONObject();
 
                                 feature.put("type", "Feature");
                                 JSONObject propertiesData = new JSONObject();
-                            JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body().getData().get(i)));
+                                JSONObject jsonObject = new JSONObject(new Gson().toJson(response.body().getData().get(i)));
                                 propertiesData.put("batiment", jsonObject);
                                 feature.put("properties", propertiesData);
                                 JSONObject geometry = new JSONObject();
@@ -2066,7 +2086,7 @@ if(pref.getRoleid().equals("2")) {
                                 new int[] {0, ContextCompat.getColor(MapActivity.this, R.color.green)}
                         };
 
-                       // FeatureCollection featureCollectionFromJson = FeatureCollection.fromJson(featureCollection.toString());
+                        // FeatureCollection featureCollectionFromJson = FeatureCollection.fromJson(featureCollection.toString());
 
                         try {
                             style.setTransition(new TransitionOptions(0, 0, false));
@@ -2076,8 +2096,8 @@ if(pref.getRoleid().equals("2")) {
                             style.addLayer(createClusterLevelLayer(1, clusterLayers));
                             style.addLayer(createClusterLevelLayer(2, clusterLayers));
                             style.addLayer(createClusterTextLayer());
-                          //  Log.d("SOURCES", featureCollection.toString());
-                          //  Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
+                            //  Log.d("SOURCES", featureCollection.toString());
+                            //  Toast.makeText(getApplicationContext(), featureCollection.toString(), Toast.LENGTH_LONG).show();
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
@@ -2087,17 +2107,21 @@ if(pref.getRoleid().equals("2")) {
 
 
 
-                }
+                    }
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<BatimentsModel> call, @NotNull Throwable t) {
+                public void onFailure(@NotNull Call<BatimentsModel> call1, @NotNull Throwable t) {
                     Toast.makeText(getApplicationContext(),"Erreur lors du chargement des batiments", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
             Toast.makeText(getApplicationContext(), "No Internet", Toast.LENGTH_LONG).show();
         }
+
+
+
+
     }
 
 
