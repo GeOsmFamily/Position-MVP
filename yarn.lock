@@ -119,10 +119,10 @@
   dependencies:
     moment "^2.10.2"
 
-bootstrap-vue-3@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.1.8.tgz#bf1d8a317eba0013f148ba4d09c6610497340f5c"
-  integrity sha512-MIsWALS6YPiH7hVa6QFN1CrOircCX18UklhD9efnxaN93vUtA759kdgFb9+m2m2NDPSjTXTxGkhOWIpCpIhPKQ==
+bootstrap-vue-3@^0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue-3/-/bootstrap-vue-3-0.1.10.tgz#45f2d5071c9a0af477bf14c662ba303e503e333b"
+  integrity sha512-r5zd5DIzclFpR16s6nwFRkZlrLoTANbZ9OWFFGoKLGcHOnL+WFuR8HULUB5QEyKdH5mf9ltTBCEsX/mFRq2S1w==
   dependencies:
     core-js "3.x.x"
 
